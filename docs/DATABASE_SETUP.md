@@ -77,6 +77,8 @@ This will:
 - Generate the Prisma Client
 - Create a migration file
 
+**Note:** Prisma 7+ uses `prisma.config.ts` for connection configuration. The `DATABASE_URL` and `DIRECT_URL` are configured there, not in `schema.prisma`.
+
 ### 5. Generate Prisma Client
 
 ```bash

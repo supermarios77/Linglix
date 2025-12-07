@@ -14,10 +14,13 @@ const globalForPrisma = globalThis as unknown as {
  * - Error-only logging to reduce overhead
  * - Connection pooling handled by Neon
  * - Automatic connection management
+ * - Uses DATABASE_URL from environment (configured in prisma.config.ts for migrations)
  */
 export const prisma =
   globalForPrisma.prisma ??
   new PrismaClient({
+    // In Prisma 7+, connection URL is passed via environment variable
+    // The DATABASE_URL is automatically read from process.env
     log: process.env.NODE_ENV === "development" ? ["query", "error", "warn"] : ["error"],
     // Connection pooling is handled by Neon's built-in pooler
     // No need to configure connection_limit for serverless
