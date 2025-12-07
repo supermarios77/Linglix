@@ -1,0 +1,197 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL") // For migrations and introspection
+}
+
+// User roles
+enum Role {
+  STUDENT
+  TUTOR
+  ADMIN
+}
+
+// Booking status
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  COMPLETED
+  CANCELLED
+  REFUNDED
+}
+
+// User model - handles both students and tutors
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  name          String?
+  emailVerified DateTime?
+  image         String?
+  role          Role      @default(STUDENT)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // Relations
+  tutorProfile      TutorProfile?
+  bookings          Booking[]  @relation("StudentBookings")
+  videoSessions     VideoSession[]
+  reviews           Review[]
+  accounts          Account[]
+  authSessions      AuthSession[]
+
+  @@index([email])
+  @@index([role])
+}
+
+// Tutor profile - additional info for tutors
+model TutorProfile {
+  id           String   @id @default(cuid())
+  userId       String   @unique
+  bio          String?
+  specialties  String[] // e.g., ["Business English", "IELTS Prep"]
+  hourlyRate   Float
+  rating       Float    @default(0)
+  totalSessions Int     @default(0)
+  isActive     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  // Relations
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  bookings     Booking[]
+  availability Availability[]
+
+  @@index([userId])
+  @@index([isActive])
+}
+
+// Tutor availability - weekly schedule
+model Availability {
+  id        String   @id @default(cuid())
+  tutorId   String
+  dayOfWeek Int      // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
+  startTime String   // Format: "HH:mm" (e.g., "09:00")
+  endTime   String   // Format: "HH:mm" (e.g., "17:00")
+  timezone  String   @default("UTC")
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  tutor     TutorProfile @relation(fields: [tutorId], references: [id], onDelete: Cascade)
+
+  @@index([tutorId])
+  @@index([dayOfWeek])
+}
+
+// Bookings - scheduled sessions
+model Booking {
+  id          String        @id @default(cuid())
+  studentId   String
+  tutorId     String
+  scheduledAt DateTime
+  duration    Int           // Duration in minutes (30, 60, 90)
+  status      BookingStatus @default(PENDING)
+  price       Float
+  paymentId   String?       // Stripe payment intent ID
+  notes       String?       // Student notes/requirements
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  // Relations
+  student     User          @relation("StudentBookings", fields: [studentId], references: [id], onDelete: Cascade)
+  tutor       TutorProfile  @relation(fields: [tutorId], references: [id], onDelete: Cascade)
+  videoSession VideoSession?
+
+  @@index([studentId])
+  @@index([tutorId])
+  @@index([scheduledAt])
+  @@index([status])
+}
+
+// Video Sessions - actual video call sessions
+model VideoSession {
+  id          String    @id @default(cuid())
+  bookingId   String    @unique
+  startedAt   DateTime?
+  endedAt     DateTime?
+  duration    Int?      // Actual duration in minutes
+  recordingUrl String?  // URL to session recording
+  notes       String?   // Tutor notes from session
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  // Relations
+  booking     Booking   @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  review      Review?
+
+  @@index([bookingId])
+}
+
+// Reviews - student reviews of tutors
+model Review {
+  id        String   @id @default(cuid())
+  sessionId String   @unique
+  studentId String
+  tutorId   String
+  rating    Int      // 1-5 stars
+  comment   String?
+  tags      String[] // e.g., ["patient", "engaging", "clear"]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  videoSession VideoSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  student      User          @relation(fields: [studentId], references: [id], onDelete: Cascade)
+
+  @@index([tutorId])
+  @@index([rating])
+  @@index([createdAt])
+}
+
+// NextAuth Account model
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+}
+
+// NextAuth Session model
+model AuthSession {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+// NextAuth VerificationToken model
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
