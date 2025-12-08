@@ -150,7 +150,35 @@
     "noBookingsDescription": "Start your language learning journey by booking your first session with a tutor",
     "tutorFallback": "Tutor",
     "signOutConfirmTitle": "Sign Out?",
-    "signOutConfirmDescription": "Are you sure you want to sign out? You'll need to sign in again to access your dashboard."
+    "signOutConfirmDescription": "Are you sure you want to sign out? You'll need to sign in again to access your dashboard.",
+    "tutor": {
+      "title": "Welcome Back",
+      "subtitle": "Manage your tutoring sessions and grow your teaching business",
+      "welcome": "Tutor Dashboard",
+      "tutor": "Tutor",
+      "student": "Student",
+      "stats": {
+        "totalEarnings": "Total Earnings",
+        "totalSessions": "Total Sessions",
+        "averageRating": "Average Rating",
+        "totalStudents": "Total Students"
+      },
+      "upcomingSessions": "Upcoming Sessions",
+      "upcomingSessionsDescription": "Your scheduled teaching sessions",
+      "pastSessions": "Past Sessions",
+      "pastSessionsDescription": "Your completed and cancelled sessions",
+      "reviews": "Recent Reviews",
+      "reviewsDescription": "What your students are saying",
+      "noSessions": "No Sessions Yet",
+      "noSessionsDescription": "Once students book sessions with you, they'll appear here",
+      "status": {
+        "pending": "Pending Approval",
+        "approved": "Approved",
+        "rejected": "Rejected",
+        "pendingMessage": "Your profile is pending admin approval. You'll be able to accept bookings once approved.",
+        "rejectedMessage": "Your profile was rejected"
+      }
+    }
   },
   "errors": {
     "generic": "Something went wrong",

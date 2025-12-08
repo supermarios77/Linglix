@@ -150,7 +150,35 @@
     "noBookingsDescription": "Comienza tu viaje de aprendizaje de idiomas reservando tu primera sesión con un tutor",
     "tutorFallback": "Tutor",
     "signOutConfirmTitle": "¿Cerrar Sesión?",
-    "signOutConfirmDescription": "¿Estás seguro de que quieres cerrar sesión? Tendrás que iniciar sesión nuevamente para acceder a tu panel."
+    "signOutConfirmDescription": "¿Estás seguro de que quieres cerrar sesión? Tendrás que iniciar sesión nuevamente para acceder a tu panel.",
+    "tutor": {
+      "title": "Bienvenido de Nuevo",
+      "subtitle": "Gestiona tus sesiones de tutoría y haz crecer tu negocio de enseñanza",
+      "welcome": "Panel del Tutor",
+      "tutor": "Tutor",
+      "student": "Estudiante",
+      "stats": {
+        "totalEarnings": "Ganancias Totales",
+        "totalSessions": "Sesiones Totales",
+        "averageRating": "Calificación Promedio",
+        "totalStudents": "Total de Estudiantes"
+      },
+      "upcomingSessions": "Sesiones Próximas",
+      "upcomingSessionsDescription": "Tus sesiones de enseñanza programadas",
+      "pastSessions": "Sesiones Pasadas",
+      "pastSessionsDescription": "Tus sesiones completadas y canceladas",
+      "reviews": "Reseñas Recientes",
+      "reviewsDescription": "Lo que dicen tus estudiantes",
+      "noSessions": "Aún No Hay Sesiones",
+      "noSessionsDescription": "Una vez que los estudiantes reserven sesiones contigo, aparecerán aquí",
+      "status": {
+        "pending": "Pendiente de Aprobación",
+        "approved": "Aprobado",
+        "rejected": "Rechazado",
+        "pendingMessage": "Tu perfil está pendiente de aprobación del administrador. Podrás aceptar reservas una vez aprobado.",
+        "rejectedMessage": "Tu perfil fue rechazado"
+      }
+    }
   },
   "errors": {
     "generic": "Algo salió mal",
