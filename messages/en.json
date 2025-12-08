@@ -101,5 +101,66 @@
     "notFound": "Page not found",
     "unauthorized": "You are not authorized to access this page",
     "serverError": "Server error occurred"
+  },
+  "landing": {
+    "hero": {
+      "title": "Learn Languages with Native Tutors",
+      "subtitle": "Connect with expert tutors for personalized, one-on-one language learning experiences",
+      "ctaPrimary": "Get Started",
+      "ctaSecondary": "Browse Tutors"
+    },
+    "features": {
+      "title": "Why Choose Linglix",
+      "subtitle": "Everything you need to master a new language",
+      "items": {
+        "native": {
+          "title": "Native Speakers",
+          "description": "Learn from certified native tutors who bring authentic language and culture"
+        },
+        "flexible": {
+          "title": "Flexible Scheduling",
+          "description": "Book sessions that fit your schedule, available 24/7 across time zones"
+        },
+        "personalized": {
+          "title": "Personalized Learning",
+          "description": "One-on-one sessions tailored to your goals, level, and learning style"
+        },
+        "affordable": {
+          "title": "Affordable Pricing",
+          "description": "Transparent pricing with no hidden fees. Pay only for what you use"
+        },
+        "recordings": {
+          "title": "Session Recordings",
+          "description": "Review your sessions anytime with automatic recordings of every lesson"
+        },
+        "support": {
+          "title": "24/7 Support",
+          "description": "Get help whenever you need it with our dedicated support team"
+        }
+      }
+    },
+    "howItWorks": {
+      "title": "How It Works",
+      "subtitle": "Start learning in three simple steps",
+      "steps": {
+        "1": {
+          "title": "Find Your Tutor",
+          "description": "Browse our selection of expert tutors and find the perfect match for your learning goals"
+        },
+        "2": {
+          "title": "Book a Session",
+          "description": "Schedule a session at a time that works for you. Choose from 30, 60, or 90-minute sessions"
+        },
+        "3": {
+          "title": "Start Learning",
+          "description": "Join your session via video call and start your language learning journey"
+        }
+      }
+    },
+    "cta": {
+      "title": "Ready to Start Learning?",
+      "subtitle": "Join thousands of students already learning with Linglix",
+      "button": "Get Started Today"
+    }
   }
 }

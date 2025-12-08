@@ -101,5 +101,66 @@
     "notFound": "Página no encontrada",
     "unauthorized": "No estás autorizado para acceder a esta página",
     "serverError": "Ocurrió un error en el servidor"
+  },
+  "landing": {
+    "hero": {
+      "title": "Aprende Idiomas con Tutores Nativos",
+      "subtitle": "Conéctate con tutores expertos para experiencias de aprendizaje personalizadas y uno a uno",
+      "ctaPrimary": "Comenzar",
+      "ctaSecondary": "Buscar Tutores"
+    },
+    "features": {
+      "title": "Por Qué Elegir Linglix",
+      "subtitle": "Todo lo que necesitas para dominar un nuevo idioma",
+      "items": {
+        "native": {
+          "title": "Hablantes Nativos",
+          "description": "Aprende de tutores nativos certificados que aportan idioma y cultura auténticos"
+        },
+        "flexible": {
+          "title": "Horarios Flexibles",
+          "description": "Reserva sesiones que se adapten a tu horario, disponibles 24/7 en todas las zonas horarias"
+        },
+        "personalized": {
+          "title": "Aprendizaje Personalizado",
+          "description": "Sesiones uno a uno adaptadas a tus objetivos, nivel y estilo de aprendizaje"
+        },
+        "affordable": {
+          "title": "Precios Asequibles",
+          "description": "Precios transparentes sin tarifas ocultas. Paga solo por lo que uses"
+        },
+        "recordings": {
+          "title": "Grabaciones de Sesiones",
+          "description": "Revisa tus sesiones en cualquier momento con grabaciones automáticas de cada lección"
+        },
+        "support": {
+          "title": "Soporte 24/7",
+          "description": "Obtén ayuda cuando la necesites con nuestro equipo de soporte dedicado"
+        }
+      }
+    },
+    "howItWorks": {
+      "title": "Cómo Funciona",
+      "subtitle": "Comienza a aprender en tres simples pasos",
+      "steps": {
+        "1": {
+          "title": "Encuentra Tu Tutor",
+          "description": "Explora nuestra selección de tutores expertos y encuentra la combinación perfecta para tus objetivos de aprendizaje"
+        },
+        "2": {
+          "title": "Reserva una Sesión",
+          "description": "Programa una sesión en un momento que funcione para ti. Elige entre sesiones de 30, 60 o 90 minutos"
+        },
+        "3": {
+          "title": "Comienza a Aprender",
+          "description": "Únete a tu sesión por videollamada y comienza tu viaje de aprendizaje de idiomas"
+        }
+      }
+    },
+    "cta": {
+      "title": "¿Listo para Comenzar a Aprender?",
+      "subtitle": "Únete a miles de estudiantes que ya están aprendiendo con Linglix",
+      "button": "Comenzar Hoy"
+    }
   }
 }
