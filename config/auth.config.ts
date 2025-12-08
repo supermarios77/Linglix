@@ -1,13 +1,12 @@
 import type { NextAuthConfig } from "next-auth";
 import Google from "next-auth/providers/google";
-import GitHub from "next-auth/providers/github";
 import { Role } from "@prisma/client";
 
 /**
  * Authentication configuration for NextAuth v5 (Edge Runtime compatible)
  * 
  * This file defines:
- * - OAuth providers (Google, GitHub) - Edge Runtime compatible
+ * - OAuth providers (Google) - Edge Runtime compatible
  * - Session strategy
  * - Callbacks for user data
  * - Pages customization
@@ -59,19 +58,6 @@ export const authConfig = {
           Google({
             clientId: process.env.GOOGLE_CLIENT_ID,
             clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-            allowDangerousEmailAccountLinking: false, // Security: prevent account linking
-          }),
-        ]
-      : []),
-    /**
-     * GitHub OAuth Provider
-     * Only enabled if credentials are provided
-     */
-    ...(process.env.GITHUB_CLIENT_ID && process.env.GITHUB_CLIENT_SECRET
-      ? [
-          GitHub({
-            clientId: process.env.GITHUB_CLIENT_ID,
-            clientSecret: process.env.GITHUB_CLIENT_SECRET,
             allowDangerousEmailAccountLinking: false, // Security: prevent account linking
           }),
         ]
