@@ -1,7 +1,6 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import {
@@ -93,7 +92,6 @@ export function UserDashboardClient({
   const t = useTranslations("dashboard");
   const tBooking = useTranslations("booking");
   const tCommon = useTranslations("common");
-  const router = useRouter();
 
   const handleSignOut = async () => {
     try {

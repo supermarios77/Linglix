@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import { useTranslations } from "next-intl";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import {
@@ -105,7 +104,6 @@ interface AdminDashboardClientProps {
 export function AdminDashboardClient({ locale }: AdminDashboardClientProps) {
   const t = useTranslations("admin");
   const tCommon = useTranslations("common");
-  const router = useRouter();
 
   const handleSignOut = async () => {
     try {
