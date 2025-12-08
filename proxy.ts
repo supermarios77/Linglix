@@ -1,6 +1,5 @@
 import { auth } from "@/config/auth";
 import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
 
 /**
  * Next.js 16 Proxy for authentication (App Router)
