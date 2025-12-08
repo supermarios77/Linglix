@@ -148,7 +148,9 @@
     "viewRecording": "Ver Grabación",
     "noBookings": "Aún No Hay Reservas",
     "noBookingsDescription": "Comienza tu viaje de aprendizaje de idiomas reservando tu primera sesión con un tutor",
-    "tutorFallback": "Tutor"
+    "tutorFallback": "Tutor",
+    "signOutConfirmTitle": "¿Cerrar Sesión?",
+    "signOutConfirmDescription": "¿Estás seguro de que quieres cerrar sesión? Tendrás que iniciar sesión nuevamente para acceder a tu panel."
   },
   "errors": {
     "generic": "Algo salió mal",

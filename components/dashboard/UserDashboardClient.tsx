@@ -12,6 +12,16 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import {
   Calendar,
   Clock,
   User,
@@ -92,6 +102,8 @@ export function UserDashboardClient({
   const t = useTranslations("dashboard");
   const tBooking = useTranslations("booking");
   const tCommon = useTranslations("common");
+
+  const [showSignOutDialog, setShowSignOutDialog] = useState(false);
 
   const handleSignOut = async () => {
     try {
@@ -206,7 +218,7 @@ export function UserDashboardClient({
           </div>
           <Button
             variant="outline"
-            onClick={handleSignOut}
+            onClick={() => setShowSignOutDialog(true)}
             className="flex items-center gap-2 bg-white/80 dark:bg-[#1a1a1a]/80 backdrop-blur-sm border-[#e5e5e5] dark:border-[#262626] rounded-full hover:border-red-500 dark:hover:border-red-500 hover:text-red-600 dark:hover:text-red-400 transition-colors"
           >
             <LogOut className="w-4 h-4" />

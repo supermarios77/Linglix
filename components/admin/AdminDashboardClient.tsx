@@ -105,6 +105,8 @@ export function AdminDashboardClient({ locale }: AdminDashboardClientProps) {
   const t = useTranslations("admin");
   const tCommon = useTranslations("common");
 
+  const [showSignOutDialog, setShowSignOutDialog] = useState(false);
+
   const handleSignOut = async () => {
     try {
       // NextAuth v5 signout - redirect to signout endpoint which handles everything
@@ -329,7 +331,7 @@ export function AdminDashboardClient({ locale }: AdminDashboardClientProps) {
           </div>
           <Button
             variant="outline"
-            onClick={handleSignOut}
+            onClick={() => setShowSignOutDialog(true)}
             className="flex items-center gap-2 bg-white/80 dark:bg-[#1a1a1a]/80 backdrop-blur-sm border-[#e5e5e5] dark:border-[#262626] rounded-full hover:border-red-500 dark:hover:border-red-500 hover:text-red-600 dark:hover:text-red-400 transition-colors"
           >
             <LogOut className="w-4 h-4" />
@@ -759,6 +761,39 @@ export function AdminDashboardClient({ locale }: AdminDashboardClientProps) {
                 <Loader2 className="h-4 w-4 animate-spin mr-2" />
               ) : null}
               {t("tutors.reject")}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      {/* Sign Out Confirmation Dialog */}
+      <AlertDialog open={showSignOutDialog} onOpenChange={setShowSignOutDialog}>
+        <AlertDialogContent className="bg-white/95 dark:bg-[#1a1a1a]/95 backdrop-blur-md border-2 border-[#e5e5e5] dark:border-[#262626] rounded-[24px] shadow-[0_20px_40px_rgba(0,0,0,0.1)]">
+          <AlertDialogHeader>
+            <div className="flex items-center gap-3 mb-2">
+              <div className="p-2 bg-red-500/20 dark:bg-red-500/10 rounded-xl">
+                <LogOut className="w-6 h-6 text-red-600 dark:text-red-400" />
+              </div>
+              <AlertDialogTitle className="text-xl sm:text-2xl font-bold text-black dark:text-white">
+                {t("signOutConfirmTitle")}
+              </AlertDialogTitle>
+            </div>
+            <AlertDialogDescription className="text-base text-[#666] dark:text-[#aaa] pt-2">
+              {t("signOutConfirmDescription")}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter className="flex-col sm:flex-row gap-3 sm:gap-0">
+            <AlertDialogCancel
+              className="w-full sm:w-auto bg-white/80 dark:bg-[#0a0a0a]/80 backdrop-blur-sm border-[#e5e5e5] dark:border-[#262626] rounded-full hover:bg-white dark:hover:bg-[#0a0a0a] transition-colors"
+            >
+              {tCommon("cancel")}
+            </AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleSignOut}
+              className="w-full sm:w-auto bg-red-600 hover:bg-red-700 text-white rounded-full transition-all duration-300 hover:shadow-[0_12px_24px_rgba(239,68,68,0.3)] inline-flex items-center justify-center gap-2"
+            >
+              <LogOut className="w-4 h-4" />
+              {tCommon("signOut")}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
