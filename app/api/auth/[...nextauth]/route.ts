@@ -5,7 +5,6 @@ import { authConfig } from "@/config/auth.config";
 import { prisma } from "@/lib/db/prisma";
 import bcrypt from "bcryptjs";
 import { z } from "zod";
-import { Role } from "@prisma/client";
 
 /**
  * NextAuth API route handler (Node.js Runtime)
