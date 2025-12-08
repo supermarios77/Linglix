@@ -14,8 +14,9 @@ import { AlertCircle, ArrowRight } from "lucide-react";
 
 /**
  * Sign Up Form Component
- * 
+ *
  * Modern, beautiful sign up form with glassmorphism design
+ * Production-ready with proper error handling and mobile responsiveness
  */
 export function SignUpForm() {
   const t = useTranslations("auth");
@@ -87,7 +88,8 @@ export function SignUpForm() {
 
       router.push(`/${locale}`);
       router.refresh();
-    } catch {
+    } catch (err) {
+      // Error handling - don't leak details
       setError(t("signUpError"));
       setIsLoading(false);
     }
@@ -98,41 +100,44 @@ export function SignUpForm() {
     confirmPassword.length > 0 && password !== confirmPassword;
 
   return (
-    <div className="relative w-full max-w-[480px]">
+    <div className="relative w-full max-w-[480px] px-4 sm:px-0">
       {/* Glassmorphism Form Container */}
-      <div className="relative bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-2xl rounded-[40px] p-10 border border-white/60 shadow-[0_40px_80px_rgba(0,0,0,0.08)] overflow-hidden">
+      <div className="relative bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-2xl rounded-[24px] sm:rounded-[40px] p-6 sm:p-10 border border-white/60 shadow-[0_20px_40px_rgba(0,0,0,0.06)] sm:shadow-[0_40px_80px_rgba(0,0,0,0.08)] overflow-hidden">
         {/* Decorative elements */}
-        <div className="absolute top-0 right-0 w-[200px] h-[200px] rounded-full opacity-20 blur-[60px] bg-[radial-gradient(circle,rgb(255,143,112)_0%,rgba(255,255,255,0)_70%)]" />
-        <div className="absolute bottom-0 left-0 w-[150px] h-[150px] rounded-full opacity-20 blur-[60px] bg-[radial-gradient(circle,rgb(224,231,255)_0%,rgba(255,255,255,0)_70%)]" />
+        <div className="absolute top-0 right-0 w-[150px] h-[150px] sm:w-[200px] sm:h-[200px] rounded-full opacity-20 blur-[60px] bg-[radial-gradient(circle,rgb(255,143,112)_0%,rgba(255,255,255,0)_70%)]" />
+        <div className="absolute bottom-0 left-0 w-[100px] h-[100px] sm:w-[150px] sm:h-[150px] rounded-full opacity-20 blur-[60px] bg-[radial-gradient(circle,rgb(224,231,255)_0%,rgba(255,255,255,0)_70%)]" />
 
         <div className="relative z-10">
           {/* Badge */}
-          <div className="inline-flex items-center px-4 py-2 bg-white/80 border border-[#e5e5e5] rounded-full text-xs font-semibold uppercase tracking-wider mb-8 shadow-[0_2px_10px_rgba(0,0,0,0.03)]">
-            <span className="w-2 h-2 bg-[#10b981] rounded-full mr-2 animate-pulse" />
+          <div className="inline-flex items-center px-3 py-1.5 sm:px-4 sm:py-2 bg-white/80 border border-[#e5e5e5] rounded-full text-[10px] sm:text-xs font-semibold uppercase tracking-wider mb-6 sm:mb-8 shadow-[0_2px_10px_rgba(0,0,0,0.03)]">
+            <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-[#10b981] rounded-full mr-2 animate-pulse" />
             Join Us
           </div>
 
           {/* Header */}
-          <div className="mb-10">
-            <h1 className="text-[56px] leading-[1.1] font-semibold tracking-[-0.03em] mb-4 text-black">
+          <div className="mb-8 sm:mb-10">
+            <h1 className="text-[36px] sm:text-[48px] md:text-[56px] leading-[1.1] font-semibold tracking-[-0.03em] mb-3 sm:mb-4 text-black">
               {t("signUpTitle")}
             </h1>
-            <p className="text-lg leading-relaxed text-[#555]">
+            <p className="text-base sm:text-lg leading-relaxed text-[#555]">
               {t("createAccount")}
             </p>
           </div>
 
           {/* Error Message */}
           {error && (
-            <Alert variant="destructive" className="mb-6 rounded-2xl border-red-200 bg-red-50/80 backdrop-blur-sm">
+            <Alert
+              variant="destructive"
+              className="mb-5 sm:mb-6 rounded-xl sm:rounded-2xl border-red-200 bg-red-50/80 backdrop-blur-sm"
+            >
               <AlertCircle className="h-4 w-4" />
-              <AlertTitle>{error}</AlertTitle>
-              <AlertDescription>{error}</AlertDescription>
+              <AlertTitle className="text-sm">{error}</AlertTitle>
+              <AlertDescription className="text-sm">{error}</AlertDescription>
             </Alert>
           )}
 
           {/* Registration Form */}
-          <form onSubmit={handleSubmit} className="space-y-5">
+          <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-5">
             <div className="space-y-2">
               <Label htmlFor="name" className="text-sm font-semibold text-[#444]">
                 {tCommon("name")}
@@ -148,7 +153,7 @@ export function SignUpForm() {
                 disabled={isLoading}
                 placeholder="John Doe"
                 autoComplete="name"
-                className="h-12 rounded-full border-[#e5e5e5] bg-white/80 backdrop-blur-sm focus:border-black focus:ring-2 focus:ring-black/10 transition-all"
+                className="h-11 sm:h-12 rounded-full border-[#e5e5e5] bg-white/80 backdrop-blur-sm focus:border-[#999] focus:ring-2 focus:ring-[#999]/10 transition-all text-sm sm:text-base"
               />
             </div>
 
@@ -166,7 +171,7 @@ export function SignUpForm() {
                 disabled={isLoading}
                 placeholder="you@example.com"
                 autoComplete="email"
-                className="h-12 rounded-full border-[#e5e5e5] bg-white/80 backdrop-blur-sm focus:border-black focus:ring-2 focus:ring-black/10 transition-all"
+                className="h-11 sm:h-12 rounded-full border-[#e5e5e5] bg-white/80 backdrop-blur-sm focus:border-[#999] focus:ring-2 focus:ring-[#999]/10 transition-all text-sm sm:text-base"
               />
             </div>
 
@@ -185,16 +190,16 @@ export function SignUpForm() {
                 disabled={isLoading}
                 placeholder="••••••••"
                 autoComplete="new-password"
-                className={`h-12 rounded-full border-[#e5e5e5] bg-white/80 backdrop-blur-sm focus:border-black focus:ring-2 focus:ring-black/10 transition-all ${
-                  isPasswordInvalid ? "border-red-300" : ""
+                className={`h-11 sm:h-12 rounded-full border-[#e5e5e5] bg-white/80 backdrop-blur-sm focus:border-[#999] focus:ring-2 focus:ring-[#999]/10 transition-all text-sm sm:text-base ${
+                  isPasswordInvalid ? "border-red-300 focus:border-red-400" : ""
                 }`}
               />
               {isPasswordInvalid && (
-                <p className="text-sm font-medium text-red-600">
+                <p className="text-xs sm:text-sm font-medium text-red-600">
                   {t("passwordMinLength")}
                 </p>
               )}
-              {!isPasswordInvalid && (
+              {!isPasswordInvalid && password.length === 0 && (
                 <p className="text-xs text-[#888]">
                   {t("passwordMinLength")}
                 </p>
@@ -216,12 +221,12 @@ export function SignUpForm() {
                 disabled={isLoading}
                 placeholder="••••••••"
                 autoComplete="new-password"
-                className={`h-12 rounded-full border-[#e5e5e5] bg-white/80 backdrop-blur-sm focus:border-black focus:ring-2 focus:ring-black/10 transition-all ${
-                  isConfirmPasswordInvalid ? "border-red-300" : ""
+                className={`h-11 sm:h-12 rounded-full border-[#e5e5e5] bg-white/80 backdrop-blur-sm focus:border-[#999] focus:ring-2 focus:ring-[#999]/10 transition-all text-sm sm:text-base ${
+                  isConfirmPasswordInvalid ? "border-red-300 focus:border-red-400" : ""
                 }`}
               />
               {isConfirmPasswordInvalid && (
-                <p className="text-sm font-medium text-red-600">
+                <p className="text-xs sm:text-sm font-medium text-red-600">
                   {t("passwordsDoNotMatch")}
                 </p>
               )}
@@ -229,22 +234,22 @@ export function SignUpForm() {
 
             <Button
               type="submit"
-              className="w-full h-12 rounded-full bg-[#111] text-white font-semibold text-base transition-all duration-300 hover:translate-y-[-2px] hover:shadow-[0_10px_20px_rgba(0,0,0,0.15)] hover:bg-[#222] inline-flex items-center justify-center gap-2.5"
+              className="w-full h-11 sm:h-12 rounded-full bg-[#111] text-white font-semibold text-sm sm:text-base transition-all duration-300 hover:translate-y-[-2px] hover:shadow-[0_10px_20px_rgba(0,0,0,0.15)] hover:bg-[#222] active:scale-[0.98] inline-flex items-center justify-center gap-2.5"
               disabled={isLoading}
             >
               {isLoading ? (
-                t("creatingAccount") || "Creating account..."
+                <span>{t("creatingAccount") || "Creating account..."}</span>
               ) : (
                 <>
-                  {t("createAccount")}
-                  <ArrowRight className="w-5 h-5" />
+                  <span>{t("createAccount")}</span>
+                  <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" aria-hidden="true" />
                 </>
               )}
             </Button>
           </form>
 
           {/* Sign In Link */}
-          <p className="mt-8 text-center text-sm text-[#666] font-normal">
+          <p className="mt-6 sm:mt-8 text-center text-xs sm:text-sm text-[#666] font-normal">
             {t("hasAccount")}{" "}
             <Link
               href={`/${locale}/auth/signin`}
