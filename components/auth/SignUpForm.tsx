@@ -10,11 +10,11 @@ import { useLocale } from "next-intl";
 /**
  * Sign Up Form Component
  * 
- * Modern, beautiful design with:
- * - Rounded-full inputs and buttons
- * - Large, bold typography
- * - Clean spacing
- * - Full localization
+ * Beautiful, refined design with:
+ * - Balanced typography and spacing
+ * - Elegant rounded inputs
+ * - Clean visual hierarchy
+ * - Smooth interactions
  */
 export function SignUpForm() {
   const t = useTranslations("auth");
@@ -93,30 +93,30 @@ export function SignUpForm() {
   };
 
   return (
-    <div className="w-full max-w-[480px]">
+    <div className="w-full max-w-[420px]">
       {/* Header */}
-      <div className="mb-12 text-center">
-        <h1 className="text-5xl md:text-6xl font-black text-black leading-[0.9] tracking-tight mb-4">
+      <div className="mb-10 text-center">
+        <h1 className="text-3xl font-bold text-gray-900 mb-2 tracking-tight">
           {t("signUpTitle")}
         </h1>
-        <p className="text-xl text-gray-600 font-medium">
+        <p className="text-[15px] text-gray-600 font-medium">
           {t("createAccount")}
         </p>
       </div>
 
       {/* Error Message */}
       {error && (
-        <div className="mb-6 rounded-2xl bg-red-50 border border-red-100 p-4">
+        <div className="mb-5 rounded-xl bg-red-50 border border-red-100 p-3.5">
           <p className="text-sm font-medium text-red-800">{error}</p>
         </div>
       )}
 
       {/* Registration Form */}
-      <form onSubmit={handleSubmit} className="space-y-5">
+      <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label
             htmlFor="name"
-            className="block text-sm font-semibold text-gray-900 mb-2"
+            className="block text-sm font-semibold text-gray-900 mb-1.5"
           >
             {tCommon("name")}
           </label>
@@ -129,7 +129,7 @@ export function SignUpForm() {
             minLength={2}
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="w-full px-8 py-6 text-lg rounded-full border border-gray-200 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 bg-white font-medium shadow-sm"
+            className="w-full px-4 py-3 text-[15px] rounded-full border border-gray-200 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 bg-white font-medium shadow-sm hover:border-gray-300"
             placeholder="John Doe"
             disabled={isLoading}
           />
@@ -138,7 +138,7 @@ export function SignUpForm() {
         <div>
           <label
             htmlFor="email"
-            className="block text-sm font-semibold text-gray-900 mb-2"
+            className="block text-sm font-semibold text-gray-900 mb-1.5"
           >
             {tCommon("email")}
           </label>
@@ -150,7 +150,7 @@ export function SignUpForm() {
             required
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full px-8 py-6 text-lg rounded-full border border-gray-200 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 bg-white font-medium shadow-sm"
+            className="w-full px-4 py-3 text-[15px] rounded-full border border-gray-200 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 bg-white font-medium shadow-sm hover:border-gray-300"
             placeholder="you@example.com"
             disabled={isLoading}
           />
@@ -159,7 +159,7 @@ export function SignUpForm() {
         <div>
           <label
             htmlFor="password"
-            className="block text-sm font-semibold text-gray-900 mb-2"
+            className="block text-sm font-semibold text-gray-900 mb-1.5"
           >
             {tCommon("password")}
           </label>
@@ -172,11 +172,11 @@ export function SignUpForm() {
             minLength={8}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full px-8 py-6 text-lg rounded-full border border-gray-200 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 bg-white font-medium shadow-sm"
+            className="w-full px-4 py-3 text-[15px] rounded-full border border-gray-200 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 bg-white font-medium shadow-sm hover:border-gray-300"
             placeholder="••••••••"
             disabled={isLoading}
           />
-          <p className="mt-2 text-xs text-gray-500 font-medium">
+          <p className="mt-1.5 text-xs text-gray-500 font-medium">
             {t("passwordMinLength")}
           </p>
         </div>
@@ -184,7 +184,7 @@ export function SignUpForm() {
         <div>
           <label
             htmlFor="confirmPassword"
-            className="block text-sm font-semibold text-gray-900 mb-2"
+            className="block text-sm font-semibold text-gray-900 mb-1.5"
           >
             {t("confirmPassword")}
           </label>
@@ -197,7 +197,7 @@ export function SignUpForm() {
             minLength={8}
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
-            className="w-full px-8 py-6 text-lg rounded-full border border-gray-200 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 bg-white font-medium shadow-sm"
+            className="w-full px-4 py-3 text-[15px] rounded-full border border-gray-200 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 bg-white font-medium shadow-sm hover:border-gray-300"
             placeholder="••••••••"
             disabled={isLoading}
           />
@@ -206,12 +206,12 @@ export function SignUpForm() {
         <button
           type="submit"
           disabled={isLoading}
-          className="w-full flex justify-center items-center py-6 px-8 border border-transparent rounded-full text-lg font-semibold text-white bg-black hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 shadow-lg hover:scale-[1.02]"
+          className="w-full flex justify-center items-center py-3.5 px-5 border border-transparent rounded-full text-[15px] font-semibold text-white bg-black hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shadow-md hover:shadow-lg hover:scale-[1.01]"
         >
           {isLoading ? (
             <>
               <svg
-                className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                className="animate-spin -ml-1 mr-2.5 h-4 w-4 text-white"
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
@@ -239,11 +239,11 @@ export function SignUpForm() {
       </form>
 
       {/* Sign In Link */}
-      <p className="mt-8 text-center text-[15px] text-gray-600 font-medium">
+      <p className="mt-6 text-center text-[14px] text-gray-600 font-medium">
         {t("hasAccount")}{" "}
         <Link
           href={`/${locale}/auth/signin`}
-          className="font-semibold text-purple-600 hover:text-purple-700"
+          className="font-semibold text-purple-600 hover:text-purple-700 transition-colors"
         >
           {t("signInTitle")}
         </Link>
