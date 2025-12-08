@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { AlertCircle, ArrowRight } from "lucide-react";
+import { AlertCircle, ArrowRight, Eye, EyeOff } from "lucide-react";
 
 /**
  * Sign Up Form Component
@@ -28,6 +28,8 @@ export function SignUpForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -180,21 +182,36 @@ export function SignUpForm() {
               <Label htmlFor="password" className="text-sm font-semibold text-[#444] dark:text-[#a1a1aa]">
                 {tCommon("password")}
               </Label>
-              <Input
-                id="password"
-                name="password"
-                type="password"
-                required
-                minLength={8}
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                disabled={isLoading}
-                placeholder="••••••••"
-                autoComplete="new-password"
-                className={`h-11 sm:h-12 rounded-full border-[#e5e5e5] dark:border-[#262626] bg-white/80 dark:bg-[#0a0a0a]/80 backdrop-blur-sm focus:border-[#999] dark:focus:border-[#ccf381] focus:ring-2 focus:ring-[#999]/10 dark:focus:ring-[#ccf381]/20 transition-all text-sm sm:text-base text-black dark:text-white placeholder:text-[#999] dark:placeholder:text-[#555] ${
-                  isPasswordInvalid ? "border-red-300 dark:border-red-800 focus:border-red-400 dark:focus:border-red-700" : ""
-                }`}
-              />
+              <div className="relative">
+                <Input
+                  id="password"
+                  name="password"
+                  type={showPassword ? "text" : "password"}
+                  required
+                  minLength={8}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  disabled={isLoading}
+                  placeholder="••••••••"
+                  autoComplete="new-password"
+                  className={`h-11 sm:h-12 rounded-full border-[#e5e5e5] dark:border-[#262626] bg-white/80 dark:bg-[#0a0a0a]/80 backdrop-blur-sm focus:border-[#999] dark:focus:border-[#ccf381] focus:ring-2 focus:ring-[#999]/10 dark:focus:ring-[#ccf381]/20 transition-all text-sm sm:text-base text-black dark:text-white placeholder:text-[#999] dark:placeholder:text-[#555] pr-12 ${
+                    isPasswordInvalid ? "border-red-300 dark:border-red-800 focus:border-red-400 dark:focus:border-red-700" : ""
+                  }`}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  disabled={isLoading}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 text-[#666] dark:text-[#a1a1aa] hover:text-black dark:hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-[#999]/20 dark:focus:ring-[#ccf381]/20 rounded-full"
+                  aria-label={showPassword ? "Hide password" : "Show password"}
+                >
+                  {showPassword ? (
+                    <EyeOff className="w-4 h-4 sm:w-5 sm:h-5" />
+                  ) : (
+                    <Eye className="w-4 h-4 sm:w-5 sm:h-5" />
+                  )}
+                </button>
+              </div>
               {isPasswordInvalid && (
                 <p className="text-xs sm:text-sm font-medium text-red-600 dark:text-red-400">
                   {t("passwordMinLength")}
@@ -211,21 +228,36 @@ export function SignUpForm() {
               <Label htmlFor="confirmPassword" className="text-sm font-semibold text-[#444] dark:text-[#a1a1aa]">
                 {t("confirmPassword")}
               </Label>
-              <Input
-                id="confirmPassword"
-                name="confirmPassword"
-                type="password"
-                required
-                minLength={8}
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                disabled={isLoading}
-                placeholder="••••••••"
-                autoComplete="new-password"
-                className={`h-11 sm:h-12 rounded-full border-[#e5e5e5] dark:border-[#262626] bg-white/80 dark:bg-[#0a0a0a]/80 backdrop-blur-sm focus:border-[#999] dark:focus:border-[#ccf381] focus:ring-2 focus:ring-[#999]/10 dark:focus:ring-[#ccf381]/20 transition-all text-sm sm:text-base text-black dark:text-white placeholder:text-[#999] dark:placeholder:text-[#555] ${
-                  isConfirmPasswordInvalid ? "border-red-300 dark:border-red-800 focus:border-red-400 dark:focus:border-red-700" : ""
-                }`}
-              />
+              <div className="relative">
+                <Input
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  type={showConfirmPassword ? "text" : "password"}
+                  required
+                  minLength={8}
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  disabled={isLoading}
+                  placeholder="••••••••"
+                  autoComplete="new-password"
+                  className={`h-11 sm:h-12 rounded-full border-[#e5e5e5] dark:border-[#262626] bg-white/80 dark:bg-[#0a0a0a]/80 backdrop-blur-sm focus:border-[#999] dark:focus:border-[#ccf381] focus:ring-2 focus:ring-[#999]/10 dark:focus:ring-[#ccf381]/20 transition-all text-sm sm:text-base text-black dark:text-white placeholder:text-[#999] dark:placeholder:text-[#555] pr-12 ${
+                    isConfirmPasswordInvalid ? "border-red-300 dark:border-red-800 focus:border-red-400 dark:focus:border-red-700" : ""
+                  }`}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  disabled={isLoading}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 text-[#666] dark:text-[#a1a1aa] hover:text-black dark:hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-[#999]/20 dark:focus:ring-[#ccf381]/20 rounded-full"
+                  aria-label={showConfirmPassword ? "Hide password" : "Show password"}
+                >
+                  {showConfirmPassword ? (
+                    <EyeOff className="w-4 h-4 sm:w-5 sm:h-5" />
+                  ) : (
+                    <Eye className="w-4 h-4 sm:w-5 sm:h-5" />
+                  )}
+                </button>
+              </div>
               {isConfirmPasswordInvalid && (
                 <p className="text-xs sm:text-sm font-medium text-red-600 dark:text-red-400">
                   {t("passwordsDoNotMatch")}
