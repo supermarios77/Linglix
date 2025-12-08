@@ -31,26 +31,6 @@ export const authConfig = {
   },
   callbacks: {
     /**
-     * Authorize callback - validates credentials during sign in
-     */
-    async authorized({ auth, request: { nextUrl } }) {
-      const isLoggedIn = !!auth?.user;
-      const isOnAuthPage = nextUrl.pathname.startsWith("/auth");
-      const isOnApiRoute = nextUrl.pathname.startsWith("/api");
-
-      // Allow access to auth pages and API routes
-      if (isOnAuthPage || isOnApiRoute) {
-        return true;
-      }
-
-      // Redirect to sign in if not logged in
-      if (!isLoggedIn && !isOnAuthPage) {
-        return false; // Redirect to sign in
-      }
-
-      return true;
-    },
-    /**
      * JWT callback - runs whenever a JWT is created or updated
      */
     async jwt({ token, user }) {

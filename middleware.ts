@@ -1,9 +1,8 @@
 import { auth } from "@/auth";
 import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
 
 /**
- * Next.js Middleware for authentication
+ * Next.js Middleware for authentication (App Router)
  * 
  * Protects routes and handles authentication redirects
  * 
@@ -11,8 +10,8 @@ import type { NextRequest } from "next/server";
  * - Runs on edge runtime for performance
  * - Minimal logic to reduce latency
  * - Proper error handling
+ * - App Router compatible
  */
-
 export default auth((req) => {
   const { pathname } = req.nextUrl;
   const isLoggedIn = !!req.auth;
@@ -20,9 +19,7 @@ export default auth((req) => {
   // Public routes that don't require authentication
   const publicRoutes = [
     "/",
-    "/auth/signin",
-    "/auth/signup",
-    "/auth/error",
+    "/auth",
     "/api/auth",
   ];
 
@@ -31,8 +28,8 @@ export default auth((req) => {
     pathname.startsWith(route)
   );
 
-  // Allow public routes
-  if (isPublicRoute) {
+  // Allow public routes and API auth routes
+  if (isPublicRoute || pathname.startsWith("/api/auth")) {
     return NextResponse.next();
   }
 
