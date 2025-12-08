@@ -46,7 +46,6 @@ model User {
 
   // Relations
   tutorProfile  TutorProfile?
-  studentProfile StudentProfile?
   bookings      Booking[]      @relation("StudentBookings")
   videoSessions VideoSession[]
   reviews       Review[]
@@ -55,25 +54,6 @@ model User {
 
   @@index([email])
   @@index([role])
-}
-
-// Student profile - preferences and learning goals
-model StudentProfile {
-  id                String   @id @default(cuid())
-  userId            String   @unique
-  learningGoal      String?  // e.g., "conversation", "business", "academic"
-  currentLevel      String?  // e.g., "beginner", "intermediate", "advanced"
-  preferredSchedule String?  // e.g., "morning", "afternoon", "evening", "flexible"
-  motivation        String?  @db.Text
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
-
-  // Relations
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@index([userId])
-  @@index([learningGoal])
-  @@index([currentLevel])
 }
 
 // Tutor profile - additional info for tutors
