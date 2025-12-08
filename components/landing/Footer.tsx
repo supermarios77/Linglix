@@ -5,7 +5,7 @@ import { useTranslations } from "next-intl";
 
 interface FooterProps {
   locale: string;
-  session: any;
+  session: { user?: { id: string; name?: string | null; email?: string | null; role?: string } } | null;
 }
 
 /**

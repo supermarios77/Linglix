@@ -94,9 +94,16 @@ export default async function TutorDetailPage({
     notFound();
   }
 
-  // Get reviews for this tutor (if Review model exists and has data)
-  // For now, we'll use placeholder data structure
-  const reviews: any[] = []; // TODO: Fetch actual reviews when Review model is populated
+  // Get reviews for this tutor
+  // TODO: Fetch actual reviews when Review model is populated
+  const reviews: {
+    id: string;
+    rating: number;
+    comment: string | null;
+    studentId: string;
+    createdAt: Date;
+    tags: string[];
+  }[] = [];
 
   const tutorData = {
     id: tutor.id,

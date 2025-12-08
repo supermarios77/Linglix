@@ -2,11 +2,10 @@
 
 import { useState, useEffect } from "react";
 import { ArrowUp } from "lucide-react";
-import { useTranslations } from "next-intl";
 import { PublicNav } from "@/components/navigation/PublicNav";
 
 interface LandingPageClientProps {
-  session: any;
+  session: { user?: { id: string; name?: string | null; email?: string | null; role?: string } } | null;
   locale: string;
 }
 

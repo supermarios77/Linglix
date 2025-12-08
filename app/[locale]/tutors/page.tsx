@@ -4,6 +4,7 @@ import { prisma } from "@/lib/db/prisma";
 import { TutorsListingClient } from "@/components/tutors/TutorsListingClient";
 import { PublicNav } from "@/components/navigation/PublicNav";
 import { slugify } from "@/lib/utils/slug";
+import { Prisma } from "@prisma/client";
 
 interface TutorsPageProps {
   params: Promise<{ locale: string }>;
@@ -60,11 +61,36 @@ export default async function TutorsPage({
   const perPage = 12;
 
   // Build where clause
-  const where: any = {
+  const tutorProfileConditions: Prisma.TutorProfileWhereInput = {
+    isActive: true,
+  };
+
+  // Add language/specialty filter
+  if (language) {
+    tutorProfileConditions.specialties = {
+      has: language,
+    };
+  }
+
+  // Add price range filter
+  if (minPrice !== undefined || maxPrice !== undefined) {
+    tutorProfileConditions.hourlyRate = {
+      ...(minPrice !== undefined && { gte: minPrice }),
+      ...(maxPrice !== undefined && { lte: maxPrice }),
+    };
+  }
+
+  // Add rating filter
+  if (minRating !== undefined) {
+    tutorProfileConditions.rating = {
+      gte: minRating,
+    };
+  }
+
+  // Build where clause
+  const where: Prisma.UserWhereInput = {
     role: "TUTOR",
-    tutorProfile: {
-      isActive: true,
-    },
+    tutorProfile: tutorProfileConditions,
   };
 
   // Add search filter (name or specialties)
@@ -73,43 +99,13 @@ export default async function TutorsPage({
       { name: { contains: search, mode: "insensitive" } },
       {
         tutorProfile: {
+          ...tutorProfileConditions,
           specialties: {
             hasSome: [search],
           },
         },
       },
     ];
-  }
-
-  // Add language/specialty filter
-  if (language) {
-    where.tutorProfile = {
-      ...where.tutorProfile,
-      specialties: {
-        has: language,
-      },
-    };
-  }
-
-  // Add price range filter
-  if (minPrice !== undefined || maxPrice !== undefined) {
-    where.tutorProfile = {
-      ...where.tutorProfile,
-      hourlyRate: {
-        ...(minPrice !== undefined && { gte: minPrice }),
-        ...(maxPrice !== undefined && { lte: maxPrice }),
-      },
-    };
-  }
-
-  // Add rating filter
-  if (minRating !== undefined) {
-    where.tutorProfile = {
-      ...where.tutorProfile,
-      rating: {
-        gte: minRating,
-      },
-    };
   }
 
   // Fetch tutors with pagination

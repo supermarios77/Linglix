@@ -23,7 +23,14 @@ interface Tutor {
     endTime: string;
     timezone: string;
   }[];
-  reviews: any[];
+  reviews: {
+    id: string;
+    rating: number;
+    comment: string | null;
+    studentId: string;
+    createdAt: Date;
+    tags: string[];
+  }[];
 }
 
 interface TutorDetailClientProps {
@@ -42,7 +49,6 @@ export function TutorDetailClient({
   locale,
 }: TutorDetailClientProps) {
   const t = useTranslations("tutor");
-  const tBooking = useTranslations("booking");
 
   const dayNames = [
     t("days.sunday"),
