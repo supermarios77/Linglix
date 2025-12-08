@@ -158,21 +158,8 @@ export function SignInForm() {
         </TextField>
 
         <div className="space-y-1">
-          <div className="flex items-center justify-between">
-            <TextField
-              name="password"
-              type="password"
-              isRequired
-              value={password}
-              onChange={setPassword}
-              isDisabled={isLoading}
-              className="w-full"
-            >
-              <Label>{tCommon("password")}</Label>
-              <Input placeholder="••••••••" autoComplete="current-password" />
-            </TextField>
-          </div>
-          <div className="flex justify-end">
+          <div className="flex items-center justify-between mb-1">
+            <Label htmlFor="password">{tCommon("password")}</Label>
             <Link
               href={`/${locale}/auth/forgot-password`}
               className="text-sm"
@@ -181,6 +168,17 @@ export function SignInForm() {
               {t("forgotPassword")}
             </Link>
           </div>
+          <TextField
+            name="password"
+            type="password"
+            isRequired
+            value={password}
+            onChange={setPassword}
+            isDisabled={isLoading}
+            className="w-full"
+          >
+            <Input id="password" placeholder="••••••••" autoComplete="current-password" />
+          </TextField>
         </div>
 
         <Checkbox
