@@ -25,19 +25,19 @@ export function Testimonials({ locale }: TestimonialsProps) {
   const testimonials: Testimonial[] = [
     {
       quote: "My English has improved so much! Abby is patient, engaging, and makes learning fun. I can finally have conversations with confidence.",
-      author: "Sarah Chen",
+      author: "Li Wei",
       role: "Verified Student",
       gradient: "from-[#7928ca] to-[#ff0080]",
     },
     {
       quote: "The flexible scheduling is perfect for my busy lifestyle. I can learn English at my own pace with an amazing tutor. Highly recommend!",
-      author: "Maya Rodriguez",
+      author: "Ayşe Yılmaz",
       role: "Verified Student",
       gradient: "from-[#06B6D4] to-[#3b82f6]",
     },
     {
       quote: "Best investment I've made for my career. Learning English with Abby has opened so many opportunities. The quality is outstanding.",
-      author: "Zoe Williams",
+      author: "Min-jun Park",
       role: "Verified Student",
       gradient: "from-[#ccf381] to-[#a8e063]",
     },
