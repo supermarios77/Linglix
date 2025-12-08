@@ -1,16 +1,14 @@
 import NextAuth from "next-auth";
-import { PrismaAdapter } from "@auth/prisma-adapter";
 import { authConfig } from "./auth.config";
-import { prisma } from "@/lib/prisma";
 
 /**
- * NextAuth configuration and initialization
+ * NextAuth configuration for middleware (Edge Runtime compatible)
  * 
- * This is the main auth export that NextAuth uses.
- * It combines the auth config with the Prisma adapter.
+ * This export is used by middleware and doesn't include the Prisma adapter
+ * since Prisma cannot run in Edge Runtime. The adapter is only used in
+ * API routes (see app/api/auth/[...nextauth]/route.ts)
  */
 export const { handlers, signIn, signOut, auth } = NextAuth({
   ...authConfig,
-  adapter: PrismaAdapter(prisma),
   trustHost: true, // Required for Vercel deployments
 });
