@@ -46,37 +46,57 @@ async function main() {
   console.log("🌱 Starting database seed...");
 
   try {
-    // Hash password for tutor
-    const hashedPassword = await bcrypt.hash("Tutor123!", 12);
+    // Hash passwords
+    const tutorPassword = await bcrypt.hash("Tutor123!", 12);
+    const adminPassword = await bcrypt.hash("Admin123!", 12);
 
-    // Check if tutor already exists
+    // Check if users already exist
     const existingTutor = await prisma.user.findUnique({
       where: { email: "tutor@linglix.com" },
       include: { tutorProfile: true },
     });
 
-    if (existingTutor) {
-      console.log("✅ Tutor already exists, skipping seed...");
-      console.log(`   Email: ${existingTutor.email}`);
-      console.log(`   Name: ${existingTutor.name}`);
+    const existingAdmin = await prisma.user.findUnique({
+      where: { email: "admin@linglix.com" },
+    });
+
+    if (existingTutor && existingAdmin) {
+      console.log("✅ Users already exist, skipping seed...");
+      console.log(`   Tutor Email: ${existingTutor.email}`);
+      console.log(`   Admin Email: ${existingAdmin.email}`);
       return;
     }
 
-    // Create tutor user and profile in a transaction
+    // Create admin and tutor users in a transaction
     const result = await prisma.$transaction(async (tx) => {
-      // Create user
-      const user = await tx.user.create({
+      // Create admin user (if doesn't exist)
+      let admin = existingAdmin;
+      if (!admin) {
+        admin = await tx.user.create({
+          data: {
+            email: "admin@linglix.com",
+            name: "Admin",
+            password: adminPassword,
+            role: "ADMIN",
+            emailVerified: new Date(), // Mark as verified for seed data
+          },
+        });
+        console.log("✅ Admin user created!");
+      }
+
+      // Create tutor user (if doesn't exist)
+      const user = existingTutor || await tx.user.create({
         data: {
           email: "tutor@linglix.com",
           name: "Abby",
-          password: hashedPassword,
+          password: tutorPassword,
           role: "TUTOR",
           emailVerified: new Date(), // Mark as verified for seed data
         },
       });
 
-      // Create tutor profile
-      const tutorProfile = await tx.tutorProfile.create({
+      // Create tutor profile (if doesn't exist)
+      const tutorProfile = existingTutor?.tutorProfile || await tx.tutorProfile.create({
         data: {
           userId: user.id,
           bio: "Experienced English tutor with 10+ years of teaching experience. Specialized in conversational English, business English, and exam preparation. Native speaker from UK.",
@@ -89,39 +109,61 @@ async function main() {
         },
       });
 
-      // Create availability (Monday to Friday, 9 AM - 6 PM UTC)
-      const availabilityData = [
-        { dayOfWeek: 1, startTime: "09:00", endTime: "18:00" }, // Monday
-        { dayOfWeek: 2, startTime: "09:00", endTime: "18:00" }, // Tuesday
-        { dayOfWeek: 3, startTime: "09:00", endTime: "18:00" }, // Wednesday
-        { dayOfWeek: 4, startTime: "09:00", endTime: "18:00" }, // Thursday
-        { dayOfWeek: 5, startTime: "09:00", endTime: "18:00" }, // Friday
-      ];
+      // Create availability (if tutor profile was just created)
+      if (!existingTutor) {
+        const availabilityData = [
+          { dayOfWeek: 1, startTime: "09:00", endTime: "18:00" }, // Monday
+          { dayOfWeek: 2, startTime: "09:00", endTime: "18:00" }, // Tuesday
+          { dayOfWeek: 3, startTime: "09:00", endTime: "18:00" }, // Wednesday
+          { dayOfWeek: 4, startTime: "09:00", endTime: "18:00" }, // Thursday
+          { dayOfWeek: 5, startTime: "09:00", endTime: "18:00" }, // Friday
+        ];
 
-      await tx.availability.createMany({
-        data: availabilityData.map((avail) => ({
-          tutorId: tutorProfile.id,
-          ...avail,
-          timezone: "UTC",
-          isActive: true,
-        })),
-      });
+        await tx.availability.createMany({
+          data: availabilityData.map((avail) => ({
+            tutorId: tutorProfile.id,
+            ...avail,
+            timezone: "UTC",
+            isActive: true,
+          })),
+        });
+      }
 
-      return { user, tutorProfile };
+      return { admin, user, tutorProfile };
     });
 
-    console.log("✅ Tutor created successfully!");
-    console.log(`   Email: ${result.user.email}`);
-    console.log(`   Name: ${result.user.name}`);
-    console.log(`   Role: ${result.user.role}`);
-    console.log(`   Hourly Rate: $${result.tutorProfile.hourlyRate}`);
-    console.log(`   Rating: ${result.tutorProfile.rating}`);
-    console.log(`   Specialties: ${result.tutorProfile.specialties.join(", ")}`);
-    console.log(`   Total Sessions: ${result.tutorProfile.totalSessions}`);
+    console.log("✅ Users created successfully!");
+    
+    if (result.admin && !existingAdmin) {
+      console.log("\n👤 Admin Account:");
+      console.log(`   Email: ${result.admin.email}`);
+      console.log(`   Name: ${result.admin.name}`);
+      console.log(`   Role: ${result.admin.role}`);
+    }
+    
+    if (result.user && !existingTutor) {
+      console.log("\n👤 Tutor Account:");
+      console.log(`   Email: ${result.user.email}`);
+      console.log(`   Name: ${result.user.name}`);
+      console.log(`   Role: ${result.user.role}`);
+      if (result.tutorProfile) {
+        console.log(`   Hourly Rate: $${result.tutorProfile.hourlyRate}`);
+        console.log(`   Rating: ${result.tutorProfile.rating}`);
+        console.log(`   Specialties: ${result.tutorProfile.specialties.join(", ")}`);
+        console.log(`   Total Sessions: ${result.tutorProfile.totalSessions}`);
+      }
+    }
+    
     console.log("\n📝 Login credentials:");
-    console.log(`   Email: tutor@linglix.com`);
-    console.log(`   Password: Tutor123!`);
-    console.log("\n⚠️  Remember to change the password after first login in production!");
+    if (!existingAdmin) {
+      console.log(`   Admin Email: admin@linglix.com`);
+      console.log(`   Admin Password: Admin123!`);
+    }
+    if (!existingTutor) {
+      console.log(`   Tutor Email: tutor@linglix.com`);
+      console.log(`   Tutor Password: Tutor123!`);
+    }
+    console.log("\n⚠️  Remember to change passwords after first login in production!");
 
   } catch (error) {
     console.error("❌ Error seeding database:", error);
