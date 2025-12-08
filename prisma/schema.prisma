@@ -32,6 +32,7 @@ model User {
   name          String?
   emailVerified DateTime?
   image         String?
+  password      String?   @db.Text // Hashed password for credentials provider (null for OAuth users)
   role          Role      @default(STUDENT)
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
