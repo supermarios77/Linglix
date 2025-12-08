@@ -327,5 +327,81 @@
     },
     "signOutConfirmTitle": "Sign Out?",
     "signOutConfirmDescription": "Are you sure you want to sign out? You'll need to sign in again to access the admin dashboard."
+  },
+  "onboarding": {
+    "title": "Complete Your Profile",
+    "description": "Set up your account to get started",
+    "step1": "Step 1 of 2",
+    "step2": "Step 2 of 2",
+    "back": "Back",
+    "complete": "Complete",
+    "error": "Something went wrong. Please try again.",
+    "signInError": "Failed to sign in. Please try again.",
+    "role": {
+      "title": "Choose Your Role",
+      "description": "Tell us how you'd like to use Linglix",
+      "student": "I'm a Student",
+      "studentDescription": "Learn languages with native tutors",
+      "tutor": "I'm a Tutor",
+      "tutorDescription": "Teach languages and earn money"
+    },
+    "student": {
+      "title": "Tell Us About Yourself",
+      "description": "Help us match you with the perfect tutor",
+      "learningGoal": "What's your main learning goal?",
+      "learningGoalPlaceholder": "Select your goal",
+      "currentLevel": "What's your current level?",
+      "currentLevelPlaceholder": "Select your level",
+      "preferredSchedule": "When do you prefer to learn?",
+      "preferredSchedulePlaceholder": "Select preferred time",
+      "motivation": "What motivates you to learn? (Optional)",
+      "motivationPlaceholder": "Tell us what drives you...",
+      "goals": {
+        "conversation": "Conversation Practice",
+        "business": "Business English",
+        "academic": "Academic English",
+        "travel": "Travel & Tourism",
+        "exam": "Exam Preparation (IELTS, TOEFL, etc.)",
+        "other": "Other"
+      },
+      "levels": {
+        "beginner": "Beginner (A1)",
+        "elementary": "Elementary (A2)",
+        "intermediate": "Intermediate (B1)",
+        "upperIntermediate": "Upper Intermediate (B2)",
+        "advanced": "Advanced (C1/C2)"
+      },
+      "schedule": {
+        "morning": "Morning (6 AM - 12 PM)",
+        "afternoon": "Afternoon (12 PM - 6 PM)",
+        "evening": "Evening (6 PM - 12 AM)",
+        "flexible": "Flexible"
+      }
+    },
+    "tutor": {
+      "title": "Create Your Tutor Profile",
+      "description": "Set up your profile to start teaching",
+      "bio": "Bio",
+      "bioPlaceholder": "Tell students about yourself, your teaching experience, and what makes you a great tutor...",
+      "bioHint": "Minimum 50 characters. This will be visible to students.",
+      "bioMinLength": "Bio must be at least 50 characters",
+      "specialties": "Specialties",
+      "specialtyPlaceholder": "e.g., Business English, IELTS Prep",
+      "specialtiesRequired": "At least one specialty is required",
+      "add": "Add",
+      "hourlyRate": "Hourly Rate (USD)",
+      "hourlyRateHint": "Minimum $5. You can change this later.",
+      "hourlyRateMin": "Hourly rate must be at least $5",
+      "experience": "Years of Teaching Experience",
+      "experiencePlaceholder": "Select your experience",
+      "experienceOptions": {
+        "0-1": "0-1 years",
+        "2-5": "2-5 years",
+        "6-10": "6-10 years",
+        "10+": "10+ years"
+      },
+      "teachingStyle": "Teaching Style (Optional)",
+      "teachingStylePlaceholder": "Describe your teaching approach and methods..."
+    }
   }
 }

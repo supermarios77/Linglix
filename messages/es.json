@@ -327,5 +327,81 @@
     },
     "signOutConfirmTitle": "¿Cerrar Sesión?",
     "signOutConfirmDescription": "¿Estás seguro de que quieres cerrar sesión? Tendrás que iniciar sesión nuevamente para acceder al panel de administración."
+  },
+  "onboarding": {
+    "title": "Completa Tu Perfil",
+    "description": "Configura tu cuenta para comenzar",
+    "step1": "Paso 1 de 2",
+    "step2": "Paso 2 de 2",
+    "back": "Atrás",
+    "complete": "Completar",
+    "error": "Algo salió mal. Por favor, inténtalo de nuevo.",
+    "signInError": "Error al iniciar sesión. Por favor, inténtalo de nuevo.",
+    "role": {
+      "title": "Elige Tu Rol",
+      "description": "Cuéntanos cómo te gustaría usar Linglix",
+      "student": "Soy Estudiante",
+      "studentDescription": "Aprende idiomas con tutores nativos",
+      "tutor": "Soy Tutor",
+      "tutorDescription": "Enseña idiomas y gana dinero"
+    },
+    "student": {
+      "title": "Cuéntanos Sobre Ti",
+      "description": "Ayúdanos a encontrarte el tutor perfecto",
+      "learningGoal": "¿Cuál es tu objetivo principal de aprendizaje?",
+      "learningGoalPlaceholder": "Selecciona tu objetivo",
+      "currentLevel": "¿Cuál es tu nivel actual?",
+      "currentLevelPlaceholder": "Selecciona tu nivel",
+      "preferredSchedule": "¿Cuándo prefieres aprender?",
+      "preferredSchedulePlaceholder": "Selecciona el horario preferido",
+      "motivation": "¿Qué te motiva a aprender? (Opcional)",
+      "motivationPlaceholder": "Cuéntanos qué te impulsa...",
+      "goals": {
+        "conversation": "Práctica de Conversación",
+        "business": "Inglés de Negocios",
+        "academic": "Inglés Académico",
+        "travel": "Viajes y Turismo",
+        "exam": "Preparación de Exámenes (IELTS, TOEFL, etc.)",
+        "other": "Otro"
+      },
+      "levels": {
+        "beginner": "Principiante (A1)",
+        "elementary": "Elemental (A2)",
+        "intermediate": "Intermedio (B1)",
+        "upperIntermediate": "Intermedio Superior (B2)",
+        "advanced": "Avanzado (C1/C2)"
+      },
+      "schedule": {
+        "morning": "Mañana (6 AM - 12 PM)",
+        "afternoon": "Tarde (12 PM - 6 PM)",
+        "evening": "Noche (6 PM - 12 AM)",
+        "flexible": "Flexible"
+      }
+    },
+    "tutor": {
+      "title": "Crea Tu Perfil de Tutor",
+      "description": "Configura tu perfil para comenzar a enseñar",
+      "bio": "Biografía",
+      "bioPlaceholder": "Cuéntales a los estudiantes sobre ti, tu experiencia docente y qué te hace un gran tutor...",
+      "bioHint": "Mínimo 50 caracteres. Esto será visible para los estudiantes.",
+      "bioMinLength": "La biografía debe tener al menos 50 caracteres",
+      "specialties": "Especialidades",
+      "specialtyPlaceholder": "ej., Inglés de Negocios, Preparación IELTS",
+      "specialtiesRequired": "Se requiere al menos una especialidad",
+      "add": "Agregar",
+      "hourlyRate": "Tarifa por Hora (USD)",
+      "hourlyRateHint": "Mínimo $5. Puedes cambiar esto más tarde.",
+      "hourlyRateMin": "La tarifa por hora debe ser de al menos $5",
+      "experience": "Años de Experiencia Docente",
+      "experiencePlaceholder": "Selecciona tu experiencia",
+      "experienceOptions": {
+        "0-1": "0-1 años",
+        "2-5": "2-5 años",
+        "6-10": "6-10 años",
+        "10+": "10+ años"
+      },
+      "teachingStyle": "Estilo de Enseñanza (Opcional)",
+      "teachingStylePlaceholder": "Describe tu enfoque y métodos de enseñanza..."
+    }
   }
 }

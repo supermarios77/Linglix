@@ -74,7 +74,7 @@ export function SignUpForm() {
         return;
       }
 
-      // Auto sign in after registration
+      // Sign in and redirect to onboarding
       const signInResult = await signIn("credentials", {
         email,
         password,
@@ -86,7 +86,8 @@ export function SignUpForm() {
         return;
       }
 
-      router.push(`/${locale}`);
+      // Redirect to onboarding flow
+      router.push(`/${locale}/onboarding`);
       router.refresh();
     } catch (err) {
       // Error handling - don't leak details
