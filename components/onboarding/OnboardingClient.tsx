@@ -1,9 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
-import { signIn } from "next-auth/react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -40,7 +38,6 @@ type OnboardingStep = "role" | "student-questions" | "tutor-questions" | "comple
  */
 export function OnboardingClient({ locale, user }: OnboardingClientProps) {
   const t = useTranslations("onboarding");
-  const router = useRouter();
 
   const [step, setStep] = useState<OnboardingStep>("role");
   const [selectedRole, setSelectedRole] = useState<"STUDENT" | "TUTOR" | null>(null);
