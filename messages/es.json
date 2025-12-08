@@ -17,7 +17,8 @@
     "success": "Éxito",
     "back": "Atrás",
     "next": "Siguiente",
-    "previous": "Anterior"
+    "previous": "Anterior",
+    "dashboard": "Panel de Control"
   },
   "auth": {
     "signInTitle": "Iniciar Sesión",

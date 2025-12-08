@@ -17,7 +17,8 @@
     "success": "Success",
     "back": "Back",
     "next": "Next",
-    "previous": "Previous"
+    "previous": "Previous",
+    "dashboard": "Dashboard"
   },
   "auth": {
     "signInTitle": "Sign In",
