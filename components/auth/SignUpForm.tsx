@@ -129,7 +129,7 @@ export function SignUpForm() {
             minLength={2}
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="w-full px-4 py-3 text-[15px] rounded-full border border-gray-200 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 bg-white font-medium shadow-sm hover:border-gray-300"
+            className="w-full px-4 py-3 text-[15px] rounded-full border border-gray-200 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-white font-medium shadow-sm hover:border-gray-300"
             placeholder="John Doe"
             disabled={isLoading}
           />
@@ -150,7 +150,7 @@ export function SignUpForm() {
             required
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full px-4 py-3 text-[15px] rounded-full border border-gray-200 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 bg-white font-medium shadow-sm hover:border-gray-300"
+            className="w-full px-4 py-3 text-[15px] rounded-full border border-gray-200 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-white font-medium shadow-sm hover:border-gray-300"
             placeholder="you@example.com"
             disabled={isLoading}
           />
@@ -172,7 +172,7 @@ export function SignUpForm() {
             minLength={8}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full px-4 py-3 text-[15px] rounded-full border border-gray-200 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 bg-white font-medium shadow-sm hover:border-gray-300"
+            className="w-full px-4 py-3 text-[15px] rounded-full border border-gray-200 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-white font-medium shadow-sm hover:border-gray-300"
             placeholder="••••••••"
             disabled={isLoading}
           />
@@ -197,7 +197,7 @@ export function SignUpForm() {
             minLength={8}
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
-            className="w-full px-4 py-3 text-[15px] rounded-full border border-gray-200 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 bg-white font-medium shadow-sm hover:border-gray-300"
+            className="w-full px-4 py-3 text-[15px] rounded-full border border-gray-200 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-white font-medium shadow-sm hover:border-gray-300"
             placeholder="••••••••"
             disabled={isLoading}
           />
@@ -243,7 +243,7 @@ export function SignUpForm() {
         {t("hasAccount")}{" "}
         <Link
           href={`/${locale}/auth/signin`}
-          className="font-semibold text-purple-600 hover:text-purple-700 transition-colors"
+          className="font-semibold text-blue-600 hover:text-blue-700 transition-colors"
         >
           {t("signInTitle")}
         </Link>

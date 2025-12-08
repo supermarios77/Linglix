@@ -164,7 +164,7 @@ export function SignInForm() {
             required
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full px-4 py-3 text-[15px] rounded-full border border-gray-200 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 bg-white font-medium shadow-sm hover:border-gray-300"
+            className="w-full px-4 py-3 text-[15px] rounded-full border border-gray-200 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-white font-medium shadow-sm hover:border-gray-300"
             placeholder="you@example.com"
             disabled={isLoading}
           />
@@ -180,7 +180,7 @@ export function SignInForm() {
             </label>
             <Link
               href={`/${locale}/auth/forgot-password`}
-              className="text-sm text-purple-600 hover:text-purple-700 font-semibold transition-colors"
+              className="text-sm text-blue-600 hover:text-blue-700 font-semibold transition-colors"
             >
               {t("forgotPassword")}
             </Link>
@@ -193,7 +193,7 @@ export function SignInForm() {
             required
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full px-4 py-3 text-[15px] rounded-full border border-gray-200 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 bg-white font-medium shadow-sm hover:border-gray-300"
+            className="w-full px-4 py-3 text-[15px] rounded-full border border-gray-200 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-white font-medium shadow-sm hover:border-gray-300"
             placeholder="••••••••"
             disabled={isLoading}
           />
@@ -204,7 +204,7 @@ export function SignInForm() {
             id="remember-me"
             name="remember-me"
             type="checkbox"
-            className="h-4 w-4 rounded border-gray-300 text-purple-600 focus:ring-purple-500"
+            className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
           />
           <label
             htmlFor="remember-me"
@@ -254,7 +254,7 @@ export function SignInForm() {
         {t("noAccount")}{" "}
         <Link
           href={`/${locale}/auth/signup`}
-          className="font-semibold text-purple-600 hover:text-purple-700 transition-colors"
+          className="font-semibold text-blue-600 hover:text-blue-700 transition-colors"
         >
           {t("signUpTitle")}
         </Link>
