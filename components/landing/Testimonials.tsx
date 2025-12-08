@@ -30,13 +30,13 @@ export function Testimonials({ locale }: TestimonialsProps) {
       gradient: "from-[#7928ca] to-[#ff0080]",
     },
     {
-      quote: "The flexible scheduling is perfect for my busy lifestyle. I can learn French at my own pace with an amazing tutor. Highly recommend!",
+      quote: "The flexible scheduling is perfect for my busy lifestyle. I can learn English at my own pace with an amazing tutor. Highly recommend!",
       author: "Maya Rodriguez",
       role: "Verified Student",
       gradient: "from-[#06B6D4] to-[#3b82f6]",
     },
     {
-      quote: "Best investment I've made for my career. Learning Japanese with Hiroshi has opened so many opportunities. The quality is outstanding.",
+      quote: "Best investment I've made for my career. Learning English with Abby has opened so many opportunities. The quality is outstanding.",
       author: "Zoe Williams",
       role: "Verified Student",
       gradient: "from-[#ccf381] to-[#a8e063]",
