@@ -49,6 +49,7 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import type { Booking, BookingStatus, TutorProfile, TutorApprovalStatus, Review } from "@prisma/client";
+import { AvailabilityCalendar } from "./AvailabilityCalendar";
 import { AvailabilityManager } from "./AvailabilityManager";
 
 /**
