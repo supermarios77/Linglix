@@ -1,6 +1,7 @@
 "use client";
 
 import { useTranslations } from "next-intl";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import {
@@ -23,6 +24,7 @@ import {
   Sparkles,
   Star,
   TrendingUp,
+  LogOut,
 } from "lucide-react";
 import Image from "next/image";
 import { slugify } from "@/lib/utils/slug";
@@ -90,6 +92,22 @@ export function UserDashboardClient({
 }: UserDashboardClientProps) {
   const t = useTranslations("dashboard");
   const tBooking = useTranslations("booking");
+  const tCommon = useTranslations("common");
+  const router = useRouter();
+
+  const handleSignOut = async () => {
+    try {
+      const response = await fetch("/api/auth/signout", {
+        method: "POST",
+      });
+      if (response.ok) {
+        router.push(`/${locale}`);
+        router.refresh();
+      }
+    } catch (error) {
+      console.error("Failed to sign out:", error);
+    }
+  };
 
   const formatDate = (date: Date) => {
     return new Intl.DateTimeFormat(locale === "es" ? "es-ES" : "en-US", {
@@ -193,6 +211,14 @@ export function UserDashboardClient({
               {user.name || user.email}
             </span>
           </div>
+          <Button
+            variant="outline"
+            onClick={handleSignOut}
+            className="flex items-center gap-2 bg-white/80 dark:bg-[#1a1a1a]/80 backdrop-blur-sm border-[#e5e5e5] dark:border-[#262626] rounded-full hover:border-red-500 dark:hover:border-red-500 hover:text-red-600 dark:hover:text-red-400 transition-colors"
+          >
+            <LogOut className="w-4 h-4" />
+            <span className="hidden sm:inline">{tCommon("signOut")}</span>
+          </Button>
         </div>
       </header>
 

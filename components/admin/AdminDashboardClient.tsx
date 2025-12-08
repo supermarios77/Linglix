@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useTranslations } from "next-intl";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import {
@@ -43,6 +44,7 @@ import {
   Loader2,
   ArrowLeft,
   Shield,
+  LogOut,
 } from "lucide-react";
 import type { TutorApprovalStatus } from "@prisma/client";
 
@@ -103,6 +105,21 @@ interface AdminDashboardClientProps {
 export function AdminDashboardClient({ locale }: AdminDashboardClientProps) {
   const t = useTranslations("admin");
   const tCommon = useTranslations("common");
+  const router = useRouter();
+
+  const handleSignOut = async () => {
+    try {
+      const response = await fetch("/api/auth/signout", {
+        method: "POST",
+      });
+      if (response.ok) {
+        router.push(`/${locale}`);
+        router.refresh();
+      }
+    } catch (error) {
+      console.error("Failed to sign out:", error);
+    }
+  };
 
   const [stats, setStats] = useState<Stats | null>(null);
   const [tutors, setTutors] = useState<Tutor[]>([]);
@@ -310,11 +327,21 @@ export function AdminDashboardClient({ locale }: AdminDashboardClientProps) {
           Linglix<span className="text-[#111] dark:text-[#ccf381]">.</span>
         </Link>
 
-        <div className="flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 bg-white/80 dark:bg-[#1a1a1a]/80 backdrop-blur-sm border border-[#e5e5e5] dark:border-[#262626] rounded-full">
-          <Shield className="w-4 h-4 text-[#ccf381]" />
-          <span className="text-xs sm:text-sm font-semibold text-black dark:text-white">
-            Admin
-          </span>
+        <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 bg-white/80 dark:bg-[#1a1a1a]/80 backdrop-blur-sm border border-[#e5e5e5] dark:border-[#262626] rounded-full">
+            <Shield className="w-4 h-4 text-[#ccf381]" />
+            <span className="text-xs sm:text-sm font-semibold text-black dark:text-white">
+              Admin
+            </span>
+          </div>
+          <Button
+            variant="outline"
+            onClick={handleSignOut}
+            className="flex items-center gap-2 bg-white/80 dark:bg-[#1a1a1a]/80 backdrop-blur-sm border-[#e5e5e5] dark:border-[#262626] rounded-full hover:border-red-500 dark:hover:border-red-500 hover:text-red-600 dark:hover:text-red-400 transition-colors"
+          >
+            <LogOut className="w-4 h-4" />
+            <span className="hidden sm:inline">{tCommon("signOut")}</span>
+          </Button>
         </div>
       </header>
 
