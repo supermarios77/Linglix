@@ -235,10 +235,10 @@ export function TutorsListingClient({
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="">{t("any")}</SelectItem>
-                      <SelectItem value="4.5">{t("ratingOptions.4.5")}</SelectItem>
-                      <SelectItem value="4.0">{t("ratingOptions.4.0")}</SelectItem>
-                      <SelectItem value="3.5">{t("ratingOptions.3.5")}</SelectItem>
-                      <SelectItem value="3.0">{t("ratingOptions.3.0")}</SelectItem>
+                      <SelectItem value="4.5">{t("ratingOptions.rating45")}</SelectItem>
+                      <SelectItem value="4.0">{t("ratingOptions.rating40")}</SelectItem>
+                      <SelectItem value="3.5">{t("ratingOptions.rating35")}</SelectItem>
+                      <SelectItem value="3.0">{t("ratingOptions.rating30")}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
