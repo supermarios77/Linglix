@@ -359,10 +359,10 @@ export function TutorDashboardClient({
                       setActiveSection(section.id);
                       setSidebarOpen(false);
                     }}
-                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 ${
+                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 ${
                       isActive
-                        ? "bg-[#ccf381]/20 dark:bg-[#ccf381]/10 text-[#111] dark:text-[#ccf381] border border-[#ccf381]/30 dark:border-[#ccf381]/30 shadow-sm"
-                        : "text-[#666] dark:text-[#a1a1aa] hover:bg-[#f5f5f5] dark:hover:bg-[#262626] hover:text-black dark:hover:text-white"
+                        ? "bg-[#ccf381]/20 dark:bg-[#ccf381]/10 text-[#111] dark:text-[#ccf381] border border-[#ccf381]/30 dark:border-[#ccf381]/30 shadow-sm backdrop-blur-sm"
+                        : "text-[#666] dark:text-[#a1a1aa] hover:bg-white/60 dark:hover:bg-[#262626]/60 hover:text-black dark:hover:text-white backdrop-blur-sm"
                     }`}
                   >
                     <Icon className={`w-5 h-5 ${isActive ? "text-[#ccf381]" : ""}`} />
@@ -399,30 +399,65 @@ export function TutorDashboardClient({
         <main className="flex-1 lg:ml-64">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 py-8 sm:py-12">
             {/* Section Header */}
-            <div className="mb-8">
-              <div className="flex items-center justify-between mb-3">
-                <div>
-                  <h1 className="text-2xl sm:text-3xl font-semibold text-black dark:text-white mb-2">
-                    {sections.find((s) => s.id === activeSection)?.label}
+            <div className="mb-8 sm:mb-12">
+              {activeSection === "overview" && (
+                <div className="flex flex-col items-center text-center mb-8">
+                  {/* Welcome Badge */}
+                  <div className="inline-flex items-center px-3 sm:px-4 py-1.5 sm:py-2 bg-white/90 dark:bg-[#121212]/90 backdrop-blur-md border border-[#e5e5e5] dark:border-[#262626] rounded-full text-[10px] sm:text-xs font-semibold uppercase tracking-wider mb-4 sm:mb-6 shadow-[0_4px_12px_rgba(0,0,0,0.05)] group hover:scale-105 transition-transform">
+                    <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-[#ccf381] rounded-full mr-2 sm:mr-2.5 animate-pulse" />
+                    <span className="mr-1.5 sm:mr-2">{tTutor("welcome")}</span>
+                    <Sparkles className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-[#ccf381] opacity-70 group-hover:opacity-100 transition-opacity" />
+                  </div>
+
+                  {/* Main Heading */}
+                  <h1 className="text-[32px] sm:text-[42px] md:text-[56px] leading-[0.92] font-bold tracking-[-0.04em] mb-4 sm:mb-6 text-black dark:text-white">
+                    {tTutor("title")}
+                    <br />
+                    <span className="relative inline-block mt-1 sm:mt-2">
+                      <span className="inline-block bg-[#ffeb3b] dark:bg-[#ccf381] text-black dark:text-black px-3 sm:px-4 py-1 sm:py-1.5 -rotate-[-2deg] transform origin-center font-bold shadow-[0_4px_8px_rgba(0,0,0,0.1)] relative z-10 text-[28px] sm:text-[36px] md:text-[44px]">
+                        {user.name || tTutor("tutor")}
+                      </span>
+                      <span className="absolute inset-0 bg-[#ffeb3b]/20 dark:bg-[#ccf381]/20 blur-xl -rotate-[-2deg] transform origin-center" aria-hidden="true" />
+                    </span>
                   </h1>
-                  <p className="text-sm text-[#666] dark:text-[#a1a1aa]">
+
+                  <p className="text-base sm:text-lg text-[#555] dark:text-[#a1a1aa] max-w-[600px] mb-6">
                     {tTutor("subtitle")}
                   </p>
-                </div>
-              </div>
 
-              {/* Approval Status Alerts */}
-              {tutorProfile.approvalStatus === "PENDING" && (
-                <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-yellow-50 dark:bg-yellow-950/30 border border-yellow-200 dark:border-yellow-800 rounded-lg text-sm text-yellow-700 dark:text-yellow-300">
-                  <AlertCircle className="w-4 h-4" />
-                  {tTutor("status.pendingMessage")}
+                  {/* Status Badge */}
+                  <div className="mb-4">
+                    {getApprovalStatusBadge(tutorProfile.approvalStatus)}
+                  </div>
+
+                  {/* Approval Status Alerts */}
+                  {tutorProfile.approvalStatus === "PENDING" && (
+                    <div className="inline-flex items-center gap-2 px-4 py-2 bg-yellow-50/80 dark:bg-yellow-950/80 border border-yellow-200 dark:border-yellow-800 rounded-full text-sm text-yellow-700 dark:text-yellow-300">
+                      <AlertCircle className="w-4 h-4" />
+                      {tTutor("status.pendingMessage")}
+                    </div>
+                  )}
+
+                  {tutorProfile.approvalStatus === "REJECTED" && tutorProfile.rejectionReason && (
+                    <div className="inline-flex items-center gap-2 px-4 py-2 bg-red-50/80 dark:bg-red-950/80 border border-red-200 dark:border-red-800 rounded-full text-sm text-red-700 dark:text-red-300 max-w-2xl">
+                      <AlertCircle className="w-4 h-4" />
+                      <span>{tTutor("status.rejectedMessage")}: {tutorProfile.rejectionReason}</span>
+                    </div>
+                  )}
                 </div>
               )}
 
-              {tutorProfile.approvalStatus === "REJECTED" && tutorProfile.rejectionReason && (
-                <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-800 rounded-lg text-sm text-red-700 dark:text-red-300 max-w-2xl">
-                  <AlertCircle className="w-4 h-4" />
-                  <span>{tTutor("status.rejectedMessage")}: {tutorProfile.rejectionReason}</span>
+              {activeSection !== "overview" && (
+                <div>
+                  <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-[-0.02em] text-black dark:text-white mb-2">
+                    {sections.find((s) => s.id === activeSection)?.label}
+                  </h1>
+                  <p className="text-sm sm:text-base text-[#666] dark:text-[#a1a1aa]">
+                    {activeSection === "sessions" && tTutor("subtitle")}
+                    {activeSection === "calendar" && "View and manage your schedule"}
+                    {activeSection === "availability" && "Set when you're available to teach"}
+                    {activeSection === "reviews" && "See what your students are saying"}
+                  </p>
                 </div>
               )}
             </div>
@@ -430,79 +465,83 @@ export function TutorDashboardClient({
             {/* Section Content */}
             {activeSection === "overview" && (
               <>
-                {/* Stats Cards */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-          {/* Total Earnings */}
-          <Card className="bg-white dark:bg-[#1a1a1a] border border-[#e5e5e5] dark:border-[#262626] rounded-lg">
-            <CardContent className="p-6">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="p-2 bg-green-500/10 dark:bg-green-500/10 rounded-lg">
-                  <DollarSign className="w-5 h-5 text-green-600 dark:text-green-400" />
-                </div>
-                <p className="text-sm text-[#666] dark:text-[#a1a1aa]">
-                  {tTutor("stats.totalEarnings")}
-                </p>
-              </div>
-              <p className="text-2xl font-semibold text-black dark:text-white">
-                ${totalEarnings.toFixed(2)}
-              </p>
-            </CardContent>
-          </Card>
+                {/* Stats Cards - Landing Style */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-8 sm:mb-12">
+                  {/* Total Earnings */}
+                  <Card className="group bg-white/90 dark:bg-[#1a1a1a]/90 backdrop-blur-md border border-[#e5e5e5] dark:border-[#262626] rounded-[20px] sm:rounded-[24px] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(0,0,0,0.1)] hover:border-[#ccf381] dark:hover:border-[#ccf381]/50">
+                    <CardContent className="p-6 sm:p-8">
+                      <div className="flex items-center justify-between mb-4">
+                        <div className="p-3 bg-green-500/10 dark:bg-green-500/10 rounded-xl">
+                          <DollarSign className="w-6 h-6 text-green-600 dark:text-green-400" />
+                        </div>
+                        <TrendingUp className="w-5 h-5 text-green-600 dark:text-green-400 opacity-60" />
+                      </div>
+                      <p className="text-xs sm:text-sm text-[#666] dark:text-[#a1a1aa] font-medium mb-2">
+                        {tTutor("stats.totalEarnings")}
+                      </p>
+                      <p className="text-2xl sm:text-3xl font-bold text-black dark:text-white">
+                        ${totalEarnings.toFixed(2)}
+                      </p>
+                    </CardContent>
+                  </Card>
 
-          {/* Total Sessions */}
-          <Card className="bg-white dark:bg-[#1a1a1a] border border-[#e5e5e5] dark:border-[#262626] rounded-lg">
-            <CardContent className="p-6">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="p-2 bg-blue-500/10 dark:bg-blue-500/10 rounded-lg">
-                  <BookOpen className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-                </div>
-                <p className="text-sm text-[#666] dark:text-[#a1a1aa]">
-                  {tTutor("stats.totalSessions")}
-                </p>
-              </div>
-              <p className="text-2xl font-semibold text-black dark:text-white">
-                {totalSessions}
-              </p>
-            </CardContent>
-          </Card>
+                  {/* Total Sessions */}
+                  <Card className="group bg-white/90 dark:bg-[#1a1a1a]/90 backdrop-blur-md border border-[#e5e5e5] dark:border-[#262626] rounded-[20px] sm:rounded-[24px] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(0,0,0,0.1)] hover:border-[#ccf381] dark:hover:border-[#ccf381]/50">
+                    <CardContent className="p-6 sm:p-8">
+                      <div className="flex items-center justify-between mb-4">
+                        <div className="p-3 bg-blue-500/10 dark:bg-blue-500/10 rounded-xl">
+                          <BookOpen className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+                        </div>
+                        <TrendingUp className="w-5 h-5 text-blue-600 dark:text-blue-400 opacity-60" />
+                      </div>
+                      <p className="text-xs sm:text-sm text-[#666] dark:text-[#a1a1aa] font-medium mb-2">
+                        {tTutor("stats.totalSessions")}
+                      </p>
+                      <p className="text-2xl sm:text-3xl font-bold text-black dark:text-white">
+                        {totalSessions}
+                      </p>
+                    </CardContent>
+                  </Card>
 
-          {/* Average Rating */}
-          <Card className="bg-white dark:bg-[#1a1a1a] border border-[#e5e5e5] dark:border-[#262626] rounded-lg">
-            <CardContent className="p-6">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="p-2 bg-yellow-500/10 dark:bg-yellow-500/10 rounded-lg">
-                  <Star className="w-5 h-5 text-yellow-600 dark:text-yellow-400 fill-current" />
-                </div>
-                <p className="text-sm text-[#666] dark:text-[#a1a1aa]">
-                  {tTutor("stats.averageRating")}
-                </p>
-              </div>
-              <div className="flex items-center gap-2">
-                <p className="text-2xl font-semibold text-black dark:text-white">
-                  {averageRating > 0 ? averageRating.toFixed(1) : "0.0"}
-                </p>
-                <Star className="w-4 h-4 text-yellow-500 fill-current" />
-              </div>
-            </CardContent>
-          </Card>
+                  {/* Average Rating */}
+                  <Card className="group bg-white/90 dark:bg-[#1a1a1a]/90 backdrop-blur-md border border-[#e5e5e5] dark:border-[#262626] rounded-[20px] sm:rounded-[24px] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(0,0,0,0.1)] hover:border-[#ccf381] dark:hover:border-[#ccf381]/50">
+                    <CardContent className="p-6 sm:p-8">
+                      <div className="flex items-center justify-between mb-4">
+                        <div className="p-3 bg-yellow-500/10 dark:bg-yellow-500/10 rounded-xl">
+                          <Star className="w-6 h-6 text-yellow-600 dark:text-yellow-400 fill-current" />
+                        </div>
+                        <Award className="w-5 h-5 text-yellow-600 dark:text-yellow-400 opacity-60" />
+                      </div>
+                      <p className="text-xs sm:text-sm text-[#666] dark:text-[#a1a1aa] font-medium mb-2">
+                        {tTutor("stats.averageRating")}
+                      </p>
+                      <div className="flex items-center gap-2">
+                        <p className="text-2xl sm:text-3xl font-bold text-black dark:text-white">
+                          {averageRating > 0 ? averageRating.toFixed(1) : "0.0"}
+                        </p>
+                        <Star className="w-5 h-5 text-yellow-500 fill-current" />
+                      </div>
+                    </CardContent>
+                  </Card>
 
-          {/* Total Students */}
-          <Card className="bg-white dark:bg-[#1a1a1a] border border-[#e5e5e5] dark:border-[#262626] rounded-lg">
-            <CardContent className="p-6">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="p-2 bg-purple-500/10 dark:bg-purple-500/10 rounded-lg">
-                  <Users className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+                  {/* Total Students */}
+                  <Card className="group bg-white/90 dark:bg-[#1a1a1a]/90 backdrop-blur-md border border-[#e5e5e5] dark:border-[#262626] rounded-[20px] sm:rounded-[24px] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(0,0,0,0.1)] hover:border-[#ccf381] dark:hover:border-[#ccf381]/50">
+                    <CardContent className="p-6 sm:p-8">
+                      <div className="flex items-center justify-between mb-4">
+                        <div className="p-3 bg-purple-500/10 dark:bg-purple-500/10 rounded-xl">
+                          <Users className="w-6 h-6 text-purple-600 dark:text-purple-400" />
+                        </div>
+                        <TrendingUp className="w-5 h-5 text-purple-600 dark:text-purple-400 opacity-60" />
+                      </div>
+                      <p className="text-xs sm:text-sm text-[#666] dark:text-[#a1a1aa] font-medium mb-2">
+                        {tTutor("stats.totalStudents")}
+                      </p>
+                      <p className="text-2xl sm:text-3xl font-bold text-black dark:text-white">
+                        {totalStudents}
+                      </p>
+                    </CardContent>
+                  </Card>
                 </div>
-                <p className="text-sm text-[#666] dark:text-[#a1a1aa]">
-                  {tTutor("stats.totalStudents")}
-                </p>
-              </div>
-              <p className="text-2xl font-semibold text-black dark:text-white">
-                {totalStudents}
-              </p>
-            </CardContent>
-          </Card>
-        </div>
 
                 {/* Quick Overview Grid */}
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -513,7 +552,7 @@ export function TutorDashboardClient({
 
                   {/* Recent Reviews */}
                   {reviews.length > 0 && (
-                    <Card className="bg-white dark:bg-[#1a1a1a] border border-[#e5e5e5] dark:border-[#262626] rounded-lg">
+                    <Card className="bg-white/90 dark:bg-[#1a1a1a]/90 backdrop-blur-md border border-[#e5e5e5] dark:border-[#262626] rounded-[20px] sm:rounded-[24px] shadow-[0_4px_12px_rgba(0,0,0,0.05)]">
                       <CardHeader className="pb-4">
                         <CardTitle className="text-lg font-semibold text-black dark:text-white">
                           {tTutor("reviews")}
@@ -524,7 +563,7 @@ export function TutorDashboardClient({
                           {reviews.slice(0, 3).map((review) => (
                             <div
                               key={review.id}
-                              className="p-3 border border-[#e5e5e5] dark:border-[#262626] rounded-lg"
+                              className="p-4 bg-white/60 dark:bg-[#0a0a0a]/60 backdrop-blur-sm border border-[#e5e5e5] dark:border-[#262626] rounded-xl hover:shadow-md transition-all duration-200"
                             >
                               <div className="flex items-start gap-3">
                                 {review.student.image ? (
@@ -581,7 +620,7 @@ export function TutorDashboardClient({
 
                 {/* Upcoming Sessions */}
                 {upcomingBookings.length > 0 && (
-              <Card className="bg-white dark:bg-[#1a1a1a] border border-[#e5e5e5] dark:border-[#262626] rounded-lg">
+              <Card className="bg-white/90 dark:bg-[#1a1a1a]/90 backdrop-blur-md border border-[#e5e5e5] dark:border-[#262626] rounded-[20px] sm:rounded-[24px] shadow-[0_4px_12px_rgba(0,0,0,0.05)]">
                 <CardHeader className="pb-4">
                   <div className="flex items-center justify-between">
                     <CardTitle className="text-lg font-semibold text-black dark:text-white">
@@ -643,7 +682,7 @@ export function TutorDashboardClient({
 
                 {/* Past Sessions */}
                 {pastBookings.length > 0 && (
-              <Card className="bg-white dark:bg-[#1a1a1a] border border-[#e5e5e5] dark:border-[#262626] rounded-lg">
+              <Card className="bg-white/90 dark:bg-[#1a1a1a]/90 backdrop-blur-md border border-[#e5e5e5] dark:border-[#262626] rounded-[20px] sm:rounded-[24px] shadow-[0_4px_12px_rgba(0,0,0,0.05)]">
                 <CardHeader className="pb-4">
                   <div className="flex items-center justify-between">
                     <CardTitle className="text-lg font-semibold text-black dark:text-white">
@@ -736,7 +775,7 @@ export function TutorDashboardClient({
             {activeSection === "reviews" && (
               <div>
                 {reviews.length > 0 ? (
-              <Card className="bg-white dark:bg-[#1a1a1a] border border-[#e5e5e5] dark:border-[#262626] rounded-lg">
+                  <Card className="bg-white/90 dark:bg-[#1a1a1a]/90 backdrop-blur-md border border-[#e5e5e5] dark:border-[#262626] rounded-[20px] sm:rounded-[24px] shadow-[0_4px_12px_rgba(0,0,0,0.05)]">
                 <CardHeader className="pb-4">
                   <CardTitle className="text-lg font-semibold text-black dark:text-white">
                     {tTutor("reviews")}
@@ -745,10 +784,10 @@ export function TutorDashboardClient({
                 <CardContent>
                   <div className="space-y-4">
                     {reviews.slice(0, 3).map((review) => (
-                      <div
-                        key={review.id}
-                        className="p-3 border border-[#e5e5e5] dark:border-[#262626] rounded-lg"
-                      >
+                            <div
+                              key={review.id}
+                              className="p-4 sm:p-5 bg-white/60 dark:bg-[#0a0a0a]/60 backdrop-blur-sm border border-[#e5e5e5] dark:border-[#262626] rounded-xl hover:shadow-md transition-all duration-200"
+                            >
                         <div className="flex items-start gap-3">
                           {review.student.image ? (
                             <div className="relative w-8 h-8 rounded-full overflow-hidden border border-[#e5e5e5] dark:border-[#262626] flex-shrink-0">
@@ -795,13 +834,13 @@ export function TutorDashboardClient({
                 </CardContent>
               </Card>
                 ) : (
-                  <Card className="bg-white dark:bg-[#1a1a1a] border border-[#e5e5e5] dark:border-[#262626] rounded-lg">
-                    <CardContent className="py-12 text-center">
-                      <Star className="w-12 h-12 mx-auto text-[#666] dark:text-[#aaa] mb-4" />
-                      <h3 className="text-lg font-semibold text-black dark:text-white mb-2">
+                  <Card className="bg-white/90 dark:bg-[#1a1a1a]/90 backdrop-blur-md border border-[#e5e5e5] dark:border-[#262626] rounded-[20px] sm:rounded-[24px] shadow-[0_4px_12px_rgba(0,0,0,0.05)]">
+                    <CardContent className="py-12 sm:py-16 text-center">
+                      <Star className="w-12 h-12 sm:w-16 sm:h-16 mx-auto text-[#666] dark:text-[#aaa] mb-4" />
+                      <h3 className="text-lg sm:text-xl font-semibold text-black dark:text-white mb-2">
                         No Reviews Yet
                       </h3>
-                      <p className="text-sm text-[#666] dark:text-[#a1a1aa]">
+                      <p className="text-sm sm:text-base text-[#666] dark:text-[#a1a1aa]">
                         Reviews from your students will appear here
                       </p>
                     </CardContent>
