@@ -30,8 +30,11 @@ export default async function SignUpPage() {
   }
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-white px-4 py-12 sm:px-6 lg:px-8">
-      <SignUpForm />
+    <div className="min-h-screen bg-white overflow-hidden relative">
+      <div className="absolute inset-0 bg-gradient-to-br from-gray-50/30 via-white to-purple-50/20 pointer-events-none"></div>
+      <div className="relative z-10 flex min-h-screen flex-col items-center justify-center px-4 py-12 sm:px-6 lg:px-8">
+        <SignUpForm />
+      </div>
     </div>
   );
 }
