@@ -97,13 +97,8 @@ export function UserDashboardClient({
 
   const handleSignOut = async () => {
     try {
-      const response = await fetch("/api/auth/signout", {
-        method: "POST",
-      });
-      if (response.ok) {
-        router.push(`/${locale}`);
-        router.refresh();
-      }
+      // NextAuth v5 signout - redirect to signout endpoint which handles everything
+      window.location.href = `/api/auth/signout?callbackUrl=/${locale}`;
     } catch (error) {
       console.error("Failed to sign out:", error);
     }
