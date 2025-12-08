@@ -44,11 +44,13 @@ export default async function HomePage({
     <div className="relative min-h-screen bg-[#fafafa] dark:bg-[#050505] text-[#111] dark:text-white overflow-x-hidden">
       <BackgroundBlobs />
       <LandingPageClient session={session} locale={locale} />
-      <HeroSection locale={locale} session={session} />
-      <MarqueeTicker items={marqueeItems} />
-      <FeaturedTutors locale={locale} />
-      <Testimonials locale={locale} />
-      <Footer locale={locale} session={session} />
+      <div className="pt-16 sm:pt-20">
+        <HeroSection locale={locale} session={session} />
+        <MarqueeTicker items={marqueeItems} />
+        <FeaturedTutors locale={locale} />
+        <Testimonials locale={locale} />
+        <Footer locale={locale} session={session} />
+      </div>
     </div>
   );
 }

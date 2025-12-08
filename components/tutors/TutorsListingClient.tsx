@@ -110,7 +110,7 @@ export function TutorsListingClient({
   return (
     <div className="min-h-screen bg-[#fafafa] dark:bg-[#050505] text-[#111] dark:text-white">
       {/* Header */}
-      <div className="bg-white dark:bg-[#0a0a0a] border-b border-[#e5e5e5] dark:border-[#262626] sticky top-0 z-50">
+      <div className="bg-white dark:bg-[#0a0a0a] border-b border-[#e5e5e5] dark:border-[#262626] sticky top-16 sm:top-20 z-40">
         <div className="max-w-[1400px] mx-auto px-4 sm:px-6 md:px-12 py-6 sm:py-8">
           <div className="mb-6">
             <h1 className="text-[32px] sm:text-[40px] md:text-[48px] font-bold mb-2 text-black dark:text-white">

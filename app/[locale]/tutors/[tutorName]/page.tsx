@@ -1,8 +1,10 @@
 import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
+import { auth } from "@/config/auth";
 import { prisma } from "@/lib/db/prisma";
 import { slugify } from "@/lib/utils/slug";
 import { TutorDetailClient } from "@/components/tutors/TutorDetailClient";
+import { PublicNav } from "@/components/navigation/PublicNav";
 
 interface TutorDetailPageProps {
   params: Promise<{ locale: string; tutorName: string }>;
@@ -116,6 +118,15 @@ export default async function TutorDetailPage({
     reviews,
   };
 
-  return <TutorDetailClient tutor={tutorData} locale={locale} />;
+  const session = await auth();
+
+  return (
+    <>
+      <PublicNav locale={locale} session={session} />
+      <div className="pt-16 sm:pt-20">
+        <TutorDetailClient tutor={tutorData} locale={locale} />
+      </div>
+    </>
+  );
 }
 

@@ -1,6 +1,8 @@
 import { getTranslations } from "next-intl/server";
+import { auth } from "@/config/auth";
 import { prisma } from "@/lib/db/prisma";
 import { TutorsListingClient } from "@/components/tutors/TutorsListingClient";
+import { PublicNav } from "@/components/navigation/PublicNav";
 import { slugify } from "@/lib/utils/slug";
 
 interface TutorsPageProps {
@@ -177,21 +179,27 @@ export default async function TutorsPage({
   ).sort();
 
   const totalPages = Math.ceil(totalCount / perPage);
+  const session = await auth();
 
   return (
-    <TutorsListingClient
-      tutors={tutorsData}
-      locale={locale}
-      search={search}
-      language={language}
-      minPrice={minPrice}
-      maxPrice={maxPrice}
-      minRating={minRating}
-      currentPage={page}
-      totalPages={totalPages}
-      totalCount={totalCount}
-      languages={allLanguages}
-    />
+    <>
+      <PublicNav locale={locale} session={session} />
+      <div className="pt-16 sm:pt-20">
+        <TutorsListingClient
+          tutors={tutorsData}
+          locale={locale}
+          search={search}
+          language={language}
+          minPrice={minPrice}
+          maxPrice={maxPrice}
+          minRating={minRating}
+          currentPage={page}
+          totalPages={totalPages}
+          totalCount={totalCount}
+          languages={allLanguages}
+        />
+      </div>
+    </>
   );
 }
 

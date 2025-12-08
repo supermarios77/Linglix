@@ -57,7 +57,7 @@ export function TutorDetailClient({
   return (
     <div className="min-h-screen bg-[#fafafa] dark:bg-[#050505] text-[#111] dark:text-white">
       {/* Back Button */}
-      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 md:px-12 pt-6 sm:pt-8">
+      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 md:px-12 pt-4 sm:pt-6">
         <Link
           href={`/${locale}/tutors`}
           className="inline-flex items-center gap-2 text-sm text-[#666] dark:text-[#a1a1aa] hover:text-black dark:hover:text-white transition-colors mb-6"
