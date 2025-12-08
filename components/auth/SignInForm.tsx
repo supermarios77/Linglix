@@ -80,24 +80,24 @@ export function SignInForm() {
   return (
     <div className="relative w-full max-w-[480px] px-4 sm:px-0">
       {/* Glassmorphism Form Container */}
-      <div className="relative bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-2xl rounded-[24px] sm:rounded-[40px] p-6 sm:p-10 border border-white/60 shadow-[0_20px_40px_rgba(0,0,0,0.06)] sm:shadow-[0_40px_80px_rgba(0,0,0,0.08)] overflow-hidden">
+      <div className="relative bg-gradient-to-br from-white/90 to-white/70 dark:from-[#1a1a1a]/95 dark:to-[#0a0a0a]/90 backdrop-blur-2xl rounded-[24px] sm:rounded-[40px] p-6 sm:p-10 border border-white/60 dark:border-[#262626]/80 shadow-[0_20px_40px_rgba(0,0,0,0.06)] dark:shadow-[0_20px_40px_rgba(0,0,0,0.4)] sm:shadow-[0_40px_80px_rgba(0,0,0,0.08)] dark:sm:shadow-[0_40px_80px_rgba(0,0,0,0.5)] overflow-hidden">
         {/* Decorative elements */}
-        <div className="absolute top-0 right-0 w-[150px] h-[150px] sm:w-[200px] sm:h-[200px] rounded-full opacity-20 blur-[60px] bg-[radial-gradient(circle,rgb(255,143,112)_0%,rgba(255,255,255,0)_70%)]" />
-        <div className="absolute bottom-0 left-0 w-[100px] h-[100px] sm:w-[150px] sm:h-[150px] rounded-full opacity-20 blur-[60px] bg-[radial-gradient(circle,rgb(224,231,255)_0%,rgba(255,255,255,0)_70%)]" />
+        <div className="absolute top-0 right-0 w-[150px] h-[150px] sm:w-[200px] sm:h-[200px] rounded-full opacity-20 dark:opacity-15 blur-[60px] bg-[radial-gradient(circle,rgb(255,143,112)_0%,rgba(255,255,255,0)_70%)] dark:bg-[radial-gradient(circle,rgb(204,243,129)_0%,rgba(0,0,0,0)_70%)]" />
+        <div className="absolute bottom-0 left-0 w-[100px] h-[100px] sm:w-[150px] sm:h-[150px] rounded-full opacity-20 dark:opacity-15 blur-[60px] bg-[radial-gradient(circle,rgb(224,231,255)_0%,rgba(255,255,255,0)_70%)] dark:bg-[radial-gradient(circle,rgb(255,235,59)_0%,rgba(0,0,0,0)_70%)]" />
 
         <div className="relative z-10">
           {/* Badge */}
-          <div className="inline-flex items-center px-3 py-1.5 sm:px-4 sm:py-2 bg-white/80 border border-[#e5e5e5] rounded-full text-[10px] sm:text-xs font-semibold uppercase tracking-wider mb-6 sm:mb-8 shadow-[0_2px_10px_rgba(0,0,0,0.03)]">
-            <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-[#10b981] rounded-full mr-2" />
+          <div className="inline-flex items-center px-3 py-1.5 sm:px-4 sm:py-2 bg-white/80 dark:bg-[#0a0a0a]/80 border border-[#e5e5e5] dark:border-[#262626] rounded-full text-[10px] sm:text-xs font-semibold uppercase tracking-wider mb-6 sm:mb-8 shadow-[0_2px_10px_rgba(0,0,0,0.03)] dark:shadow-[0_2px_10px_rgba(0,0,0,0.3)] text-black dark:text-white">
+            <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-[#10b981] dark:bg-[#ccf381] rounded-full mr-2" />
             Welcome Back
           </div>
 
           {/* Header */}
           <div className="mb-8 sm:mb-10">
-            <h1 className="text-[36px] sm:text-[48px] md:text-[56px] leading-[1.1] font-semibold tracking-[-0.03em] mb-3 sm:mb-4 text-black">
+            <h1 className="text-[36px] sm:text-[48px] md:text-[56px] leading-[1.1] font-semibold tracking-[-0.03em] mb-3 sm:mb-4 text-black dark:text-white">
               {t("signInTitle")}
             </h1>
-            <p className="text-base sm:text-lg leading-relaxed text-[#555]">
+            <p className="text-base sm:text-lg leading-relaxed text-[#555] dark:text-[#a1a1aa]">
               {t("signInWith")} Google {t("or")} {tCommon("email")}
             </p>
           </div>
@@ -106,7 +106,7 @@ export function SignInForm() {
           {error && (
             <Alert
               variant="destructive"
-              className="mb-5 sm:mb-6 rounded-xl sm:rounded-2xl border-red-200 bg-red-50/80 backdrop-blur-sm"
+              className="mb-5 sm:mb-6 rounded-xl sm:rounded-2xl border-red-200 dark:border-red-900/50 bg-red-50/80 dark:bg-red-950/50 backdrop-blur-sm"
             >
               <AlertCircle className="h-4 w-4" />
               <AlertTitle className="text-sm">{error}</AlertTitle>
@@ -119,7 +119,7 @@ export function SignInForm() {
             <Button
               type="button"
               variant="outline"
-              className="w-full h-11 sm:h-12 rounded-full border border-[#e5e5e5] bg-white/80 backdrop-blur-sm hover:bg-white hover:border-[#d4d4d4] hover:shadow-[0_4px_12px_rgba(0,0,0,0.06)] transition-all duration-300 active:scale-[0.98]"
+              className="w-full h-11 sm:h-12 rounded-full border border-[#e5e5e5] dark:border-[#262626] bg-white/80 dark:bg-[#0a0a0a]/80 backdrop-blur-sm hover:bg-white dark:hover:bg-[#0a0a0a] hover:border-[#d4d4d4] dark:hover:border-[#333] hover:shadow-[0_4px_12px_rgba(0,0,0,0.06)] dark:hover:shadow-[0_4px_12px_rgba(0,0,0,0.3)] transition-all duration-300 active:scale-[0.98] text-black dark:text-white"
               onClick={() => handleOAuthSignIn("google")}
               disabled={isLoading}
             >
@@ -147,9 +147,9 @@ export function SignInForm() {
 
           {/* Divider */}
           <div className="relative mb-5 sm:mb-6">
-            <Separator className="bg-[#e5e5e5]" />
+            <Separator className="bg-[#e5e5e5] dark:bg-[#262626]" />
             <div className="absolute inset-0 flex items-center justify-center">
-              <span className="px-3 sm:px-4 bg-white/90 backdrop-blur-sm text-[#666] text-xs sm:text-sm font-medium rounded-full border border-[#e5e5e5]">
+              <span className="px-3 sm:px-4 bg-white/90 dark:bg-[#1a1a1a]/90 backdrop-blur-sm text-[#666] dark:text-[#a1a1aa] text-xs sm:text-sm font-medium rounded-full border border-[#e5e5e5] dark:border-[#262626]">
                 {t("or")}
               </span>
             </div>
@@ -158,7 +158,7 @@ export function SignInForm() {
           {/* Email/Password Form */}
           <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-5">
             <div className="space-y-2">
-              <Label htmlFor="email" className="text-sm font-semibold text-[#444]">
+              <Label htmlFor="email" className="text-sm font-semibold text-[#444] dark:text-[#a1a1aa]">
                 {tCommon("email")}
               </Label>
               <Input
@@ -171,18 +171,18 @@ export function SignInForm() {
                 disabled={isLoading}
                 placeholder="you@example.com"
                 autoComplete="email"
-                className="h-11 sm:h-12 rounded-full border-[#e5e5e5] bg-white/80 backdrop-blur-sm focus:border-[#999] focus:ring-2 focus:ring-[#999]/10 transition-all text-sm sm:text-base"
+                className="h-11 sm:h-12 rounded-full border-[#e5e5e5] dark:border-[#262626] bg-white/80 dark:bg-[#0a0a0a]/80 backdrop-blur-sm focus:border-[#999] dark:focus:border-[#ccf381] focus:ring-2 focus:ring-[#999]/10 dark:focus:ring-[#ccf381]/20 transition-all text-sm sm:text-base text-black dark:text-white placeholder:text-[#999] dark:placeholder:text-[#555]"
               />
             </div>
 
             <div className="space-y-2">
               <div className="flex items-center justify-between">
-                <Label htmlFor="password" className="text-sm font-semibold text-[#444]">
+                <Label htmlFor="password" className="text-sm font-semibold text-[#444] dark:text-[#a1a1aa]">
                   {tCommon("password")}
                 </Label>
                 <Link
                   href={`/${locale}/auth/forgot-password`}
-                  className="text-xs sm:text-sm text-[#666] hover:text-black transition-colors"
+                  className="text-xs sm:text-sm text-[#666] dark:text-[#a1a1aa] hover:text-black dark:hover:text-white transition-colors"
                 >
                   {t("forgotPassword")}
                 </Link>
@@ -197,7 +197,7 @@ export function SignInForm() {
                 disabled={isLoading}
                 placeholder="••••••••"
                 autoComplete="current-password"
-                className="h-11 sm:h-12 rounded-full border-[#e5e5e5] bg-white/80 backdrop-blur-sm focus:border-[#999] focus:ring-2 focus:ring-[#999]/10 transition-all text-sm sm:text-base"
+                className="h-11 sm:h-12 rounded-full border-[#e5e5e5] dark:border-[#262626] bg-white/80 dark:bg-[#0a0a0a]/80 backdrop-blur-sm focus:border-[#999] dark:focus:border-[#ccf381] focus:ring-2 focus:ring-[#999]/10 dark:focus:ring-[#ccf381]/20 transition-all text-sm sm:text-base text-black dark:text-white placeholder:text-[#999] dark:placeholder:text-[#555]"
               />
             </div>
 
@@ -207,11 +207,11 @@ export function SignInForm() {
                 checked={rememberMe}
                 onCheckedChange={(checked) => setRememberMe(checked === true)}
                 disabled={isLoading}
-                className="border-[#e5e5e5]"
+                className="border-[#e5e5e5] dark:border-[#262626]"
               />
               <Label
                 htmlFor="remember-me"
-                className="text-sm font-normal text-[#666] cursor-pointer"
+                className="text-sm font-normal text-[#666] dark:text-[#a1a1aa] cursor-pointer"
               >
                 {t("rememberMe")}
               </Label>
@@ -219,7 +219,7 @@ export function SignInForm() {
 
             <Button
               type="submit"
-              className="w-full h-11 sm:h-12 rounded-full bg-[#111] text-white font-semibold text-sm sm:text-base transition-all duration-300 hover:translate-y-[-2px] hover:shadow-[0_10px_20px_rgba(0,0,0,0.15)] hover:bg-[#222] active:scale-[0.98] inline-flex items-center justify-center gap-2.5"
+              className="w-full h-11 sm:h-12 rounded-full bg-[#111] dark:bg-[#ccf381] text-white dark:text-black font-semibold text-sm sm:text-base transition-all duration-300 hover:translate-y-[-2px] hover:shadow-[0_10px_20px_rgba(0,0,0,0.15)] dark:hover:shadow-[0_10px_20px_rgba(204,243,129,0.3)] hover:bg-[#222] dark:hover:bg-[#d4f89a] active:scale-[0.98] inline-flex items-center justify-center gap-2.5"
               disabled={isLoading}
             >
               {isLoading ? (
@@ -234,11 +234,11 @@ export function SignInForm() {
           </form>
 
           {/* Sign Up Link */}
-          <p className="mt-6 sm:mt-8 text-center text-xs sm:text-sm text-[#666] font-normal">
+          <p className="mt-6 sm:mt-8 text-center text-xs sm:text-sm text-[#666] dark:text-[#a1a1aa] font-normal">
             {t("noAccount")}{" "}
             <Link
               href={`/${locale}/auth/signup`}
-              className="font-semibold text-black hover:underline transition-colors"
+              className="font-semibold text-black dark:text-white hover:underline transition-colors"
             >
               {t("signUpTitle")}
             </Link>
