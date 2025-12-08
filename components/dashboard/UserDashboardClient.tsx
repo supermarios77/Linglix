@@ -99,7 +99,7 @@ export function UserDashboardClient({
   const tBooking = useTranslations("booking");
 
   const formatDate = (date: Date) => {
-    return new Intl.DateTimeFormat("en-US", {
+    return new Intl.DateTimeFormat(locale === "es" ? "es-ES" : "en-US", {
       month: "short",
       day: "numeric",
       year: "numeric",
@@ -107,7 +107,7 @@ export function UserDashboardClient({
   };
 
   const formatTime = (date: Date) => {
-    return new Intl.DateTimeFormat("en-US", {
+    return new Intl.DateTimeFormat(locale === "es" ? "es-ES" : "en-US", {
       hour: "numeric",
       minute: "2-digit",
     }).format(new Date(date));
@@ -347,7 +347,7 @@ export function UserDashboardClient({
                           )}
                           <div>
                             <h3 className="text-lg sm:text-xl font-bold text-black dark:text-white mb-1">
-                              {booking.tutor.user.name || "Tutor"}
+                              {booking.tutor.user.name || t("tutorFallback")}
                             </h3>
                             <div className="flex items-center gap-2 mb-2">
                               <div className="flex text-[#ffb800]">
@@ -389,7 +389,7 @@ export function UserDashboardClient({
                             <span className="font-medium">{formatTime(booking.scheduledAt)}</span>
                           </div>
                           <div className="flex items-center gap-2">
-                            <span className="font-medium">{booking.duration} min</span>
+                            <span className="font-medium">{booking.duration} {tBooking("min")}</span>
                           </div>
                           <div className="flex items-center gap-2">
                             <span className="font-semibold text-black dark:text-white">
@@ -458,7 +458,7 @@ export function UserDashboardClient({
                           )}
                           <div>
                             <h3 className="text-base sm:text-lg font-semibold text-black dark:text-white mb-1">
-                              {booking.tutor.user.name || "Tutor"}
+                              {booking.tutor.user.name || t("tutorFallback")}
                             </h3>
                             <p className="text-xs sm:text-sm text-[#666] dark:text-[#aaa]">
                               {booking.tutor.specialties.join(", ")}

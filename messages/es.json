@@ -121,6 +121,7 @@
     "selectTime": "Seleccionar Hora",
     "duration": "Duración",
     "minutes": "minutos",
+    "min": "min",
     "notes": "Notas (opcional)",
     "confirmBooking": "Confirmar Reserva",
     "bookingConfirmed": "Reserva Confirmada",
@@ -146,7 +147,8 @@
     "viewTutor": "Ver Tutor",
     "viewRecording": "Ver Grabación",
     "noBookings": "Aún No Hay Reservas",
-    "noBookingsDescription": "Comienza tu viaje de aprendizaje de idiomas reservando tu primera sesión con un tutor"
+    "noBookingsDescription": "Comienza tu viaje de aprendizaje de idiomas reservando tu primera sesión con un tutor",
+    "tutorFallback": "Tutor"
   },
   "errors": {
     "generic": "Algo salió mal",

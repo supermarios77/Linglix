@@ -121,6 +121,7 @@
     "selectTime": "Select Time",
     "duration": "Duration",
     "minutes": "minutes",
+    "min": "min",
     "notes": "Notes (optional)",
     "confirmBooking": "Confirm Booking",
     "bookingConfirmed": "Booking Confirmed",
@@ -146,7 +147,8 @@
     "viewTutor": "View Tutor",
     "viewRecording": "View Recording",
     "noBookings": "No Bookings Yet",
-    "noBookingsDescription": "Start your language learning journey by booking your first session with a tutor"
+    "noBookingsDescription": "Start your language learning journey by booking your first session with a tutor",
+    "tutorFallback": "Tutor"
   },
   "errors": {
     "generic": "Something went wrong",
