@@ -128,6 +128,26 @@
     "past": "Pasadas",
     "cancelled": "Canceladas"
   },
+  "dashboard": {
+    "title": "Bienvenido de Nuevo",
+    "subtitle": "Gestiona tu viaje de aprendizaje de idiomas",
+    "welcome": "Tu Panel",
+    "browseTutors": "Buscar Tutores",
+    "browseTutorsDescription": "Encuentra tu tutor de idiomas perfecto",
+    "getStarted": "Comenzar",
+    "stats": "Tus Estadísticas",
+    "totalBookings": "Total de Reservas",
+    "upcomingSessions": "Sesiones Próximas",
+    "completedSessions": "Sesiones Completadas",
+    "upcomingBookings": "Reservas Próximas",
+    "upcomingBookingsDescription": "Tus sesiones programadas",
+    "pastSessions": "Sesiones Pasadas",
+    "pastSessionsDescription": "Tus sesiones completadas y canceladas",
+    "viewTutor": "Ver Tutor",
+    "viewRecording": "Ver Grabación",
+    "noBookings": "Aún No Hay Reservas",
+    "noBookingsDescription": "Comienza tu viaje de aprendizaje de idiomas reservando tu primera sesión con un tutor"
+  },
   "errors": {
     "generic": "Algo salió mal",
     "notFound": "Página no encontrada",

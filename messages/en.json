@@ -128,6 +128,26 @@
     "past": "Past",
     "cancelled": "Cancelled"
   },
+  "dashboard": {
+    "title": "Welcome Back",
+    "subtitle": "Manage your language learning journey",
+    "welcome": "Your Dashboard",
+    "browseTutors": "Browse Tutors",
+    "browseTutorsDescription": "Find your perfect language tutor",
+    "getStarted": "Get Started",
+    "stats": "Your Stats",
+    "totalBookings": "Total Bookings",
+    "upcomingSessions": "Upcoming Sessions",
+    "completedSessions": "Completed Sessions",
+    "upcomingBookings": "Upcoming Bookings",
+    "upcomingBookingsDescription": "Your scheduled sessions",
+    "pastSessions": "Past Sessions",
+    "pastSessionsDescription": "Your completed and cancelled sessions",
+    "viewTutor": "View Tutor",
+    "viewRecording": "View Recording",
+    "noBookings": "No Bookings Yet",
+    "noBookingsDescription": "Start your language learning journey by booking your first session with a tutor"
+  },
   "errors": {
     "generic": "Something went wrong",
     "notFound": "Page not found",
