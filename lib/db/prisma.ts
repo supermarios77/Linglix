@@ -19,6 +19,13 @@ const globalForPrisma = globalThis as unknown as {
  * - Uses DATABASE_URL from environment (configured in prisma.config.ts for migrations)
  * - Prisma 7+ requires adapter for PostgreSQL
  */
+// Validate required environment variable
+if (!process.env.DATABASE_URL) {
+  throw new Error(
+    "DATABASE_URL environment variable is required but not set"
+  );
+}
+
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
 });

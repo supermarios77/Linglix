@@ -28,7 +28,9 @@ export const authConfig = {
       // Initial sign in
       if (user) {
         token.id = user.id;
-        token.role = (user as any).role; // Role is added in our custom user type
+        // Type-safe role assignment - user.role is guaranteed by our authorize function
+        // The authorize function in route.ts always returns a user with role
+        token.role = (user as { role: Role }).role;
         token.email = user.email;
       }
 
@@ -50,25 +52,40 @@ export const authConfig = {
   providers: [
     /**
      * Google OAuth Provider
+     * Only enabled if credentials are provided
      */
-    Google({
-      clientId: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      allowDangerousEmailAccountLinking: false, // Security: prevent account linking
-    }),
+    ...(process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET
+      ? [
+          Google({
+            clientId: process.env.GOOGLE_CLIENT_ID,
+            clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+            allowDangerousEmailAccountLinking: false, // Security: prevent account linking
+          }),
+        ]
+      : []),
     /**
      * GitHub OAuth Provider
+     * Only enabled if credentials are provided
      */
-    GitHub({
-      clientId: process.env.GITHUB_CLIENT_ID,
-      clientSecret: process.env.GITHUB_CLIENT_SECRET,
-      allowDangerousEmailAccountLinking: false, // Security: prevent account linking
-    }),
+    ...(process.env.GITHUB_CLIENT_ID && process.env.GITHUB_CLIENT_SECRET
+      ? [
+          GitHub({
+            clientId: process.env.GITHUB_CLIENT_ID,
+            clientSecret: process.env.GITHUB_CLIENT_SECRET,
+            allowDangerousEmailAccountLinking: false, // Security: prevent account linking
+          }),
+        ]
+      : []),
   ],
   session: {
     strategy: "jwt", // Use JWT for serverless compatibility
     maxAge: 30 * 24 * 60 * 60, // 30 days
     updateAge: 24 * 60 * 60, // 24 hours
   },
-  secret: process.env.NEXTAUTH_SECRET,
+  secret: process.env.NEXTAUTH_SECRET || (() => {
+    if (process.env.NODE_ENV === "production") {
+      throw new Error("NEXTAUTH_SECRET is required in production");
+    }
+    return "development-secret-change-in-production";
+  })(),
 } satisfies NextAuthConfig;

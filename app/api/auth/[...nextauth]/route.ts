@@ -89,7 +89,15 @@ const { handlers } = NextAuth({
             image: user.image,
           };
         } catch (error) {
-          console.error("Auth error:", error);
+          // Log error server-side only (not exposed to client)
+          if (process.env.NODE_ENV === "development") {
+            console.error("Auth error:", error);
+          } else {
+            // In production, log to error tracking service (e.g., Sentry)
+            // console.error should be replaced with proper error tracking
+          }
+          // Return null to indicate authentication failure
+          // Don't leak error details to prevent information disclosure
           return null;
         }
       },

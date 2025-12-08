@@ -52,18 +52,38 @@ export async function POST(request: Request) {
       { status: 201 }
     );
   } catch (error) {
-    // Handle validation errors
+    // Handle validation errors - don't leak validation details
     if (error instanceof Error && error.name === "ZodError") {
       return NextResponse.json(
-        { error: "Invalid input", details: error.message },
+        { error: "Invalid input. Please check your email and password." },
         { status: 400 }
       );
     }
 
-    // Handle other errors
-    console.error("Registration error:", error);
+    // Handle Prisma unique constraint errors (email already exists)
+    if (
+      error &&
+      typeof error === "object" &&
+      "code" in error &&
+      error.code === "P2002"
+    ) {
+      return NextResponse.json(
+        { error: "User with this email already exists" },
+        { status: 400 }
+      );
+    }
+
+    // Log error server-side only (not exposed to client)
+    if (process.env.NODE_ENV === "development") {
+      console.error("Registration error:", error);
+    } else {
+      // In production, log to error tracking service (e.g., Sentry)
+      // console.error should be replaced with proper error tracking
+    }
+
+    // Generic error message - don't leak internal details
     return NextResponse.json(
-      { error: "Failed to register user" },
+      { error: "Failed to register user. Please try again." },
       { status: 500 }
     );
   }
