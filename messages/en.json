@@ -157,6 +157,14 @@
       "welcome": "Tutor Dashboard",
       "tutor": "Tutor",
       "student": "Student",
+      "sections": {
+        "overview": "Overview",
+        "sessions": "Sessions",
+        "calendar": "Calendar",
+        "availability": "Availability",
+        "reviews": "Reviews",
+        "settings": "Settings"
+      },
       "stats": {
         "totalEarnings": "Total Earnings",
         "totalSessions": "Total Sessions",

@@ -157,6 +157,14 @@
       "welcome": "Panel del Tutor",
       "tutor": "Tutor",
       "student": "Estudiante",
+      "sections": {
+        "overview": "Resumen",
+        "sessions": "Sesiones",
+        "calendar": "Calendario",
+        "availability": "Disponibilidad",
+        "reviews": "Reseñas",
+        "settings": "Configuración"
+      },
       "stats": {
         "totalEarnings": "Ganancias Totales",
         "totalSessions": "Sesiones Totales",
