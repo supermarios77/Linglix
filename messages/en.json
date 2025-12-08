@@ -33,7 +33,30 @@
     "emailRequired": "Email is required",
     "passwordRequired": "Password is required",
     "passwordMinLength": "Password must be at least 8 characters",
-    "emailInvalid": "Invalid email address"
+    "emailInvalid": "Invalid email address",
+    "nameRequired": "Name is required",
+    "nameMinLength": "Name must be at least 2 characters",
+    "signingIn": "Signing in...",
+    "signingUp": "Creating account...",
+    "signInSuccess": "Signed in successfully",
+    "signUpSuccess": "Account created successfully",
+    "signInError": "Failed to sign in",
+    "signUpError": "Failed to create account",
+    "emailExists": "An account with this email already exists",
+    "confirmPassword": "Confirm Password",
+    "passwordsDoNotMatch": "Passwords do not match",
+    "createAccount": "Create Account",
+    "continueWithEmail": "Continue with Email",
+    "errorTitle": "Authentication Error",
+    "errorDescription": "An error occurred during authentication",
+    "errorTryAgain": "Please try again",
+    "errorGoBack": "Go back to sign in",
+    "errorTypes": {
+      "Configuration": "There is a problem with the server configuration",
+      "AccessDenied": "You do not have permission to sign in",
+      "Verification": "The verification token has expired or has already been used",
+      "Default": "An unexpected error occurred"
+    }
   },
   "navigation": {
     "home": "Home",
