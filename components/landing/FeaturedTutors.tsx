@@ -3,6 +3,7 @@ import Image from "next/image";
 import { Star, Users, Sparkles, CheckCircle2 } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import { prisma } from "@/lib/db/prisma";
+import { slugify } from "@/lib/utils/slug";
 
 interface FeaturedTutorsProps {
   locale: string;
@@ -10,7 +11,8 @@ interface FeaturedTutorsProps {
 
 interface TutorData {
   id: string;
-  name: string | null;
+  name: string;
+  slug: string;
   image: string | null;
   specialties: string[];
   rating: number;
@@ -61,10 +63,11 @@ export async function FeaturedTutors({ locale }: FeaturedTutorsProps) {
 
   // Transform to simpler format
   const tutorData: TutorData[] = tutors
-    .filter((tutor) => tutor.tutorProfile)
+    .filter((tutor) => tutor.tutorProfile && tutor.name)
     .map((tutor) => ({
       id: tutor.id,
-      name: tutor.name || t("trending.tutorFallback"),
+      name: tutor.name!,
+      slug: slugify(tutor.name!),
       image: tutor.image,
       specialties: tutor.tutorProfile!.specialties,
       rating: tutor.tutorProfile!.rating,
@@ -150,7 +153,7 @@ export async function FeaturedTutors({ locale }: FeaturedTutorsProps) {
                   ))}
                 </div>
                 
-                <Link href={`/${locale}/tutors/${tutor.id}`}>
+                <Link href={`/${locale}/tutors/${tutor.slug}`}>
                   <button className="w-full md:w-auto bg-[#111] dark:bg-[#ccf381] text-white dark:text-black px-8 sm:px-10 py-3 sm:py-4 rounded-full font-semibold text-sm sm:text-base transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_12px_24px_rgba(0,0,0,0.2)] hover:bg-[#222] dark:hover:bg-[#d4f89a]">
                     {t("trending.viewProfile")}
                   </button>
@@ -202,7 +205,7 @@ export async function FeaturedTutors({ locale }: FeaturedTutorsProps) {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
           {tutorData.map((tutor) => (
-            <Link key={tutor.id} href={`/${locale}/tutors/${tutor.id}`}>
+            <Link key={tutor.id} href={`/${locale}/tutors/${tutor.slug}`}>
               <div className="group bg-white dark:bg-gradient-to-b from-[#1a1a1a] to-[#121212] rounded-[24px] sm:rounded-[32px] p-6 sm:p-8 transition-all duration-300 cursor-pointer border border-[#e5e5e5] dark:border-[#262626] hover:-translate-y-2 hover:border-[#d4d4d4] dark:hover:border-[#404040] hover:shadow-[0_30px_60px_rgba(0,0,0,0.12)]">
                 <div className="relative w-full h-64 sm:h-72 md:h-80 rounded-[20px] sm:rounded-[24px] overflow-hidden mb-4 sm:mb-6 bg-gradient-to-br from-[#f5f5f5] to-[#e5e5e5] dark:from-[#1a1a1a] dark:to-[#0a0a0a] flex items-center justify-center border border-[#e5e5e5] dark:border-[#262626]">
                   {tutor.image ? (
@@ -247,7 +250,7 @@ export async function FeaturedTutors({ locale }: FeaturedTutorsProps) {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
           {/* Large Card */}
-          <Link href={`/${locale}/tutors/${tutorData[0].id}`} className="md:col-span-2">
+          <Link href={`/${locale}/tutors/${tutorData[0].slug}`} className="md:col-span-2">
             <div className="group bg-white dark:bg-gradient-to-b from-[#1a1a1a] to-[#121212] rounded-[24px] sm:rounded-[32px] p-6 sm:p-8 transition-all duration-300 cursor-pointer border border-[#e5e5e5] dark:border-[#262626] hover:-translate-y-2 hover:border-[#d4d4d4] dark:hover:border-[#404040] hover:shadow-[0_30px_60px_rgba(0,0,0,0.12)] h-full">
               <div className="relative w-full h-56 sm:h-64 rounded-[20px] sm:rounded-[24px] overflow-hidden mb-4 sm:mb-6 bg-gradient-to-br from-[#f5f5f5] to-[#e5e5e5] dark:from-[#1a1a1a] dark:to-[#0a0a0a] flex items-center justify-center border border-[#e5e5e5] dark:border-[#262626]">
                 {tutorData[0].image ? (
@@ -275,7 +278,7 @@ export async function FeaturedTutors({ locale }: FeaturedTutorsProps) {
           {/* Two Small Cards */}
           <div className="space-y-4 sm:space-y-6">
             {tutorData.slice(1, 3).map((tutor) => (
-              <Link key={tutor.id} href={`/${locale}/tutors/${tutor.id}`}>
+              <Link key={tutor.id} href={`/${locale}/tutors/${tutor.slug}`}>
                 <div className="group bg-white dark:bg-gradient-to-b from-[#1a1a1a] to-[#121212] rounded-[20px] sm:rounded-[32px] p-4 sm:p-6 transition-all duration-300 cursor-pointer border border-[#e5e5e5] dark:border-[#262626] hover:-translate-y-1 hover:border-[#d4d4d4] dark:hover:border-[#404040] hover:shadow-[0_20px_40px_rgba(0,0,0,0.08)]">
                   <div className="relative w-full h-32 sm:h-40 rounded-[16px] sm:rounded-[20px] overflow-hidden mb-3 sm:mb-4 bg-gradient-to-br from-[#f5f5f5] to-[#e5e5e5] dark:from-[#1a1a1a] dark:to-[#0a0a0a] flex items-center justify-center border border-[#e5e5e5] dark:border-[#262626]">
                     {tutor.image ? (

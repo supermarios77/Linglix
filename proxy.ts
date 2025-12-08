@@ -54,7 +54,7 @@ export default auth((req) => {
   const pathnameWithoutLocale = pathname.replace(/^\/[a-z]{2}(-[A-Z]{2})?/, "") || "/";
 
   // Public routes that don't require authentication (without locale prefix)
-  const publicRoutes = ["/", "/auth"];
+  const publicRoutes = ["/", "/auth", "/tutors"];
 
   // Check if route is public (without locale prefix)
   const isPublicRoute = publicRoutes.some(
