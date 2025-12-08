@@ -161,9 +161,9 @@
 @layer base {
   * {
     border-color: hsl(var(--border));
-  }
+}
 
-  body {
+body {
     background-color: hsl(var(--background));
     color: hsl(var(--foreground));
     font-family: var(--font-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
@@ -172,4 +172,46 @@
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
   }
+}
+
+/* ============================================================================
+   ANIMATIONS
+   ============================================================================ */
+
+/* Floating animation for cards */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-20px) rotate(2deg);
+  }
+}
+
+/* Marquee animation */
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* Custom styles for ambient background blobs */
+.blob {
+  animation: float 10s ease-in-out infinite;
+}
+
+.blob-1 {
+  animation-delay: 0s;
+}
+
+.blob-2 {
+  animation-delay: 2s;
+}
+
+/* Floating card animation */
+.floating-card {
+  animation: float 6s ease-in-out infinite;
 }

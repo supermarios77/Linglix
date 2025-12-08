@@ -161,6 +161,36 @@
       "title": "¿Listo para Comenzar a Aprender?",
       "subtitle": "Únete a miles de estudiantes que ya están aprendiendo con Linglix",
       "button": "Comenzar Hoy"
+    },
+    "marquee": {
+      "items": [
+        "✨ Solo Hablantes Nativos",
+        "🌍 Aprende Cualquier Idioma",
+        "📚 Horarios Flexibles",
+        "💬 Sesiones 1 a 1"
+      ]
+    },
+    "trending": {
+      "title": "Tutores Populares",
+      "seeAll": "Ver Todos los Tutores"
+    },
+    "waitlist": {
+      "badge": "Próximamente",
+      "title": "Sé el Primero en Acceder a",
+      "titleHighlight": "Funciones Premium",
+      "subtitle": "Obtén acceso exclusivo anticipado a nuevos tutores, funciones y herramientas de aprendizaje. Regístrate ahora y sé el primero en experimentar el aprendizaje de idiomas de próxima generación.",
+      "button": "Unirse a la Lista",
+      "disclaimer": "Únete a más de 5,000 estudiantes de idiomas en la lista. Sin spam, solo aprendizaje."
+    },
+    "testimonials": {
+      "title": "Amado por",
+      "titleHighlight": "Miles",
+      "subtitle": "Resultados reales de estudiantes reales"
+    },
+    "navigation": {
+      "browseTutors": "Buscar Tutores",
+      "howItWorks": "Cómo Funciona",
+      "about": "Acerca de"
     }
   }
 }

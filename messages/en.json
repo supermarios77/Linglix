@@ -161,6 +161,36 @@
       "title": "Ready to Start Learning?",
       "subtitle": "Join thousands of students already learning with Linglix",
       "button": "Get Started Today"
+    },
+    "marquee": {
+      "items": [
+        "✨ Native Speakers Only",
+        "🌍 Learn Any Language",
+        "📚 Flexible Scheduling",
+        "💬 1-on-1 Sessions"
+      ]
+    },
+    "trending": {
+      "title": "Popular Tutors",
+      "seeAll": "See All Tutors"
+    },
+    "waitlist": {
+      "badge": "Coming Soon",
+      "title": "Be First to Access",
+      "titleHighlight": "Premium Features",
+      "subtitle": "Get exclusive early access to new tutors, features, and learning tools. Sign up now and be the first to experience next-level language learning.",
+      "button": "Join Waitlist",
+      "disclaimer": "Join 5,000+ language learners on the waitlist. No spam, just learning."
+    },
+    "testimonials": {
+      "title": "Loved by",
+      "titleHighlight": "Thousands",
+      "subtitle": "Real results from real students"
+    },
+    "navigation": {
+      "browseTutors": "Browse Tutors",
+      "howItWorks": "How It Works",
+      "about": "About"
     }
   }
 }
