@@ -4,10 +4,10 @@
 /**
  * HeroUI v3 Theme Customization
  * 
- * Override default theme colors to match our brand:
- * - Blue accent color (modern, professional)
+ * Modern, minimalist design:
+ * - Black accent in light mode, white in dark mode
+ * - Clean, sophisticated color palette
  * - Proper light/dark mode support
- * - Consistent color scheme across the app
  */
 
 @layer base {
@@ -15,9 +15,9 @@
   [data-theme="light"] {
     color-scheme: light;
 
-    /* Override accent color to blue (modern, professional) */
-    --accent: oklch(0.55 0.20 250); /* Blue accent */
-    --accent-foreground: var(--snow);
+    /* Black accent for light mode - modern, bold, sophisticated */
+    --accent: oklch(0.15 0 0); /* Pure black */
+    --accent-foreground: var(--snow); /* White text on black */
 
     /* Ensure proper contrast */
     --link: var(--accent);
@@ -28,9 +28,9 @@
   [data-theme="dark"] {
     color-scheme: dark;
 
-    /* Dark mode accent - lighter blue for better visibility */
-    --accent: oklch(0.70 0.15 250); /* Lighter blue for dark mode */
-    --accent-foreground: var(--eclipse);
+    /* White accent for dark mode - clean, modern */
+    --accent: oklch(0.98 0 0); /* Pure white */
+    --accent-foreground: var(--eclipse); /* Black text on white */
 
     /* Ensure proper contrast in dark mode */
     --link: var(--accent);
@@ -40,5 +40,9 @@
 
 body {
   @apply bg-background text-foreground;
-  font-family: var(--font-plus-jakarta-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-family: var(--font-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }

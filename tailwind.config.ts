@@ -15,7 +15,21 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ["var(--font-plus-jakarta-sans)", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "Roboto", "Helvetica Neue", "Arial", "sans-serif"],
+        sans: ["var(--font-sans)", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "Roboto", "Helvetica Neue", "Arial", "sans-serif"],
+      },
+      fontWeight: {
+        light: "300",
+        normal: "400",
+        medium: "500",
+        semibold: "600",
+        bold: "700",
+      },
+      letterSpacing: {
+        tighter: "-0.02em",
+        tight: "-0.01em",
+        normal: "0",
+        wide: "0.01em",
+        wider: "0.02em",
       },
     },
   },

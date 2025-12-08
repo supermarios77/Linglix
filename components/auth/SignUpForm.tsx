@@ -108,11 +108,11 @@ export function SignUpForm() {
   return (
     <div className="w-full max-w-[420px]">
       {/* Header */}
-      <div className="mb-10 text-center">
-        <h1 className="text-3xl font-bold text-foreground mb-2 tracking-tight">
+      <div className="mb-12 text-center">
+        <h1 className="text-4xl font-semibold text-foreground mb-3 tracking-tight leading-tight">
           {t("signUpTitle")}
         </h1>
-        <p className="text-[15px] text-muted font-medium">
+        <p className="text-base text-muted font-normal leading-relaxed">
           {t("createAccount")}
         </p>
       </div>
@@ -128,7 +128,7 @@ export function SignUpForm() {
       )}
 
       {/* Registration Form */}
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-5">
         <TextField
           name="name"
           type="text"
@@ -206,12 +206,12 @@ export function SignUpForm() {
       </form>
 
       {/* Sign In Link */}
-      <p className="mt-6 text-center text-[14px] text-muted font-medium">
+      <p className="mt-8 text-center text-sm text-muted font-normal">
         {t("hasAccount")}{" "}
         <Link
           href={`/${locale}/auth/signin`}
           underline="hover"
-          className="font-semibold"
+          className="font-medium"
         >
           {t("signInTitle")}
         </Link>

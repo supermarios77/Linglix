@@ -51,10 +51,10 @@ export default async function AuthErrorPage({
     <div className="flex min-h-screen flex-col items-center justify-center bg-background px-4 py-12 sm:px-6 lg:px-8">
       <div className="w-full max-w-md space-y-6 text-center">
         <div>
-          <h1 className="text-3xl font-bold text-foreground">
+          <h1 className="text-4xl font-semibold text-foreground tracking-tight">
             {t("errorTitle")}
           </h1>
-          <p className="mt-2 text-muted">
+          <p className="mt-3 text-base text-muted font-normal leading-relaxed">
             {t("errorDescription")}
           </p>
         </div>

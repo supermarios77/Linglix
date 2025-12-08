@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Plus_Jakarta_Sans } from "next/font/google";
+import { Inter } from "next/font/google";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 import { notFound } from "next/navigation";
@@ -7,21 +7,22 @@ import "../globals.css";
 import { locales, isValidLocale } from "@/i18n/config";
 
 /**
- * Plus Jakarta Sans - Modern, beautiful geometric sans-serif
+ * Inter - Modern, highly legible sans-serif font
  * 
- * Originally designed for Jakarta's city branding, now widely used for:
- * - Modern web applications and startups
- * - Clean, geometric forms
- * - Excellent readability
- * - Beautiful, contemporary aesthetic
- * - Perfect for UI/UX design
+ * Designed specifically for computer screens with:
+ * - Excellent readability at all sizes
+ * - Tall x-height for clarity
+ * - Open apertures for better character recognition
+ * - Optimized for UI and web applications
+ * - Used by major tech companies (GitHub, Figma, etc.)
  */
-const plusJakartaSans = Plus_Jakarta_Sans({
+const inter = Inter({
   subsets: ["latin"],
-  variable: "--font-plus-jakarta-sans",
+  variable: "--font-sans",
   display: "swap", // Optimize font loading
   preload: true,
-  weight: ["400", "500", "600", "700", "800"], // Include multiple weights for design flexibility
+  weight: ["300", "400", "500", "600", "700"], // Modern weight range
+  style: ["normal"],
 });
 
 export const metadata: Metadata = {
@@ -55,7 +56,7 @@ export default async function LocaleLayout({
   return (
     <html lang={locale} className="light" data-theme="light">
       <body
-        className={`${plusJakartaSans.variable} font-sans antialiased bg-background text-foreground`}
+        className={`${inter.variable} font-sans antialiased bg-background text-foreground`}
       >
         <NextIntlClientProvider messages={messages}>
         {children}

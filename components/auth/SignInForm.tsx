@@ -83,11 +83,11 @@ export function SignInForm() {
   return (
     <div className="w-full max-w-[420px]">
       {/* Header */}
-      <div className="mb-10 text-center">
-        <h1 className="text-3xl font-bold text-foreground mb-2 tracking-tight">
+      <div className="mb-12 text-center">
+        <h1 className="text-4xl font-semibold text-foreground mb-3 tracking-tight leading-tight">
           {t("signInTitle")}
         </h1>
-        <p className="text-[15px] text-muted font-medium">
+        <p className="text-base text-muted font-normal leading-relaxed">
           {t("signInWith")} Google {t("or")} {tCommon("email")}
         </p>
       </div>
@@ -133,17 +133,17 @@ export function SignInForm() {
       </div>
 
       {/* Divider */}
-      <div className="relative mb-5">
+      <div className="relative mb-6">
         <Separator />
         <div className="absolute inset-0 flex items-center justify-center">
-          <span className="px-3 bg-background text-muted text-[13px] font-medium">
+          <span className="px-3 bg-background text-muted text-sm font-normal">
             {t("or")}
           </span>
         </div>
       </div>
 
       {/* Email/Password Form */}
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-5">
         <TextField
           name="email"
           type="email"
