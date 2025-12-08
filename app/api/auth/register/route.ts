@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
-import { registerUser, registerSchema } from "@/lib/auth-utils";
-import { prisma } from "@/lib/prisma";
+import { registerUser, registerSchema } from "@/lib/auth/utils";
+import { prisma } from "@/lib/db/prisma";
 
 /**
  * User Registration API Route

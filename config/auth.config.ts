@@ -28,7 +28,7 @@ export const authConfig = {
       // Initial sign in
       if (user) {
         token.id = user.id;
-        token.role = user.role;
+        token.role = (user as any).role; // Role is added in our custom user type
         token.email = user.email;
       }
 

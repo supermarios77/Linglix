@@ -1,4 +1,6 @@
 import { PrismaClient } from "@prisma/client";
+import { Pool } from "pg";
+import { PrismaPg } from "@prisma/adapter-pg";
 
 const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined;
@@ -15,14 +17,21 @@ const globalForPrisma = globalThis as unknown as {
  * - Connection pooling handled by Neon
  * - Automatic connection management
  * - Uses DATABASE_URL from environment (configured in prisma.config.ts for migrations)
+ * - Prisma 7+ requires adapter for PostgreSQL
  */
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+});
+
+const adapter = new PrismaPg(pool);
+
 export const prisma =
   globalForPrisma.prisma ??
   new PrismaClient({
+    adapter,
     log: process.env.NODE_ENV === "development" ? ["query", "error", "warn"] : ["error"],
     // Connection pooling is handled by Neon's built-in pooler
     // No need to configure connection_limit for serverless
-    // DATABASE_URL is automatically read from process.env
   });
 
 if (process.env.NODE_ENV !== "production") {

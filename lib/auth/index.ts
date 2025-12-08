@@ -1,4 +1,4 @@
-import { auth } from "@/auth";
+import { auth } from "@/config/auth";
 import { Role } from "@prisma/client";
 
 /**
@@ -61,3 +61,6 @@ export async function requireRole(role: Role) {
   }
   return user;
 }
+
+// Re-export utilities
+export * from "./utils";
