@@ -398,75 +398,12 @@ export function TutorDashboardClient({
         {/* Main Content */}
         <main className="flex-1 lg:ml-64">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 py-8 sm:py-12">
-            {/* Section Header */}
-            <div className="mb-8 sm:mb-12">
-              {activeSection === "overview" && (
-                <div className="flex flex-col items-center text-center mb-8">
-                  {/* Welcome Badge */}
-                  <div className="inline-flex items-center px-3 sm:px-4 py-1.5 sm:py-2 bg-white/90 dark:bg-[#121212]/90 backdrop-blur-md border border-[#e5e5e5] dark:border-[#262626] rounded-full text-[10px] sm:text-xs font-semibold uppercase tracking-wider mb-4 sm:mb-6 shadow-[0_4px_12px_rgba(0,0,0,0.05)] group hover:scale-105 transition-transform">
-                    <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-[#ccf381] rounded-full mr-2 sm:mr-2.5 animate-pulse" />
-                    <span className="mr-1.5 sm:mr-2">{tTutor("welcome")}</span>
-                    <Sparkles className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-[#ccf381] opacity-70 group-hover:opacity-100 transition-opacity" />
-                  </div>
-
-                  {/* Main Heading */}
-                  <h1 className="text-[32px] sm:text-[42px] md:text-[56px] leading-[0.92] font-bold tracking-[-0.04em] mb-4 sm:mb-6 text-black dark:text-white">
-                    {tTutor("title")}
-                    <br />
-                    <span className="relative inline-block mt-1 sm:mt-2">
-                      <span className="inline-block bg-[#ffeb3b] dark:bg-[#ccf381] text-black dark:text-black px-3 sm:px-4 py-1 sm:py-1.5 -rotate-[-2deg] transform origin-center font-bold shadow-[0_4px_8px_rgba(0,0,0,0.1)] relative z-10 text-[28px] sm:text-[36px] md:text-[44px]">
-                        {user.name || tTutor("tutor")}
-                      </span>
-                      <span className="absolute inset-0 bg-[#ffeb3b]/20 dark:bg-[#ccf381]/20 blur-xl -rotate-[-2deg] transform origin-center" aria-hidden="true" />
-                    </span>
-                  </h1>
-
-                  <p className="text-base sm:text-lg text-[#555] dark:text-[#a1a1aa] max-w-[600px] mb-6">
-                    {tTutor("subtitle")}
-                  </p>
-
-                  {/* Status Badge */}
-                  <div className="mb-4">
-                    {getApprovalStatusBadge(tutorProfile.approvalStatus)}
-                  </div>
-
-                  {/* Approval Status Alerts */}
-                  {tutorProfile.approvalStatus === "PENDING" && (
-                    <div className="inline-flex items-center gap-2 px-4 py-2 bg-yellow-50/80 dark:bg-yellow-950/80 border border-yellow-200 dark:border-yellow-800 rounded-full text-sm text-yellow-700 dark:text-yellow-300">
-                      <AlertCircle className="w-4 h-4" />
-                      {tTutor("status.pendingMessage")}
-                    </div>
-                  )}
-
-                  {tutorProfile.approvalStatus === "REJECTED" && tutorProfile.rejectionReason && (
-                    <div className="inline-flex items-center gap-2 px-4 py-2 bg-red-50/80 dark:bg-red-950/80 border border-red-200 dark:border-red-800 rounded-full text-sm text-red-700 dark:text-red-300 max-w-2xl">
-                      <AlertCircle className="w-4 h-4" />
-                      <span>{tTutor("status.rejectedMessage")}: {tutorProfile.rejectionReason}</span>
-                    </div>
-                  )}
-                </div>
-              )}
-
-              {activeSection !== "overview" && (
-                <div>
-                  <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-[-0.02em] text-black dark:text-white mb-2">
-                    {sections.find((s) => s.id === activeSection)?.label}
-                  </h1>
-                  <p className="text-sm sm:text-base text-[#666] dark:text-[#a1a1aa]">
-                    {activeSection === "sessions" && tTutor("subtitle")}
-                    {activeSection === "calendar" && "View and manage your schedule"}
-                    {activeSection === "availability" && "Set when you're available to teach"}
-                    {activeSection === "reviews" && "See what your students are saying"}
-                  </p>
-                </div>
-              )}
-            </div>
 
             {/* Section Content */}
             {activeSection === "overview" && (
               <div className="space-y-6 sm:space-y-8">
                 {/* Hero Summary Card */}
-                <Card className="relative bg-gradient-to-br from-white via-white to-[#fafafa] dark:from-[#1a1a1a] dark:via-[#1a1a1a] dark:to-[#0a0a0a] rounded-[32px] sm:rounded-[40px] p-8 sm:p-12 border-2 border-[#e5e5e5] dark:border-[#262626] shadow-[0_20px_40px_rgba(0,0,0,0.08)] sm:shadow-[0_40px_80px_rgba(0,0,0,0.1)] overflow-hidden">
+                <Card className="relative bg-gradient-to-br from-white via-white to-[#fafafa] dark:from-[#1a1a1a] dark:via-[#1a1a1a] dark:to-[#0a0a0a] rounded-[32px] sm:rounded-[40px] p-8 sm:p-12 border-2 border-[#e5e5e5] dark:border-[#262626] shadow-[0_20px_40px_rgba(0,0,0,0.08)] sm:shadow-[0_40px_80px_rgba(0,0,0,0.1)] overflow-hidden mb-8 sm:mb-12">
                   {/* Background Gradient Overlay */}
                   <div className="absolute inset-0 bg-gradient-to-br from-[#7928ca]/5 via-transparent to-[#ccf381]/5 opacity-50" />
                   
