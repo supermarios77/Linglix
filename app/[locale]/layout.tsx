@@ -1,19 +1,25 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Inter } from "next/font/google";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 import { notFound } from "next/navigation";
 import "../globals.css";
 import { locales, isValidLocale } from "@/i18n/config";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+/**
+ * Inter - Modern, highly legible sans-serif font
+ * 
+ * Designed specifically for computer screens with:
+ * - Excellent readability at all sizes
+ * - Tall x-height for clarity
+ * - Open apertures for better character recognition
+ * - Optimized for UI and web applications
+ */
+const inter = Inter({
   subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+  variable: "--font-inter",
+  display: "swap", // Optimize font loading
+  preload: true,
 });
 
 export const metadata: Metadata = {
@@ -47,7 +53,7 @@ export default async function LocaleLayout({
   return (
     <html lang={locale}>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${inter.variable} font-sans antialiased`}
       >
         <NextIntlClientProvider messages={messages}>
           {children}
