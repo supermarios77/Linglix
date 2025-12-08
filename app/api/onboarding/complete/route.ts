@@ -59,14 +59,29 @@ export async function POST(request: Request) {
     const validated = onboardingSchema.parse(body);
 
     if (validated.role === "STUDENT") {
-      // For students, we can store preferences in a separate table or user metadata
-      // For now, we'll just ensure the role is set correctly
-      // In the future, you might want to create a StudentProfile table
+      // Update user role
       await prisma.user.update({
         where: { id: session.user.id },
         data: {
           role: Role.STUDENT,
-          // Store onboarding data as JSON in a metadata field if needed
+        },
+      });
+
+      // Create or update student profile
+      await prisma.studentProfile.upsert({
+        where: { userId: session.user.id },
+        create: {
+          userId: session.user.id,
+          learningGoal: validated.data.learningGoal,
+          currentLevel: validated.data.currentLevel,
+          preferredSchedule: validated.data.preferredSchedule,
+          motivation: validated.data.motivation || null,
+        },
+        update: {
+          learningGoal: validated.data.learningGoal,
+          currentLevel: validated.data.currentLevel,
+          preferredSchedule: validated.data.preferredSchedule,
+          motivation: validated.data.motivation || null,
         },
       });
 
