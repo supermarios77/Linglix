@@ -58,7 +58,7 @@ export default async function LocaleLayout({
         className={`${plusJakartaSans.variable} font-sans antialiased`}
       >
         <NextIntlClientProvider messages={messages}>
-          {children}
+        {children}
         </NextIntlClientProvider>
       </body>
     </html>

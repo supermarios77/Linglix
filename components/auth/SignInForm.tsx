@@ -4,17 +4,26 @@ import { useState, FormEvent } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { signIn } from "next-auth/react";
-import Link from "next/link";
 import { useLocale } from "next-intl";
+import {
+  Button,
+  TextField,
+  Input,
+  Label,
+  Alert,
+  Separator,
+  Checkbox,
+  Link,
+} from "@heroui/react";
 
 /**
  * Sign In Form Component
  * 
- * Beautiful, refined design with:
- * - Balanced typography and spacing
- * - Elegant rounded inputs
- * - Clean visual hierarchy
- * - Smooth interactions
+ * Built with HeroUI v3 components for:
+ * - Beautiful, accessible UI
+ * - Built-in form validation
+ * - Smooth animations
+ * - Production-ready design
  */
 export function SignInForm() {
   const t = useTranslations("auth");
@@ -25,6 +34,7 @@ export function SignInForm() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [rememberMe, setRememberMe] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -78,24 +88,27 @@ export function SignInForm() {
           {t("signInTitle")}
         </h1>
         <p className="text-[15px] text-gray-600 font-medium">
-          {t("signInWith")} {tCommon("email")} {t("or")} {t("signInWith")} Google
+          {t("signInWith")} Google {t("or")} {tCommon("email")}
         </p>
       </div>
 
       {/* Error Message */}
       {error && (
-        <div className="mb-5 rounded-xl bg-red-50 border border-red-100 p-3.5">
-          <p className="text-sm font-medium text-red-800">{error}</p>
-        </div>
+        <Alert status="danger" className="mb-5">
+          <Alert.Indicator />
+          <Alert.Content>
+            <Alert.Title>{error}</Alert.Title>
+          </Alert.Content>
+        </Alert>
       )}
 
       {/* OAuth Buttons */}
       <div className="space-y-2.5 mb-5">
-        <button
-          type="button"
-          onClick={() => handleOAuthSignIn("google")}
-          disabled={isLoading}
-          className="w-full flex items-center justify-center gap-2.5 px-5 py-3 border border-gray-200 rounded-full text-[14px] font-semibold text-gray-700 bg-white hover:bg-gray-50 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-sm hover:shadow"
+        <Button
+          variant="tertiary"
+          className="w-full"
+          onPress={() => handleOAuthSignIn("google")}
+          isDisabled={isLoading}
         >
           <svg className="w-4 h-4" viewBox="0 0 24 24">
             <path
@@ -116,16 +129,13 @@ export function SignInForm() {
             />
           </svg>
           {t("signInWith")} Google
-        </button>
-
+        </Button>
       </div>
 
       {/* Divider */}
       <div className="relative mb-5">
-        <div className="absolute inset-0 flex items-center">
-          <div className="w-full border-t border-gray-200" />
-        </div>
-        <div className="relative flex justify-center text-sm">
+        <Separator />
+        <div className="absolute inset-0 flex items-center justify-center">
           <span className="px-3 bg-white text-gray-500 text-[13px] font-medium">
             {t("or")}
           </span>
@@ -134,104 +144,68 @@ export function SignInForm() {
 
       {/* Email/Password Form */}
       <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label
-            htmlFor="email"
-            className="block text-sm font-semibold text-gray-900 mb-1.5"
-          >
-            {tCommon("email")}
-          </label>
-          <input
-            id="email"
-            name="email"
-            type="email"
-            autoComplete="email"
-            required
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="w-full px-4 py-3 text-[15px] rounded-full border border-gray-200 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-white font-medium shadow-sm hover:border-gray-300"
-            placeholder="you@example.com"
-            disabled={isLoading}
-          />
-        </div>
+        <TextField
+          name="email"
+          type="email"
+          isRequired
+          value={email}
+          onChange={setEmail}
+          isDisabled={isLoading}
+          className="w-full"
+        >
+          <Label>{tCommon("email")}</Label>
+          <Input placeholder="you@example.com" autoComplete="email" />
+        </TextField>
 
-        <div>
-          <div className="flex items-center justify-between mb-1.5">
-            <label
-              htmlFor="password"
-              className="block text-sm font-semibold text-gray-900"
+        <div className="space-y-1">
+          <div className="flex items-center justify-between">
+            <TextField
+              name="password"
+              type="password"
+              isRequired
+              value={password}
+              onChange={setPassword}
+              isDisabled={isLoading}
+              className="w-full"
             >
-              {tCommon("password")}
-            </label>
+              <Label>{tCommon("password")}</Label>
+              <Input placeholder="••••••••" autoComplete="current-password" />
+            </TextField>
+          </div>
+          <div className="flex justify-end">
             <Link
               href={`/${locale}/auth/forgot-password`}
-              className="text-sm text-blue-600 hover:text-blue-700 font-semibold transition-colors"
+              className="text-sm"
+              underline="hover"
             >
               {t("forgotPassword")}
             </Link>
           </div>
-          <input
-            id="password"
-            name="password"
-            type="password"
-            autoComplete="current-password"
-            required
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="w-full px-4 py-3 text-[15px] rounded-full border border-gray-200 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-white font-medium shadow-sm hover:border-gray-300"
-            placeholder="••••••••"
-            disabled={isLoading}
-          />
         </div>
 
-        <div className="flex items-center">
-          <input
-            id="remember-me"
-            name="remember-me"
-            type="checkbox"
-            className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-          />
-          <label
-            htmlFor="remember-me"
-            className="ml-2 block text-sm text-gray-700 font-medium"
-          >
-            {t("rememberMe")}
-          </label>
-        </div>
-
-        <button
-          type="submit"
-          disabled={isLoading}
-          className="w-full flex justify-center items-center py-3.5 px-5 border border-transparent rounded-full text-[15px] font-semibold text-white bg-black hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shadow-md hover:shadow-lg hover:scale-[1.01]"
+        <Checkbox
+          name="remember-me"
+          isSelected={rememberMe}
+          onChange={setRememberMe}
+          isDisabled={isLoading}
         >
-          {isLoading ? (
-            <>
-              <svg
-                className="animate-spin -ml-1 mr-2.5 h-4 w-4 text-white"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-              >
-                <circle
-                  className="opacity-25"
-                  cx="12"
-                  cy="12"
-                  r="10"
-                  stroke="currentColor"
-                  strokeWidth="4"
-                />
-                <path
-                  className="opacity-75"
-                  fill="currentColor"
-                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                />
-              </svg>
-              {t("signingIn")}
-            </>
-          ) : (
-            t("signInTitle")
-          )}
-        </button>
+          <Checkbox.Control>
+            <Checkbox.Indicator />
+          </Checkbox.Control>
+          <Checkbox.Content>
+            <Label>{t("rememberMe")}</Label>
+          </Checkbox.Content>
+        </Checkbox>
+
+        <Button
+          type="submit"
+          variant="primary"
+          className="w-full"
+          isPending={isLoading}
+          isDisabled={isLoading}
+        >
+          {t("signInTitle")}
+        </Button>
       </form>
 
       {/* Sign Up Link */}
@@ -239,7 +213,8 @@ export function SignInForm() {
         {t("noAccount")}{" "}
         <Link
           href={`/${locale}/auth/signup`}
-          className="font-semibold text-blue-600 hover:text-blue-700 transition-colors"
+          underline="hover"
+          className="font-semibold"
         >
           {t("signUpTitle")}
         </Link>
