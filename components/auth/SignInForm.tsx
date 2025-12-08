@@ -5,21 +5,19 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { signIn } from "next-auth/react";
 import { useLocale } from "next-intl";
-import {
-  Button,
-  TextField,
-  Input,
-  Label,
-  Alert,
-  Separator,
-  Checkbox,
-  Link,
-} from "@heroui/react";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Separator } from "@/components/ui/separator";
+import { Checkbox } from "@/components/ui/checkbox";
+import { AlertCircle } from "lucide-react";
 
 /**
  * Sign In Form Component
  * 
- * Built with HeroUI v3 components for:
+ * Built with shadcn/ui components for:
  * - Beautiful, accessible UI
  * - Built-in form validation
  * - Smooth animations
@@ -87,28 +85,28 @@ export function SignInForm() {
         <h1 className="text-4xl font-semibold text-foreground mb-3 tracking-tight leading-tight">
           {t("signInTitle")}
         </h1>
-        <p className="text-base text-muted font-normal leading-relaxed">
+        <p className="text-base text-muted-foreground font-normal leading-relaxed">
           {t("signInWith")} Google {t("or")} {tCommon("email")}
         </p>
       </div>
 
       {/* Error Message */}
       {error && (
-        <Alert status="danger" className="mb-5">
-          <Alert.Indicator />
-          <Alert.Content>
-            <Alert.Title>{error}</Alert.Title>
-          </Alert.Content>
+        <Alert variant="destructive" className="mb-5">
+          <AlertCircle className="h-4 w-4" />
+          <AlertTitle>{error}</AlertTitle>
+          <AlertDescription>{error}</AlertDescription>
         </Alert>
       )}
 
       {/* OAuth Buttons */}
       <div className="space-y-2.5 mb-5">
         <Button
-          variant="tertiary"
+          type="button"
+          variant="outline"
           className="w-full"
-          onPress={() => handleOAuthSignIn("google")}
-          isDisabled={isLoading}
+          onClick={() => handleOAuthSignIn("google")}
+          disabled={isLoading}
         >
           <svg className="w-4 h-4" viewBox="0 0 24 24">
             <path
@@ -136,7 +134,7 @@ export function SignInForm() {
       <div className="relative mb-6">
         <Separator />
         <div className="absolute inset-0 flex items-center justify-center">
-          <span className="px-3 bg-background text-muted text-sm font-normal">
+          <span className="px-3 bg-background text-muted-foreground text-sm font-normal">
             {t("or")}
           </span>
         </div>
@@ -144,73 +142,74 @@ export function SignInForm() {
 
       {/* Email/Password Form */}
       <form onSubmit={handleSubmit} className="space-y-5">
-        <TextField
-          name="email"
-          type="email"
-          isRequired
-          value={email}
-          onChange={setEmail}
-          isDisabled={isLoading}
-          className="w-full"
-        >
-          <Label>{tCommon("email")}</Label>
-          <Input placeholder="you@example.com" autoComplete="email" />
-        </TextField>
+        <div className="space-y-2">
+          <Label htmlFor="email">{tCommon("email")}</Label>
+          <Input
+            id="email"
+            name="email"
+            type="email"
+            required
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            disabled={isLoading}
+            placeholder="you@example.com"
+            autoComplete="email"
+          />
+        </div>
 
-        <TextField
-          name="password"
-          type="password"
-          isRequired
-          value={password}
-          onChange={setPassword}
-          isDisabled={isLoading}
-          className="w-full"
-        >
-          <div className="flex items-center justify-between mb-1">
-            <Label>{tCommon("password")}</Label>
+        <div className="space-y-2">
+          <div className="flex items-center justify-between">
+            <Label htmlFor="password">{tCommon("password")}</Label>
             <Link
               href={`/${locale}/auth/forgot-password`}
-              className="text-sm"
-              underline="hover"
+              className="text-sm text-primary hover:underline"
             >
               {t("forgotPassword")}
             </Link>
           </div>
-          <Input placeholder="••••••••" autoComplete="current-password" />
-        </TextField>
+          <Input
+            id="password"
+            name="password"
+            type="password"
+            required
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            disabled={isLoading}
+            placeholder="••••••••"
+            autoComplete="current-password"
+          />
+        </div>
 
-        <Checkbox
-          name="remember-me"
-          isSelected={rememberMe}
-          onChange={setRememberMe}
-          isDisabled={isLoading}
-        >
-          <Checkbox.Control>
-            <Checkbox.Indicator />
-          </Checkbox.Control>
-          <Checkbox.Content>
-            <Label>{t("rememberMe")}</Label>
-          </Checkbox.Content>
-        </Checkbox>
+        <div className="flex items-center space-x-2">
+          <Checkbox
+            id="remember-me"
+            checked={rememberMe}
+            onCheckedChange={(checked) => setRememberMe(checked === true)}
+            disabled={isLoading}
+          />
+          <Label
+            htmlFor="remember-me"
+            className="text-sm font-normal leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+          >
+            {t("rememberMe")}
+          </Label>
+        </div>
 
         <Button
           type="submit"
-          variant="primary"
           className="w-full"
-          isPending={isLoading}
-          isDisabled={isLoading}
+          disabled={isLoading}
         >
-          {t("signInTitle")}
+          {isLoading ? t("signingIn") || "Signing in..." : t("signInTitle")}
         </Button>
       </form>
 
       {/* Sign Up Link */}
-      <p className="mt-6 text-center text-[14px] text-muted font-medium">
+      <p className="mt-8 text-center text-sm text-muted-foreground font-normal">
         {t("noAccount")}{" "}
         <Link
           href={`/${locale}/auth/signup`}
-          underline="hover"
-          className="font-semibold"
+          className="font-medium text-primary hover:underline"
         >
           {t("signUpTitle")}
         </Link>

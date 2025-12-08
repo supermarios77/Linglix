@@ -5,21 +5,17 @@ import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { signIn } from "next-auth/react";
 import { useLocale } from "next-intl";
-import {
-  Button,
-  TextField,
-  Input,
-  Label,
-  Description,
-  FieldError,
-  Alert,
-  Link,
-} from "@heroui/react";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { AlertCircle } from "lucide-react";
 
 /**
  * Sign Up Form Component
  * 
- * Built with HeroUI v3 components for:
+ * Built with shadcn/ui components for:
  * - Beautiful, accessible UI
  * - Built-in form validation
  * - Smooth animations
@@ -112,106 +108,117 @@ export function SignUpForm() {
         <h1 className="text-4xl font-semibold text-foreground mb-3 tracking-tight leading-tight">
           {t("signUpTitle")}
         </h1>
-        <p className="text-base text-muted font-normal leading-relaxed">
+        <p className="text-base text-muted-foreground font-normal leading-relaxed">
           {t("createAccount")}
         </p>
       </div>
 
       {/* Error Message */}
       {error && (
-        <Alert status="danger" className="mb-5">
-          <Alert.Indicator />
-          <Alert.Content>
-            <Alert.Title>{error}</Alert.Title>
-          </Alert.Content>
+        <Alert variant="destructive" className="mb-5">
+          <AlertCircle className="h-4 w-4" />
+          <AlertTitle>{error}</AlertTitle>
+          <AlertDescription>{error}</AlertDescription>
         </Alert>
       )}
 
       {/* Registration Form */}
       <form onSubmit={handleSubmit} className="space-y-5">
-        <TextField
-          name="name"
-          type="text"
-          isRequired
-          minLength={2}
-          value={name}
-          onChange={setName}
-          isDisabled={isLoading}
-          className="w-full"
-        >
-          <Label>{tCommon("name")}</Label>
-          <Input placeholder="John Doe" autoComplete="name" />
-        </TextField>
+        <div className="space-y-2">
+          <Label htmlFor="name">{tCommon("name")}</Label>
+          <Input
+            id="name"
+            name="name"
+            type="text"
+            required
+            minLength={2}
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            disabled={isLoading}
+            placeholder="John Doe"
+            autoComplete="name"
+          />
+        </div>
 
-        <TextField
-          name="email"
-          type="email"
-          isRequired
-          value={email}
-          onChange={setEmail}
-          isDisabled={isLoading}
-          className="w-full"
-        >
-          <Label>{tCommon("email")}</Label>
-          <Input placeholder="you@example.com" autoComplete="email" />
-        </TextField>
+        <div className="space-y-2">
+          <Label htmlFor="email">{tCommon("email")}</Label>
+          <Input
+            id="email"
+            name="email"
+            type="email"
+            required
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            disabled={isLoading}
+            placeholder="you@example.com"
+            autoComplete="email"
+          />
+        </div>
 
-        <TextField
-          name="password"
-          type="password"
-          isRequired
-          minLength={8}
-          value={password}
-          onChange={setPassword}
-          isInvalid={isPasswordInvalid}
-          isDisabled={isLoading}
-          className="w-full"
-        >
-          <Label>{tCommon("password")}</Label>
-          <Input placeholder="••••••••" autoComplete="new-password" />
-          {isPasswordInvalid ? (
-            <FieldError>{t("passwordMinLength")}</FieldError>
-          ) : (
-            <Description className="text-xs">{t("passwordMinLength")}</Description>
+        <div className="space-y-2">
+          <Label htmlFor="password">{tCommon("password")}</Label>
+          <Input
+            id="password"
+            name="password"
+            type="password"
+            required
+            minLength={8}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            disabled={isLoading}
+            placeholder="••••••••"
+            autoComplete="new-password"
+            className={isPasswordInvalid ? "border-destructive" : ""}
+          />
+          {isPasswordInvalid && (
+            <p className="text-sm font-medium text-destructive">
+              {t("passwordMinLength")}
+            </p>
           )}
-        </TextField>
+          {!isPasswordInvalid && (
+            <p className="text-xs text-muted-foreground">
+              {t("passwordMinLength")}
+            </p>
+          )}
+        </div>
 
-        <TextField
-          name="confirmPassword"
-          type="password"
-          isRequired
-          minLength={8}
-          value={confirmPassword}
-          onChange={setConfirmPassword}
-          isInvalid={isConfirmPasswordInvalid}
-          isDisabled={isLoading}
-          className="w-full"
-        >
-          <Label>{t("confirmPassword")}</Label>
-          <Input placeholder="••••••••" autoComplete="new-password" />
+        <div className="space-y-2">
+          <Label htmlFor="confirmPassword">{t("confirmPassword")}</Label>
+          <Input
+            id="confirmPassword"
+            name="confirmPassword"
+            type="password"
+            required
+            minLength={8}
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            disabled={isLoading}
+            placeholder="••••••••"
+            autoComplete="new-password"
+            className={isConfirmPasswordInvalid ? "border-destructive" : ""}
+          />
           {isConfirmPasswordInvalid && (
-            <FieldError>{t("passwordsDoNotMatch")}</FieldError>
+            <p className="text-sm font-medium text-destructive">
+              {t("passwordsDoNotMatch")}
+            </p>
           )}
-        </TextField>
+        </div>
 
         <Button
           type="submit"
-          variant="primary"
           className="w-full"
-          isPending={isLoading}
-          isDisabled={isLoading}
+          disabled={isLoading}
         >
-          {t("createAccount")}
+          {isLoading ? t("creatingAccount") || "Creating account..." : t("createAccount")}
         </Button>
       </form>
 
       {/* Sign In Link */}
-      <p className="mt-8 text-center text-sm text-muted font-normal">
+      <p className="mt-8 text-center text-sm text-muted-foreground font-normal">
         {t("hasAccount")}{" "}
         <Link
           href={`/${locale}/auth/signin`}
-          underline="hover"
-          className="font-medium"
+          className="font-medium text-primary hover:underline"
         >
           {t("signInTitle")}
         </Link>
