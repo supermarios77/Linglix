@@ -84,10 +84,10 @@ export function SignInForm() {
     <div className="w-full max-w-[420px]">
       {/* Header */}
       <div className="mb-10 text-center">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2 tracking-tight">
+        <h1 className="text-3xl font-bold text-foreground mb-2 tracking-tight">
           {t("signInTitle")}
         </h1>
-        <p className="text-[15px] text-gray-600 font-medium">
+        <p className="text-[15px] text-muted font-medium">
           {t("signInWith")} Google {t("or")} {tCommon("email")}
         </p>
       </div>
@@ -136,7 +136,7 @@ export function SignInForm() {
       <div className="relative mb-5">
         <Separator />
         <div className="absolute inset-0 flex items-center justify-center">
-          <span className="px-3 bg-white text-gray-500 text-[13px] font-medium">
+          <span className="px-3 bg-background text-muted text-[13px] font-medium">
             {t("or")}
           </span>
         </div>
@@ -157,9 +157,17 @@ export function SignInForm() {
           <Input placeholder="you@example.com" autoComplete="email" />
         </TextField>
 
-        <div className="space-y-1">
+        <TextField
+          name="password"
+          type="password"
+          isRequired
+          value={password}
+          onChange={setPassword}
+          isDisabled={isLoading}
+          className="w-full"
+        >
           <div className="flex items-center justify-between mb-1">
-            <Label htmlFor="password">{tCommon("password")}</Label>
+            <Label>{tCommon("password")}</Label>
             <Link
               href={`/${locale}/auth/forgot-password`}
               className="text-sm"
@@ -168,18 +176,8 @@ export function SignInForm() {
               {t("forgotPassword")}
             </Link>
           </div>
-          <TextField
-            name="password"
-            type="password"
-            isRequired
-            value={password}
-            onChange={setPassword}
-            isDisabled={isLoading}
-            className="w-full"
-          >
-            <Input id="password" placeholder="••••••••" autoComplete="current-password" />
-          </TextField>
-        </div>
+          <Input placeholder="••••••••" autoComplete="current-password" />
+        </TextField>
 
         <Checkbox
           name="remember-me"
@@ -207,7 +205,7 @@ export function SignInForm() {
       </form>
 
       {/* Sign Up Link */}
-      <p className="mt-6 text-center text-[14px] text-gray-600 font-medium">
+      <p className="mt-6 text-center text-[14px] text-muted font-medium">
         {t("noAccount")}{" "}
         <Link
           href={`/${locale}/auth/signup`}

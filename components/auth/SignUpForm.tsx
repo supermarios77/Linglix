@@ -109,10 +109,10 @@ export function SignUpForm() {
     <div className="w-full max-w-[420px]">
       {/* Header */}
       <div className="mb-10 text-center">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2 tracking-tight">
+        <h1 className="text-3xl font-bold text-foreground mb-2 tracking-tight">
           {t("signUpTitle")}
         </h1>
-        <p className="text-[15px] text-gray-600 font-medium">
+        <p className="text-[15px] text-muted font-medium">
           {t("createAccount")}
         </p>
       </div>
@@ -206,7 +206,7 @@ export function SignUpForm() {
       </form>
 
       {/* Sign In Link */}
-      <p className="mt-6 text-center text-[14px] text-gray-600 font-medium">
+      <p className="mt-6 text-center text-[14px] text-muted font-medium">
         {t("hasAccount")}{" "}
         <Link
           href={`/${locale}/auth/signin`}
