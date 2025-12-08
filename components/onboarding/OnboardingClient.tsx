@@ -111,20 +111,9 @@ export function OnboardingClient({ locale, user }: OnboardingClientProps) {
         return;
       }
 
-      // Sign in and redirect
-      const signInResult = await signIn("credentials", {
-        email: user.email,
-        redirect: false,
-      });
-
-      if (signInResult?.error) {
-        setError(t("signInError"));
-        setIsLoading(false);
-        return;
-      }
-
-      router.push(`/${locale}/dashboard`);
-      router.refresh();
+      // User is already signed in, just refresh and redirect
+      // Full page reload ensures session is updated with new role
+      window.location.href = `/${locale}/dashboard`;
     } catch (err) {
       setError(t("error"));
       setIsLoading(false);
@@ -171,20 +160,9 @@ export function OnboardingClient({ locale, user }: OnboardingClientProps) {
         return;
       }
 
-      // Sign in and redirect
-      const signInResult = await signIn("credentials", {
-        email: user.email,
-        redirect: false,
-      });
-
-      if (signInResult?.error) {
-        setError(t("signInError"));
-        setIsLoading(false);
-        return;
-      }
-
-      router.push(`/${locale}/dashboard`);
-      router.refresh();
+      // User is already signed in, just refresh and redirect
+      // Full page reload ensures session is updated with new role
+      window.location.href = `/${locale}/dashboard`;
     } catch (err) {
       setError(t("error"));
       setIsLoading(false);
