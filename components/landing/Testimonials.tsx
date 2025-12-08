@@ -20,25 +20,25 @@ interface TestimonialsProps {
  * Production-ready with proper TypeScript types
  */
 export function Testimonials({ locale }: TestimonialsProps) {
-  const t = useTranslations("landing");
+  const t = useTranslations("landing.testimonials");
 
   const testimonials: Testimonial[] = [
     {
-      quote: "My English has improved so much! Abby is patient, engaging, and makes learning fun. I can finally have conversations with confidence.",
+      quote: t("quotes.1"),
       author: "Li Wei",
-      role: "Verified Student",
+      role: t("verifiedStudent"),
       gradient: "from-[#7928ca] to-[#ff0080]",
     },
     {
-      quote: "The flexible scheduling is perfect for my busy lifestyle. I can learn English at my own pace with an amazing tutor. Highly recommend!",
+      quote: t("quotes.2"),
       author: "Ayşe Yılmaz",
-      role: "Verified Student",
+      role: t("verifiedStudent"),
       gradient: "from-[#06B6D4] to-[#3b82f6]",
     },
     {
-      quote: "Best investment I've made for my career. Learning English with Abby has opened so many opportunities. The quality is outstanding.",
+      quote: t("quotes.3"),
       author: "Min-jun Park",
-      role: "Verified Student",
+      role: t("verifiedStudent"),
       gradient: "from-[#ccf381] to-[#a8e063]",
     },
   ];
@@ -47,12 +47,12 @@ export function Testimonials({ locale }: TestimonialsProps) {
     <section className="py-20 px-4 md:px-12 max-w-[1400px] mx-auto">
       <div className="text-center mb-16">
         <h3 className="text-[42px] font-semibold mb-4 text-black dark:text-white">
-          {t("testimonials.title")}{" "}
+          {t("title")}{" "}
           <span className="inline-block bg-[#ffeb3b] dark:bg-[#ccf381] text-black dark:text-black px-3 py-1 -rotate-[-2deg] transform origin-center font-semibold shadow-[0_4px_8px_rgba(0,0,0,0.1)]">
-            {t("testimonials.titleHighlight")}
+            {t("titleHighlight")}
           </span>
         </h3>
-        <p className="text-lg text-[#666] dark:text-[#a1a1aa]">{t("testimonials.subtitle")}</p>
+        <p className="text-lg text-[#666] dark:text-[#a1a1aa]">{t("subtitle")}</p>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {testimonials.map((testimonial, index) => (

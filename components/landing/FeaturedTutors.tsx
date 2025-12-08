@@ -64,7 +64,7 @@ export async function FeaturedTutors({ locale }: FeaturedTutorsProps) {
     .filter((tutor) => tutor.tutorProfile)
     .map((tutor) => ({
       id: tutor.id,
-      name: tutor.name || "Tutor",
+      name: tutor.name || t("trending.tutorFallback"),
       image: tutor.image,
       specialties: tutor.tutorProfile!.specialties,
       rating: tutor.tutorProfile!.rating,
@@ -79,7 +79,7 @@ export async function FeaturedTutors({ locale }: FeaturedTutorsProps) {
     if (specialties.length > 0) {
       return specialties[0];
     }
-    return "Language Tutor";
+    return t("trending.languageTutor");
   };
 
   // Single Tutor - Hero Style Layout
@@ -107,7 +107,7 @@ export async function FeaturedTutors({ locale }: FeaturedTutorsProps) {
               <div className="p-12 md:p-16 flex flex-col justify-center relative z-10">
                 <div className="inline-flex items-center gap-2 px-4 py-2 bg-[#ccf381]/10 dark:bg-[#ccf381]/20 rounded-full text-xs font-semibold uppercase tracking-wider mb-6 w-fit">
                   <Sparkles className="w-3 h-3 text-[#ccf381]" />
-                  <span>Featured Tutor</span>
+                  <span>{t("trending.featuredTutor")}</span>
                 </div>
                 
                 <h2 className="text-[48px] md:text-[64px] leading-[0.95] font-bold tracking-[-0.03em] mb-4 text-black dark:text-white">
@@ -129,12 +129,12 @@ export async function FeaturedTutors({ locale }: FeaturedTutorsProps) {
                   </div>
                   <div className="h-8 w-px bg-[#e5e5e5] dark:bg-[#262626]" />
                   <div>
-                    <div className="text-sm text-[#888] dark:text-[#a1a1aa]">Sessions</div>
+                    <div className="text-sm text-[#888] dark:text-[#a1a1aa]">{t("trending.sessions")}</div>
                     <div className="text-xl font-bold text-black dark:text-white">{tutor.totalSessions}+</div>
                   </div>
                   <div>
-                    <div className="text-sm text-[#888] dark:text-[#a1a1aa]">Rate</div>
-                    <div className="text-xl font-bold text-black dark:text-white">${tutor.hourlyRate}/hr</div>
+                    <div className="text-sm text-[#888] dark:text-[#a1a1aa]">{t("trending.rate")}</div>
+                    <div className="text-xl font-bold text-black dark:text-white">${tutor.hourlyRate}{t("trending.hourly")}</div>
                   </div>
                 </div>
                 
@@ -152,7 +152,7 @@ export async function FeaturedTutors({ locale }: FeaturedTutorsProps) {
                 
                 <Link href={`/${locale}/tutors/${tutor.id}`}>
                   <button className="w-full md:w-auto bg-[#111] dark:bg-[#ccf381] text-white dark:text-black px-10 py-4 rounded-full font-semibold text-base transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_12px_24px_rgba(0,0,0,0.2)] hover:bg-[#222] dark:hover:bg-[#d4f89a]">
-                    View Profile
+                    {t("trending.viewProfile")}
                   </button>
                 </Link>
               </div>
@@ -162,7 +162,7 @@ export async function FeaturedTutors({ locale }: FeaturedTutorsProps) {
                 {tutor.image ? (
                   <Image
                     src={tutor.image}
-                    alt={tutor.name || "Tutor"}
+                    alt={tutor.name || t("trending.tutorFallback")}
                     fill
                     className="object-cover"
                   />
@@ -175,8 +175,8 @@ export async function FeaturedTutors({ locale }: FeaturedTutorsProps) {
                 {/* Badge */}
                 <div className="absolute top-6 right-6 w-[120px] h-[120px] flex items-center justify-center bg-gradient-to-br from-[#ccf381] to-[#a8e063] rounded-full text-black font-black text-center rotate-[12deg] shadow-[0_12px_24px_rgba(0,0,0,0.3)] text-sm leading-tight border-2 border-black/10">
                   <div>
-                    <div className="text-[12px]">TOP</div>
-                    <div className="text-[12px]">TUTOR</div>
+                    <div className="text-[12px]">{t("trending.topTutor").split(" ")[0]}</div>
+                    <div className="text-[12px]">{t("trending.topTutor").split(" ")[1]}</div>
                   </div>
                 </div>
               </div>
@@ -221,7 +221,7 @@ export async function FeaturedTutors({ locale }: FeaturedTutorsProps) {
                       <Star className="w-5 h-5 fill-[#ffb800] text-[#ffb800]" />
                       <span className="text-lg font-bold text-black dark:text-white">{tutor.rating.toFixed(1)}</span>
                     </div>
-                    <span className="text-base font-semibold text-black dark:text-white">${tutor.hourlyRate}/hr</span>
+                    <span className="text-base font-semibold text-black dark:text-white">${tutor.hourlyRate}{t("trending.hourly")}</span>
                   </div>
                 </div>
               </div>
@@ -251,7 +251,7 @@ export async function FeaturedTutors({ locale }: FeaturedTutorsProps) {
             <div className="group bg-white dark:bg-gradient-to-b from-[#1a1a1a] to-[#121212] rounded-[32px] p-8 transition-all duration-300 cursor-pointer border border-[#e5e5e5] dark:border-[#262626] hover:-translate-y-2 hover:border-[#d4d4d4] dark:hover:border-[#404040] hover:shadow-[0_30px_60px_rgba(0,0,0,0.12)] h-full">
               <div className="relative w-full h-64 rounded-[24px] overflow-hidden mb-6 bg-gradient-to-br from-[#f5f5f5] to-[#e5e5e5] dark:from-[#1a1a1a] dark:to-[#0a0a0a] flex items-center justify-center border border-[#e5e5e5] dark:border-[#262626]">
                 {tutorData[0].image ? (
-                  <Image src={tutorData[0].image} alt={tutorData[0].name || "Tutor"} fill className="object-cover" />
+                  <Image src={tutorData[0].image} alt={tutorData[0].name || t("trending.tutorFallback")} fill className="object-cover" />
                 ) : (
                   <Users className="w-24 h-24 text-[#ccc] dark:text-[#404040]" />
                 )}
@@ -266,7 +266,7 @@ export async function FeaturedTutors({ locale }: FeaturedTutorsProps) {
                     <Star className="w-5 h-5 fill-[#ffb800] text-[#ffb800]" />
                     <span className="text-lg font-bold text-black dark:text-white">{tutorData[0].rating.toFixed(1)}</span>
                   </div>
-                  <span className="text-base font-semibold text-black dark:text-white">${tutorData[0].hourlyRate}/hr</span>
+                  <span className="text-base font-semibold text-black dark:text-white">${tutorData[0].hourlyRate}{t("trending.hourly")}</span>
                 </div>
               </div>
             </div>
@@ -294,7 +294,7 @@ export async function FeaturedTutors({ locale }: FeaturedTutorsProps) {
                         <Star className="w-4 h-4 fill-[#ffb800] text-[#ffb800]" />
                         <span className="text-sm font-bold text-black dark:text-white">{tutor.rating.toFixed(1)}</span>
                       </div>
-                      <span className="text-sm font-semibold text-black dark:text-white">${tutor.hourlyRate}/hr</span>
+                      <span className="text-sm font-semibold text-black dark:text-white">${tutor.hourlyRate}{t("trending.hourly")}</span>
                     </div>
                   </div>
                 </div>

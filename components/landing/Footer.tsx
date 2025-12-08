@@ -16,6 +16,8 @@ interface FooterProps {
  */
 export function Footer({ locale, session }: FooterProps) {
   const tCommon = useTranslations("common");
+  const t = useTranslations("landing.footer");
+  const tNav = useTranslations("landing.navigation");
 
   const currentYear = new Date().getFullYear();
 
@@ -29,51 +31,51 @@ export function Footer({ locale, session }: FooterProps) {
               Linglix<span className="text-[#ccf381]">.</span>
             </div>
             <p className="text-sm text-[#a1a1aa] leading-relaxed mb-6">
-              Learn languages with native tutors. Flexible scheduling, affordable pricing, and real results.
+              {t("description")}
             </p>
           </div>
           <div>
-            <h4 className="font-semibold text-base mb-6">Learn</h4>
+            <h4 className="font-semibold text-base mb-6">{t("learn")}</h4>
             <ul className="space-y-3">
               <li>
                 <Link href={`/${locale}/tutors`} className="text-sm text-[#a1a1aa] hover:text-white transition-colors">
-                  Browse Tutors
+                  {tNav("browseTutors")}
                 </Link>
               </li>
               <li>
                 <Link href={`/${locale}#how-it-works`} className="text-sm text-[#a1a1aa] hover:text-white transition-colors">
-                  How It Works
+                  {tNav("howItWorks")}
                 </Link>
               </li>
               <li>
                 <Link href={`/${locale}#about`} className="text-sm text-[#a1a1aa] hover:text-white transition-colors">
-                  About
+                  {tNav("about")}
                 </Link>
               </li>
             </ul>
           </div>
           <div>
-            <h4 className="font-semibold text-base mb-6">Support</h4>
+            <h4 className="font-semibold text-base mb-6">{t("support")}</h4>
             <ul className="space-y-3">
               <li>
                 <Link href="#" className="text-sm text-[#a1a1aa] hover:text-white transition-colors">
-                  Contact Us
+                  {t("contactUs")}
                 </Link>
               </li>
               <li>
                 <Link href="#" className="text-sm text-[#a1a1aa] hover:text-white transition-colors">
-                  FAQs
+                  {t("faqs")}
                 </Link>
               </li>
               <li>
                 <Link href="#" className="text-sm text-[#a1a1aa] hover:text-white transition-colors">
-                  Help Center
+                  {t("helpCenter")}
                 </Link>
               </li>
             </ul>
           </div>
           <div>
-            <h4 className="font-semibold text-base mb-6">Account</h4>
+            <h4 className="font-semibold text-base mb-6">{t("account")}</h4>
             <ul className="space-y-3">
               {session ? (
                 <li>
@@ -85,12 +87,12 @@ export function Footer({ locale, session }: FooterProps) {
                 <>
                   <li>
                     <Link href={`/${locale}/auth/signin`} className="text-sm text-[#a1a1aa] hover:text-white transition-colors">
-                      Sign In
+                      {tCommon("signIn")}
                     </Link>
                   </li>
                   <li>
                     <Link href={`/${locale}/auth/signup`} className="text-sm text-[#a1a1aa] hover:text-white transition-colors">
-                      Sign Up
+                      {tCommon("signUp")}
                     </Link>
                   </li>
                 </>
@@ -100,14 +102,14 @@ export function Footer({ locale, session }: FooterProps) {
         </div>
         <div className="pt-8 border-t border-[#262626] flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-xs text-[#666] text-center md:text-left">
-            © {currentYear} Linglix. All rights reserved.
+            © {currentYear} Linglix. {t("allRightsReserved")}.
           </p>
           <div className="flex gap-6">
             <Link href="#" className="text-xs text-[#666] hover:text-white transition-colors">
-              Privacy Policy
+              {t("privacyPolicy")}
             </Link>
             <Link href="#" className="text-xs text-[#666] hover:text-white transition-colors">
-              Terms of Service
+              {t("termsOfService")}
             </Link>
           </div>
         </div>

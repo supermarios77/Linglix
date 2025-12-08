@@ -104,10 +104,15 @@
   },
   "landing": {
     "hero": {
-      "title": "Learn Languages with Native Tutors",
-      "subtitle": "Connect with expert tutors for personalized, one-on-one language learning experiences",
+      "badge": "New Platform Launch",
+      "title": "Learn Languages",
+      "titleHighlight": "with Native Tutors",
+      "description": "Connect with expert tutors for personalized, one-on-one language learning experiences. Flexible scheduling, affordable pricing, and real results.",
       "ctaPrimary": "Get Started",
-      "ctaSecondary": "Browse Tutors"
+      "ctaSecondary": "Browse Tutors",
+      "featureNative": "Native Speakers",
+      "featureFlexible": "Flexible Schedule",
+      "featureAffordable": "Affordable Pricing"
     },
     "features": {
       "title": "Why Choose Linglix",
@@ -172,7 +177,15 @@
     },
     "trending": {
       "title": "Popular Tutors",
-      "seeAll": "See All Tutors"
+      "seeAll": "See All Tutors",
+      "featuredTutor": "Featured Tutor",
+      "sessions": "Sessions",
+      "rate": "Rate",
+      "hourly": "/hr",
+      "viewProfile": "View Profile",
+      "topTutor": "TOP TUTOR",
+      "tutorFallback": "Tutor",
+      "languageTutor": "Language Tutor"
     },
     "waitlist": {
       "badge": "Coming Soon",
@@ -185,12 +198,30 @@
     "testimonials": {
       "title": "Loved by",
       "titleHighlight": "Thousands",
-      "subtitle": "Real results from real students"
+      "subtitle": "Real results from real students",
+      "verifiedStudent": "Verified Student",
+      "quotes": {
+        "1": "My English has improved so much! Abby is patient, engaging, and makes learning fun. I can finally have conversations with confidence.",
+        "2": "The flexible scheduling is perfect for my busy lifestyle. I can learn English at my own pace with an amazing tutor. Highly recommend!",
+        "3": "Best investment I've made for my career. Learning English with Abby has opened so many opportunities. The quality is outstanding."
+      }
     },
     "navigation": {
       "browseTutors": "Browse Tutors",
       "howItWorks": "How It Works",
       "about": "About"
+    },
+    "footer": {
+      "description": "Learn languages with native tutors. Flexible scheduling, affordable pricing, and real results.",
+      "learn": "Learn",
+      "support": "Support",
+      "account": "Account",
+      "contactUs": "Contact Us",
+      "faqs": "FAQs",
+      "helpCenter": "Help Center",
+      "allRightsReserved": "All rights reserved",
+      "privacyPolicy": "Privacy Policy",
+      "termsOfService": "Terms of Service"
     }
   }
 }

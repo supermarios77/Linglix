@@ -104,10 +104,15 @@
   },
   "landing": {
     "hero": {
-      "title": "Aprende Idiomas con Tutores Nativos",
-      "subtitle": "Conéctate con tutores expertos para experiencias de aprendizaje personalizadas y uno a uno",
+      "badge": "Nuevo Lanzamiento de Plataforma",
+      "title": "Aprende Idiomas",
+      "titleHighlight": "con Tutores Nativos",
+      "description": "Conéctate con tutores expertos para experiencias de aprendizaje personalizadas y uno a uno. Horarios flexibles, precios asequibles y resultados reales.",
       "ctaPrimary": "Comenzar",
-      "ctaSecondary": "Buscar Tutores"
+      "ctaSecondary": "Buscar Tutores",
+      "featureNative": "Hablantes Nativos",
+      "featureFlexible": "Horario Flexible",
+      "featureAffordable": "Precios Asequibles"
     },
     "features": {
       "title": "Por Qué Elegir Linglix",
@@ -172,7 +177,15 @@
     },
     "trending": {
       "title": "Tutores Populares",
-      "seeAll": "Ver Todos los Tutores"
+      "seeAll": "Ver Todos los Tutores",
+      "featuredTutor": "Tutor Destacado",
+      "sessions": "Sesiones",
+      "rate": "Tarifa",
+      "hourly": "/hora",
+      "viewProfile": "Ver Perfil",
+      "topTutor": "MEJOR TUTOR",
+      "tutorFallback": "Tutor",
+      "languageTutor": "Tutor de Idiomas"
     },
     "waitlist": {
       "badge": "Próximamente",
@@ -185,12 +198,30 @@
     "testimonials": {
       "title": "Amado por",
       "titleHighlight": "Miles",
-      "subtitle": "Resultados reales de estudiantes reales"
+      "subtitle": "Resultados reales de estudiantes reales",
+      "verifiedStudent": "Estudiante Verificado",
+      "quotes": {
+        "1": "¡Mi inglés ha mejorado muchísimo! Abby es paciente, atractiva y hace que aprender sea divertido. Finalmente puedo tener conversaciones con confianza.",
+        "2": "El horario flexible es perfecto para mi estilo de vida ocupado. Puedo aprender inglés a mi propio ritmo con un tutor increíble. ¡Altamente recomendado!",
+        "3": "La mejor inversión que he hecho para mi carrera. Aprender inglés con Abby ha abierto muchas oportunidades. La calidad es excepcional."
+      }
     },
     "navigation": {
       "browseTutors": "Buscar Tutores",
       "howItWorks": "Cómo Funciona",
       "about": "Acerca de"
+    },
+    "footer": {
+      "description": "Aprende idiomas con tutores nativos. Horarios flexibles, precios asequibles y resultados reales.",
+      "learn": "Aprender",
+      "support": "Soporte",
+      "account": "Cuenta",
+      "contactUs": "Contáctanos",
+      "faqs": "Preguntas Frecuentes",
+      "helpCenter": "Centro de Ayuda",
+      "allRightsReserved": "Todos los derechos reservados",
+      "privacyPolicy": "Política de Privacidad",
+      "termsOfService": "Términos de Servicio"
     }
   }
 }
