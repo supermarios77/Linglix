@@ -35,7 +35,7 @@ export function HeroSection({ locale, session }: HeroSectionProps) {
           {t("hero.title")}
           <br />
           <span className="relative inline-block mt-1 sm:mt-2">
-            <span className="inline-block bg-[#ffeb3b] dark:bg-[#ccf381] text-black dark:text-black px-3 sm:px-4 md:px-5 py-1.5 sm:py-2 -rotate-[-2deg] transform origin-center font-bold shadow-[0_4px_8px_rgba(0,0,0,0.1)] sm:shadow-[0_6px_12px_rgba(0,0,0,0.12)] relative z-10 text-[28px] sm:text-[36px] md:text-[44px] lg:text-[52px]">
+            <span className="inline-block bg-[#ffeb3b] dark:bg-[#ccf381] text-black dark:text-black px-3 sm:px-4 md:px-5 py-1.5 sm:py-2 -rotate-[-2deg] transform origin-center font-bold shadow-[0_4px_8px_rgba(0,0,0,0.1)] sm:shadow-[0_6px_12px_rgba(0,0,0,0.12)] relative z-10 text-[28px] sm:text-[36px] md:text-[44px] lg:text-[70px] xl:text-[80px]">
               {t("hero.titleHighlight")}
             </span>
             <span className="absolute inset-0 bg-[#ffeb3b]/20 dark:bg-[#ccf381]/20 blur-xl -rotate-[-2deg] transform origin-center" aria-hidden="true" />
