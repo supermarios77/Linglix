@@ -16,18 +16,6 @@ const globalForPrisma = globalThis as unknown as {
  * - Automatic connection management
  * - Uses DATABASE_URL from environment (configured in prisma.config.ts for migrations)
  */
-/**
- * Prisma Client singleton instance
- * 
- * Prevents multiple instances in development (Next.js hot reload)
- * and ensures proper connection pooling in production (serverless)
- * 
- * Production optimizations:
- * - Error-only logging to reduce overhead
- * - Connection pooling handled by Neon
- * - Automatic connection management
- * - Uses DATABASE_URL from environment (configured in prisma.config.ts for migrations)
- */
 export const prisma =
   globalForPrisma.prisma ??
   new PrismaClient({
