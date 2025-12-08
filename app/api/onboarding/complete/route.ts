@@ -103,8 +103,12 @@ export async function POST(request: Request) {
         email: existingUser.email,
         name: existingUser.name || undefined,
         role: "STUDENT",
-      }).catch((error) => {
-        console.error("Failed to send welcome email:", error);
+      }).catch(async (error) => {
+        const { logger } = await import("@/lib/logger");
+        await logger.error("Failed to send welcome email", error, {
+          userId: session.user.id,
+          role: "STUDENT",
+        });
         // Don't fail the request if email fails
       });
 
@@ -158,8 +162,12 @@ export async function POST(request: Request) {
         email: existingUser.email,
         name: existingUser.name || undefined,
         role: "TUTOR",
-      }).catch((error) => {
-        console.error("Failed to send welcome email:", error);
+      }).catch(async (error) => {
+        const { logger } = await import("@/lib/logger");
+        await logger.error("Failed to send welcome email", error, {
+          userId: session.user.id,
+          role: "TUTOR",
+        });
         // Don't fail the request if email fails
       });
 
@@ -191,7 +199,8 @@ export async function POST(request: Request) {
         },
       });
     } else {
-      console.error("Onboarding error:", error);
+      const { logger } = await import("@/lib/logger");
+      await logger.error("Onboarding error", error);
     }
 
     return createErrorResponse(

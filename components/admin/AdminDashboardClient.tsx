@@ -112,7 +112,10 @@ export function AdminDashboardClient({ locale }: AdminDashboardClientProps) {
       // NextAuth v5 signout - redirect to signout endpoint which handles everything
       window.location.href = `/api/auth/signout?callbackUrl=/${locale}`;
     } catch (error) {
-      console.error("Failed to sign out:", error);
+      // Error handling - user will be redirected anyway
+      if (process.env.NODE_ENV === "development") {
+        console.error("Failed to sign out:", error);
+      }
     }
   };
 
@@ -151,7 +154,10 @@ export function AdminDashboardClient({ locale }: AdminDashboardClientProps) {
       const data = await response.json();
       setStats(data);
     } catch (error) {
-      console.error("Failed to fetch stats:", error);
+      // Error is handled silently - stats will just not update
+      if (process.env.NODE_ENV === "development") {
+        console.error("Failed to fetch stats:", error);
+      }
     } finally {
       setStatsLoading(false);
     }
@@ -178,7 +184,10 @@ export function AdminDashboardClient({ locale }: AdminDashboardClientProps) {
       setTutors(data.tutors);
       setPagination(data.pagination);
     } catch (error) {
-      console.error("Failed to fetch tutors:", error);
+      // Error is handled silently - tutors list will just not update
+      if (process.env.NODE_ENV === "development") {
+        console.error("Failed to fetch tutors:", error);
+      }
     } finally {
       setLoading(false);
     }
@@ -223,8 +232,11 @@ export function AdminDashboardClient({ locale }: AdminDashboardClientProps) {
       await Promise.all([fetchStats(), fetchTutors()]);
       setApproveDialog({ open: false, tutorId: null, tutorName: null });
     } catch (error) {
-      console.error("Failed to approve tutor:", error);
-      alert(error instanceof Error ? error.message : "Failed to approve tutor");
+      const errorMessage = error instanceof Error ? error.message : "Failed to approve tutor";
+      alert(errorMessage);
+      if (process.env.NODE_ENV === "development") {
+        console.error("Failed to approve tutor:", error);
+      }
     } finally {
       setProcessing(false);
     }
@@ -261,8 +273,11 @@ export function AdminDashboardClient({ locale }: AdminDashboardClientProps) {
         reason: "",
       });
     } catch (error) {
-      console.error("Failed to reject tutor:", error);
-      alert(error instanceof Error ? error.message : "Failed to reject tutor");
+      const errorMessage = error instanceof Error ? error.message : "Failed to reject tutor";
+      alert(errorMessage);
+      if (process.env.NODE_ENV === "development") {
+        console.error("Failed to reject tutor:", error);
+      }
     } finally {
       setProcessing(false);
     }

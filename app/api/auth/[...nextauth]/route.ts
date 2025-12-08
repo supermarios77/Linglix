@@ -105,7 +105,10 @@ const { handlers } = NextAuth({
               },
             });
           } else {
-            console.error("Auth error:", error);
+            // In development, log to console; in production, Sentry handles it
+            if (process.env.NODE_ENV === "development") {
+              console.error("Auth error:", error);
+            }
           }
           // Return null to indicate authentication failure
           // Don't leak error details to prevent information disclosure

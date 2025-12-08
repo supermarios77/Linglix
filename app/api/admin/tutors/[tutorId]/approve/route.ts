@@ -73,8 +73,12 @@ export async function POST(
       email: tutor.email,
       name: tutor.name || undefined,
       approved: true,
-    }).catch((error) => {
-      console.error("Failed to send approval email:", error);
+    }).catch(async (error) => {
+      const { logger } = await import("@/lib/logger");
+      await logger.error("Failed to send approval email", error, {
+        tutorId,
+        email: tutor.email,
+      });
       // Don't fail the request if email fails
     });
 

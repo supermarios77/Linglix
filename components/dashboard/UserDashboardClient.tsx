@@ -111,7 +111,10 @@ export function UserDashboardClient({
       // NextAuth v5 signout - redirect to signout endpoint which handles everything
       window.location.href = `/api/auth/signout?callbackUrl=/${locale}`;
     } catch (error) {
-      console.error("Failed to sign out:", error);
+      // Error handling - user will be redirected anyway
+      if (process.env.NODE_ENV === "development") {
+        console.error("Failed to sign out:", error);
+      }
     }
   };
 

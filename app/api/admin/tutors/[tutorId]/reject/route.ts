@@ -90,8 +90,12 @@ export async function POST(
       name: tutor.name || undefined,
       approved: false,
       rejectionReason: reason || undefined,
-    }).catch((error) => {
-      console.error("Failed to send rejection email:", error);
+    }).catch(async (error) => {
+      const { logger } = await import("@/lib/logger");
+      await logger.error("Failed to send rejection email", error, {
+        tutorId,
+        email: tutor.email,
+      });
       // Don't fail the request if email fails
     });
 
