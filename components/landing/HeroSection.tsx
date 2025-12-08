@@ -86,57 +86,6 @@ export function HeroSection({ locale, session }: HeroSectionProps) {
         </div>
       </div>
 
-      {/* Visual Elements Grid */}
-      <div className="relative w-full max-w-5xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {/* Main Visual Card */}
-          <div className="md:col-span-2 group relative h-[400px] md:h-[500px] rounded-[32px] overflow-hidden transition-all duration-500 shadow-[0_30px_60px_rgba(0,0,0,0.1)] hover:-translate-y-2 hover:shadow-[0_40px_80px_rgba(0,0,0,0.15)]">
-            <div className="absolute inset-0 bg-gradient-to-br from-[#1a1a1a] via-[#121212] to-[#0a0a0a] dark:from-[#1a1a1a] dark:via-[#121212] dark:to-[#0a0a0a]" />
-            <div className="absolute inset-0 bg-gradient-to-br from-[#7928ca]/20 via-transparent to-[#ccf381]/10 opacity-50 group-hover:opacity-70 transition-opacity duration-700" />
-            <div className="absolute inset-0 border-2 border-[#262626] rounded-[32px]" />
-            <div className="relative w-full h-full flex items-center justify-center">
-              <div className="relative">
-                <Users className="w-32 h-32 md:w-40 md:h-40 text-[#ccf381] opacity-70 group-hover:opacity-90 transition-opacity duration-500" />
-                <div className="absolute inset-0 bg-[#ccf381]/20 blur-3xl rounded-full" aria-hidden="true" />
-              </div>
-            </div>
-            {/* Badge */}
-            <div className="absolute top-6 left-6 z-[4] w-[100px] h-[100px] flex items-center justify-center bg-gradient-to-br from-[#ccf381] to-[#a8e063] rounded-full text-black font-black text-center rotate-[12deg] shadow-[0_12px_24px_rgba(0,0,0,0.3)] text-sm leading-tight border-2 border-black/10 group-hover:rotate-[8deg] transition-transform duration-500">
-              <div>
-                <div className="text-[11px]">BEST</div>
-                <div className="text-[11px]">TUTORS</div>
-              </div>
-            </div>
-          </div>
-
-          {/* Side Cards */}
-          <div className="space-y-6">
-            {/* Card 1 - Native Speakers */}
-            <div className="group h-[240px] md:h-[240px] bg-white/85 dark:bg-[#1a1a1a]/90 backdrop-blur-2xl rounded-[24px] border border-[#e5e5e5] dark:border-[#262626] shadow-[0_20px_40px_rgba(0,0,0,0.1)] p-6 flex flex-col justify-between transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_24px_48px_rgba(0,0,0,0.12)]">
-              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#7928ca] to-[#ff0080] flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
-                <Users className="w-7 h-7 text-white" />
-              </div>
-              <div>
-                <h4 className="text-base font-bold mb-1 text-black dark:text-white">Native Speakers</h4>
-                <p className="text-xs text-[#666] dark:text-[#a1a1aa] mb-2">Certified Tutors</p>
-                <div className="flex text-[#ffb800] text-sm">★★★★★</div>
-              </div>
-            </div>
-
-            {/* Card 2 - Flexible Schedule */}
-            <div className="group h-[240px] md:h-[240px] bg-white/85 dark:bg-[#1a1a1a]/90 backdrop-blur-2xl rounded-[24px] border border-[#e5e5e5] dark:border-[#262626] shadow-[0_20px_40px_rgba(0,0,0,0.1)] p-6 flex flex-col justify-between transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_24px_48px_rgba(0,0,0,0.12)] animate-[float_6s_ease-in-out_1.5s_infinite]">
-              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#06B6D4] to-[#3b82f6] flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
-                <Clock className="w-7 h-7 text-white" />
-              </div>
-              <div>
-                <h4 className="text-base font-bold mb-1 text-black dark:text-white">Flexible Schedule</h4>
-                <p className="text-xs text-[#666] dark:text-[#a1a1aa] mb-2">24/7 Available</p>
-                <div className="flex text-[#ffb800] text-sm">★★★★☆</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
     </main>
   );
 }
