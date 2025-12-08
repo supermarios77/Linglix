@@ -41,7 +41,7 @@ linglix/
 │   └── README.md
 │
 ├── public/                # Static assets
-├── middleware.ts          # Next.js middleware (route protection)
+├── proxy.ts               # Next.js 16 proxy (route protection)
 ├── prisma.config.ts       # Prisma 7+ configuration
 └── package.json          # Dependencies
 ```
@@ -53,7 +53,7 @@ linglix/
 - **`config/auth.config.ts`**: NextAuth configuration (Edge Runtime compatible)
 - **`config/auth.ts`**: NextAuth initialization for middleware
 - **`prisma.config.ts`**: Prisma 7+ database configuration
-- **`middleware.ts`**: Route protection and authentication
+- **`proxy.ts`**: Route protection and authentication (Next.js 16 proxy)
 
 ### Database
 

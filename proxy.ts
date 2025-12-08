@@ -1,16 +1,21 @@
 import { auth } from "@/config/auth";
 import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
 
 /**
- * Next.js Middleware for authentication (App Router)
+ * Next.js 16 Proxy for authentication (App Router)
  * 
- * Protects routes and handles authentication redirects
+ * Protects routes and handles authentication redirects.
+ * 
+ * In Next.js 16, middleware has been renamed to proxy to better reflect
+ * its role in handling incoming requests at the network boundary.
  * 
  * Production considerations:
- * - Runs on edge runtime for performance
+ * - Runs on Edge Runtime for performance
  * - Minimal logic to reduce latency
  * - Proper error handling
  * - App Router compatible
+ * - Lightweight operations only (redirects, rewrites, headers)
  */
 export default auth((req) => {
   const { pathname } = req.nextUrl;
@@ -43,7 +48,12 @@ export default auth((req) => {
   return NextResponse.next();
 });
 
-// Configure which routes to run middleware on
+/**
+ * Configure which routes the proxy should run on
+ * 
+ * The proxy runs before the request reaches your application,
+ * making it ideal for lightweight operations like redirects and rewrites.
+ */
 export const config = {
   matcher: [
     /*
@@ -53,6 +63,7 @@ export const config = {
      * - _next/image (image optimization files)
      * - favicon.ico (favicon file)
      * - public folder
+     * - image files
      */
     "/((?!api|_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
   ],
