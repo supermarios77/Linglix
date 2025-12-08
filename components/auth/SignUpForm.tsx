@@ -10,16 +10,12 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { AlertCircle } from "lucide-react";
+import { AlertCircle, ArrowRight } from "lucide-react";
 
 /**
  * Sign Up Form Component
  * 
- * Built with shadcn/ui components for:
- * - Beautiful, accessible UI
- * - Built-in form validation
- * - Smooth animations
- * - Production-ready design
+ * Modern, beautiful sign up form with glassmorphism design
  */
 export function SignUpForm() {
   const t = useTranslations("auth");
@@ -102,127 +98,163 @@ export function SignUpForm() {
     confirmPassword.length > 0 && password !== confirmPassword;
 
   return (
-    <div className="w-full max-w-[420px]">
-      {/* Header */}
-      <div className="mb-12 text-center">
-        <h1 className="text-4xl font-semibold text-foreground mb-3 tracking-tight leading-tight">
-          {t("signUpTitle")}
-        </h1>
-        <p className="text-base text-muted-foreground font-normal leading-relaxed">
-          {t("createAccount")}
-        </p>
+    <div className="relative w-full max-w-[480px]">
+      {/* Glassmorphism Form Container */}
+      <div className="relative bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-2xl rounded-[40px] p-10 border border-white/60 shadow-[0_40px_80px_rgba(0,0,0,0.08)] overflow-hidden">
+        {/* Decorative elements */}
+        <div className="absolute top-0 right-0 w-[200px] h-[200px] rounded-full opacity-20 blur-[60px] bg-[radial-gradient(circle,rgb(255,143,112)_0%,rgba(255,255,255,0)_70%)]" />
+        <div className="absolute bottom-0 left-0 w-[150px] h-[150px] rounded-full opacity-20 blur-[60px] bg-[radial-gradient(circle,rgb(224,231,255)_0%,rgba(255,255,255,0)_70%)]" />
+
+        <div className="relative z-10">
+          {/* Badge */}
+          <div className="inline-flex items-center px-4 py-2 bg-white/80 border border-[#e5e5e5] rounded-full text-xs font-semibold uppercase tracking-wider mb-8 shadow-[0_2px_10px_rgba(0,0,0,0.03)]">
+            <span className="w-2 h-2 bg-[#10b981] rounded-full mr-2 animate-pulse" />
+            Join Us
+          </div>
+
+          {/* Header */}
+          <div className="mb-10">
+            <h1 className="text-[56px] leading-[1.1] font-semibold tracking-[-0.03em] mb-4 text-black">
+              {t("signUpTitle")}
+            </h1>
+            <p className="text-lg leading-relaxed text-[#555]">
+              {t("createAccount")}
+            </p>
+          </div>
+
+          {/* Error Message */}
+          {error && (
+            <Alert variant="destructive" className="mb-6 rounded-2xl border-red-200 bg-red-50/80 backdrop-blur-sm">
+              <AlertCircle className="h-4 w-4" />
+              <AlertTitle>{error}</AlertTitle>
+              <AlertDescription>{error}</AlertDescription>
+            </Alert>
+          )}
+
+          {/* Registration Form */}
+          <form onSubmit={handleSubmit} className="space-y-5">
+            <div className="space-y-2">
+              <Label htmlFor="name" className="text-sm font-semibold text-[#444]">
+                {tCommon("name")}
+              </Label>
+              <Input
+                id="name"
+                name="name"
+                type="text"
+                required
+                minLength={2}
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                disabled={isLoading}
+                placeholder="John Doe"
+                autoComplete="name"
+                className="h-12 rounded-full border-[#e5e5e5] bg-white/80 backdrop-blur-sm focus:border-black focus:ring-2 focus:ring-black/10 transition-all"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="email" className="text-sm font-semibold text-[#444]">
+                {tCommon("email")}
+              </Label>
+              <Input
+                id="email"
+                name="email"
+                type="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                disabled={isLoading}
+                placeholder="you@example.com"
+                autoComplete="email"
+                className="h-12 rounded-full border-[#e5e5e5] bg-white/80 backdrop-blur-sm focus:border-black focus:ring-2 focus:ring-black/10 transition-all"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="password" className="text-sm font-semibold text-[#444]">
+                {tCommon("password")}
+              </Label>
+              <Input
+                id="password"
+                name="password"
+                type="password"
+                required
+                minLength={8}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                disabled={isLoading}
+                placeholder="••••••••"
+                autoComplete="new-password"
+                className={`h-12 rounded-full border-[#e5e5e5] bg-white/80 backdrop-blur-sm focus:border-black focus:ring-2 focus:ring-black/10 transition-all ${
+                  isPasswordInvalid ? "border-red-300" : ""
+                }`}
+              />
+              {isPasswordInvalid && (
+                <p className="text-sm font-medium text-red-600">
+                  {t("passwordMinLength")}
+                </p>
+              )}
+              {!isPasswordInvalid && (
+                <p className="text-xs text-[#888]">
+                  {t("passwordMinLength")}
+                </p>
+              )}
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="confirmPassword" className="text-sm font-semibold text-[#444]">
+                {t("confirmPassword")}
+              </Label>
+              <Input
+                id="confirmPassword"
+                name="confirmPassword"
+                type="password"
+                required
+                minLength={8}
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                disabled={isLoading}
+                placeholder="••••••••"
+                autoComplete="new-password"
+                className={`h-12 rounded-full border-[#e5e5e5] bg-white/80 backdrop-blur-sm focus:border-black focus:ring-2 focus:ring-black/10 transition-all ${
+                  isConfirmPasswordInvalid ? "border-red-300" : ""
+                }`}
+              />
+              {isConfirmPasswordInvalid && (
+                <p className="text-sm font-medium text-red-600">
+                  {t("passwordsDoNotMatch")}
+                </p>
+              )}
+            </div>
+
+            <Button
+              type="submit"
+              className="w-full h-12 rounded-full bg-[#111] text-white font-semibold text-base transition-all duration-300 hover:translate-y-[-2px] hover:shadow-[0_10px_20px_rgba(0,0,0,0.15)] hover:bg-[#222] inline-flex items-center justify-center gap-2.5"
+              disabled={isLoading}
+            >
+              {isLoading ? (
+                t("creatingAccount") || "Creating account..."
+              ) : (
+                <>
+                  {t("createAccount")}
+                  <ArrowRight className="w-5 h-5" />
+                </>
+              )}
+            </Button>
+          </form>
+
+          {/* Sign In Link */}
+          <p className="mt-8 text-center text-sm text-[#666] font-normal">
+            {t("hasAccount")}{" "}
+            <Link
+              href={`/${locale}/auth/signin`}
+              className="font-semibold text-black hover:underline transition-colors"
+            >
+              {t("signInTitle")}
+            </Link>
+          </p>
+        </div>
       </div>
-
-      {/* Error Message */}
-      {error && (
-        <Alert variant="destructive" className="mb-5">
-          <AlertCircle className="h-4 w-4" />
-          <AlertTitle>{error}</AlertTitle>
-          <AlertDescription>{error}</AlertDescription>
-        </Alert>
-      )}
-
-      {/* Registration Form */}
-      <form onSubmit={handleSubmit} className="space-y-5">
-        <div className="space-y-2">
-          <Label htmlFor="name">{tCommon("name")}</Label>
-          <Input
-            id="name"
-            name="name"
-            type="text"
-            required
-            minLength={2}
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            disabled={isLoading}
-            placeholder="John Doe"
-            autoComplete="name"
-          />
-        </div>
-
-        <div className="space-y-2">
-          <Label htmlFor="email">{tCommon("email")}</Label>
-          <Input
-            id="email"
-            name="email"
-            type="email"
-            required
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            disabled={isLoading}
-            placeholder="you@example.com"
-            autoComplete="email"
-          />
-        </div>
-
-        <div className="space-y-2">
-          <Label htmlFor="password">{tCommon("password")}</Label>
-          <Input
-            id="password"
-            name="password"
-            type="password"
-            required
-            minLength={8}
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            disabled={isLoading}
-            placeholder="••••••••"
-            autoComplete="new-password"
-            className={isPasswordInvalid ? "border-destructive" : ""}
-          />
-          {isPasswordInvalid && (
-            <p className="text-sm font-medium text-destructive">
-              {t("passwordMinLength")}
-            </p>
-          )}
-          {!isPasswordInvalid && (
-            <p className="text-xs text-muted-foreground">
-              {t("passwordMinLength")}
-            </p>
-          )}
-        </div>
-
-        <div className="space-y-2">
-          <Label htmlFor="confirmPassword">{t("confirmPassword")}</Label>
-          <Input
-            id="confirmPassword"
-            name="confirmPassword"
-            type="password"
-            required
-            minLength={8}
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            disabled={isLoading}
-            placeholder="••••••••"
-            autoComplete="new-password"
-            className={isConfirmPasswordInvalid ? "border-destructive" : ""}
-          />
-          {isConfirmPasswordInvalid && (
-            <p className="text-sm font-medium text-destructive">
-              {t("passwordsDoNotMatch")}
-            </p>
-          )}
-        </div>
-
-        <Button
-          type="submit"
-          className="w-full"
-          disabled={isLoading}
-        >
-          {isLoading ? t("creatingAccount") || "Creating account..." : t("createAccount")}
-        </Button>
-      </form>
-
-      {/* Sign In Link */}
-      <p className="mt-8 text-center text-sm text-muted-foreground font-normal">
-        {t("hasAccount")}{" "}
-        <Link
-          href={`/${locale}/auth/signin`}
-          className="font-medium text-primary hover:underline"
-        >
-          {t("signInTitle")}
-        </Link>
-      </p>
     </div>
   );
 }
