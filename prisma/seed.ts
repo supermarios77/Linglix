@@ -85,6 +85,7 @@ async function main() {
           rating: 4.9,
           totalSessions: 247,
           isActive: true,
+          approvalStatus: "APPROVED", // Pre-approved for seed data
         },
       });
 

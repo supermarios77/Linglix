@@ -25,6 +25,13 @@ enum BookingStatus {
   REFUNDED
 }
 
+// Tutor approval status
+enum TutorApprovalStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
 // User model - handles both students and tutors
 model User {
   id            String    @id @default(cuid())
@@ -51,16 +58,18 @@ model User {
 
 // Tutor profile - additional info for tutors
 model TutorProfile {
-  id            String   @id @default(cuid())
-  userId        String   @unique
-  bio           String?
-  specialties   String[] // e.g., ["Business English", "IELTS Prep"]
-  hourlyRate    Float
-  rating        Float    @default(0)
-  totalSessions Int      @default(0)
-  isActive      Boolean  @default(true)
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  id              String              @id @default(cuid())
+  userId          String               @unique
+  bio             String?
+  specialties     String[] // e.g., ["Business English", "IELTS Prep"]
+  hourlyRate      Float
+  rating          Float                @default(0)
+  totalSessions   Int                  @default(0)
+  isActive        Boolean              @default(true)
+  approvalStatus  TutorApprovalStatus @default(PENDING)
+  rejectionReason String? // Admin can provide reason for rejection
+  createdAt       DateTime             @default(now())
+  updatedAt       DateTime             @updatedAt
 
   // Relations
   user         User           @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -69,6 +78,7 @@ model TutorProfile {
 
   @@index([userId])
   @@index([isActive])
+  @@index([approvalStatus])
 }
 
 // Tutor availability - weekly schedule

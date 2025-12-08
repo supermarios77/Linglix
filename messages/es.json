@@ -254,5 +254,51 @@
       "privacyPolicy": "Política de Privacidad",
       "termsOfService": "Términos de Servicio"
     }
+  },
+  "admin": {
+    "title": "Panel de Administración",
+    "subtitle": "Gestiona tutores y la plataforma",
+    "stats": {
+      "totalTutors": "Total de Tutores",
+      "pendingApprovals": "Aprobaciones Pendientes",
+      "approvedTutors": "Tutores Aprobados",
+      "rejectedTutors": "Tutores Rechazados",
+      "totalStudents": "Total de Estudiantes",
+      "totalBookings": "Total de Reservas"
+    },
+    "tutors": {
+      "title": "Gestión de Tutores",
+      "pending": "Pendiente de Aprobación",
+      "approved": "Aprobado",
+      "rejected": "Rechazado",
+      "all": "Todos los Tutores",
+      "name": "Nombre",
+      "email": "Correo Electrónico",
+      "specialties": "Especialidades",
+      "hourlyRate": "Tarifa por Hora",
+      "rating": "Calificación",
+      "status": "Estado",
+      "createdAt": "Fecha de Creación",
+      "actions": "Acciones",
+      "approve": "Aprobar",
+      "reject": "Rechazar",
+      "viewProfile": "Ver Perfil",
+      "noTutors": "No se encontraron tutores",
+      "approveConfirm": "¿Estás seguro de que deseas aprobar a este tutor?",
+      "rejectConfirm": "¿Estás seguro de que deseas rechazar a este tutor?",
+      "rejectionReason": "Razón del Rechazo",
+      "rejectionReasonPlaceholder": "Ingresa la razón del rechazo (opcional)",
+      "approveSuccess": "Tutor aprobado exitosamente",
+      "rejectSuccess": "Tutor rechazado exitosamente",
+      "approveError": "Error al aprobar tutor",
+      "rejectError": "Error al rechazar tutor",
+      "filterByStatus": "Filtrar por Estado",
+      "searchPlaceholder": "Buscar tutores por nombre o correo..."
+    },
+    "unauthorized": {
+      "title": "Acceso Denegado",
+      "message": "No tienes permiso para acceder a esta página. Se requiere acceso de administrador.",
+      "goBack": "Volver"
+    }
   }
 }

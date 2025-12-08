@@ -60,9 +60,10 @@ export default async function TutorsPage({
   const page = parseInt(searchParamsResolved.page || "1", 10);
   const perPage = 12;
 
-  // Build where clause
+  // Build where clause - only show approved and active tutors
   const tutorProfileConditions: Prisma.TutorProfileWhereInput = {
     isActive: true,
+    approvalStatus: "APPROVED", // Only show approved tutors
   };
 
   // Add language/specialty filter

@@ -55,6 +55,9 @@ export default auth((req) => {
 
   // Public routes that don't require authentication (without locale prefix)
   const publicRoutes = ["/", "/auth", "/tutors"];
+  
+  // Admin routes - require ADMIN role (checked in page component)
+  const isAdminRoute = pathnameWithoutLocale.startsWith("/admin");
 
   // Check if route is public (without locale prefix)
   const isPublicRoute = publicRoutes.some(

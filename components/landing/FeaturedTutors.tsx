@@ -35,12 +35,13 @@ interface TutorData {
 export async function FeaturedTutors({ locale }: FeaturedTutorsProps) {
   const t = await getTranslations("landing");
 
-  // Fetch active tutors with their profiles
+  // Fetch active and approved tutors with their profiles
   const tutors = await prisma.user.findMany({
     where: {
       role: "TUTOR",
       tutorProfile: {
         isActive: true,
+        approvalStatus: "APPROVED", // Only show approved tutors
       },
     },
     include: {

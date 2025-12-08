@@ -254,5 +254,51 @@
       "privacyPolicy": "Privacy Policy",
       "termsOfService": "Terms of Service"
     }
+  },
+  "admin": {
+    "title": "Admin Dashboard",
+    "subtitle": "Manage tutors and platform",
+    "stats": {
+      "totalTutors": "Total Tutors",
+      "pendingApprovals": "Pending Approvals",
+      "approvedTutors": "Approved Tutors",
+      "rejectedTutors": "Rejected Tutors",
+      "totalStudents": "Total Students",
+      "totalBookings": "Total Bookings"
+    },
+    "tutors": {
+      "title": "Tutor Management",
+      "pending": "Pending Approval",
+      "approved": "Approved",
+      "rejected": "Rejected",
+      "all": "All Tutors",
+      "name": "Name",
+      "email": "Email",
+      "specialties": "Specialties",
+      "hourlyRate": "Hourly Rate",
+      "rating": "Rating",
+      "status": "Status",
+      "createdAt": "Created At",
+      "actions": "Actions",
+      "approve": "Approve",
+      "reject": "Reject",
+      "viewProfile": "View Profile",
+      "noTutors": "No tutors found",
+      "approveConfirm": "Are you sure you want to approve this tutor?",
+      "rejectConfirm": "Are you sure you want to reject this tutor?",
+      "rejectionReason": "Rejection Reason",
+      "rejectionReasonPlaceholder": "Enter reason for rejection (optional)",
+      "approveSuccess": "Tutor approved successfully",
+      "rejectSuccess": "Tutor rejected successfully",
+      "approveError": "Failed to approve tutor",
+      "rejectError": "Failed to reject tutor",
+      "filterByStatus": "Filter by Status",
+      "searchPlaceholder": "Search tutors by name or email..."
+    },
+    "unauthorized": {
+      "title": "Access Denied",
+      "message": "You do not have permission to access this page. Admin access required.",
+      "goBack": "Go Back"
+    }
   }
 }

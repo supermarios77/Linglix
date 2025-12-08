@@ -1,0 +1,77 @@
+import { NextRequest, NextResponse } from "next/server";
+import { prisma } from "@/lib/db/prisma";
+import { requireRole } from "@/lib/auth";
+import { Role, TutorApprovalStatus } from "@prisma/client";
+import { createErrorResponse } from "@/lib/errors";
+import * as Sentry from "@sentry/nextjs";
+
+/**
+ * API Route: Get Admin Statistics
+ * 
+ * GET /api/admin/stats
+ * 
+ * Security:
+ * - Requires ADMIN role
+ * - Returns platform-wide statistics
+ * 
+ * Production considerations:
+ * - Proper error handling with Sentry
+ * - Efficient aggregation queries
+ * - Cached results (can be added later)
+ */
+export async function GET() {
+  try {
+    // Require admin role
+    await requireRole(Role.ADMIN);
+
+    // Fetch statistics in parallel
+    const [
+      totalTutors,
+      pendingTutors,
+      approvedTutors,
+      rejectedTutors,
+      totalStudents,
+      totalBookings,
+    ] = await Promise.all([
+      // Total tutors
+      prisma.user.count({
+        where: { role: Role.TUTOR },
+      }),
+      // Pending tutors
+      prisma.tutorProfile.count({
+        where: { approvalStatus: TutorApprovalStatus.PENDING },
+      }),
+      // Approved tutors
+      prisma.tutorProfile.count({
+        where: { approvalStatus: TutorApprovalStatus.APPROVED },
+      }),
+      // Rejected tutors
+      prisma.tutorProfile.count({
+        where: { approvalStatus: TutorApprovalStatus.REJECTED },
+      }),
+      // Total students
+      prisma.user.count({
+        where: { role: Role.STUDENT },
+      }),
+      // Total bookings
+      prisma.booking.count(),
+    ]);
+
+    return NextResponse.json({
+      totalTutors,
+      pendingTutors,
+      approvedTutors,
+      rejectedTutors,
+      totalStudents,
+      totalBookings,
+    });
+  } catch (error) {
+    // Log to Sentry in production
+    if (process.env.NODE_ENV === "production") {
+      Sentry.captureException(error);
+    }
+
+    return createErrorResponse(error, "Failed to fetch statistics");
+  }
+}
+

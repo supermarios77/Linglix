@@ -62,12 +62,13 @@ export default async function TutorDetailPage({
   const { locale, tutorName } = await params;
   const t = await getTranslations("tutor");
 
-  // Find tutor by slug
+  // Find tutor by slug - only show approved and active tutors
   const tutors = await prisma.user.findMany({
     where: {
       role: "TUTOR",
       tutorProfile: {
         isActive: true,
+        approvalStatus: "APPROVED", // Only show approved tutors
       },
     },
     include: {
