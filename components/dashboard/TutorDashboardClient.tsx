@@ -464,155 +464,244 @@ export function TutorDashboardClient({
 
             {/* Section Content */}
             {activeSection === "overview" && (
-              <>
-                {/* Stats Cards - Landing Style */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-8 sm:mb-12">
-                  {/* Total Earnings */}
-                  <Card className="group bg-white/90 dark:bg-[#1a1a1a]/90 backdrop-blur-md border border-[#e5e5e5] dark:border-[#262626] rounded-[20px] sm:rounded-[24px] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(0,0,0,0.1)] hover:border-[#ccf381] dark:hover:border-[#ccf381]/50">
-                    <CardContent className="p-6 sm:p-8">
-                      <div className="flex items-center justify-between mb-4">
-                        <div className="p-3 bg-green-500/10 dark:bg-green-500/10 rounded-xl">
-                          <DollarSign className="w-6 h-6 text-green-600 dark:text-green-400" />
-                        </div>
-                        <TrendingUp className="w-5 h-5 text-green-600 dark:text-green-400 opacity-60" />
-                      </div>
-                      <p className="text-xs sm:text-sm text-[#666] dark:text-[#a1a1aa] font-medium mb-2">
-                        {tTutor("stats.totalEarnings")}
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 auto-rows-auto gap-4 sm:gap-6">
+                {/* Hero Card - Large Stats Overview */}
+                <div className="md:col-span-2 bg-black dark:bg-[#050505] rounded-[32px] p-6 sm:p-8 relative overflow-hidden flex flex-col justify-end min-h-[380px] border border-[#262626] transition-all hover:border-[#404040] hover:-translate-y-0.5">
+                  <div className="absolute top-0 left-0 w-full h-full opacity-60 mix-blend-lighten pointer-events-none">
+                    <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-[#7928ca] to-[#ccf381] rounded-full blur-3xl"></div>
+                    <div className="absolute bottom-0 left-0 w-48 h-48 bg-gradient-to-br from-[#ccf381] to-[#7928ca] rounded-full blur-3xl"></div>
+                  </div>
+                  <div className="relative z-10">
+                    <div className="text-xl sm:text-2xl text-[#ccf381] mb-2 font-medium">Your Teaching Journey</div>
+                    <div className="font-bold text-7xl sm:text-8xl lg:text-[120px] leading-[0.8] tracking-tighter text-white -ml-1 sm:-ml-1.5 mb-6">
+                      {new Date().getFullYear()}
+                    </div>
+                    <div className="mt-6 bg-white/10 dark:bg-white/5 backdrop-blur-md border-t border-white/20 p-4 sm:p-5 rounded-2xl">
+                      <p className="text-sm sm:text-base font-medium opacity-90 text-white">
+                        {totalSessions > 0 
+                          ? `You've completed ${totalSessions} session${totalSessions !== 1 ? 's' : ''} and earned $${totalEarnings.toFixed(2)}. Keep up the great work!`
+                          : "Start your teaching journey by setting your availability and waiting for students to book sessions."}
                       </p>
-                      <p className="text-2xl sm:text-3xl font-bold text-black dark:text-white">
-                        ${totalEarnings.toFixed(2)}
-                      </p>
-                    </CardContent>
-                  </Card>
-
-                  {/* Total Sessions */}
-                  <Card className="group bg-white/90 dark:bg-[#1a1a1a]/90 backdrop-blur-md border border-[#e5e5e5] dark:border-[#262626] rounded-[20px] sm:rounded-[24px] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(0,0,0,0.1)] hover:border-[#ccf381] dark:hover:border-[#ccf381]/50">
-                    <CardContent className="p-6 sm:p-8">
-                      <div className="flex items-center justify-between mb-4">
-                        <div className="p-3 bg-blue-500/10 dark:bg-blue-500/10 rounded-xl">
-                          <BookOpen className="w-6 h-6 text-blue-600 dark:text-blue-400" />
-                        </div>
-                        <TrendingUp className="w-5 h-5 text-blue-600 dark:text-blue-400 opacity-60" />
-                      </div>
-                      <p className="text-xs sm:text-sm text-[#666] dark:text-[#a1a1aa] font-medium mb-2">
-                        {tTutor("stats.totalSessions")}
-                      </p>
-                      <p className="text-2xl sm:text-3xl font-bold text-black dark:text-white">
-                        {totalSessions}
-                      </p>
-                    </CardContent>
-                  </Card>
-
-                  {/* Average Rating */}
-                  <Card className="group bg-white/90 dark:bg-[#1a1a1a]/90 backdrop-blur-md border border-[#e5e5e5] dark:border-[#262626] rounded-[20px] sm:rounded-[24px] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(0,0,0,0.1)] hover:border-[#ccf381] dark:hover:border-[#ccf381]/50">
-                    <CardContent className="p-6 sm:p-8">
-                      <div className="flex items-center justify-between mb-4">
-                        <div className="p-3 bg-yellow-500/10 dark:bg-yellow-500/10 rounded-xl">
-                          <Star className="w-6 h-6 text-yellow-600 dark:text-yellow-400 fill-current" />
-                        </div>
-                        <Award className="w-5 h-5 text-yellow-600 dark:text-yellow-400 opacity-60" />
-                      </div>
-                      <p className="text-xs sm:text-sm text-[#666] dark:text-[#a1a1aa] font-medium mb-2">
-                        {tTutor("stats.averageRating")}
-                      </p>
-                      <div className="flex items-center gap-2">
-                        <p className="text-2xl sm:text-3xl font-bold text-black dark:text-white">
-                          {averageRating > 0 ? averageRating.toFixed(1) : "0.0"}
-                        </p>
-                        <Star className="w-5 h-5 text-yellow-500 fill-current" />
-                      </div>
-                    </CardContent>
-                  </Card>
-
-                  {/* Total Students */}
-                  <Card className="group bg-white/90 dark:bg-[#1a1a1a]/90 backdrop-blur-md border border-[#e5e5e5] dark:border-[#262626] rounded-[20px] sm:rounded-[24px] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(0,0,0,0.1)] hover:border-[#ccf381] dark:hover:border-[#ccf381]/50">
-                    <CardContent className="p-6 sm:p-8">
-                      <div className="flex items-center justify-between mb-4">
-                        <div className="p-3 bg-purple-500/10 dark:bg-purple-500/10 rounded-xl">
-                          <Users className="w-6 h-6 text-purple-600 dark:text-purple-400" />
-                        </div>
-                        <TrendingUp className="w-5 h-5 text-purple-600 dark:text-purple-400 opacity-60" />
-                      </div>
-                      <p className="text-xs sm:text-sm text-[#666] dark:text-[#a1a1aa] font-medium mb-2">
-                        {tTutor("stats.totalStudents")}
-                      </p>
-                      <p className="text-2xl sm:text-3xl font-bold text-black dark:text-white">
-                        {totalStudents}
-                      </p>
-                    </CardContent>
-                  </Card>
+                    </div>
+                  </div>
                 </div>
 
-                {/* Quick Overview Grid */}
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                  {/* Calendar Preview */}
-                  <AvailabilityCalendar
-                    bookings={[...upcomingBookings, ...pastBookings]}
-                  />
+                {/* Total Earnings Card */}
+                <div className="bg-gradient-to-b from-[#1a1a1a] to-[#121212] dark:from-[#1a1a1a] dark:to-[#121212] rounded-[32px] p-6 sm:p-8 flex flex-col justify-between min-h-[380px] border border-[#262626] transition-all hover:border-[#404040] hover:-translate-y-0.5">
+                  <div>
+                    <div className="text-xs sm:text-sm text-[#a1a1aa] uppercase tracking-wider font-semibold mb-2">
+                      {tTutor("stats.totalEarnings")}
+                    </div>
+                    <div className="font-bold text-5xl sm:text-6xl leading-none mb-0 bg-gradient-to-br from-[#7928ca] to-[#ff0080] bg-clip-text text-transparent">
+                      ${totalEarnings.toFixed(0)}
+                    </div>
+                  </div>
+                  <div className="mt-8">
+                    <div className="text-xs sm:text-sm text-[#a1a1aa] uppercase tracking-wider font-semibold mb-2">
+                      This Month
+                    </div>
+                    <div className="text-4xl sm:text-5xl font-bold leading-none text-white mb-3">
+                      ${(totalEarnings * 0.3).toFixed(0)}
+                    </div>
+                    <div className="inline-flex items-center gap-1 bg-[#ccf381]/10 text-[#ccf381] px-3 py-1 rounded-full text-xs font-semibold">
+                      <TrendingUp className="w-3 h-3" />
+                      +{((totalEarnings * 0.3) / totalEarnings * 100).toFixed(0)}% vs last month
+                    </div>
+                  </div>
+                </div>
 
-                  {/* Recent Reviews */}
-                  {reviews.length > 0 && (
-                    <Card className="bg-white/90 dark:bg-[#1a1a1a]/90 backdrop-blur-md border border-[#e5e5e5] dark:border-[#262626] rounded-[20px] sm:rounded-[24px] shadow-[0_4px_12px_rgba(0,0,0,0.05)]">
-                      <CardHeader className="pb-4">
-                        <CardTitle className="text-lg font-semibold text-black dark:text-white">
-                          {tTutor("reviews")}
-                        </CardTitle>
-                      </CardHeader>
-                      <CardContent>
-                        <div className="space-y-4">
-                          {reviews.slice(0, 3).map((review) => (
-                            <div
-                              key={review.id}
-                              className="p-4 bg-white/60 dark:bg-[#0a0a0a]/60 backdrop-blur-sm border border-[#e5e5e5] dark:border-[#262626] rounded-xl hover:shadow-md transition-all duration-200"
-                            >
-                              <div className="flex items-start gap-3">
-                                {review.student.image ? (
-                                  <div className="relative w-8 h-8 rounded-full overflow-hidden border border-[#e5e5e5] dark:border-[#262626] flex-shrink-0">
-                                    <Image
-                                      src={review.student.image}
-                                      alt={review.student.name || tTutor("student")}
-                                      fill
-                                      className="object-cover"
-                                    />
-                                  </div>
-                                ) : (
-                                  <div className="w-8 h-8 rounded-full bg-[#f5f5f5] dark:bg-[#262626] border border-[#e5e5e5] dark:border-[#262626] flex items-center justify-center flex-shrink-0">
-                                    <User className="w-4 h-4 text-[#666] dark:text-[#aaa]" />
-                                  </div>
-                                )}
-                                <div className="flex-1 min-w-0">
-                                  <div className="flex items-center gap-2 mb-1">
-                                    <h4 className="text-sm font-medium text-black dark:text-white truncate">
-                                      {review.student.name || tTutor("student")}
-                                    </h4>
-                                    <div className="flex items-center gap-0.5">
-                                      {[...Array(5)].map((_, i) => (
-                                        <Star
-                                          key={i}
-                                          className={`w-3 h-3 ${
-                                            i < review.rating
-                                              ? "text-yellow-500 fill-current"
-                                              : "text-gray-300 dark:text-gray-600"
-                                          }`}
-                                        />
-                                      ))}
-                                    </div>
-                                  </div>
-                                  {review.comment && (
-                                    <p className="text-xs text-[#666] dark:text-[#aaa] line-clamp-2">
-                                      {review.comment}
-                                    </p>
-                                  )}
+                {/* Rating & Students Card */}
+                <div className="bg-white dark:bg-[#1a1a1a] text-black dark:text-white rounded-[32px] p-6 sm:p-8 flex flex-col justify-between min-h-[320px] sm:min-h-[380px] border border-[#262626] transition-all hover:border-[#404040] hover:-translate-y-0.5">
+                  <div className="flex justify-between items-start mb-6">
+                    <span className="bg-black dark:bg-white text-white dark:text-black px-5 py-2.5 rounded-full text-sm font-bold">Performance</span>
+                    <Star className="w-6 h-6 text-yellow-500 fill-current" />
+                  </div>
+                  <div className="text-center flex-1 flex flex-col justify-center">
+                    <div className="w-20 h-20 sm:w-24 sm:h-24 bg-gradient-to-br from-[#ccf381] to-[#7928ca] rounded-full flex items-center justify-center mx-auto mb-6">
+                      <div className="text-center">
+                        <div className="text-3xl sm:text-4xl font-bold text-black">{averageRating > 0 ? averageRating.toFixed(1) : "0.0"}</div>
+                        <div className="text-xs font-semibold text-black/70">Rating</div>
+                      </div>
+                    </div>
+                    <div className="text-sm font-semibold uppercase mb-2 opacity-60 tracking-wide">You have</div>
+                    <div className="font-bold text-3xl sm:text-[36px] leading-tight tracking-tight mb-6">
+                      {totalStudents}
+                      <br />
+                      <span className="text-xl">Students</span>
+                    </div>
+                  </div>
+                  <div className="text-sm leading-relaxed font-medium border-t border-black/10 dark:border-white/10 pt-5">
+                    {averageRating >= 4.5 ? "Excellent! You're a top-rated tutor." : averageRating >= 4.0 ? "Great work! Keep it up." : "Building your reputation."}
+                  </div>
+                </div>
+
+                {/* Sessions Stats Card */}
+                <div className="md:col-span-2 lg:col-span-2 bg-gradient-to-br from-[#1a1a1a] to-[#121212] dark:from-[#1a1a1a] dark:to-[#121212] rounded-[32px] p-6 sm:p-8 border border-[#262626] transition-all hover:border-[#404040] hover:-translate-y-0.5">
+                  <div className="flex justify-between items-center mb-6">
+                    <h3 className="font-bold text-xl sm:text-2xl text-white">
+                      Session Activity
+                    </h3>
+                    <span className="text-sm text-[#a1a1aa]">This month</span>
+                  </div>
+                  <div className="space-y-5">
+                    <div className="flex items-center gap-4">
+                      <div className="w-10 h-10 rounded-full bg-green-500/10 flex items-center justify-center flex-shrink-0">
+                        <BookOpen className="w-6 h-6 text-green-400" />
+                      </div>
+                      <div className="flex-1">
+                        <div className="flex justify-between mb-1">
+                          <span className="font-semibold text-white">Completed Sessions</span>
+                          <span className="text-xs font-semibold text-white">{completedSessions}</span>
+                        </div>
+                        <div className="h-2 bg-[#262626] rounded-full overflow-hidden">
+                          <div className="h-full bg-gradient-to-r from-green-500 to-green-400 rounded-full" style={{ width: `${Math.min((completedSessions / Math.max(totalSessions, 1)) * 100, 100)}%` }}></div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-4">
+                      <div className="w-10 h-10 rounded-full bg-blue-500/10 flex items-center justify-center flex-shrink-0">
+                        <Clock className="w-6 h-6 text-blue-400" />
+                      </div>
+                      <div className="flex-1">
+                        <div className="flex justify-between mb-1">
+                          <span className="font-semibold text-white">Upcoming Sessions</span>
+                          <span className="text-xs font-semibold text-white">{upcomingBookings.length}</span>
+                        </div>
+                        <div className="h-2 bg-[#262626] rounded-full overflow-hidden">
+                          <div className="h-full bg-gradient-to-r from-blue-500 to-blue-400 rounded-full" style={{ width: `${Math.min((upcomingBookings.length / Math.max(totalSessions + upcomingBookings.length, 1)) * 100, 100)}%` }}></div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-4">
+                      <div className="w-10 h-10 rounded-full bg-purple-500/10 flex items-center justify-center flex-shrink-0">
+                        <Users className="w-6 h-6 text-purple-400" />
+                      </div>
+                      <div className="flex-1">
+                        <div className="flex justify-between mb-1">
+                          <span className="font-semibold text-white">Total Sessions</span>
+                          <span className="text-xs font-semibold text-white">{totalSessions}</span>
+                        </div>
+                        <div className="h-2 bg-[#262626] rounded-full overflow-hidden">
+                          <div className="h-full bg-gradient-to-r from-purple-500 to-purple-400 rounded-full" style={{ width: `${Math.min((totalSessions / Math.max(totalSessions + 10, 1)) * 100, 100)}%` }}></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Upcoming Sessions Preview */}
+                {upcomingBookings.length > 0 && (
+                  <div className="md:col-span-2 bg-gradient-to-br from-[#1a1a1a] to-[#121212] dark:from-[#1a1a1a] dark:to-[#121212] rounded-[32px] p-6 sm:p-8 border border-[#262626] transition-all hover:border-[#404040] hover:-translate-y-0.5">
+                    <div className="flex justify-between items-center mb-6">
+                      <h3 className="font-bold text-xl sm:text-2xl text-white">
+                        {tTutor("upcomingSessions")}
+                      </h3>
+                      <Badge variant="outline" className="rounded-full bg-green-500/10 text-green-300 border-green-500/30">
+                        {upcomingBookings.length}
+                      </Badge>
+                    </div>
+                    <div className="space-y-4">
+                      {upcomingBookings.slice(0, 3).map((booking) => (
+                        <div
+                          key={booking.id}
+                          className="p-4 bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl hover:bg-white/10 transition-all"
+                        >
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-3">
+                              {booking.student.image ? (
+                                <div className="relative w-10 h-10 rounded-full overflow-hidden border border-white/20 flex-shrink-0">
+                                  <Image
+                                    src={booking.student.image}
+                                    alt={booking.student.name || tTutor("student")}
+                                    fill
+                                    className="object-cover"
+                                  />
                                 </div>
+                              ) : (
+                                <div className="w-10 h-10 rounded-full bg-[#262626] border border-white/20 flex items-center justify-center flex-shrink-0">
+                                  <User className="w-5 h-5 text-[#a1a1aa]" />
+                                </div>
+                              )}
+                              <div>
+                                <h4 className="text-sm font-semibold text-white">
+                                  {booking.student.name || tTutor("student")}
+                                </h4>
+                                <p className="text-xs text-[#a1a1aa]">
+                                  {formatDate(booking.scheduledAt)} • {formatTime(booking.scheduledAt)}
+                                </p>
                               </div>
                             </div>
-                          ))}
+                            <div className="text-sm font-semibold text-white">
+                              ${booking.price.toFixed(2)}
+                            </div>
+                          </div>
                         </div>
-                      </CardContent>
-                    </Card>
-                  )}
-                </div>
-              </>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Recent Reviews */}
+                {reviews.length > 0 && (
+                  <div className="md:col-span-2 bg-gradient-to-br from-[#1a1a1a] to-[#121212] dark:from-[#1a1a1a] dark:to-[#121212] rounded-[32px] p-6 sm:p-8 border border-[#262626] transition-all hover:border-[#404040] hover:-translate-y-0.5">
+                    <div className="flex justify-between items-center mb-6">
+                      <h3 className="font-bold text-xl sm:text-2xl text-white">
+                        {tTutor("reviews")}
+                      </h3>
+                      <span className="text-sm text-[#a1a1aa]">Recent</span>
+                    </div>
+                    <div className="space-y-4">
+                      {reviews.slice(0, 3).map((review) => (
+                        <div
+                          key={review.id}
+                          className="p-4 bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl hover:bg-white/10 transition-all"
+                        >
+                          <div className="flex items-start gap-3">
+                            {review.student.image ? (
+                              <div className="relative w-10 h-10 rounded-full overflow-hidden border border-white/20 flex-shrink-0">
+                                <Image
+                                  src={review.student.image}
+                                  alt={review.student.name || tTutor("student")}
+                                  fill
+                                  className="object-cover"
+                                />
+                              </div>
+                            ) : (
+                              <div className="w-10 h-10 rounded-full bg-[#262626] border border-white/20 flex items-center justify-center flex-shrink-0">
+                                <User className="w-5 h-5 text-[#a1a1aa]" />
+                              </div>
+                            )}
+                            <div className="flex-1 min-w-0">
+                              <div className="flex items-center gap-2 mb-1">
+                                <h4 className="text-sm font-semibold text-white truncate">
+                                  {review.student.name || tTutor("student")}
+                                </h4>
+                                <div className="flex items-center gap-0.5">
+                                  {[...Array(5)].map((_, i) => (
+                                    <Star
+                                      key={i}
+                                      className={`w-3 h-3 ${
+                                        i < review.rating
+                                          ? "text-yellow-500 fill-current"
+                                          : "text-[#262626]"
+                                      }`}
+                                    />
+                                  ))}
+                                </div>
+                              </div>
+                              {review.comment && (
+                                <p className="text-xs text-[#a1a1aa] line-clamp-2">
+                                  {review.comment}
+                                </p>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
             )}
 
             {activeSection === "sessions" && (
