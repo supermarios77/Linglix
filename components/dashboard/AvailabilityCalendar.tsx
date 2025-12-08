@@ -97,18 +97,23 @@ export function AvailabilityCalendar({ bookings }: AvailabilityCalendarProps) {
   }, [year, month, startingDayOfWeek, daysInMonth]);
 
   return (
-    <Card className="bg-white/90 dark:bg-[#1a1a1a]/90 backdrop-blur-md border border-[#e5e5e5] dark:border-[#262626] shadow-[0_4px_12px_rgba(0,0,0,0.05)] rounded-[24px] sm:rounded-[32px] overflow-hidden">
+    <Card className="bg-white/90 dark:bg-[#1a1a1a]/90 backdrop-blur-md border border-[#e5e5e5] dark:border-[#262626] shadow-[0_4px_12px_rgba(0,0,0,0.05)] rounded-xl sm:rounded-2xl overflow-hidden">
       <CardHeader className="pb-4">
-        <div className="flex items-center justify-between">
-          <CardTitle className="text-xl sm:text-2xl md:text-3xl font-bold text-black dark:text-white">
-            {t("title")}
-          </CardTitle>
+        <div className="flex items-center justify-between mb-3">
+          <div>
+            <CardTitle className="text-lg sm:text-xl md:text-2xl font-bold text-black dark:text-white">
+              {t("title")}
+            </CardTitle>
+            <p className="text-sm sm:text-base font-medium text-[#666] dark:text-[#a1a1aa] mt-1">
+              {MONTHS[month]} {year}
+            </p>
+          </div>
           <div className="flex items-center gap-2">
             <Button
               variant="outline"
               size="sm"
               onClick={goToPreviousMonth}
-              className="rounded-full h-8 w-8 p-0 border-[#e5e5e5] dark:border-[#262626] bg-white/80 dark:bg-[#0a0a0a]/80"
+              className="rounded-full h-8 w-8 p-0 border-[#e5e5e5] dark:border-[#262626] bg-white/80 dark:bg-[#0a0a0a]/80 hover:bg-white dark:hover:bg-[#0a0a0a]"
             >
               <ChevronLeft className="w-4 h-4" />
             </Button>
@@ -116,7 +121,7 @@ export function AvailabilityCalendar({ bookings }: AvailabilityCalendarProps) {
               variant="outline"
               size="sm"
               onClick={goToToday}
-              className="rounded-full px-4 h-8 text-xs border-[#e5e5e5] dark:border-[#262626] bg-white/80 dark:bg-[#0a0a0a]/80"
+              className="rounded-full px-3 h-8 text-xs border-[#e5e5e5] dark:border-[#262626] bg-white/80 dark:bg-[#0a0a0a]/80 hover:bg-white dark:hover:bg-[#0a0a0a]"
             >
               {t("today")}
             </Button>
@@ -124,24 +129,21 @@ export function AvailabilityCalendar({ bookings }: AvailabilityCalendarProps) {
               variant="outline"
               size="sm"
               onClick={goToNextMonth}
-              className="rounded-full h-8 w-8 p-0 border-[#e5e5e5] dark:border-[#262626] bg-white/80 dark:bg-[#0a0a0a]/80"
+              className="rounded-full h-8 w-8 p-0 border-[#e5e5e5] dark:border-[#262626] bg-white/80 dark:bg-[#0a0a0a]/80 hover:bg-white dark:hover:bg-[#0a0a0a]"
             >
               <ChevronRight className="w-4 h-4" />
             </Button>
           </div>
         </div>
-        <p className="text-lg sm:text-xl font-semibold text-[#666] dark:text-[#a1a1aa] mt-2">
-          {MONTHS[month]} {year}
-        </p>
       </CardHeader>
       <CardContent>
         {/* Calendar Grid */}
-        <div className="grid grid-cols-7 gap-1 sm:gap-2">
+        <div className="grid grid-cols-7 gap-1.5 sm:gap-2">
           {/* Day Headers */}
           {DAYS_OF_WEEK.map((day) => (
             <div
               key={day}
-              className="text-center text-xs sm:text-sm font-semibold text-[#666] dark:text-[#a1a1aa] py-2"
+              className="text-center text-xs sm:text-sm font-semibold text-[#666] dark:text-[#a1a1aa] py-2 px-1"
             >
               {day}
             </div>
@@ -160,17 +162,17 @@ export function AvailabilityCalendar({ bookings }: AvailabilityCalendarProps) {
             return (
               <div
                 key={date.toISOString()}
-                className={`aspect-square p-1 sm:p-2 rounded-lg sm:rounded-xl border transition-all ${
+                className={`aspect-square p-1.5 sm:p-2 rounded-lg border transition-all ${
                   isTodayDate
-                    ? "bg-[#ccf381]/20 dark:bg-[#ccf381]/10 border-[#ccf381] dark:border-[#ccf381]/50"
+                    ? "bg-[#ccf381]/20 dark:bg-[#ccf381]/10 border-[#ccf381] dark:border-[#ccf381]/50 shadow-sm"
                     : isPastDate
                     ? "border-[#e5e5e5]/50 dark:border-[#262626]/50 bg-[#fafafa]/50 dark:bg-[#0a0a0a]/50"
-                    : "border-[#e5e5e5] dark:border-[#262626] bg-white/50 dark:bg-[#0a0a0a]/50 hover:border-[#ccf381] dark:hover:border-[#ccf381]/50"
+                    : "border-[#e5e5e5] dark:border-[#262626] bg-white/60 dark:bg-[#0a0a0a]/60 hover:border-[#ccf381] dark:hover:border-[#ccf381]/50 hover:shadow-sm"
                 }`}
               >
                 <div className="flex flex-col h-full">
                   <div
-                    className={`text-xs sm:text-sm font-semibold mb-1 ${
+                    className={`text-xs sm:text-sm font-bold mb-1 ${
                       isTodayDate
                         ? "text-[#ccf381] dark:text-[#ccf381]"
                         : isPastDate
@@ -185,7 +187,7 @@ export function AvailabilityCalendar({ bookings }: AvailabilityCalendarProps) {
                       {dateBookings.slice(0, 2).map((booking) => (
                         <div
                           key={booking.id}
-                          className="text-[8px] sm:text-[10px] px-1 py-0.5 rounded bg-[#ccf381]/20 dark:bg-[#ccf381]/10 text-[#111] dark:text-[#ccf381] font-medium truncate"
+                          className="text-[8px] sm:text-[10px] px-1.5 py-0.5 rounded-md bg-[#ccf381]/25 dark:bg-[#ccf381]/15 text-[#111] dark:text-[#ccf381] font-semibold truncate border border-[#ccf381]/30 dark:border-[#ccf381]/20"
                           title={`${new Date(booking.scheduledAt).toLocaleTimeString([], {
                             hour: "2-digit",
                             minute: "2-digit",
@@ -198,7 +200,7 @@ export function AvailabilityCalendar({ bookings }: AvailabilityCalendarProps) {
                         </div>
                       ))}
                       {dateBookings.length > 2 && (
-                        <div className="text-[8px] sm:text-[10px] text-[#666] dark:text-[#a1a1aa] font-medium">
+                        <div className="text-[8px] sm:text-[10px] text-[#666] dark:text-[#a1a1aa] font-medium px-1">
                           +{dateBookings.length - 2}
                         </div>
                       )}
@@ -211,13 +213,13 @@ export function AvailabilityCalendar({ bookings }: AvailabilityCalendarProps) {
         </div>
 
         {/* Legend */}
-        <div className="mt-6 pt-6 border-t border-[#e5e5e5] dark:border-[#262626] flex flex-wrap items-center gap-4 text-xs sm:text-sm">
+        <div className="mt-4 pt-4 border-t border-[#e5e5e5] dark:border-[#262626] flex flex-wrap items-center gap-3 sm:gap-4 text-xs">
           <div className="flex items-center gap-2">
-            <div className="w-3 h-3 rounded bg-[#ccf381]/20 dark:bg-[#ccf381]/10 border border-[#ccf381] dark:border-[#ccf381]/50" />
+            <div className="w-2.5 h-2.5 rounded bg-[#ccf381]/20 dark:bg-[#ccf381]/10 border border-[#ccf381] dark:border-[#ccf381]/50" />
             <span className="text-[#666] dark:text-[#a1a1aa]">{t("today")}</span>
           </div>
           <div className="flex items-center gap-2">
-            <div className="w-3 h-3 rounded bg-[#ccf381]/20 dark:bg-[#ccf381]/10" />
+            <div className="w-2.5 h-2.5 rounded bg-[#ccf381]/20 dark:bg-[#ccf381]/10" />
             <span className="text-[#666] dark:text-[#a1a1aa]">{t("hasBookings")}</span>
           </div>
         </div>
