@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useTranslations } from "next-intl";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -40,6 +41,8 @@ import {
   CheckCircle2,
   XCircle,
   Loader2,
+  ArrowLeft,
+  Shield,
 } from "lucide-react";
 import type { TutorApprovalStatus } from "@prisma/client";
 
@@ -47,6 +50,7 @@ import type { TutorApprovalStatus } from "@prisma/client";
  * Admin Dashboard Client Component
  * 
  * Production-ready admin dashboard with:
+ * - Landing page style design
  * - Real-time statistics
  * - Tutor approval/rejection
  * - Search and filtering
@@ -92,7 +96,11 @@ interface TutorsResponse {
   };
 }
 
-export function AdminDashboardClient() {
+interface AdminDashboardClientProps {
+  locale: string;
+}
+
+export function AdminDashboardClient({ locale }: AdminDashboardClientProps) {
   const t = useTranslations("admin");
   const tCommon = useTranslations("common");
 
@@ -252,22 +260,31 @@ export function AdminDashboardClient() {
     switch (status) {
       case "PENDING":
         return (
-          <Badge variant="outline" className="bg-yellow-50 dark:bg-yellow-950 text-yellow-700 dark:text-yellow-300 border-yellow-300 dark:border-yellow-700">
-            <Clock className="w-3 h-3 mr-1" />
+          <Badge
+            variant="outline"
+            className="bg-yellow-50/80 dark:bg-yellow-950/80 backdrop-blur-sm text-yellow-700 dark:text-yellow-300 border-yellow-300 dark:border-yellow-700 rounded-full px-3 py-1"
+          >
+            <Clock className="w-3 h-3 mr-1.5" />
             {t("tutors.pending")}
           </Badge>
         );
       case "APPROVED":
         return (
-          <Badge variant="outline" className="bg-green-50 dark:bg-green-950 text-green-700 dark:text-green-300 border-green-300 dark:border-green-700">
-            <CheckCircle2 className="w-3 h-3 mr-1" />
+          <Badge
+            variant="outline"
+            className="bg-green-50/80 dark:bg-green-950/80 backdrop-blur-sm text-green-700 dark:text-green-300 border-green-300 dark:border-green-700 rounded-full px-3 py-1"
+          >
+            <CheckCircle2 className="w-3 h-3 mr-1.5" />
             {t("tutors.approved")}
           </Badge>
         );
       case "REJECTED":
         return (
-          <Badge variant="outline" className="bg-red-50 dark:bg-red-950 text-red-700 dark:text-red-300 border-red-300 dark:border-red-700">
-            <XCircle className="w-3 h-3 mr-1" />
+          <Badge
+            variant="outline"
+            className="bg-red-50/80 dark:bg-red-950/80 backdrop-blur-sm text-red-700 dark:text-red-300 border-red-300 dark:border-red-700 rounded-full px-3 py-1"
+          >
+            <XCircle className="w-3 h-3 mr-1.5" />
             {t("tutors.rejected")}
           </Badge>
         );
@@ -275,21 +292,50 @@ export function AdminDashboardClient() {
   };
 
   return (
-    <div className="min-h-screen bg-[#fafafa] dark:bg-[#0a0a0a] pt-16 sm:pt-20">
+    <div className="relative min-h-screen pt-16 sm:pt-20">
+      {/* Navigation Bar */}
+      <header className="fixed top-0 z-[1000] w-full h-16 sm:h-20 flex justify-between items-center px-4 sm:px-6 md:px-12 bg-[rgba(250,250,250,0.85)] dark:bg-[rgba(5,5,5,0.85)] backdrop-blur-xl border-b border-[rgba(0,0,0,0.03)] dark:border-[#262626]">
+        <Link
+          href={`/${locale}`}
+          className="flex items-center gap-2 text-sm font-medium text-[#444] dark:text-[#aaa] hover:text-black dark:hover:text-white transition-colors group"
+        >
+          <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+          <span>{tCommon("back")} to Home</span>
+        </Link>
+
+        <Link
+          href={`/${locale}`}
+          className="font-bold text-lg sm:text-xl md:text-2xl tracking-[-0.03em] text-black dark:text-white hover:opacity-80 transition-opacity"
+        >
+          Linglix<span className="text-[#111] dark:text-[#ccf381]">.</span>
+        </Link>
+
+        <div className="flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 bg-white/80 dark:bg-[#1a1a1a]/80 backdrop-blur-sm border border-[#e5e5e5] dark:border-[#262626] rounded-full">
+          <Shield className="w-4 h-4 text-[#ccf381]" />
+          <span className="text-xs sm:text-sm font-semibold text-black dark:text-white">
+            Admin
+          </span>
+        </div>
+      </header>
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 py-8 sm:py-12">
         {/* Header */}
-        <div className="mb-8 sm:mb-12">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-black dark:text-white mb-2">
+        <div className="mb-8 sm:mb-12 text-center">
+          <div className="inline-flex items-center px-3 sm:px-4 py-1.5 sm:py-2 bg-white/90 dark:bg-[#121212]/90 backdrop-blur-md border border-[#e5e5e5] dark:border-[#262626] rounded-full text-[10px] sm:text-xs font-semibold uppercase tracking-wider mb-6 sm:mb-8 shadow-[0_4px_12px_rgba(0,0,0,0.05)]">
+            <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-[#ccf381] rounded-full mr-2 sm:mr-2.5 animate-pulse" />
+            <span>Admin Dashboard</span>
+          </div>
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-[-0.04em] mb-4 text-black dark:text-white">
             {t("title")}
           </h1>
-          <p className="text-base sm:text-lg text-[#666] dark:text-[#aaa]">
+          <p className="text-base sm:text-lg md:text-xl text-[#555] dark:text-[#a1a1aa] max-w-2xl mx-auto font-light">
             {t("subtitle")}
           </p>
         </div>
 
         {/* Statistics Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-8 sm:mb-12">
-          <Card className="bg-white dark:bg-[#1a1a1a] border-[#e5e5e5] dark:border-[#262626]">
+          <Card className="bg-white/90 dark:bg-[#1a1a1a]/90 backdrop-blur-md border border-[#e5e5e5] dark:border-[#262626] shadow-[0_4px_12px_rgba(0,0,0,0.05)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.1)] transition-all duration-300">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium text-[#666] dark:text-[#aaa]">
                 {t("stats.totalTutors")}
@@ -297,7 +343,7 @@ export function AdminDashboardClient() {
               <Users className="h-4 w-4 text-[#666] dark:text-[#aaa]" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-black dark:text-white">
+              <div className="text-2xl sm:text-3xl font-bold text-black dark:text-white">
                 {statsLoading ? (
                   <Loader2 className="h-6 w-6 animate-spin" />
                 ) : (
@@ -307,7 +353,7 @@ export function AdminDashboardClient() {
             </CardContent>
           </Card>
 
-          <Card className="bg-white dark:bg-[#1a1a1a] border-[#e5e5e5] dark:border-[#262626]">
+          <Card className="bg-white/90 dark:bg-[#1a1a1a]/90 backdrop-blur-md border border-[#e5e5e5] dark:border-[#262626] shadow-[0_4px_12px_rgba(0,0,0,0.05)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.1)] transition-all duration-300">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium text-[#666] dark:text-[#aaa]">
                 {t("stats.pendingApprovals")}
@@ -315,7 +361,7 @@ export function AdminDashboardClient() {
               <Clock className="h-4 w-4 text-yellow-600 dark:text-yellow-400" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-yellow-600 dark:text-yellow-400">
+              <div className="text-2xl sm:text-3xl font-bold text-yellow-600 dark:text-yellow-400">
                 {statsLoading ? (
                   <Loader2 className="h-6 w-6 animate-spin" />
                 ) : (
@@ -325,7 +371,7 @@ export function AdminDashboardClient() {
             </CardContent>
           </Card>
 
-          <Card className="bg-white dark:bg-[#1a1a1a] border-[#e5e5e5] dark:border-[#262626]">
+          <Card className="bg-white/90 dark:bg-[#1a1a1a]/90 backdrop-blur-md border border-[#e5e5e5] dark:border-[#262626] shadow-[0_4px_12px_rgba(0,0,0,0.05)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.1)] transition-all duration-300">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium text-[#666] dark:text-[#aaa]">
                 {t("stats.approvedTutors")}
@@ -333,7 +379,7 @@ export function AdminDashboardClient() {
               <UserCheck className="h-4 w-4 text-green-600 dark:text-green-400" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-green-600 dark:text-green-400">
+              <div className="text-2xl sm:text-3xl font-bold text-green-600 dark:text-green-400">
                 {statsLoading ? (
                   <Loader2 className="h-6 w-6 animate-spin" />
                 ) : (
@@ -343,7 +389,7 @@ export function AdminDashboardClient() {
             </CardContent>
           </Card>
 
-          <Card className="bg-white dark:bg-[#1a1a1a] border-[#e5e5e5] dark:border-[#262626]">
+          <Card className="bg-white/90 dark:bg-[#1a1a1a]/90 backdrop-blur-md border border-[#e5e5e5] dark:border-[#262626] shadow-[0_4px_12px_rgba(0,0,0,0.05)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.1)] transition-all duration-300">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium text-[#666] dark:text-[#aaa]">
                 {t("stats.rejectedTutors")}
@@ -351,7 +397,7 @@ export function AdminDashboardClient() {
               <UserX className="h-4 w-4 text-red-600 dark:text-red-400" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-red-600 dark:text-red-400">
+              <div className="text-2xl sm:text-3xl font-bold text-red-600 dark:text-red-400">
                 {statsLoading ? (
                   <Loader2 className="h-6 w-6 animate-spin" />
                 ) : (
@@ -361,7 +407,7 @@ export function AdminDashboardClient() {
             </CardContent>
           </Card>
 
-          <Card className="bg-white dark:bg-[#1a1a1a] border-[#e5e5e5] dark:border-[#262626]">
+          <Card className="bg-white/90 dark:bg-[#1a1a1a]/90 backdrop-blur-md border border-[#e5e5e5] dark:border-[#262626] shadow-[0_4px_12px_rgba(0,0,0,0.05)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.1)] transition-all duration-300">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium text-[#666] dark:text-[#aaa]">
                 {t("stats.totalStudents")}
@@ -369,7 +415,7 @@ export function AdminDashboardClient() {
               <Users className="h-4 w-4 text-[#666] dark:text-[#aaa]" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-black dark:text-white">
+              <div className="text-2xl sm:text-3xl font-bold text-black dark:text-white">
                 {statsLoading ? (
                   <Loader2 className="h-6 w-6 animate-spin" />
                 ) : (
@@ -379,7 +425,7 @@ export function AdminDashboardClient() {
             </CardContent>
           </Card>
 
-          <Card className="bg-white dark:bg-[#1a1a1a] border-[#e5e5e5] dark:border-[#262626]">
+          <Card className="bg-white/90 dark:bg-[#1a1a1a]/90 backdrop-blur-md border border-[#e5e5e5] dark:border-[#262626] shadow-[0_4px_12px_rgba(0,0,0,0.05)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.1)] transition-all duration-300">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium text-[#666] dark:text-[#aaa]">
                 {t("stats.totalBookings")}
@@ -387,7 +433,7 @@ export function AdminDashboardClient() {
               <Users className="h-4 w-4 text-[#666] dark:text-[#aaa]" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-black dark:text-white">
+              <div className="text-2xl sm:text-3xl font-bold text-black dark:text-white">
                 {statsLoading ? (
                   <Loader2 className="h-6 w-6 animate-spin" />
                 ) : (
@@ -399,7 +445,7 @@ export function AdminDashboardClient() {
         </div>
 
         {/* Tutors Management */}
-        <Card className="bg-white dark:bg-[#1a1a1a] border-[#e5e5e5] dark:border-[#262626]">
+        <Card className="bg-white/90 dark:bg-[#1a1a1a]/90 backdrop-blur-md border border-[#e5e5e5] dark:border-[#262626] shadow-[0_4px_12px_rgba(0,0,0,0.05)]">
           <CardHeader>
             <CardTitle className="text-xl sm:text-2xl font-bold text-black dark:text-white">
               {t("tutors.title")}
@@ -418,12 +464,12 @@ export function AdminDashboardClient() {
                     placeholder={t("tutors.searchPlaceholder")}
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="pl-10 bg-white dark:bg-[#0a0a0a] border-[#e5e5e5] dark:border-[#262626]"
+                    className="pl-10 bg-white/80 dark:bg-[#0a0a0a]/80 backdrop-blur-sm border-[#e5e5e5] dark:border-[#262626] rounded-full"
                   />
                 </div>
               </div>
               <Select value={statusFilter} onValueChange={setStatusFilter}>
-                <SelectTrigger className="w-full sm:w-[200px] bg-white dark:bg-[#0a0a0a] border-[#e5e5e5] dark:border-[#262626]">
+                <SelectTrigger className="w-full sm:w-[200px] bg-white/80 dark:bg-[#0a0a0a]/80 backdrop-blur-sm border-[#e5e5e5] dark:border-[#262626] rounded-full">
                   <SelectValue placeholder={t("tutors.filterByStatus")} />
                 </SelectTrigger>
                 <SelectContent>
@@ -474,7 +520,7 @@ export function AdminDashboardClient() {
                       {tutors.map((tutor) => (
                         <tr
                           key={tutor.id}
-                          className="border-b border-[#e5e5e5] dark:border-[#262626] hover:bg-[#fafafa] dark:hover:bg-[#0a0a0a] transition-colors"
+                          className="border-b border-[#e5e5e5] dark:border-[#262626] hover:bg-white/50 dark:hover:bg-[#0a0a0a]/50 transition-colors"
                         >
                           <td className="py-3 px-4">
                             <div className="font-medium text-black dark:text-white">
@@ -490,7 +536,7 @@ export function AdminDashboardClient() {
                                 <Badge
                                   key={idx}
                                   variant="outline"
-                                  className="text-xs bg-white dark:bg-[#0a0a0a] border-[#e5e5e5] dark:border-[#262626]"
+                                  className="text-xs bg-white/80 dark:bg-[#0a0a0a]/80 backdrop-blur-sm border-[#e5e5e5] dark:border-[#262626] rounded-full"
                                 >
                                   {spec}
                                 </Badge>
@@ -499,7 +545,7 @@ export function AdminDashboardClient() {
                                 tutor.tutorProfile.specialties.length > 2 && (
                                   <Badge
                                     variant="outline"
-                                    className="text-xs bg-white dark:bg-[#0a0a0a] border-[#e5e5e5] dark:border-[#262626]"
+                                    className="text-xs bg-white/80 dark:bg-[#0a0a0a]/80 backdrop-blur-sm border-[#e5e5e5] dark:border-[#262626] rounded-full"
                                   >
                                     +{tutor.tutorProfile.specialties.length - 2}
                                   </Badge>
@@ -526,7 +572,7 @@ export function AdminDashboardClient() {
                                         tutorName: tutor.name,
                                       })
                                     }
-                                    className="bg-green-600 hover:bg-green-700 text-white"
+                                    className="bg-green-600 hover:bg-green-700 text-white rounded-full"
                                   >
                                     <CheckCircle2 className="h-3 w-3 mr-1" />
                                     {t("tutors.approve")}
@@ -542,6 +588,7 @@ export function AdminDashboardClient() {
                                         reason: "",
                                       })
                                     }
+                                    className="rounded-full"
                                   >
                                     <XCircle className="h-3 w-3 mr-1" />
                                     {t("tutors.reject")}
@@ -570,7 +617,7 @@ export function AdminDashboardClient() {
                         size="sm"
                         onClick={() => setPage((p) => Math.max(1, p - 1))}
                         disabled={page === 1 || loading}
-                        className="bg-white dark:bg-[#0a0a0a] border-[#e5e5e5] dark:border-[#262626]"
+                        className="bg-white/80 dark:bg-[#0a0a0a]/80 backdrop-blur-sm border-[#e5e5e5] dark:border-[#262626] rounded-full"
                       >
                         {tCommon("previous")}
                       </Button>
@@ -581,7 +628,7 @@ export function AdminDashboardClient() {
                           setPage((p) => Math.min(pagination.totalPages, p + 1))
                         }
                         disabled={page === pagination.totalPages || loading}
-                        className="bg-white dark:bg-[#0a0a0a] border-[#e5e5e5] dark:border-[#262626]"
+                        className="bg-white/80 dark:bg-[#0a0a0a]/80 backdrop-blur-sm border-[#e5e5e5] dark:border-[#262626] rounded-full"
                       >
                         {tCommon("next")}
                       </Button>
@@ -595,8 +642,13 @@ export function AdminDashboardClient() {
       </div>
 
       {/* Approve Dialog */}
-      <AlertDialog open={approveDialog.open} onOpenChange={(open) => setApproveDialog({ open, tutorId: null, tutorName: null })}>
-        <AlertDialogContent className="bg-white dark:bg-[#1a1a1a] border-[#e5e5e5] dark:border-[#262626]">
+      <AlertDialog
+        open={approveDialog.open}
+        onOpenChange={(open) =>
+          setApproveDialog({ open, tutorId: null, tutorName: null })
+        }
+      >
+        <AlertDialogContent className="bg-white/95 dark:bg-[#1a1a1a]/95 backdrop-blur-md border-[#e5e5e5] dark:border-[#262626]">
           <AlertDialogHeader>
             <AlertDialogTitle className="text-black dark:text-white">
               {t("tutors.approve")}
@@ -615,14 +667,14 @@ export function AdminDashboardClient() {
           <AlertDialogFooter>
             <AlertDialogCancel
               disabled={processing}
-              className="bg-white dark:bg-[#0a0a0a] border-[#e5e5e5] dark:border-[#262626]"
+              className="bg-white/80 dark:bg-[#0a0a0a]/80 backdrop-blur-sm border-[#e5e5e5] dark:border-[#262626] rounded-full"
             >
               {tCommon("cancel")}
             </AlertDialogCancel>
             <AlertDialogAction
               onClick={handleApprove}
               disabled={processing}
-              className="bg-green-600 hover:bg-green-700 text-white"
+              className="bg-green-600 hover:bg-green-700 text-white rounded-full"
             >
               {processing ? (
                 <Loader2 className="h-4 w-4 animate-spin mr-2" />
@@ -634,8 +686,13 @@ export function AdminDashboardClient() {
       </AlertDialog>
 
       {/* Reject Dialog */}
-      <AlertDialog open={rejectDialog.open} onOpenChange={(open) => setRejectDialog({ open, tutorId: null, tutorName: null, reason: "" })}>
-        <AlertDialogContent className="bg-white dark:bg-[#1a1a1a] border-[#e5e5e5] dark:border-[#262626]">
+      <AlertDialog
+        open={rejectDialog.open}
+        onOpenChange={(open) =>
+          setRejectDialog({ open, tutorId: null, tutorName: null, reason: "" })
+        }
+      >
+        <AlertDialogContent className="bg-white/95 dark:bg-[#1a1a1a]/95 backdrop-blur-md border-[#e5e5e5] dark:border-[#262626]">
           <AlertDialogHeader>
             <AlertDialogTitle className="text-black dark:text-white">
               {t("tutors.reject")}
@@ -662,21 +719,21 @@ export function AdminDashboardClient() {
               onChange={(e) =>
                 setRejectDialog({ ...rejectDialog, reason: e.target.value })
               }
-              className="mt-2 bg-white dark:bg-[#0a0a0a] border-[#e5e5e5] dark:border-[#262626]"
+              className="mt-2 bg-white/80 dark:bg-[#0a0a0a]/80 backdrop-blur-sm border-[#e5e5e5] dark:border-[#262626] rounded-lg"
               rows={3}
             />
           </div>
           <AlertDialogFooter>
             <AlertDialogCancel
               disabled={processing}
-              className="bg-white dark:bg-[#0a0a0a] border-[#e5e5e5] dark:border-[#262626]"
+              className="bg-white/80 dark:bg-[#0a0a0a]/80 backdrop-blur-sm border-[#e5e5e5] dark:border-[#262626] rounded-full"
             >
               {tCommon("cancel")}
             </AlertDialogCancel>
             <AlertDialogAction
               onClick={handleReject}
               disabled={processing}
-              className="bg-red-600 hover:bg-red-700 text-white"
+              className="bg-red-600 hover:bg-red-700 text-white rounded-full"
             >
               {processing ? (
                 <Loader2 className="h-4 w-4 animate-spin mr-2" />
@@ -689,4 +746,3 @@ export function AdminDashboardClient() {
     </div>
   );
 }
-
