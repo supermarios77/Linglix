@@ -17,8 +17,10 @@ import { prisma } from "@/lib/db/prisma";
  * - Rate limiting should be added at edge level
  */
 export async function POST(request: Request) {
+  let body: any = null;
+  
   try {
-    const body = await request.json();
+    body = await request.json();
 
     // Validate input
     const validatedData = registerSchema.parse(body);
@@ -73,12 +75,20 @@ export async function POST(request: Request) {
       );
     }
 
-    // Log error server-side only (not exposed to client)
-    if (process.env.NODE_ENV === "development") {
-      console.error("Registration error:", error);
+    // Log error to Sentry in production
+    if (process.env.NODE_ENV === "production") {
+      const { captureException } = await import("@sentry/nextjs");
+      captureException(error, {
+        tags: {
+          route: "/api/auth/register",
+          method: "POST",
+        },
+        extra: {
+          email: body?.email ? "***" : undefined, // Don't log actual email
+        },
+      });
     } else {
-      // In production, log to error tracking service (e.g., Sentry)
-      // console.error should be replaced with proper error tracking
+      console.error("Registration error:", error);
     }
 
     // Generic error message - don't leak internal details

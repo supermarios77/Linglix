@@ -46,6 +46,9 @@ const { handlers } = NextAuth({
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
+        // Extract email for error logging (before try block for scope)
+        const emailForLogging = credentials?.email ? "***" : undefined;
+
         try {
           // Validate input
           const validatedFields = credentialsSchema.safeParse(credentials);
@@ -89,12 +92,20 @@ const { handlers } = NextAuth({
             image: user.image,
           };
         } catch (error) {
-          // Log error server-side only (not exposed to client)
-          if (process.env.NODE_ENV === "development") {
-            console.error("Auth error:", error);
+          // Log error to Sentry in production
+          if (process.env.NODE_ENV === "production") {
+            const { captureException } = await import("@sentry/nextjs");
+            captureException(error, {
+              tags: {
+                route: "/api/auth/[...nextauth]",
+                provider: "credentials",
+              },
+              extra: {
+                hasEmail: !!emailForLogging, // Don't log actual email
+              },
+            });
           } else {
-            // In production, log to error tracking service (e.g., Sentry)
-            // console.error should be replaced with proper error tracking
+            console.error("Auth error:", error);
           }
           // Return null to indicate authentication failure
           // Don't leak error details to prevent information disclosure
