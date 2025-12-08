@@ -56,7 +56,7 @@ export default async function HomePage({
           </div>
           <h1 className="text-[56px] md:text-[76px] leading-[0.95] font-semibold tracking-[-0.03em] mb-6 text-black dark:text-white">
             Learn Languages with <br />
-            <span className="italic font-normal bg-gradient-to-r from-[#111] to-[#555] dark:from-white dark:to-[#aaa] bg-clip-text text-transparent">
+            <span className="inline-block bg-[#ffeb3b] dark:bg-[#ffc107] text-black dark:text-black px-3 py-1 -rotate-[-2deg] transform origin-center font-semibold shadow-[0_4px_8px_rgba(0,0,0,0.1)]">
               Native Tutors.
             </span>
           </h1>
@@ -227,7 +227,7 @@ export default async function HomePage({
             <h2 className="text-[48px] md:text-[56px] leading-[1.1] font-semibold tracking-[-0.03em] mb-6 text-black dark:text-white">
               {t("waitlist.title")}
               <br />
-              <span className="italic font-normal bg-gradient-to-r from-[#111] to-[#555] dark:from-white dark:to-[#aaa] bg-clip-text text-transparent">
+              <span className="inline-block bg-[#ffeb3b] dark:bg-[#ffc107] text-black dark:text-black px-3 py-1 -rotate-[-2deg] transform origin-center font-semibold shadow-[0_4px_8px_rgba(0,0,0,0.1)]">
                 {t("waitlist.titleHighlight")}
               </span>
             </h2>
@@ -259,7 +259,7 @@ export default async function HomePage({
         <div className="text-center mb-16">
           <h3 className="text-[42px] font-semibold mb-4 text-black dark:text-white">
             {t("testimonials.title")}{" "}
-            <span className="italic font-normal bg-gradient-to-r from-[#111] to-[#555] dark:from-white dark:to-[#aaa] bg-clip-text text-transparent">
+            <span className="inline-block bg-[#ffeb3b] dark:bg-[#ffc107] text-black dark:text-black px-3 py-1 -rotate-[-2deg] transform origin-center font-semibold shadow-[0_4px_8px_rgba(0,0,0,0.1)]">
               {t("testimonials.titleHighlight")}
             </span>
           </h3>
