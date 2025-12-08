@@ -17,7 +17,6 @@ import type { Booking } from "@prisma/client";
  */
 interface AvailabilityCalendarProps {
   bookings: Booking[];
-  locale?: string;
 }
 
 const DAYS_OF_WEEK = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
@@ -26,7 +25,7 @@ const MONTHS = [
   "July", "August", "September", "October", "November", "December"
 ];
 
-export function AvailabilityCalendar({ bookings, locale }: AvailabilityCalendarProps) {
+export function AvailabilityCalendar({ bookings }: AvailabilityCalendarProps) {
   const t = useTranslations("dashboard.tutor.calendar");
   const [currentDate, setCurrentDate] = useState(new Date());
 

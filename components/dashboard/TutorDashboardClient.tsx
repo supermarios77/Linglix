@@ -414,7 +414,6 @@ export function TutorDashboardClient({
           {/* Calendar */}
           <AvailabilityCalendar
             bookings={[...upcomingBookings, ...pastBookings]}
-            locale={locale}
           />
 
           {/* Availability Manager */}
