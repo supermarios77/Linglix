@@ -285,153 +285,113 @@ export function TutorDashboardClient({
         </div>
       </header>
 
-      <div className="max-w-[1600px] mx-auto px-4 sm:px-6 md:px-12 py-6 sm:py-8 md:py-10">
-        {/* Dashboard Header - More Compact */}
-        <div className="mb-6 sm:mb-8">
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
-            <div>
-              <div className="flex items-center gap-3 mb-2">
-                <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-[-0.02em] text-black dark:text-white">
-                  {tTutor("title")}
-                </h1>
-                {getApprovalStatusBadge(tutorProfile.approvalStatus)}
-              </div>
-              <p className="text-sm sm:text-base text-[#666] dark:text-[#a1a1aa]">
-                {tTutor("subtitle")}
-              </p>
-            </div>
-            <div className="flex items-center gap-3">
-              {user.image ? (
-                <div className="relative w-10 h-10 sm:w-12 sm:h-12 rounded-full overflow-hidden border-2 border-[#e5e5e5] dark:border-[#262626]">
-                  <Image
-                    src={user.image}
-                    alt={user.name || "User"}
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-              ) : (
-                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gradient-to-br from-[#ccf381]/20 to-[#7928ca]/20 border-2 border-[#e5e5e5] dark:border-[#262626] flex items-center justify-center">
-                  <User className="w-5 h-5 sm:w-6 sm:h-6 text-[#ccf381]" />
-                </div>
-              )}
-              <div>
-                <p className="text-sm font-semibold text-black dark:text-white">
-                  {user.name || tTutor("tutor")}
-                </p>
-                <p className="text-xs text-[#666] dark:text-[#a1a1aa]">
-                  {user.email}
-                </p>
-              </div>
-            </div>
+      <div className="max-w-[1600px] mx-auto px-4 sm:px-6 md:px-12 py-8 sm:py-12">
+        {/* Dashboard Header - Clean */}
+        <div className="mb-8">
+          <div className="flex items-center gap-3 mb-3">
+            <h1 className="text-2xl sm:text-3xl font-semibold text-black dark:text-white">
+              {tTutor("title")}
+            </h1>
+            {getApprovalStatusBadge(tutorProfile.approvalStatus)}
           </div>
+          <p className="text-sm text-[#666] dark:text-[#a1a1aa]">
+            {tTutor("subtitle")}
+          </p>
 
           {/* Approval Status Alerts */}
           {tutorProfile.approvalStatus === "PENDING" && (
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-yellow-50/80 dark:bg-yellow-950/80 border border-yellow-200 dark:border-yellow-800 rounded-full text-sm text-yellow-700 dark:text-yellow-300">
+            <div className="mt-4 inline-flex items-center gap-2 px-3 py-1.5 bg-yellow-50 dark:bg-yellow-950/30 border border-yellow-200 dark:border-yellow-800 rounded-lg text-sm text-yellow-700 dark:text-yellow-300">
               <AlertCircle className="w-4 h-4" />
               {tTutor("status.pendingMessage")}
             </div>
           )}
 
           {tutorProfile.approvalStatus === "REJECTED" && tutorProfile.rejectionReason && (
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-red-50/80 dark:bg-red-950/80 border border-red-200 dark:border-red-800 rounded-full text-sm text-red-700 dark:text-red-300 max-w-2xl">
+            <div className="mt-4 inline-flex items-center gap-2 px-3 py-1.5 bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-800 rounded-lg text-sm text-red-700 dark:text-red-300 max-w-2xl">
               <AlertCircle className="w-4 h-4" />
               <span>{tTutor("status.rejectedMessage")}: {tutorProfile.rejectionReason}</span>
             </div>
           )}
         </div>
 
-        {/* Stats Cards - Dashboard Style */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 mb-6 sm:mb-8">
+        {/* Stats Cards - Clean */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
           {/* Total Earnings */}
-          <Card className="bg-gradient-to-br from-white/95 to-white/85 dark:from-[#1a1a1a]/95 dark:to-[#0a0a0a]/95 backdrop-blur-md border border-[#e5e5e5] dark:border-[#262626] rounded-xl sm:rounded-2xl overflow-hidden hover:shadow-lg transition-shadow">
-            <CardContent className="p-5 sm:p-6">
-              <div className="flex items-center justify-between mb-3">
-                <div className="p-2.5 bg-green-500/20 dark:bg-green-500/10 rounded-lg">
+          <Card className="bg-white dark:bg-[#1a1a1a] border border-[#e5e5e5] dark:border-[#262626] rounded-lg">
+            <CardContent className="p-6">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="p-2 bg-green-500/10 dark:bg-green-500/10 rounded-lg">
                   <DollarSign className="w-5 h-5 text-green-600 dark:text-green-400" />
                 </div>
-                <TrendingUp className="w-4 h-4 text-green-600 dark:text-green-400 opacity-60" />
-              </div>
-              <div className="space-y-1">
-                <p className="text-xs sm:text-sm text-[#666] dark:text-[#a1a1aa] font-medium">
+                <p className="text-sm text-[#666] dark:text-[#a1a1aa]">
                   {tTutor("stats.totalEarnings")}
                 </p>
-                <p className="text-xl sm:text-2xl md:text-3xl font-bold text-black dark:text-white">
-                  ${totalEarnings.toFixed(2)}
-                </p>
               </div>
+              <p className="text-2xl font-semibold text-black dark:text-white">
+                ${totalEarnings.toFixed(2)}
+              </p>
             </CardContent>
           </Card>
 
           {/* Total Sessions */}
-          <Card className="bg-gradient-to-br from-white/95 to-white/85 dark:from-[#1a1a1a]/95 dark:to-[#0a0a0a]/95 backdrop-blur-md border border-[#e5e5e5] dark:border-[#262626] rounded-xl sm:rounded-2xl overflow-hidden hover:shadow-lg transition-shadow">
-            <CardContent className="p-5 sm:p-6">
-              <div className="flex items-center justify-between mb-3">
-                <div className="p-2.5 bg-blue-500/20 dark:bg-blue-500/10 rounded-lg">
+          <Card className="bg-white dark:bg-[#1a1a1a] border border-[#e5e5e5] dark:border-[#262626] rounded-lg">
+            <CardContent className="p-6">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="p-2 bg-blue-500/10 dark:bg-blue-500/10 rounded-lg">
                   <BookOpen className="w-5 h-5 text-blue-600 dark:text-blue-400" />
                 </div>
-                <TrendingUp className="w-4 h-4 text-blue-600 dark:text-blue-400 opacity-60" />
-              </div>
-              <div className="space-y-1">
-                <p className="text-xs sm:text-sm text-[#666] dark:text-[#a1a1aa] font-medium">
+                <p className="text-sm text-[#666] dark:text-[#a1a1aa]">
                   {tTutor("stats.totalSessions")}
                 </p>
-                <p className="text-xl sm:text-2xl md:text-3xl font-bold text-black dark:text-white">
-                  {totalSessions}
-                </p>
               </div>
+              <p className="text-2xl font-semibold text-black dark:text-white">
+                {totalSessions}
+              </p>
             </CardContent>
           </Card>
 
           {/* Average Rating */}
-          <Card className="bg-gradient-to-br from-white/95 to-white/85 dark:from-[#1a1a1a]/95 dark:to-[#0a0a0a]/95 backdrop-blur-md border border-[#e5e5e5] dark:border-[#262626] rounded-xl sm:rounded-2xl overflow-hidden hover:shadow-lg transition-shadow">
-            <CardContent className="p-5 sm:p-6">
-              <div className="flex items-center justify-between mb-3">
-                <div className="p-2.5 bg-yellow-500/20 dark:bg-yellow-500/10 rounded-lg">
+          <Card className="bg-white dark:bg-[#1a1a1a] border border-[#e5e5e5] dark:border-[#262626] rounded-lg">
+            <CardContent className="p-6">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="p-2 bg-yellow-500/10 dark:bg-yellow-500/10 rounded-lg">
                   <Star className="w-5 h-5 text-yellow-600 dark:text-yellow-400 fill-current" />
                 </div>
-                <Award className="w-4 h-4 text-yellow-600 dark:text-yellow-400 opacity-60" />
-              </div>
-              <div className="space-y-1">
-                <p className="text-xs sm:text-sm text-[#666] dark:text-[#a1a1aa] font-medium">
+                <p className="text-sm text-[#666] dark:text-[#a1a1aa]">
                   {tTutor("stats.averageRating")}
                 </p>
-                <div className="flex items-center gap-2">
-                  <p className="text-xl sm:text-2xl md:text-3xl font-bold text-black dark:text-white">
-                    {averageRating > 0 ? averageRating.toFixed(1) : "0.0"}
-                  </p>
-                  <Star className="w-4 h-4 sm:w-5 sm:h-5 text-yellow-500 fill-current" />
-                </div>
+              </div>
+              <div className="flex items-center gap-2">
+                <p className="text-2xl font-semibold text-black dark:text-white">
+                  {averageRating > 0 ? averageRating.toFixed(1) : "0.0"}
+                </p>
+                <Star className="w-4 h-4 text-yellow-500 fill-current" />
               </div>
             </CardContent>
           </Card>
 
           {/* Total Students */}
-          <Card className="bg-gradient-to-br from-white/95 to-white/85 dark:from-[#1a1a1a]/95 dark:to-[#0a0a0a]/95 backdrop-blur-md border border-[#e5e5e5] dark:border-[#262626] rounded-xl sm:rounded-2xl overflow-hidden hover:shadow-lg transition-shadow">
-            <CardContent className="p-5 sm:p-6">
-              <div className="flex items-center justify-between mb-3">
-                <div className="p-2.5 bg-purple-500/20 dark:bg-purple-500/10 rounded-lg">
+          <Card className="bg-white dark:bg-[#1a1a1a] border border-[#e5e5e5] dark:border-[#262626] rounded-lg">
+            <CardContent className="p-6">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="p-2 bg-purple-500/10 dark:bg-purple-500/10 rounded-lg">
                   <Users className="w-5 h-5 text-purple-600 dark:text-purple-400" />
                 </div>
-                <TrendingUp className="w-4 h-4 text-purple-600 dark:text-purple-400 opacity-60" />
-              </div>
-              <div className="space-y-1">
-                <p className="text-xs sm:text-sm text-[#666] dark:text-[#a1a1aa] font-medium">
+                <p className="text-sm text-[#666] dark:text-[#a1a1aa]">
                   {tTutor("stats.totalStudents")}
                 </p>
-                <p className="text-xl sm:text-2xl md:text-3xl font-bold text-black dark:text-white">
-                  {totalStudents}
-                </p>
               </div>
+              <p className="text-2xl font-semibold text-black dark:text-white">
+                {totalStudents}
+              </p>
             </CardContent>
           </Card>
         </div>
 
         {/* Main Dashboard Grid */}
-        <div className="grid grid-cols-1 xl:grid-cols-3 gap-6 sm:gap-8 mb-6 sm:mb-8">
+        <div className="grid grid-cols-1 xl:grid-cols-3 gap-6 mb-8">
           {/* Left Column - Calendar (2/3 width on XL) */}
-          <div className="xl:col-span-2 space-y-6 sm:space-y-8">
+          <div className="xl:col-span-2 space-y-6">
             {/* Calendar */}
             <AvailabilityCalendar
               bookings={[...upcomingBookings, ...pastBookings]}
@@ -439,18 +399,13 @@ export function TutorDashboardClient({
 
             {/* Upcoming Sessions */}
             {upcomingBookings.length > 0 && (
-              <Card className="bg-white/90 dark:bg-[#1a1a1a]/90 backdrop-blur-md border border-[#e5e5e5] dark:border-[#262626] shadow-[0_4px_12px_rgba(0,0,0,0.05)] rounded-xl sm:rounded-2xl overflow-hidden">
-                <CardHeader className="pb-3">
+              <Card className="bg-white dark:bg-[#1a1a1a] border border-[#e5e5e5] dark:border-[#262626] rounded-lg">
+                <CardHeader className="pb-4">
                   <div className="flex items-center justify-between">
-                    <div>
-                      <CardTitle className="text-lg sm:text-xl md:text-2xl font-bold text-black dark:text-white">
-                        {tTutor("upcomingSessions")}
-                      </CardTitle>
-                      <CardDescription className="text-[#666] dark:text-[#a1a1aa] text-sm mt-1">
-                        {tTutor("upcomingSessionsDescription")}
-                      </CardDescription>
-                    </div>
-                    <Badge variant="outline" className="rounded-full bg-green-500/10 text-green-700 dark:text-green-300 border-green-500/30">
+                    <CardTitle className="text-lg font-semibold text-black dark:text-white">
+                      {tTutor("upcomingSessions")}
+                    </CardTitle>
+                    <Badge variant="outline" className="rounded-md bg-green-500/10 text-green-700 dark:text-green-300 border-green-500/30">
                       {upcomingBookings.length}
                     </Badge>
                   </div>
@@ -460,54 +415,40 @@ export function TutorDashboardClient({
                     {upcomingBookings.slice(0, 5).map((booking) => (
                       <div
                         key={booking.id}
-                        className="p-4 sm:p-5 bg-gradient-to-br from-white/60 to-[#fafafa]/60 dark:from-[#0a0a0a]/60 dark:to-[#1a1a1a]/60 backdrop-blur-sm border border-[#e5e5e5] dark:border-[#262626] rounded-xl hover:shadow-md transition-all"
+                        className="p-4 border border-[#e5e5e5] dark:border-[#262626] rounded-lg hover:border-[#ccf381] dark:hover:border-[#ccf381]/50 transition-colors"
                       >
-                        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-                          <div className="flex-1">
-                            <div className="flex items-center gap-3 mb-3">
-                              {booking.student.image ? (
-                                <div className="relative w-10 h-10 sm:w-12 sm:h-12 rounded-full overflow-hidden border-2 border-[#e5e5e5] dark:border-[#262626]">
-                                  <Image
-                                    src={booking.student.image}
-                                    alt={booking.student.name || tTutor("student")}
-                                    fill
-                                    className="object-cover"
-                                  />
-                                </div>
-                              ) : (
-                                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gradient-to-br from-[#ccf381]/20 to-[#7928ca]/20 border-2 border-[#e5e5e5] dark:border-[#262626] flex items-center justify-center">
-                                  <User className="w-5 h-5 sm:w-6 sm:h-6 text-[#ccf381]" />
-                                </div>
-                              )}
-                              <div>
-                                <h3 className="text-sm sm:text-base font-semibold text-black dark:text-white">
-                                  {booking.student.name || tTutor("student")}
-                                </h3>
-                                <p className="text-xs text-[#666] dark:text-[#aaa]">
-                                  {booking.student.email}
-                                </p>
+                        <div className="flex items-start justify-between gap-4">
+                          <div className="flex items-start gap-3 flex-1">
+                            {booking.student.image ? (
+                              <div className="relative w-10 h-10 rounded-full overflow-hidden border border-[#e5e5e5] dark:border-[#262626] flex-shrink-0">
+                                <Image
+                                  src={booking.student.image}
+                                  alt={booking.student.name || tTutor("student")}
+                                  fill
+                                  className="object-cover"
+                                />
                               </div>
-                            </div>
-                            <div className="flex flex-wrap items-center gap-3 text-xs sm:text-sm text-[#666] dark:text-[#aaa]">
-                              <div className="flex items-center gap-1.5">
-                                <Calendar className="w-3.5 h-3.5" />
-                                <span className="font-medium">{formatDate(booking.scheduledAt)}</span>
+                            ) : (
+                              <div className="w-10 h-10 rounded-full bg-[#f5f5f5] dark:bg-[#262626] border border-[#e5e5e5] dark:border-[#262626] flex items-center justify-center flex-shrink-0">
+                                <User className="w-5 h-5 text-[#666] dark:text-[#aaa]" />
                               </div>
-                              <div className="flex items-center gap-1.5">
-                                <Clock className="w-3.5 h-3.5" />
-                                <span className="font-medium">{formatTime(booking.scheduledAt)}</span>
-                              </div>
-                              <div className="flex items-center gap-1.5">
-                                <span className="font-medium">{booking.duration} {tBooking("min")}</span>
-                              </div>
-                              <div className="flex items-center gap-1.5">
-                                <span className="font-semibold text-black dark:text-white">
-                                  ${booking.price.toFixed(2)}
-                                </span>
+                            )}
+                            <div className="flex-1 min-w-0">
+                              <h3 className="text-sm font-medium text-black dark:text-white mb-1">
+                                {booking.student.name || tTutor("student")}
+                              </h3>
+                              <div className="flex flex-wrap items-center gap-3 text-xs text-[#666] dark:text-[#aaa]">
+                                <span>{formatDate(booking.scheduledAt)}</span>
+                                <span>•</span>
+                                <span>{formatTime(booking.scheduledAt)}</span>
+                                <span>•</span>
+                                <span>{booking.duration} {tBooking("min")}</span>
+                                <span>•</span>
+                                <span className="font-medium text-black dark:text-white">${booking.price.toFixed(2)}</span>
                               </div>
                             </div>
                           </div>
-                          <div className="flex items-center gap-2">
+                          <div className="flex-shrink-0">
                             {getStatusBadge(booking.status)}
                           </div>
                         </div>
@@ -520,18 +461,13 @@ export function TutorDashboardClient({
 
             {/* Past Sessions */}
             {pastBookings.length > 0 && (
-              <Card className="bg-white/90 dark:bg-[#1a1a1a]/90 backdrop-blur-md border border-[#e5e5e5] dark:border-[#262626] shadow-[0_4px_12px_rgba(0,0,0,0.05)] rounded-xl sm:rounded-2xl overflow-hidden">
-                <CardHeader className="pb-3">
+              <Card className="bg-white dark:bg-[#1a1a1a] border border-[#e5e5e5] dark:border-[#262626] rounded-lg">
+                <CardHeader className="pb-4">
                   <div className="flex items-center justify-between">
-                    <div>
-                      <CardTitle className="text-lg sm:text-xl md:text-2xl font-bold text-black dark:text-white">
-                        {tTutor("pastSessions")}
-                      </CardTitle>
-                      <CardDescription className="text-[#666] dark:text-[#a1a1aa] text-sm mt-1">
-                        {tTutor("pastSessionsDescription")}
-                      </CardDescription>
-                    </div>
-                    <Badge variant="outline" className="rounded-full bg-blue-500/10 text-blue-700 dark:text-blue-300 border-blue-500/30">
+                    <CardTitle className="text-lg font-semibold text-black dark:text-white">
+                      {tTutor("pastSessions")}
+                    </CardTitle>
+                    <Badge variant="outline" className="rounded-md bg-blue-500/10 text-blue-700 dark:text-blue-300 border-blue-500/30">
                       {pastBookings.length}
                     </Badge>
                   </div>
@@ -541,56 +477,56 @@ export function TutorDashboardClient({
                     {pastBookings.slice(0, 5).map((booking) => (
                       <div
                         key={booking.id}
-                        className="p-4 sm:p-5 bg-gradient-to-br from-white/60 to-[#fafafa]/60 dark:from-[#0a0a0a]/60 dark:to-[#1a1a1a]/60 backdrop-blur-sm border border-[#e5e5e5] dark:border-[#262626] rounded-xl hover:shadow-md transition-all"
+                        className="p-4 border border-[#e5e5e5] dark:border-[#262626] rounded-lg hover:border-[#ccf381] dark:hover:border-[#ccf381]/50 transition-colors"
                       >
-                        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-                          <div className="flex-1">
-                            <div className="flex items-center gap-3 mb-3">
-                              {booking.student.image ? (
-                                <div className="relative w-10 h-10 sm:w-12 sm:h-12 rounded-full overflow-hidden border-2 border-[#e5e5e5] dark:border-[#262626]">
-                                  <Image
-                                    src={booking.student.image}
-                                    alt={booking.student.name || tTutor("student")}
-                                    fill
-                                    className="object-cover"
-                                  />
-                                </div>
-                              ) : (
-                                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gradient-to-br from-[#ccf381]/20 to-[#7928ca]/20 border-2 border-[#e5e5e5] dark:border-[#262626] flex items-center justify-center">
-                                  <User className="w-5 h-5 sm:w-6 sm:h-6 text-[#ccf381]" />
-                                </div>
-                              )}
-                              <div>
-                                <h3 className="text-sm sm:text-base font-semibold text-black dark:text-white">
-                                  {booking.student.name || tTutor("student")}
-                                </h3>
-                                <p className="text-xs text-[#666] dark:text-[#aaa]">
-                                  {booking.student.email}
-                                </p>
+                        <div className="flex items-start justify-between gap-4">
+                          <div className="flex items-start gap-3 flex-1">
+                            {booking.student.image ? (
+                              <div className="relative w-10 h-10 rounded-full overflow-hidden border border-[#e5e5e5] dark:border-[#262626] flex-shrink-0">
+                                <Image
+                                  src={booking.student.image}
+                                  alt={booking.student.name || tTutor("student")}
+                                  fill
+                                  className="object-cover"
+                                />
                               </div>
-                            </div>
-                            <div className="flex flex-wrap items-center gap-3 text-xs sm:text-sm text-[#666] dark:text-[#aaa]">
-                              <div className="flex items-center gap-1.5">
-                                <Calendar className="w-3.5 h-3.5" />
+                            ) : (
+                              <div className="w-10 h-10 rounded-full bg-[#f5f5f5] dark:bg-[#262626] border border-[#e5e5e5] dark:border-[#262626] flex items-center justify-center flex-shrink-0">
+                                <User className="w-5 h-5 text-[#666] dark:text-[#aaa]" />
+                              </div>
+                            )}
+                            <div className="flex-1 min-w-0">
+                              <h3 className="text-sm font-medium text-black dark:text-white mb-1">
+                                {booking.student.name || tTutor("student")}
+                              </h3>
+                              <div className="flex flex-wrap items-center gap-3 text-xs text-[#666] dark:text-[#aaa]">
                                 <span>{formatDate(booking.scheduledAt)}</span>
+                                {booking.videoSession?.recordingUrl && (
+                                  <>
+                                    <span>•</span>
+                                    <Link
+                                      href={booking.videoSession.recordingUrl}
+                                      className="text-[#ccf381] hover:underline"
+                                    >
+                                      {t("viewRecording")}
+                                    </Link>
+                                  </>
+                                )}
+                                {booking.videoSession?.review && (
+                                  <>
+                                    <span>•</span>
+                                    <div className="flex items-center gap-1">
+                                      <Star className="w-3 h-3 text-yellow-500 fill-current" />
+                                      <span>{booking.videoSession.review.rating}/5</span>
+                                    </div>
+                                  </>
+                                )}
                               </div>
-                              {booking.videoSession?.recordingUrl && (
-                                <Link
-                                  href={booking.videoSession.recordingUrl}
-                                  className="text-[#ccf381] hover:underline font-medium"
-                                >
-                                  {t("viewRecording")}
-                                </Link>
-                              )}
-                              {booking.videoSession?.review && (
-                                <div className="flex items-center gap-1">
-                                  <Star className="w-3.5 h-3.5 text-yellow-500 fill-current" />
-                                  <span className="font-medium">{booking.videoSession.review.rating}/5</span>
-                                </div>
-                              )}
                             </div>
                           </div>
-                          <div>{getStatusBadge(booking.status)}</div>
+                          <div className="flex-shrink-0">
+                            {getStatusBadge(booking.status)}
+                          </div>
                         </div>
                       </div>
                     ))}
@@ -601,31 +537,28 @@ export function TutorDashboardClient({
           </div>
 
           {/* Right Column - Sidebar (1/3 width on XL) */}
-          <div className="space-y-6 sm:space-y-8">
+          <div className="space-y-6">
             {/* Availability Manager */}
             <AvailabilityManager locale={locale} />
 
             {/* Reviews */}
             {reviews.length > 0 && (
-              <Card className="bg-white/90 dark:bg-[#1a1a1a]/90 backdrop-blur-md border border-[#e5e5e5] dark:border-[#262626] shadow-[0_4px_12px_rgba(0,0,0,0.05)] rounded-xl sm:rounded-2xl overflow-hidden">
-                <CardHeader className="pb-3">
-                  <CardTitle className="text-lg sm:text-xl font-bold text-black dark:text-white">
+              <Card className="bg-white dark:bg-[#1a1a1a] border border-[#e5e5e5] dark:border-[#262626] rounded-lg">
+                <CardHeader className="pb-4">
+                  <CardTitle className="text-lg font-semibold text-black dark:text-white">
                     {tTutor("reviews")}
                   </CardTitle>
-                  <CardDescription className="text-[#666] dark:text-[#a1a1aa] text-sm">
-                    {tTutor("reviewsDescription")}
-                  </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
                     {reviews.slice(0, 3).map((review) => (
                       <div
                         key={review.id}
-                        className="p-4 bg-gradient-to-br from-white/60 to-[#fafafa]/60 dark:from-[#0a0a0a]/60 dark:to-[#1a1a1a]/60 backdrop-blur-sm border border-[#e5e5e5] dark:border-[#262626] rounded-xl"
+                        className="p-3 border border-[#e5e5e5] dark:border-[#262626] rounded-lg"
                       >
                         <div className="flex items-start gap-3">
                           {review.student.image ? (
-                            <div className="relative w-8 h-8 rounded-full overflow-hidden border-2 border-[#e5e5e5] dark:border-[#262626] flex-shrink-0">
+                            <div className="relative w-8 h-8 rounded-full overflow-hidden border border-[#e5e5e5] dark:border-[#262626] flex-shrink-0">
                               <Image
                                 src={review.student.image}
                                 alt={review.student.name || tTutor("student")}
@@ -634,13 +567,13 @@ export function TutorDashboardClient({
                               />
                             </div>
                           ) : (
-                            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#ccf381]/20 to-[#7928ca]/20 border-2 border-[#e5e5e5] dark:border-[#262626] flex items-center justify-center flex-shrink-0">
-                              <User className="w-4 h-4 text-[#ccf381]" />
+                            <div className="w-8 h-8 rounded-full bg-[#f5f5f5] dark:bg-[#262626] border border-[#e5e5e5] dark:border-[#262626] flex items-center justify-center flex-shrink-0">
+                              <User className="w-4 h-4 text-[#666] dark:text-[#aaa]" />
                             </div>
                           )}
                           <div className="flex-1 min-w-0">
                             <div className="flex items-center gap-2 mb-1">
-                              <h4 className="text-sm font-semibold text-black dark:text-white truncate">
+                              <h4 className="text-sm font-medium text-black dark:text-white truncate">
                                 {review.student.name || tTutor("student")}
                               </h4>
                               <div className="flex items-center gap-0.5">
@@ -674,16 +607,13 @@ export function TutorDashboardClient({
 
         {/* Empty State - Only show if no bookings at all */}
         {upcomingBookings.length === 0 && pastBookings.length === 0 && (
-          <Card className="bg-gradient-to-br from-white/90 to-[#fafafa]/90 dark:from-[#1a1a1a]/90 dark:to-[#0a0a0a]/90 backdrop-blur-md border-2 border-[#e5e5e5] dark:border-[#262626] shadow-[0_20px_40px_rgba(0,0,0,0.08)] rounded-xl sm:rounded-2xl overflow-hidden">
-            <CardContent className="py-12 sm:py-16 text-center">
-              <div className="relative inline-block mb-6">
-                <BookOpen className="w-12 h-12 sm:w-16 sm:h-16 mx-auto text-[#ccf381] mb-4" />
-                <div className="absolute inset-0 bg-[#ccf381]/20 blur-3xl rounded-full" aria-hidden="true" />
-              </div>
-              <h3 className="text-xl sm:text-2xl font-bold text-black dark:text-white mb-3">
+          <Card className="bg-white dark:bg-[#1a1a1a] border border-[#e5e5e5] dark:border-[#262626] rounded-lg">
+            <CardContent className="py-12 text-center">
+              <BookOpen className="w-12 h-12 mx-auto text-[#666] dark:text-[#aaa] mb-4" />
+              <h3 className="text-lg font-semibold text-black dark:text-white mb-2">
                 {tTutor("noSessions")}
               </h3>
-              <p className="text-sm sm:text-base text-[#666] dark:text-[#a1a1aa] mb-6 max-w-md mx-auto">
+              <p className="text-sm text-[#666] dark:text-[#a1a1aa] max-w-md mx-auto">
                 {tTutor("noSessionsDescription")}
               </p>
             </CardContent>
