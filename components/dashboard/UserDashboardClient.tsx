@@ -53,12 +53,6 @@ interface TutorUser {
   email: string;
 }
 
-interface TutorProfile {
-  id: string;
-  specialties: string[];
-  hourlyRate: number;
-  rating: number;
-}
 
 interface BookingWithTutor extends Booking {
   tutor: {
@@ -95,7 +89,6 @@ export function UserDashboardClient({
   pastBookings,
 }: UserDashboardClientProps) {
   const t = useTranslations("dashboard");
-  const tCommon = useTranslations("common");
   const tBooking = useTranslations("booking");
 
   const formatDate = (date: Date) => {
@@ -335,7 +328,7 @@ export function UserDashboardClient({
                             <div className="relative w-16 h-16 sm:w-20 sm:h-20 rounded-full overflow-hidden border-2 border-[#e5e5e5] dark:border-[#262626]">
                               <Image
                                 src={booking.tutor.user.image}
-                                alt={booking.tutor.user.name || "Tutor"}
+                                alt={booking.tutor.user.name || t("tutorFallback")}
                                 fill
                                 className="object-cover"
                               />
@@ -446,7 +439,7 @@ export function UserDashboardClient({
                             <div className="relative w-12 h-12 sm:w-16 sm:h-16 rounded-full overflow-hidden border-2 border-[#e5e5e5] dark:border-[#262626]">
                               <Image
                                 src={booking.tutor.user.image}
-                                alt={booking.tutor.user.name || "Tutor"}
+                                alt={booking.tutor.user.name || t("tutorFallback")}
                                 fill
                                 className="object-cover"
                               />
