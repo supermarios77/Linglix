@@ -24,7 +24,7 @@ export function Testimonials({ locale }: TestimonialsProps) {
 
   const testimonials: Testimonial[] = [
     {
-      quote: "My Spanish has improved so much! Maria is patient, engaging, and makes learning fun. I can finally have conversations with confidence.",
+      quote: "My English has improved so much! Abby is patient, engaging, and makes learning fun. I can finally have conversations with confidence.",
       author: "Sarah Chen",
       role: "Verified Student",
       gradient: "from-[#7928ca] to-[#ff0080]",
