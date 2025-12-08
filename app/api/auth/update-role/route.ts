@@ -20,12 +20,24 @@ export async function POST(request: Request) {
   try {
     const session = await auth();
 
-    if (!session?.user) {
+    if (!session?.user?.id) {
       return createErrorResponse(Errors.Unauthorized());
     }
 
     const body = await request.json();
     const { role } = updateRoleSchema.parse(body);
+
+    // First, check if user exists
+    const existingUser = await prisma.user.findUnique({
+      where: { id: session.user.id },
+      select: { id: true, email: true },
+    });
+
+    if (!existingUser) {
+      return createErrorResponse(
+        Errors.NotFound("User not found. Please sign in again.")
+      );
+    }
 
     // Update user role
     await prisma.user.update({
@@ -47,6 +59,15 @@ export async function POST(request: Request) {
 
     if (error instanceof Error && error.name === "HttpError") {
       return createErrorResponse(error);
+    }
+
+    // Handle Prisma errors
+    if (error && typeof error === "object" && "code" in error) {
+      if (error.code === "P2025") {
+        return createErrorResponse(
+          Errors.NotFound("User not found. Please sign in again.")
+        );
+      }
     }
 
     return createErrorResponse(

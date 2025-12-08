@@ -65,26 +65,8 @@ export function OnboardingClient({ locale, user }: OnboardingClientProps) {
   const handleRoleSelect = (role: "STUDENT" | "TUTOR") => {
     setSelectedRole(role);
     setError(null);
-    setIsLoading(true);
-    fetch("/api/auth/update-role", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ role }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.error) {
-          setError(data.error);
-          setIsLoading(false);
-        } else {
-          setStep(role === "STUDENT" ? "student-questions" : "tutor-questions");
-          setIsLoading(false);
-        }
-      })
-      .catch(() => {
-        setError(t("error"));
-        setIsLoading(false);
-      });
+    // Just move to the next step - we'll update the role when completing onboarding
+    setStep(role === "STUDENT" ? "student-questions" : "tutor-questions");
   };
 
   const handleStudentSubmit = async (e: React.FormEvent) => {
@@ -110,6 +92,7 @@ export function OnboardingClient({ locale, user }: OnboardingClientProps) {
         return;
       }
 
+      // Redirect to dashboard
       window.location.href = `/${locale}/dashboard`;
     } catch (err) {
       setError(t("error"));

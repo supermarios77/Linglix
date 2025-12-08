@@ -51,8 +51,20 @@ export async function POST(request: Request) {
   try {
     const session = await auth();
 
-    if (!session?.user) {
+    if (!session?.user?.id) {
       return createErrorResponse(Errors.Unauthorized());
+    }
+
+    // Check if user exists
+    const existingUser = await prisma.user.findUnique({
+      where: { id: session.user.id },
+      select: { id: true, email: true },
+    });
+
+    if (!existingUser) {
+      return createErrorResponse(
+        Errors.NotFound("User not found. Please sign in again.")
+      );
     }
 
     const body = await request.json();
