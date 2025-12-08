@@ -4,6 +4,7 @@ import { prisma } from "@/lib/db/prisma";
 import { createErrorResponse, Errors } from "@/lib/errors";
 import { Role } from "@prisma/client";
 import { z } from "zod";
+import { sendWelcomeEmail } from "@/lib/email";
 
 const studentOnboardingSchema = z.object({
   role: z.literal("STUDENT"),
@@ -58,7 +59,7 @@ export async function POST(request: Request) {
     // Check if user exists
     const existingUser = await prisma.user.findUnique({
       where: { id: session.user.id },
-      select: { id: true, email: true },
+      select: { id: true, email: true, name: true },
     });
 
     if (!existingUser) {
@@ -95,6 +96,16 @@ export async function POST(request: Request) {
           preferredSchedule: validated.data.preferredSchedule,
           motivation: validated.data.motivation || null,
         },
+      });
+
+      // Send welcome email (non-blocking)
+      sendWelcomeEmail({
+        email: existingUser.email,
+        name: existingUser.name || undefined,
+        role: "STUDENT",
+      }).catch((error) => {
+        console.error("Failed to send welcome email:", error);
+        // Don't fail the request if email fails
       });
 
       return NextResponse.json(
@@ -140,6 +151,16 @@ export async function POST(request: Request) {
       await prisma.user.update({
         where: { id: session.user.id },
         data: { role: Role.TUTOR },
+      });
+
+      // Send welcome email (non-blocking)
+      sendWelcomeEmail({
+        email: existingUser.email,
+        name: existingUser.name || undefined,
+        role: "TUTOR",
+      }).catch((error) => {
+        console.error("Failed to send welcome email:", error);
+        // Don't fail the request if email fails
       });
 
       return NextResponse.json(

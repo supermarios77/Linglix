@@ -4,6 +4,7 @@ import { requireRole } from "@/lib/auth";
 import { Role } from "@prisma/client";
 import { createErrorResponse } from "@/lib/errors";
 import * as Sentry from "@sentry/nextjs";
+import { sendTutorApprovalEmail } from "@/lib/email";
 
 /**
  * API Route: Approve Tutor
@@ -65,6 +66,16 @@ export async function POST(
         isActive: true,
         rejectionReason: null, // Clear any previous rejection reason
       },
+    });
+
+    // Send approval email (non-blocking)
+    sendTutorApprovalEmail({
+      email: tutor.email,
+      name: tutor.name || undefined,
+      approved: true,
+    }).catch((error) => {
+      console.error("Failed to send approval email:", error);
+      // Don't fail the request if email fails
     });
 
     return NextResponse.json(
