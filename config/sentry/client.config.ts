@@ -10,7 +10,7 @@
 import * as Sentry from "@sentry/nextjs";
 
 Sentry.init({
-  dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,
+  dsn: process.env.NEXT_PUBLIC_SENTRY_DSN || undefined, // Only init if DSN is provided
 
   // Add optional integrations for additional features
   integrations: [
@@ -57,7 +57,7 @@ Sentry.init({
   ],
 
   // Filter out transactions from health checks and monitoring
-  beforeSend(event, hint) {
+  beforeSend(event) {
     // Don't send events in development unless explicitly testing
     if (process.env.NODE_ENV === "development" && !process.env.SENTRY_DEBUG) {
       return null;

@@ -45,7 +45,8 @@ export async function registerUser(data: RegisterInput) {
   });
 
   if (existingUser) {
-    throw new Error("User with this email already exists");
+    const { Errors } = await import("../errors");
+    throw Errors.Conflict("User with this email already exists");
   }
 
   // Hash password

@@ -10,7 +10,7 @@
 import * as Sentry from "@sentry/nextjs";
 
 Sentry.init({
-  dsn: process.env.NEXT_PUBLIC_SENTRY_DSN || process.env.SENTRY_DSN,
+  dsn: process.env.NEXT_PUBLIC_SENTRY_DSN || process.env.SENTRY_DSN || undefined, // Only init if DSN is provided
 
   // Adjust traces sample rate in production
   tracesSampleRate: process.env.NODE_ENV === "production" ? 0.1 : 1.0,
@@ -36,7 +36,7 @@ Sentry.init({
   ],
 
   // Filter out transactions from health checks
-  beforeSend(event, hint) {
+  beforeSend(event) {
     // Don't send events in development unless explicitly testing
     if (process.env.NODE_ENV === "development" && !process.env.SENTRY_DEBUG) {
       return null;

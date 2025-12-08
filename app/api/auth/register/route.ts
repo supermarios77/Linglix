@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { registerUser, registerSchema } from "@/lib/auth/utils";
 import { prisma } from "@/lib/db/prisma";
+import { createErrorResponse, Errors } from "@/lib/errors";
 
 /**
  * User Registration API Route
@@ -17,7 +18,7 @@ import { prisma } from "@/lib/db/prisma";
  * - Rate limiting should be added at edge level
  */
 export async function POST(request: Request) {
-  let body: any = null;
+  let body: unknown = null;
   
   try {
     body = await request.json();
@@ -32,10 +33,7 @@ export async function POST(request: Request) {
     });
 
     if (existingUser) {
-      return NextResponse.json(
-        { error: "User with this email already exists" },
-        { status: 400 }
-      );
+      throw Errors.Conflict("User with this email already exists");
     }
 
     // Register user
@@ -56,9 +54,8 @@ export async function POST(request: Request) {
   } catch (error) {
     // Handle validation errors - don't leak validation details
     if (error instanceof Error && error.name === "ZodError") {
-      return NextResponse.json(
-        { error: "Invalid input. Please check your email and password." },
-        { status: 400 }
+      return createErrorResponse(
+        Errors.BadRequest("Invalid input. Please check your email and password.")
       );
     }
 
@@ -69,10 +66,14 @@ export async function POST(request: Request) {
       "code" in error &&
       error.code === "P2002"
     ) {
-      return NextResponse.json(
-        { error: "User with this email already exists" },
-        { status: 400 }
+      return createErrorResponse(
+        Errors.Conflict("User with this email already exists")
       );
+    }
+
+    // Handle HttpError (from requireAuth, etc.)
+    if (error instanceof Error && error.name === "HttpError") {
+      return createErrorResponse(error);
     }
 
     // Log error to Sentry in production
@@ -84,7 +85,7 @@ export async function POST(request: Request) {
           method: "POST",
         },
         extra: {
-          email: body?.email ? "***" : undefined, // Don't log actual email
+          hasEmail: body && typeof body === "object" && "email" in body ? "***" : undefined, // Don't log actual email
         },
       });
     } else {
@@ -92,9 +93,9 @@ export async function POST(request: Request) {
     }
 
     // Generic error message - don't leak internal details
-    return NextResponse.json(
-      { error: "Failed to register user. Please try again." },
-      { status: 500 }
+    return createErrorResponse(
+      error,
+      "Failed to register user. Please try again."
     );
   }
 }

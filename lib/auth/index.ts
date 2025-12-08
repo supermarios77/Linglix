@@ -36,28 +36,30 @@ export async function hasRole(role: Role): Promise<boolean> {
 }
 
 /**
- * Require authentication - throws error if not authenticated
+ * Require authentication - throws HttpError if not authenticated
  * @returns Current user (never null)
- * @throws Error if not authenticated
+ * @throws HttpError if not authenticated
  */
 export async function requireAuth() {
   const user = await getCurrentUser();
   if (!user) {
-    throw new Error("Unauthorized");
+    const { Errors } = await import("../errors");
+    throw Errors.Unauthorized();
   }
   return user;
 }
 
 /**
- * Require specific role - throws error if user doesn't have role
+ * Require specific role - throws HttpError if user doesn't have role
  * @param role - Required role
  * @returns Current user (never null)
- * @throws Error if not authenticated or doesn't have role
+ * @throws HttpError if not authenticated or doesn't have role
  */
 export async function requireRole(role: Role) {
   const user = await requireAuth();
   if (user.role !== role) {
-    throw new Error("Forbidden");
+    const { Errors } = await import("../errors");
+    throw Errors.Forbidden();
   }
   return user;
 }
