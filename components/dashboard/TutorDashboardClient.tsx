@@ -851,13 +851,13 @@ export function TutorDashboardClient({
 
             {/* Empty State - Only show if no bookings at all in overview */}
             {activeSection === "overview" && upcomingBookings.length === 0 && pastBookings.length === 0 && (
-          <Card className="bg-white dark:bg-[#1a1a1a] border border-[#e5e5e5] dark:border-[#262626] rounded-lg">
-            <CardContent className="py-12 text-center">
-              <BookOpen className="w-12 h-12 mx-auto text-[#666] dark:text-[#aaa] mb-4" />
-              <h3 className="text-lg font-semibold text-black dark:text-white mb-2">
+          <Card className="bg-white/90 dark:bg-[#1a1a1a]/90 backdrop-blur-md border border-[#e5e5e5] dark:border-[#262626] rounded-[20px] sm:rounded-[24px] shadow-[0_4px_12px_rgba(0,0,0,0.05)]">
+            <CardContent className="py-12 sm:py-16 text-center">
+              <BookOpen className="w-12 h-12 sm:w-16 sm:h-16 mx-auto text-[#666] dark:text-[#aaa] mb-4" />
+              <h3 className="text-lg sm:text-xl font-semibold text-black dark:text-white mb-2">
                 {tTutor("noSessions")}
               </h3>
-              <p className="text-sm text-[#666] dark:text-[#a1a1aa] max-w-md mx-auto">
+              <p className="text-sm sm:text-base text-[#666] dark:text-[#a1a1aa] max-w-md mx-auto">
                 {tTutor("noSessionsDescription")}
               </p>
             </CardContent>
