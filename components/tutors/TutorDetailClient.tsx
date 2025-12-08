@@ -45,13 +45,13 @@ export function TutorDetailClient({
   const tBooking = useTranslations("booking");
 
   const dayNames = [
-    "Sunday",
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
+    t("days.sunday"),
+    t("days.monday"),
+    t("days.tuesday"),
+    t("days.wednesday"),
+    t("days.thursday"),
+    t("days.friday"),
+    t("days.saturday"),
   ];
 
   return (
@@ -63,7 +63,7 @@ export function TutorDetailClient({
           className="inline-flex items-center gap-2 text-sm text-[#666] dark:text-[#a1a1aa] hover:text-black dark:hover:text-white transition-colors mb-6"
         >
           <ArrowLeft className="w-4 h-4" />
-          Back to tutors
+          {t("backToTutors")}
         </Link>
       </div>
 
@@ -133,7 +133,7 @@ export function TutorDetailClient({
                   <div className="text-xl font-bold text-black dark:text-white">
                     ${tutor.hourlyRate}
                     <span className="text-base text-[#888] dark:text-[#a1a1aa]">
-                      /hr
+                      {t("hourly")}
                     </span>
                   </div>
                 </div>
@@ -169,7 +169,7 @@ export function TutorDetailClient({
         {tutor.bio && (
           <div className="mt-8 bg-white dark:bg-gradient-to-b from-[#1a1a1a] to-[#121212] rounded-[32px] p-6 sm:p-8 md:p-12 border border-[#e5e5e5] dark:border-[#262626] shadow-[0_20px_40px_rgba(0,0,0,0.08)]">
             <h2 className="text-2xl font-bold mb-4 text-black dark:text-white">
-              About {tutor.name}
+              {t("about")} {tutor.name}
             </h2>
             <p className="text-base leading-relaxed text-[#666] dark:text-[#a1a1aa] whitespace-pre-line">
               {tutor.bio}
@@ -212,7 +212,7 @@ export function TutorDetailClient({
           </h2>
           {tutor.reviews.length === 0 ? (
             <p className="text-[#666] dark:text-[#a1a1aa]">
-              No reviews yet. Be the first to review this tutor!
+              {t("noReviewsYet")}
             </p>
           ) : (
             <div className="space-y-6">

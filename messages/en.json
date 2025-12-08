@@ -81,7 +81,38 @@
     "bookSession": "Book Session",
     "reviews": "Reviews",
     "students": "Students",
-    "sessions": "Sessions"
+    "sessions": "Sessions",
+    "clearFilters": "Clear filters",
+    "allLanguages": "All languages",
+    "min": "Min",
+    "max": "Max",
+    "any": "Any",
+    "applyFilters": "Apply Filters",
+    "noTutorsFound": "No tutors found",
+    "tryAdjustingFilters": "Try adjusting your search or filters",
+    "clearAllFilters": "Clear all filters",
+    "showing": "Showing",
+    "of": "of",
+    "tutors": "tutors",
+    "backToTutors": "Back to tutors",
+    "about": "About",
+    "noReviewsYet": "No reviews yet. Be the first to review this tutor!",
+    "hourly": "/hr",
+    "days": {
+      "sunday": "Sunday",
+      "monday": "Monday",
+      "tuesday": "Tuesday",
+      "wednesday": "Wednesday",
+      "thursday": "Thursday",
+      "friday": "Friday",
+      "saturday": "Saturday"
+    },
+    "ratingOptions": {
+      "4.5": "4.5+ ⭐",
+      "4.0": "4.0+ ⭐",
+      "3.5": "3.5+ ⭐",
+      "3.0": "3.0+ ⭐"
+    }
   },
   "booking": {
     "title": "Book a Session",

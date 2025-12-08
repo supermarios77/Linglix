@@ -167,7 +167,7 @@ export function TutorsListingClient({
                 className="text-sm text-[#888] dark:text-[#a1a1aa] hover:text-black dark:hover:text-white"
               >
                 <X className="w-4 h-4 mr-1" />
-                Clear filters
+                {t("clearFilters")}
               </Button>
             )}
           </div>
@@ -183,10 +183,10 @@ export function TutorsListingClient({
                   </label>
                   <Select value={language} onValueChange={setLanguage}>
                     <SelectTrigger className="bg-white dark:bg-[#0a0a0a] border-2 border-[#e5e5e5] dark:border-[#262626]">
-                      <SelectValue placeholder="All languages" />
+                      <SelectValue placeholder={t("allLanguages")} />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">All languages</SelectItem>
+                      <SelectItem value="">{t("allLanguages")}</SelectItem>
                       {languages.map((lang) => (
                         <SelectItem key={lang} value={lang}>
                           {lang}
@@ -199,7 +199,7 @@ export function TutorsListingClient({
                 {/* Min Price */}
                 <div>
                   <label className="block text-sm font-medium mb-2 text-black dark:text-white">
-                    Min {t("priceRange")} ($)
+                    {t("min")} {t("priceRange")} ($)
                   </label>
                   <Input
                     type="number"
@@ -213,7 +213,7 @@ export function TutorsListingClient({
                 {/* Max Price */}
                 <div>
                   <label className="block text-sm font-medium mb-2 text-black dark:text-white">
-                    Max {t("priceRange")} ($)
+                    {t("max")} {t("priceRange")} ($)
                   </label>
                   <Input
                     type="number"
@@ -231,14 +231,14 @@ export function TutorsListingClient({
                   </label>
                   <Select value={minRating} onValueChange={setMinRating}>
                     <SelectTrigger className="bg-white dark:bg-[#0a0a0a] border-2 border-[#e5e5e5] dark:border-[#262626]">
-                      <SelectValue placeholder="Any" />
+                      <SelectValue placeholder={t("any")} />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">Any</SelectItem>
-                      <SelectItem value="4.5">4.5+ ⭐</SelectItem>
-                      <SelectItem value="4.0">4.0+ ⭐</SelectItem>
-                      <SelectItem value="3.5">3.5+ ⭐</SelectItem>
-                      <SelectItem value="3.0">3.0+ ⭐</SelectItem>
+                      <SelectItem value="">{t("any")}</SelectItem>
+                      <SelectItem value="4.5">{t("ratingOptions.4.5")}</SelectItem>
+                      <SelectItem value="4.0">{t("ratingOptions.4.0")}</SelectItem>
+                      <SelectItem value="3.5">{t("ratingOptions.3.5")}</SelectItem>
+                      <SelectItem value="3.0">{t("ratingOptions.3.0")}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -248,7 +248,7 @@ export function TutorsListingClient({
                 onClick={applyFilters}
                 className="w-full sm:w-auto bg-[#111] dark:bg-[#ccf381] text-white dark:text-black hover:bg-[#222] dark:hover:bg-[#d4f89a]"
               >
-                Apply Filters
+                {t("applyFilters")}
               </Button>
             </div>
           )}
@@ -261,21 +261,21 @@ export function TutorsListingClient({
           <div className="text-center py-20">
             <Users className="w-16 h-16 mx-auto mb-4 text-[#ccc] dark:text-[#404040]" />
             <h3 className="text-xl font-semibold mb-2 text-black dark:text-white">
-              No tutors found
+              {t("noTutorsFound")}
             </h3>
             <p className="text-[#666] dark:text-[#a1a1aa] mb-6">
-              Try adjusting your search or filters
+              {t("tryAdjustingFilters")}
             </p>
             {hasActiveFilters && (
               <Button onClick={clearFilters} variant="outline">
-                Clear all filters
+                {t("clearAllFilters")}
               </Button>
             )}
           </div>
         ) : (
           <>
             <div className="mb-6 text-sm text-[#666] dark:text-[#a1a1aa]">
-              Showing {tutors.length} of {totalCount} tutors
+              {t("showing")} {tutors.length} {t("of")} {totalCount} {t("tutors")}
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {tutors.map((tutor) => (
@@ -315,7 +315,7 @@ export function TutorsListingClient({
                       <span className="text-sm font-semibold text-black dark:text-white">
                         ${tutor.hourlyRate}
                         <span className="text-xs text-[#888] dark:text-[#a1a1aa]">
-                          /hr
+                          {t("hourly")}
                         </span>
                       </span>
                     </div>

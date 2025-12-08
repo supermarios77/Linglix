@@ -81,7 +81,38 @@
     "bookSession": "Reservar Sesión",
     "reviews": "Reseñas",
     "students": "Estudiantes",
-    "sessions": "Sesiones"
+    "sessions": "Sesiones",
+    "clearFilters": "Limpiar filtros",
+    "allLanguages": "Todos los idiomas",
+    "min": "Mín",
+    "max": "Máx",
+    "any": "Cualquiera",
+    "applyFilters": "Aplicar Filtros",
+    "noTutorsFound": "No se encontraron tutores",
+    "tryAdjustingFilters": "Intenta ajustar tu búsqueda o filtros",
+    "clearAllFilters": "Limpiar todos los filtros",
+    "showing": "Mostrando",
+    "of": "de",
+    "tutors": "tutores",
+    "backToTutors": "Volver a tutores",
+    "about": "Acerca de",
+    "noReviewsYet": "Aún no hay reseñas. ¡Sé el primero en reseñar a este tutor!",
+    "hourly": "/hora",
+    "days": {
+      "sunday": "Domingo",
+      "monday": "Lunes",
+      "tuesday": "Martes",
+      "wednesday": "Miércoles",
+      "thursday": "Jueves",
+      "friday": "Viernes",
+      "saturday": "Sábado"
+    },
+    "ratingOptions": {
+      "4.5": "4.5+ ⭐",
+      "4.0": "4.0+ ⭐",
+      "3.5": "3.5+ ⭐",
+      "3.0": "3.0+ ⭐"
+    }
   },
   "booking": {
     "title": "Reservar una Sesión",
