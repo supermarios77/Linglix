@@ -25,7 +25,7 @@ export async function generateMetadata() {
 
   return {
     title: "Linglix - Learn Languages with Native Tutors",
-    description: t("subtitle"),
+    description: t("description"),
   };
 }
 
