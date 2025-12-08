@@ -177,6 +177,35 @@
         "rejected": "Rechazado",
         "pendingMessage": "Tu perfil está pendiente de aprobación del administrador. Podrás aceptar reservas una vez aprobado.",
         "rejectedMessage": "Tu perfil fue rechazado"
+      },
+      "calendar": {
+        "title": "Calendario de Horarios",
+        "today": "Hoy",
+        "hasBookings": "Tiene Reservas"
+      },
+      "availability": {
+        "title": "Disponibilidad",
+        "description": "Gestiona tu horario de disponibilidad semanal",
+        "add": "Agregar Disponibilidad",
+        "edit": "Editar",
+        "delete": "Eliminar",
+        "save": "Guardar",
+        "cancel": "Cancelar",
+        "saving": "Guardando...",
+        "availability": "Disponibilidad",
+        "addDescription": "Agrega un nuevo horario cuando estés disponible para enseñar",
+        "editDescription": "Actualiza tu horario de disponibilidad",
+        "day": "Día",
+        "selectDay": "Selecciona un día",
+        "startTime": "Hora de Inicio",
+        "endTime": "Hora de Fin",
+        "active": "Activo",
+        "inactive": "Inactivo",
+        "activeDescription": "Solo los horarios activos se muestran a los estudiantes",
+        "noAvailability": "No hay horarios de disponibilidad configurados. Agrega tu primer horario para comenzar a aceptar reservas.",
+        "addFirst": "Agregar Primer Horario",
+        "deleteTitle": "¿Eliminar Disponibilidad?",
+        "deleteDescription": "¿Estás seguro de que quieres eliminar este horario de disponibilidad? Esta acción no se puede deshacer."
       }
     }
   },

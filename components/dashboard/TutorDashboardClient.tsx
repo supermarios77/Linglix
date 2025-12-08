@@ -43,6 +43,8 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import type { Booking, BookingStatus, TutorProfile, TutorApprovalStatus, Review } from "@prisma/client";
+import { AvailabilityCalendar } from "./AvailabilityCalendar";
+import { AvailabilityManager } from "./AvailabilityManager";
 
 /**
  * Tutor Dashboard Client Component
@@ -88,8 +90,18 @@ interface ReviewWithStudent extends Review {
   student: StudentUser;
 }
 
+interface Availability {
+  id: string;
+  dayOfWeek: number;
+  startTime: string;
+  endTime: string;
+  timezone: string;
+  isActive: boolean;
+}
+
 interface TutorProfileWithBookings extends TutorProfile {
   bookings: BookingWithStudent[];
+  availability: Availability[];
 }
 
 interface TutorDashboardClientProps {
@@ -100,6 +112,7 @@ interface TutorDashboardClientProps {
   pastBookings: BookingWithStudent[];
   totalEarnings: number;
   reviews: ReviewWithStudent[];
+  availability: Availability[];
 }
 
 export function TutorDashboardClient({
@@ -110,6 +123,7 @@ export function TutorDashboardClient({
   pastBookings,
   totalEarnings,
   reviews,
+  availability,
 }: TutorDashboardClientProps) {
   const t = useTranslations("dashboard");
   const tTutor = useTranslations("dashboard.tutor");
@@ -393,6 +407,18 @@ export function TutorDashboardClient({
               </div>
             </CardContent>
           </Card>
+        </div>
+
+        {/* Calendar and Availability Section */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 mb-8 sm:mb-12">
+          {/* Calendar */}
+          <AvailabilityCalendar
+            bookings={[...upcomingBookings, ...pastBookings]}
+            locale={locale}
+          />
+
+          {/* Availability Manager */}
+          <AvailabilityManager locale={locale} />
         </div>
 
         {/* Upcoming Sessions */}

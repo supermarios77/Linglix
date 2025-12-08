@@ -64,6 +64,12 @@ export default async function DashboardPage({
             },
             take: 20,
           },
+          availability: {
+            orderBy: [
+              { dayOfWeek: "asc" },
+              { startTime: "asc" },
+            ],
+          },
         },
       });
 
@@ -122,6 +128,7 @@ export default async function DashboardPage({
             pastBookings={pastBookings}
             totalEarnings={totalEarnings}
             reviews={reviews}
+            availability={tutorProfile.availability}
           />
         </div>
       );
