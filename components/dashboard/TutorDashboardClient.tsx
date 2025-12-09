@@ -555,7 +555,7 @@ export function TutorDashboardClient({
                             {getStatusBadge(booking.status)}
                           </div>
                         </div>
-                      </div>
+                      </Link>
                     ))}
                   </div>
                 </CardContent>
