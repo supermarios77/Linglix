@@ -66,10 +66,13 @@ export function VideoCall({
     const initializeAgora = async () => {
       try {
         // Dynamically import Agora SDK (client-side only)
-        const AgoraRTC = (await import("agora-rtc-sdk-ng")).default;
+        const AgoraRTC = await import("agora-rtc-sdk-ng");
+        
+        // Handle both default and named exports
+        const RTC = AgoraRTC.default || AgoraRTC;
 
         // Create Agora client
-        const client = AgoraRTC.createClient({
+        const client = RTC.createClient({
           mode: "rtc",
           codec: "vp8",
         });
@@ -135,7 +138,7 @@ export function VideoCall({
         await client.join(appId, channelName, token, uid);
 
         // Create local tracks
-        const [audioTrack, videoTrack] = await AgoraRTC.createMicrophoneAndCameraTracks(
+        const [audioTrack, videoTrack] = await RTC.createMicrophoneAndCameraTracks(
           {},
           {
             encoderConfig: {
@@ -152,7 +155,20 @@ export function VideoCall({
 
         // Play local video
         if (localVideoRef.current && videoTrack) {
-          videoTrack.play(localVideoRef.current);
+          try {
+            videoTrack.play(localVideoRef.current);
+          } catch (playError) {
+            logger.error("Error playing local video", {
+              error: playError instanceof Error ? playError.message : String(playError),
+            });
+            // Try alternative: create video element
+            const videoElement = document.createElement("div");
+            videoElement.id = `local-video-${uid}`;
+            if (localVideoRef.current) {
+              localVideoRef.current.appendChild(videoElement);
+              videoTrack.play(videoElement);
+            }
+          }
         }
 
         setIsJoined(true);
