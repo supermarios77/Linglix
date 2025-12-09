@@ -145,7 +145,6 @@
     "pastSessions": "Past Sessions",
     "pastSessionsDescription": "Your completed and cancelled sessions",
     "viewTutor": "View Tutor",
-    "viewRecording": "View Recording",
     "noBookings": "No Bookings Yet",
     "noBookingsDescription": "Start your language learning journey by booking your first session with a tutor",
     "tutorFallback": "Tutor",
@@ -255,10 +254,6 @@
           "title": "Affordable Pricing",
           "description": "Transparent pricing with no hidden fees. Pay only for what you use"
         },
-        "recordings": {
-          "title": "Session Recordings",
-          "description": "Review your sessions anytime with automatic recordings of every lesson"
-        },
         "support": {
           "title": "24/7 Support",
           "description": "Get help whenever you need it with our dedicated support team"
@@ -279,7 +274,7 @@
         },
         "3": {
           "title": "Start Learning",
-          "description": "Join your session via video call and start your language learning journey"
+          "description": "Start your language learning journey with personalized lessons"
         }
       }
     },

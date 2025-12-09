@@ -180,7 +180,7 @@ async function main() {
               tutorId: tutorProfile.id,
               scheduledAt: new Date(Date.now() + 60 * 60 * 1000), // 1 hour from now
               duration: 60,
-              status: "CONFIRMED", // Important: must be CONFIRMED for video calls
+              status: "CONFIRMED",
               price: 50.00,
             },
           });
@@ -226,9 +226,6 @@ async function main() {
       console.log(`   Scheduled: ${result.testBooking.scheduledAt.toLocaleString()}`);
       console.log(`   Duration: ${result.testBooking.duration} minutes`);
       console.log(`   Status: ${result.testBooking.status}`);
-      console.log(`\n🎥 Test Video Call URLs:`);
-      console.log(`   Student: http://localhost:3000/en/video/${result.testBooking.id}`);
-      console.log(`   Tutor: http://localhost:3000/en/video/${result.testBooking.id}`);
     }
     
     console.log("\n📝 Login credentials:");

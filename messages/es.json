@@ -145,7 +145,6 @@
     "pastSessions": "Sesiones Pasadas",
     "pastSessionsDescription": "Tus sesiones completadas y canceladas",
     "viewTutor": "Ver Tutor",
-    "viewRecording": "Ver Grabación",
     "noBookings": "Aún No Hay Reservas",
     "noBookingsDescription": "Comienza tu viaje de aprendizaje de idiomas reservando tu primera sesión con un tutor",
     "tutorFallback": "Tutor",
@@ -255,10 +254,6 @@
           "title": "Precios Asequibles",
           "description": "Precios transparentes sin tarifas ocultas. Paga solo por lo que uses"
         },
-        "recordings": {
-          "title": "Grabaciones de Sesiones",
-          "description": "Revisa tus sesiones en cualquier momento con grabaciones automáticas de cada lección"
-        },
         "support": {
           "title": "Soporte 24/7",
           "description": "Obtén ayuda cuando la necesites con nuestro equipo de soporte dedicado"
@@ -279,7 +274,7 @@
         },
         "3": {
           "title": "Comienza a Aprender",
-          "description": "Únete a tu sesión por videollamada y comienza tu viaje de aprendizaje de idiomas"
+          "description": "Comienza tu viaje de aprendizaje de idiomas con lecciones personalizadas"
         }
       }
     },
