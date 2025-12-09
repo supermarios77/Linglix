@@ -144,7 +144,7 @@ model Booking {
   @@index([status])
 }
 
-// Video Sessions - actual video call sessions
+// Video Sessions - session tracking for reviews
 model VideoSession {
   id           String    @id @default(cuid())
   bookingId    String    @unique
