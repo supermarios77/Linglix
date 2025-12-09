@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -23,12 +22,10 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import {
-  Calendar,
   Clock,
   User,
   DollarSign,
   Star,
-  TrendingUp,
   Users,
   BookOpen,
   ArrowRight,
@@ -37,13 +34,9 @@ import {
   Search,
   Sparkles,
   LogOut,
-  Award,
-  MessageSquare,
-  AlertCircle,
   LayoutDashboard,
   CalendarDays,
   Clock3,
-  Settings,
   Menu,
   X,
 } from "lucide-react";

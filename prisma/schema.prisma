@@ -154,6 +154,8 @@ model VideoSession {
   duration     Int? // Actual duration in minutes
   recordingUrl String? // URL to session recording
   notes        String? // Tutor notes from session
+  agoraChannel String? // Agora channel name
+  agoraUid     Int? // Agora user ID for this session
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
 
