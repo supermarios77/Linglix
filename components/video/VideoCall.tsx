@@ -431,31 +431,67 @@ export function VideoCall({
         } catch (trackError: any) {
           // Handle permission errors gracefully
           if (trackError?.name === "NotAllowedError" || trackError?.name === "PermissionDeniedError") {
-            const errorMsg = 
-              "Camera/microphone access denied.\n\n" +
-              "To fix this:\n" +
-              "1. Click the lock icon (🔒) in your browser's address bar\n" +
-              "2. Set Camera and Microphone to 'Allow'\n" +
-              "3. Refresh this page\n\n" +
-              "Or click 'Request Permissions' below to try again.";
+            // Check if we're on localhost (HTTP) vs HTTPS
+            const isLocalhost = typeof window !== "undefined" && 
+              (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1");
+            const isHttp = typeof window !== "undefined" && window.location.protocol === "http:";
+            
+            let errorMsg = "";
+            if (isLocalhost || isHttp) {
+              errorMsg = 
+                "Camera/microphone access denied.\n\n" +
+                "To fix this on localhost:\n" +
+                "1. Click the 'i' icon (information) in the address bar (left of URL)\n" +
+                "2. Click 'Site settings'\n" +
+                "3. Set Camera and Microphone to 'Allow'\n" +
+                "4. Click 'Request Permissions' below to try again";
+            } else {
+              errorMsg = 
+                "Camera/microphone access denied.\n\n" +
+                "To fix this:\n" +
+                "1. Click the lock icon (🔒) in your browser's address bar\n" +
+                "2. Click 'Site settings'\n" +
+                "3. Set Camera and Microphone to 'Allow'\n" +
+                "4. Click 'Request Permissions' below to try again";
+            }
+            
             setPermissionError(errorMsg);
             setPermissionRequested(false);
             setIsLoading(false);
+            setConnectionState("disconnected");
             return; // Don't throw, show permission request UI instead
           }
           if (trackError?.name === "NotFoundError" || trackError?.name === "DevicesNotFoundError") {
             throw new Error("No camera/microphone found. Please connect a device and refresh.");
           }
           if (trackError?.message?.includes("PERMISSION_DENIED")) {
-            const errorMsg = 
-              "Camera/microphone permission denied.\n\n" +
-              "Please check your browser settings:\n" +
-              "1. Click the lock icon in the address bar\n" +
-              "2. Allow camera and microphone\n" +
-              "3. Refresh the page";
+            const isLocalhost = typeof window !== "undefined" && 
+              (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1");
+            const isHttp = typeof window !== "undefined" && window.location.protocol === "http:";
+            
+            let errorMsg = "";
+            if (isLocalhost || isHttp) {
+              errorMsg = 
+                "Camera/microphone permission denied.\n\n" +
+                "Please check your browser settings:\n" +
+                "1. Click the 'i' icon in the address bar\n" +
+                "2. Click 'Site settings'\n" +
+                "3. Allow camera and microphone\n" +
+                "4. Click 'Request Permissions' below";
+            } else {
+              errorMsg = 
+                "Camera/microphone permission denied.\n\n" +
+                "Please check your browser settings:\n" +
+                "1. Click the lock icon in the address bar\n" +
+                "2. Click 'Site settings'\n" +
+                "3. Allow camera and microphone\n" +
+                "4. Click 'Request Permissions' below";
+            }
+            
             setPermissionError(errorMsg);
             setPermissionRequested(false);
             setIsLoading(false);
+            setConnectionState("disconnected");
             return;
           }
           throw trackError;
