@@ -60,14 +60,20 @@ async function main() {
       where: { email: "admin@linglix.com" },
     });
 
-    if (existingTutor && existingAdmin) {
+    const existingStudent = await prisma.user.findUnique({
+      where: { email: "student@linglix.com" },
+      include: { studentProfile: true },
+    });
+
+    if (existingTutor && existingAdmin && existingStudent) {
       console.log("✅ Users already exist, skipping seed...");
       console.log(`   Tutor Email: ${existingTutor.email}`);
       console.log(`   Admin Email: ${existingAdmin.email}`);
+      console.log(`   Student Email: ${existingStudent.email}`);
       return;
     }
 
-    // Create admin and tutor users in a transaction
+    // Create admin, tutor, and student users in a transaction
     const result = await prisma.$transaction(async (tx) => {
       // Create admin user (if doesn't exist)
       let admin = existingAdmin;
@@ -82,6 +88,30 @@ async function main() {
           },
         });
         console.log("✅ Admin user created!");
+      }
+
+      // Create student user (if doesn't exist)
+      let student = existingStudent;
+      if (!student) {
+        const studentPassword = await bcrypt.hash("Student123!", 12);
+        student = await tx.user.create({
+          data: {
+            email: "student@linglix.com",
+            name: "Alex",
+            password: studentPassword,
+            role: "STUDENT",
+            emailVerified: new Date(),
+            studentProfile: {
+              create: {
+                learningGoal: "conversation",
+                currentLevel: "intermediate",
+                preferredSchedule: "evening",
+                motivation: "Want to improve my English for work",
+              },
+            },
+          },
+        });
+        console.log("✅ Student user created!");
       }
 
       // Create tutor user (if doesn't exist)
@@ -129,7 +159,36 @@ async function main() {
         });
       }
 
-      return { admin, user, tutorProfile };
+      // Create a test booking if both tutor and student exist
+      let testBooking = null;
+      if (user && tutorProfile && (student || existingStudent)) {
+        const studentUser = student || existingStudent!;
+        
+        // Check if test booking already exists
+        const existingBooking = await tx.booking.findFirst({
+          where: {
+            studentId: studentUser.id,
+            tutorId: tutorProfile.id,
+            status: "CONFIRMED",
+          },
+        });
+
+        if (!existingBooking) {
+          testBooking = await tx.booking.create({
+            data: {
+              studentId: studentUser.id,
+              tutorId: tutorProfile.id,
+              scheduledAt: new Date(Date.now() + 60 * 60 * 1000), // 1 hour from now
+              duration: 60,
+              status: "CONFIRMED", // Important: must be CONFIRMED for video calls
+              price: 50.00,
+            },
+          });
+          console.log("✅ Test booking created!");
+        }
+      }
+
+      return { admin, user, tutorProfile, student: student || existingStudent, testBooking };
     });
 
     console.log("✅ Users created successfully!");
@@ -153,6 +212,24 @@ async function main() {
         console.log(`   Total Sessions: ${result.tutorProfile.totalSessions}`);
       }
     }
+
+    if (result.student && !existingStudent) {
+      console.log("\n👤 Student Account:");
+      console.log(`   Email: ${result.student.email}`);
+      console.log(`   Name: ${result.student.name}`);
+      console.log(`   Role: ${result.student.role}`);
+    }
+
+    if (result.testBooking) {
+      console.log("\n📅 Test Booking Created:");
+      console.log(`   Booking ID: ${result.testBooking.id}`);
+      console.log(`   Scheduled: ${result.testBooking.scheduledAt.toLocaleString()}`);
+      console.log(`   Duration: ${result.testBooking.duration} minutes`);
+      console.log(`   Status: ${result.testBooking.status}`);
+      console.log(`\n🎥 Test Video Call URLs:`);
+      console.log(`   Student: http://localhost:3000/en/video/${result.testBooking.id}`);
+      console.log(`   Tutor: http://localhost:3000/en/video/${result.testBooking.id}`);
+    }
     
     console.log("\n📝 Login credentials:");
     if (!existingAdmin) {
@@ -162,6 +239,10 @@ async function main() {
     if (!existingTutor) {
       console.log(`   Tutor Email: tutor@linglix.com`);
       console.log(`   Tutor Password: Tutor123!`);
+    }
+    if (!existingStudent) {
+      console.log(`   Student Email: student@linglix.com`);
+      console.log(`   Student Password: Student123!`);
     }
     console.log("\n⚠️  Remember to change passwords after first login in production!");
 
