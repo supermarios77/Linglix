@@ -76,7 +76,6 @@ interface BookingWithStudent extends Booking {
     id: string;
     startedAt: Date | null;
     endedAt: Date | null;
-    recordingUrl: string | null;
     review: {
       id: string;
       rating: number;
