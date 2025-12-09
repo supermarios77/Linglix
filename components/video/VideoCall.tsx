@@ -41,11 +41,20 @@ interface VideoCallProps {
 }
 
 // Videos component - displays all participants
+// This must be inside AgoraRTCProvider to use the hooks
 function Videos({
+  appId,
+  channelName,
+  uid,
+  token,
   userName,
   userRole,
   onEndCall,
 }: {
+  appId: string;
+  channelName: string;
+  uid: number;
+  token: string;
   userName: string;
   userRole: "tutor" | "student";
   onEndCall: () => void;
@@ -58,13 +67,24 @@ function Videos({
   const [isVideoEnabled, setIsVideoEnabled] = useState(true);
   const [isAudioEnabled, setIsAudioEnabled] = useState(true);
 
+  // Join channel
+  useJoin(
+    {
+      appid: appId,
+      channel: channelName,
+      token: token,
+      uid: uid,
+    },
+    true
+  );
+
+  // Publish local tracks
+  usePublish([localMicrophoneTrack, localCameraTrack]);
+
   // Play remote audio tracks
   audioTracks.map((track) => {
     track.play();
   });
-
-  // Publish local tracks
-  usePublish([localMicrophoneTrack, localCameraTrack]);
 
   const isLoading = micLoading || cameraLoading;
 
@@ -133,9 +153,9 @@ function Videos({
               <div
                 ref={(node) => {
                   if (remoteUser.videoTrack && node) {
-                remoteUser.videoTrack.play(node);
-              }
-            }}
+                    remoteUser.videoTrack.play(node);
+                  }
+                }}
                 className="w-full h-full min-h-[300px]"
               />
               {!remoteUser.videoTrack && (
@@ -228,9 +248,6 @@ export function VideoCall({
       })
   );
 
-  // Note: useJoin and usePublish must be called inside AgoraRTCProvider
-  // They are called in the Videos component instead
-
   // Handle errors
   useEffect(() => {
     const handleError = (err: any) => {
@@ -269,7 +286,15 @@ export function VideoCall({
 
   return (
     <AgoraRTCProvider client={client}>
-      <Videos userName={userName} userRole={userRole} onEndCall={onEndCall} />
+      <Videos
+        appId={appId}
+        channelName={channelName}
+        uid={uid}
+        token={token}
+        userName={userName}
+        userRole={userRole}
+        onEndCall={onEndCall}
+      />
     </AgoraRTCProvider>
   );
 }
