@@ -1,18 +1,31 @@
 "use client";
 
 /**
- * VideoSessionClient Component
+ * VideoSessionClient Component - Production Ready
  * 
  * Client component that handles video session initialization,
- * token fetching, and call management.
+ * token fetching, and call management with proper error handling.
  */
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
-import { VideoCall } from "./VideoCall";
+import dynamic from "next/dynamic";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { AlertCircle, Loader2 } from "lucide-react";
+
+// Dynamically import VideoCall to prevent SSR issues
+const VideoCall = dynamic(() => import("./VideoCall").then((mod) => ({ default: mod.VideoCall })), {
+  ssr: false,
+  loading: () => (
+    <Card className="p-8">
+      <div className="flex flex-col items-center gap-4">
+        <Loader2 className="w-8 h-8 animate-spin text-primary" />
+        <p className="text-lg font-semibold">Loading video call...</p>
+      </div>
+    </Card>
+  ),
+});
 
 interface VideoSessionClientProps {
   bookingId: string;
@@ -36,55 +49,61 @@ export function VideoSessionClient({
   const [appId, setAppId] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [isCallActive, setIsCallActive] = useState(false);
+  const initializeSession = useCallback(async () => {
+    try {
+      setIsLoading(true);
+      setError(null);
+
+      // Start video session on server
+      const startResponse = await fetch("/api/video-sessions/start", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ bookingId }),
+      });
+
+      if (!startResponse.ok) {
+        const errorData = await startResponse.json().catch(() => ({}));
+        throw new Error(errorData.error || "Failed to start session");
+      }
+
+      // Fetch Agora token
+      const tokenResponse = await fetch("/api/agora/token", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ bookingId }),
+      });
+
+      if (!tokenResponse.ok) {
+        const errorData = await tokenResponse.json().catch(() => ({}));
+        throw new Error(errorData.error || "Failed to get token");
+      }
+
+      const tokenData = await tokenResponse.json();
+      
+      if (!tokenData.token || !tokenData.channelName || !tokenData.uid || !tokenData.appId) {
+        throw new Error("Invalid token response from server");
+      }
+
+      setToken(tokenData.token);
+      setChannelName(tokenData.channelName);
+      setUid(tokenData.uid);
+      setAppId(tokenData.appId);
+      setIsLoading(false);
+    } catch (error) {
+      setError(
+        error instanceof Error ? error.message : "Failed to initialize video session"
+      );
+      setIsLoading(false);
+    }
+  }, [bookingId]);
 
   useEffect(() => {
-    const initializeSession = async () => {
-      try {
-        // Start video session on server
-        const startResponse = await fetch("/api/video-sessions/start", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ bookingId }),
-        });
-
-        if (!startResponse.ok) {
-          const errorData = await startResponse.json();
-          throw new Error(errorData.error || "Failed to start session");
-        }
-
-        // Fetch Agora token
-        const tokenResponse = await fetch("/api/agora/token", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ bookingId }),
-        });
-
-        if (!tokenResponse.ok) {
-          const errorData = await tokenResponse.json();
-          throw new Error(errorData.error || "Failed to get token");
-        }
-
-        const tokenData = await tokenResponse.json();
-        setToken(tokenData.token);
-        setChannelName(tokenData.channelName);
-        setUid(tokenData.uid);
-        setAppId(tokenData.appId);
-        setIsLoading(false);
-      } catch (error) {
-        setError(
-          error instanceof Error ? error.message : "Failed to initialize video session"
-        );
-        setIsLoading(false);
-      }
-    };
-
     initializeSession();
-  }, [bookingId]);
+  }, [initializeSession]);
 
   const handleEndCall = async () => {
     try {

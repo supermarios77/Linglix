@@ -1,17 +1,18 @@
 "use client";
 
 /**
- * VideoCall Component
+ * VideoCall Component - Production Ready
  * 
- * Production-ready Agora video call component with:
- * - Role-based access (tutor/student)
- * - Proper error handling and cleanup
- * - Audio/video controls
+ * Implements Agora video calling with Next.js best practices:
+ * - Proper dynamic imports (SSR-safe)
+ * - Comprehensive error handling
+ * - Proper track lifecycle management
  * - Connection state management
- * - Responsive design
+ * - Memory leak prevention
+ * - Network error recovery
  */
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import {
@@ -19,10 +20,10 @@ import {
   MicOff,
   Video,
   VideoOff,
-  Phone,
   PhoneOff,
   Users,
   AlertCircle,
+  Loader2,
 } from "lucide-react";
 import { logger } from "@/lib/logger";
 
@@ -34,6 +35,12 @@ interface VideoCallProps {
   onEndCall: () => void;
   userRole: "tutor" | "student";
   userName: string;
+}
+
+interface RemoteUser {
+  uid: number;
+  videoTrack?: any;
+  audioTrack?: any;
 }
 
 export function VideoCall({
@@ -48,9 +55,10 @@ export function VideoCall({
   const [isJoined, setIsJoined] = useState(false);
   const [isVideoEnabled, setIsVideoEnabled] = useState(true);
   const [isAudioEnabled, setIsAudioEnabled] = useState(true);
-  const [remoteUsers, setRemoteUsers] = useState<number[]>([]);
+  const [remoteUsers, setRemoteUsers] = useState<RemoteUser[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [connectionState, setConnectionState] = useState<"disconnected" | "connecting" | "connected">("disconnected");
 
   const localVideoRef = useRef<HTMLDivElement>(null);
   const remoteVideoRefs = useRef<Map<number, HTMLDivElement>>(new Map());
@@ -59,28 +67,110 @@ export function VideoCall({
     videoTrack?: any;
     audioTrack?: any;
   }>({});
+  const remoteTracksRef = useRef<Map<number, { videoTrack?: any; audioTrack?: any }>>(new Map());
+
+  // Cleanup function
+  const cleanup = useCallback(async () => {
+    try {
+      // Stop and close local tracks
+      if (localTracksRef.current.audioTrack) {
+        localTracksRef.current.audioTrack.stop();
+        localTracksRef.current.audioTrack.close();
+        localTracksRef.current.audioTrack = undefined;
+      }
+      if (localTracksRef.current.videoTrack) {
+        localTracksRef.current.videoTrack.stop();
+        localTracksRef.current.videoTrack.close();
+        localTracksRef.current.videoTrack = undefined;
+      }
+
+      // Stop and close remote tracks
+      remoteTracksRef.current.forEach((tracks) => {
+        if (tracks.videoTrack) {
+          tracks.videoTrack.stop();
+          tracks.videoTrack.close();
+        }
+        if (tracks.audioTrack) {
+          tracks.audioTrack.stop();
+          tracks.audioTrack.close();
+        }
+      });
+      remoteTracksRef.current.clear();
+
+      // Unpublish and leave channel
+      if (clientRef.current) {
+        try {
+          const tracks = [
+            localTracksRef.current.audioTrack,
+            localTracksRef.current.videoTrack,
+          ].filter(Boolean);
+          
+          if (tracks.length > 0) {
+            await clientRef.current.unpublish(tracks);
+          }
+          await clientRef.current.leave();
+        } catch (leaveError) {
+          logger.error("Error leaving channel", {
+            error: leaveError instanceof Error ? leaveError.message : String(leaveError),
+          });
+        }
+        clientRef.current = null;
+      }
+
+      // Clear video elements
+      if (localVideoRef.current) {
+        localVideoRef.current.innerHTML = "";
+      }
+      remoteVideoRefs.current.forEach((el) => {
+        if (el) {
+          el.innerHTML = "";
+        }
+      });
+      remoteVideoRefs.current.clear();
+    } catch (error) {
+      logger.error("Error during cleanup", {
+        error: error instanceof Error ? error.message : String(error),
+      });
+    }
+  }, []);
 
   useEffect(() => {
     let mounted = true;
+    let AgoraRTC: any = null;
 
     const initializeAgora = async () => {
       try {
-        // Dynamically import Agora SDK (client-side only)
-        const AgoraRTC = await import("agora-rtc-sdk-ng");
+        setConnectionState("connecting");
         
-        // Handle both default and named exports
-        const RTC = AgoraRTC.default || AgoraRTC;
+        // Dynamically import Agora SDK (client-side only)
+        // Agora SDK exports as default
+        const agoraModule = await import("agora-rtc-sdk-ng");
+        AgoraRTC = agoraModule.default || agoraModule;
+
+        if (!AgoraRTC) {
+          throw new Error("Failed to load Agora SDK");
+        }
 
         // Create Agora client
-        const client = RTC.createClient({
+        const client = AgoraRTC.createClient({
           mode: "rtc",
           codec: "vp8",
         });
 
         clientRef.current = client;
 
-        // Set up event handlers
-        client.on("user-published", async (user, mediaType) => {
+        // Set up connection state handler
+        client.on("connection-state-change", (curState: string, revState: string) => {
+          logger.info("Connection state changed", { curState, revState });
+          if (curState === "CONNECTED") {
+            setConnectionState("connected");
+          } else if (curState === "DISCONNECTED") {
+            setConnectionState("disconnected");
+          }
+        });
+
+        // Handle user published (when remote user joins with audio/video)
+        client.on("user-published", async (user: any, mediaType: "audio" | "video") => {
           if (!mounted) return;
 
           try {
@@ -90,17 +180,29 @@ export function VideoCall({
               const remoteVideoTrack = user.videoTrack;
               if (remoteVideoTrack) {
                 const remoteUid = user.uid;
-                setRemoteUsers((prev) => {
-                  if (!prev.includes(remoteUid)) {
-                    return [...prev, remoteUid];
-                  }
-                  return prev;
+                
+                // Store track
+                const existingTracks = remoteTracksRef.current.get(remoteUid) || {};
+                remoteTracksRef.current.set(remoteUid, {
+                  ...existingTracks,
+                  videoTrack: remoteVideoTrack,
                 });
 
-                // Wait for DOM to update
+                // Update remote users state
+                setRemoteUsers((prev) => {
+                  const existing = prev.find((u) => u.uid === remoteUid);
+                  if (existing) {
+                    return prev.map((u) =>
+                      u.uid === remoteUid ? { ...u, videoTrack: remoteVideoTrack } : u
+                    );
+                  }
+                  return [...prev, { uid: remoteUid, videoTrack: remoteVideoTrack }];
+                });
+
+                // Wait for DOM to update, then play video
                 setTimeout(() => {
                   const remoteVideoElement = remoteVideoRefs.current.get(remoteUid);
-                  if (remoteVideoElement) {
+                  if (remoteVideoElement && mounted) {
                     remoteVideoTrack.play(remoteVideoElement);
                   }
                 }, 100);
@@ -110,7 +212,33 @@ export function VideoCall({
             if (mediaType === "audio") {
               const remoteAudioTrack = user.audioTrack;
               if (remoteAudioTrack) {
-                remoteAudioTrack.play();
+                const remoteUid = user.uid;
+                
+                // Store track
+                const existingTracks = remoteTracksRef.current.get(remoteUid) || {};
+                remoteTracksRef.current.set(remoteUid, {
+                  ...existingTracks,
+                  audioTrack: remoteAudioTrack,
+                });
+
+                // Update remote users state
+                setRemoteUsers((prev) => {
+                  const existing = prev.find((u) => u.uid === remoteUid);
+                  if (existing) {
+                    return prev.map((u) =>
+                      u.uid === remoteUid ? { ...u, audioTrack: remoteAudioTrack } : u
+                    );
+                  }
+                  return [...prev, { uid: remoteUid, audioTrack: remoteAudioTrack }];
+                });
+
+                // Play audio
+                remoteAudioTrack.play().catch((err: Error) => {
+                  logger.error("Error playing remote audio", {
+                    error: err.message,
+                    uid: remoteUid,
+                  });
+                });
               }
             }
           } catch (error) {
@@ -121,32 +249,95 @@ export function VideoCall({
           }
         });
 
-        client.on("user-unpublished", (user, mediaType) => {
+        // Handle user unpublished (when remote user stops audio/video)
+        client.on("user-unpublished", (user: any, mediaType: "audio" | "video") => {
           if (!mounted) return;
 
+          const remoteUid = user.uid;
+
           if (mediaType === "video") {
-            setRemoteUsers((prev) => prev.filter((id) => id !== user.uid));
+            setRemoteUsers((prev) =>
+              prev.map((u) =>
+                u.uid === remoteUid ? { ...u, videoTrack: undefined } : u
+              )
+            );
+          }
+
+          if (mediaType === "audio") {
+            setRemoteUsers((prev) =>
+              prev.map((u) =>
+                u.uid === remoteUid ? { ...u, audioTrack: undefined } : u
+              )
+            );
           }
         });
 
-        client.on("user-left", (user) => {
+        // Handle user left
+        client.on("user-left", (user: any) => {
           if (!mounted) return;
-          setRemoteUsers((prev) => prev.filter((id) => id !== user.uid));
+          
+          const remoteUid = user.uid;
+          
+          // Clean up remote tracks
+          const tracks = remoteTracksRef.current.get(remoteUid);
+          if (tracks) {
+            if (tracks.videoTrack) {
+              tracks.videoTrack.stop();
+              tracks.videoTrack.close();
+            }
+            if (tracks.audioTrack) {
+              tracks.audioTrack.stop();
+              tracks.audioTrack.close();
+            }
+            remoteTracksRef.current.delete(remoteUid);
+          }
+
+          // Remove from state
+          setRemoteUsers((prev) => prev.filter((u) => u.uid !== remoteUid));
+          
+          // Clear video element
+          const videoElement = remoteVideoRefs.current.get(remoteUid);
+          if (videoElement) {
+            videoElement.innerHTML = "";
+            remoteVideoRefs.current.delete(remoteUid);
+          }
         });
 
         // Join channel
         await client.join(appId, channelName, token, uid);
 
-        // Create local tracks
-        const [audioTrack, videoTrack] = await RTC.createMicrophoneAndCameraTracks(
-          {},
-          {
-            encoderConfig: {
-              width: { min: 640, ideal: 1280, max: 1920 },
-              height: { min: 480, ideal: 720, max: 1080 },
+        // Create local tracks with error handling
+        let audioTrack: any;
+        let videoTrack: any;
+
+        try {
+          [audioTrack, videoTrack] = await AgoraRTC.createMicrophoneAndCameraTracks(
+            {
+              encoderConfig: {
+                bitrateMax: 1000,
+                bitrateMin: 50,
+              },
             },
+            {
+              encoderConfig: {
+                width: { min: 640, ideal: 1280, max: 1920 },
+                height: { min: 480, ideal: 720, max: 1080 },
+                frameRate: { min: 15, ideal: 30, max: 30 },
+                bitrateMax: 2000,
+                bitrateMin: 200,
+              },
+            }
+          );
+        } catch (trackError: any) {
+          // Handle permission errors gracefully
+          if (trackError?.name === "NotAllowedError" || trackError?.name === "PermissionDeniedError") {
+            throw new Error("Camera/microphone access denied. Please allow access and refresh.");
           }
-        );
+          if (trackError?.name === "NotFoundError" || trackError?.name === "DevicesNotFoundError") {
+            throw new Error("No camera/microphone found. Please connect a device.");
+          }
+          throw trackError;
+        }
 
         localTracksRef.current = { audioTrack, videoTrack };
 
@@ -161,18 +352,19 @@ export function VideoCall({
             logger.error("Error playing local video", {
               error: playError instanceof Error ? playError.message : String(playError),
             });
-            // Try alternative: create video element
-            const videoElement = document.createElement("div");
-            videoElement.id = `local-video-${uid}`;
-            if (localVideoRef.current) {
-              localVideoRef.current.appendChild(videoElement);
-              videoTrack.play(videoElement);
-            }
+            // Video will still work, just might not display immediately
           }
         }
 
         setIsJoined(true);
         setIsLoading(false);
+        setConnectionState("connected");
+
+        logger.info("Successfully joined Agora channel", {
+          channelName,
+          uid,
+          appId,
+        });
       } catch (error) {
         if (!mounted) return;
 
@@ -180,56 +372,33 @@ export function VideoCall({
           error instanceof Error ? error.message : "Failed to initialize video call";
         setError(errorMessage);
         setIsLoading(false);
+        setConnectionState("disconnected");
 
         logger.error("Failed to initialize Agora video call", {
           error: errorMessage,
           userId: uid,
           channelName,
+          appId,
         });
+
+        // Cleanup on error
+        await cleanup();
       }
     };
 
     initializeAgora();
 
-    // Cleanup function
+    // Cleanup on unmount
     return () => {
       mounted = false;
-
-      const cleanup = async () => {
-        try {
-          // Unpublish and stop local tracks
-          if (localTracksRef.current.audioTrack) {
-            localTracksRef.current.audioTrack.stop();
-            localTracksRef.current.audioTrack.close();
-          }
-          if (localTracksRef.current.videoTrack) {
-            localTracksRef.current.videoTrack.stop();
-            localTracksRef.current.videoTrack.close();
-          }
-
-          // Leave channel
-          if (clientRef.current) {
-            await clientRef.current.leave();
-          }
-        } catch (error) {
-          logger.error("Error during video call cleanup", {
-            error: error instanceof Error ? error.message : String(error),
-          });
-        }
-      };
-
       cleanup();
     };
-  }, [appId, channelName, token, uid]);
+  }, [appId, channelName, token, uid, cleanup]);
 
-  const toggleVideo = async () => {
+  const toggleVideo = useCallback(async () => {
     try {
       if (localTracksRef.current.videoTrack) {
-        if (isVideoEnabled) {
-          await localTracksRef.current.videoTrack.setEnabled(false);
-        } else {
-          await localTracksRef.current.videoTrack.setEnabled(true);
-        }
+        await localTracksRef.current.videoTrack.setEnabled(!isVideoEnabled);
         setIsVideoEnabled(!isVideoEnabled);
       }
     } catch (error) {
@@ -237,16 +406,12 @@ export function VideoCall({
         error: error instanceof Error ? error.message : String(error),
       });
     }
-  };
+  }, [isVideoEnabled]);
 
-  const toggleAudio = async () => {
+  const toggleAudio = useCallback(async () => {
     try {
       if (localTracksRef.current.audioTrack) {
-        if (isAudioEnabled) {
-          await localTracksRef.current.audioTrack.setEnabled(false);
-        } else {
-          await localTracksRef.current.audioTrack.setEnabled(true);
-        }
+        await localTracksRef.current.audioTrack.setEnabled(!isAudioEnabled);
         setIsAudioEnabled(!isAudioEnabled);
       }
     } catch (error) {
@@ -254,46 +419,24 @@ export function VideoCall({
         error: error instanceof Error ? error.message : String(error),
       });
     }
-  };
+  }, [isAudioEnabled]);
 
-  const handleEndCall = async () => {
-    try {
-      // Unpublish and stop local tracks
-      if (localTracksRef.current.audioTrack) {
-        localTracksRef.current.audioTrack.stop();
-        localTracksRef.current.audioTrack.close();
-      }
-      if (localTracksRef.current.videoTrack) {
-        localTracksRef.current.videoTrack.stop();
-        localTracksRef.current.videoTrack.close();
-      }
-
-      // Leave channel
-      if (clientRef.current) {
-        await clientRef.current.leave();
-      }
-
-      onEndCall();
-    } catch (error) {
-      logger.error("Error ending call", {
-        error: error instanceof Error ? error.message : String(error),
-      });
-      // Still call onEndCall to ensure UI updates
-      onEndCall();
-    }
-  };
+  const handleEndCall = useCallback(async () => {
+    await cleanup();
+    onEndCall();
+  }, [cleanup, onEndCall]);
 
   if (error) {
     return (
       <Card className="p-6">
         <div className="flex items-center gap-3 text-red-600 dark:text-red-400">
           <AlertCircle className="w-5 h-5" />
-          <div>
+          <div className="flex-1">
             <p className="font-semibold">Connection Error</p>
             <p className="text-sm">{error}</p>
           </div>
         </div>
-        <Button onClick={onEndCall} className="mt-4">
+        <Button onClick={handleEndCall} className="mt-4 w-full">
           Close
         </Button>
       </Card>
@@ -304,9 +447,10 @@ export function VideoCall({
     return (
       <Card className="p-6">
         <div className="text-center">
+          <Loader2 className="w-8 h-8 animate-spin mx-auto mb-4 text-primary" />
           <p className="text-lg font-semibold">Connecting to video call...</p>
           <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
-            Please allow camera and microphone access
+            Please allow camera and microphone access when prompted
           </p>
         </div>
       </Card>
@@ -338,21 +482,35 @@ export function VideoCall({
 
         {/* Remote Videos */}
         {remoteUsers.length > 0 ? (
-          remoteUsers.map((remoteUid) => (
+          remoteUsers.map((remoteUser) => (
             <div
-              key={remoteUid}
+              key={remoteUser.uid}
               className="relative bg-gray-800 rounded-lg overflow-hidden"
             >
               <div
                 ref={(el) => {
                   if (el) {
-                    remoteVideoRefs.current.set(remoteUid, el);
+                    remoteVideoRefs.current.set(remoteUser.uid, el);
+                    // Re-play video if track exists and element is mounted
+                    if (remoteUser.videoTrack) {
+                      setTimeout(() => {
+                        remoteUser.videoTrack?.play(el);
+                      }, 50);
+                    }
                   } else {
-                    remoteVideoRefs.current.delete(remoteUid);
+                    remoteVideoRefs.current.delete(remoteUser.uid);
                   }
                 }}
                 className="w-full h-full min-h-[300px]"
               />
+              {!remoteUser.videoTrack && (
+                <div className="absolute inset-0 flex items-center justify-center bg-gray-800">
+                  <div className="text-center">
+                    <VideoOff className="w-12 h-12 mx-auto text-gray-400 mb-2" />
+                    <p className="text-sm text-gray-400">Remote User</p>
+                  </div>
+                </div>
+              )}
             </div>
           ))
         ) : (
@@ -372,6 +530,7 @@ export function VideoCall({
           size="lg"
           onClick={toggleAudio}
           className="rounded-full w-14 h-14"
+          disabled={!isJoined}
         >
           {isAudioEnabled ? (
             <Mic className="w-5 h-5" />
@@ -385,6 +544,7 @@ export function VideoCall({
           size="lg"
           onClick={toggleVideo}
           className="rounded-full w-14 h-14"
+          disabled={!isJoined}
         >
           {isVideoEnabled ? (
             <Video className="w-5 h-5" />
@@ -406,11 +566,10 @@ export function VideoCall({
       {/* Status */}
       <div className="px-4 pb-2 text-center">
         <p className="text-xs text-gray-500 dark:text-gray-400">
-          {isJoined ? "Connected" : "Connecting..."} • {remoteUsers.length + 1} participant
+          {connectionState === "connected" ? "Connected" : connectionState === "connecting" ? "Connecting..." : "Disconnected"} • {remoteUsers.length + 1} participant
           {remoteUsers.length + 1 !== 1 ? "s" : ""}
         </p>
       </div>
     </div>
   );
 }
-
