@@ -69,11 +69,13 @@ export async function POST(request: NextRequest) {
       where: { bookingId },
       update: {
         startedAt: new Date(),
+        hmsRoomId: roomId,
       },
       create: {
         bookingId,
         studentId: booking.studentId,
         startedAt: new Date(),
+        hmsRoomId: roomId,
       },
     });
 
