@@ -25,6 +25,11 @@ GOOGLE_CLIENT_ID=...
 GOOGLE_CLIENT_SECRET=...
 SENTRY_DSN=...
 
+# 100ms Video Calling
+HMS100_APP_ID=your-100ms-app-id
+HMS100_APP_SECRET=your-100ms-app-secret
+HMS100_ROOM_ID=optional-room-id (leave empty to auto-generate)
+
 ```
 
 ## Security Best Practices

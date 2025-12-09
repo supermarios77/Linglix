@@ -153,6 +153,7 @@ model VideoSession {
   endedAt      DateTime?
   duration     Int? // Actual duration in minutes
   notes        String? // Tutor notes from session
+  hmsRoomId    String? // 100ms room ID
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
 
