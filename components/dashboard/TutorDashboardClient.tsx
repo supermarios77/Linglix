@@ -603,17 +603,6 @@ export function TutorDashboardClient({
                               </h3>
                               <div className="flex flex-wrap items-center gap-3 text-xs text-[#666] dark:text-[#aaa]">
                                 <span>{formatDate(booking.scheduledAt)}</span>
-                                {booking.videoSession?.recordingUrl && (
-                                  <>
-                                    <span>•</span>
-                                    <Link
-                                      href={booking.videoSession.recordingUrl}
-                                      className="text-[#ccf381] hover:underline"
-                                    >
-                                      {t("viewRecording")}
-                                    </Link>
-                                  </>
-                                )}
                                 {booking.videoSession?.review && (
                                   <>
                                     <span>•</span>
