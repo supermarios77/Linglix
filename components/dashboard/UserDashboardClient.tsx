@@ -351,11 +351,23 @@ export function UserDashboardClient({
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                {upcomingBookings.map((booking) => (
-                  <div
-                    key={booking.id}
-                    className="group p-6 sm:p-8 bg-gradient-to-br from-white/80 to-[#fafafa]/80 dark:from-[#0a0a0a]/80 dark:to-[#1a1a1a]/80 backdrop-blur-sm border-2 border-[#e5e5e5] dark:border-[#262626] rounded-[20px] hover:shadow-[0_20px_40px_rgba(0,0,0,0.1)] transition-all duration-300 hover:-translate-y-1"
-                  >
+                {upcomingBookings.map((booking) => {
+                  const canJoinCall = booking.status === "CONFIRMED";
+                  const SessionCard = canJoinCall ? Link : "div";
+                  const sessionProps = canJoinCall
+                    ? { href: `/${locale}/video/${booking.id}` }
+                    : {};
+
+                  return (
+                    <SessionCard
+                      key={booking.id}
+                      {...sessionProps}
+                      className={`group p-6 sm:p-8 bg-gradient-to-br from-white/80 to-[#fafafa]/80 dark:from-[#0a0a0a]/80 dark:to-[#1a1a1a]/80 backdrop-blur-sm border-2 border-[#e5e5e5] dark:border-[#262626] rounded-[20px] transition-all duration-300 ${
+                        canJoinCall
+                          ? "hover:shadow-[0_20px_40px_rgba(0,0,0,0.1)] hover:-translate-y-1 cursor-pointer"
+                          : ""
+                      }`}
+                    >
                     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                       <div className="flex-1">
                         <div className="flex items-center gap-4 mb-4">
