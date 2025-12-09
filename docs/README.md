@@ -12,12 +12,13 @@ Complete guide for setting up Neon database, including:
 - Schema overview
 
 ### [Production Checklist](./PRODUCTION_CHECKLIST.md)
-Comprehensive checklist for production deployment:
+Comprehensive checklist and deployment guide for production:
 - Database configuration
 - Security requirements
 - Performance optimizations
 - Monitoring setup
 - Deployment steps
+- Environment variables
 
 ## Quick Links
 
