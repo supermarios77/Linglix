@@ -349,10 +349,25 @@ export function VideoCall({
         try {
           assignedUid = await client.join(appId, channelName, token, uid);
         } catch (joinError: any) {
-          // If UID conflict, try with null to let Agora assign
+          // If UID conflict, try with flexible token (allows any UID)
           if (joinError?.code === "UID_CONFLICT" || joinError?.message?.includes("UID_CONFLICT")) {
-            logger.warn("UID conflict detected, retrying with auto-assigned UID", { uid, channelName });
-            assignedUid = await client.join(appId, channelName, token, null);
+            logger.warn("UID conflict detected, retrying with flexible token", { 
+              originalUid: uid, 
+              channelName 
+            });
+            
+            if (flexibleToken) {
+              // Use flexible token that allows any UID
+              assignedUid = await client.join(appId, channelName, flexibleToken, null);
+              logger.info("Successfully joined with auto-assigned UID using flexible token", { 
+                assignedUid 
+              });
+            } else {
+              // Fallback: try with original token and null UID
+              // This might work if token allows it
+              logger.warn("No flexible token available, trying with original token", { channelName });
+              assignedUid = await client.join(appId, channelName, token, null);
+            }
           } else {
             throw joinError;
           }
