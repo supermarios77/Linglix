@@ -585,6 +585,9 @@ export function VideoCall({
 
   // Show permission request UI if permission was denied
   if (permissionError && !permissionRequested) {
+    const isLocalhost = typeof window !== "undefined" && 
+      (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1");
+    
     return (
       <Card className="p-6">
         <div className="flex flex-col items-center gap-4">
@@ -594,6 +597,20 @@ export function VideoCall({
             <p className="text-sm text-gray-600 dark:text-gray-400 whitespace-pre-line mb-4">
               {permissionError}
             </p>
+            {isLocalhost && (
+              <div className="mt-4 p-3 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg text-left">
+                <p className="text-xs font-semibold text-blue-900 dark:text-blue-100 mb-2">
+                  Quick Fix for Localhost:
+                </p>
+                <ol className="text-xs text-blue-800 dark:text-blue-200 space-y-1 list-decimal list-inside">
+                  <li>Look for the <strong>'i' icon</strong> (information circle) in the address bar</li>
+                  <li>Click it to open site information</li>
+                  <li>Click <strong>"Site settings"</strong></li>
+                  <li>Change Camera and Microphone to <strong>"Allow"</strong></li>
+                  <li>Click "Request Permissions" below</li>
+                </ol>
+              </div>
+            )}
           </div>
           <div className="flex gap-3 w-full">
             <Button
