@@ -61,7 +61,7 @@ function Videos({
 }) {
   const { localMicrophoneTrack, isLoading: micLoading } = useLocalMicrophoneTrack();
   const { localCameraTrack, isLoading: cameraLoading } = useLocalCameraTrack();
-  const remoteUsers = useRemoteUsers();
+  const remoteUsers = useRemoteUsers() || [];
   const { audioTracks } = useRemoteAudioTracks(remoteUsers);
 
   const [isVideoEnabled, setIsVideoEnabled] = useState(true);
@@ -78,13 +78,22 @@ function Videos({
     true
   );
 
-  // Publish local tracks
-  usePublish([localMicrophoneTrack, localCameraTrack]);
+  // Publish local tracks (only if they exist)
+  const tracksToPublish = [localMicrophoneTrack, localCameraTrack].filter(Boolean);
+  usePublish(tracksToPublish);
 
-  // Play remote audio tracks
-  audioTracks.map((track) => {
-    track.play();
-  });
+  // Play remote audio tracks safely
+  if (audioTracks && Array.isArray(audioTracks)) {
+    audioTracks.forEach((track) => {
+      if (track) {
+        try {
+          track.play();
+        } catch (error) {
+          console.warn("Error playing remote audio track:", error);
+        }
+      }
+    });
+  }
 
   const isLoading = micLoading || cameraLoading;
 
@@ -104,15 +113,23 @@ function Videos({
 
   const toggleVideo = async () => {
     if (localCameraTrack) {
-      await localCameraTrack.setEnabled(!isVideoEnabled);
-      setIsVideoEnabled(!isVideoEnabled);
+      try {
+        await localCameraTrack.setEnabled(!isVideoEnabled);
+        setIsVideoEnabled(!isVideoEnabled);
+      } catch (error) {
+        console.error("Error toggling video:", error);
+      }
     }
   };
 
   const toggleAudio = async () => {
     if (localMicrophoneTrack) {
-      await localMicrophoneTrack.setEnabled(!isAudioEnabled);
-      setIsAudioEnabled(!isAudioEnabled);
+      try {
+        await localMicrophoneTrack.setEnabled(!isAudioEnabled);
+        setIsAudioEnabled(!isAudioEnabled);
+      } catch (error) {
+        console.error("Error toggling audio:", error);
+      }
     }
   };
 
@@ -125,7 +142,11 @@ function Videos({
           <div
             ref={(node) => {
               if (localCameraTrack && node) {
-                localCameraTrack.play(node);
+                try {
+                  localCameraTrack.play(node);
+                } catch (error) {
+                  console.warn("Error playing local video track:", error);
+                }
               }
             }}
             className="w-full h-full min-h-[300px]"
@@ -144,30 +165,38 @@ function Videos({
         </div>
 
         {/* Remote Videos */}
-        {remoteUsers.length > 0 ? (
-          remoteUsers.map((remoteUser) => (
-            <div
-              key={remoteUser.uid}
-              className="relative bg-gray-800 rounded-lg overflow-hidden"
-            >
+        {Array.isArray(remoteUsers) && remoteUsers.length > 0 ? (
+          remoteUsers.map((remoteUser) => {
+            if (!remoteUser || !remoteUser.uid) return null;
+            
+            return (
               <div
-                ref={(node) => {
-                  if (remoteUser.videoTrack && node) {
-                    remoteUser.videoTrack.play(node);
-                  }
-                }}
-                className="w-full h-full min-h-[300px]"
-              />
-              {!remoteUser.videoTrack && (
-                <div className="absolute inset-0 flex items-center justify-center bg-gray-800">
-                  <div className="text-center">
-                    <VideoOff className="w-12 h-12 mx-auto text-gray-400 mb-2" />
-                    <p className="text-sm text-gray-400">Remote User</p>
+                key={remoteUser.uid}
+                className="relative bg-gray-800 rounded-lg overflow-hidden"
+              >
+                <div
+                  ref={(node) => {
+                    if (remoteUser?.videoTrack && node) {
+                      try {
+                        remoteUser.videoTrack.play(node);
+                      } catch (error) {
+                        console.warn("Error playing remote video track:", error);
+                      }
+                    }
+                  }}
+                  className="w-full h-full min-h-[300px]"
+                />
+                {!remoteUser.videoTrack && (
+                  <div className="absolute inset-0 flex items-center justify-center bg-gray-800">
+                    <div className="text-center">
+                      <VideoOff className="w-12 h-12 mx-auto text-gray-400 mb-2" />
+                      <p className="text-sm text-gray-400">Remote User</p>
+                    </div>
                   </div>
-                </div>
-              )}
-            </div>
-          ))
+                )}
+              </div>
+            );
+          })
         ) : (
           <div className="relative bg-gray-800 rounded-lg overflow-hidden flex items-center justify-center min-h-[300px]">
             <div className="text-center text-gray-400">
@@ -219,8 +248,8 @@ function Videos({
       {/* Status */}
       <div className="px-4 pb-2 text-center">
         <p className="text-xs text-gray-500 dark:text-gray-400">
-          Connected • {remoteUsers.length + 1} participant
-          {remoteUsers.length + 1 !== 1 ? "s" : ""}
+          Connected • {(Array.isArray(remoteUsers) ? remoteUsers.length : 0) + 1} participant
+          {(Array.isArray(remoteUsers) ? remoteUsers.length : 0) + 1 !== 1 ? "s" : ""}
         </p>
       </div>
     </div>
