@@ -1,13 +1,13 @@
 "use client";
 
 /**
- * VideoCall Component - Using agora-rtc-react (simplified approach)
+ * VideoCall Component - Using agora-rtc-react (production-ready)
  * 
  * Based on: https://www.agora.io/en/blog/build-a-next-js-video-call-app/
  * Adapted for booking-based video calls with role-based access
  */
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useRTCClient, AgoraRTCProvider } from "agora-rtc-react";
 import {
   useLocalMicrophoneTrack,
@@ -59,13 +59,33 @@ function Videos({
   userRole: "tutor" | "student";
   onEndCall: () => void;
 }) {
-  const { localMicrophoneTrack, isLoading: micLoading } = useLocalMicrophoneTrack();
-  const { localCameraTrack, isLoading: cameraLoading } = useLocalCameraTrack();
+  const { localMicrophoneTrack, isLoading: micLoading, error: micError } = useLocalMicrophoneTrack();
+  const { localCameraTrack, isLoading: cameraLoading, error: cameraError } = useLocalCameraTrack();
   const remoteUsers = useRemoteUsers() || [];
   const { audioTracks } = useRemoteAudioTracks(remoteUsers);
 
   const [isVideoEnabled, setIsVideoEnabled] = useState(true);
   const [isAudioEnabled, setIsAudioEnabled] = useState(true);
+  const [permissionError, setPermissionError] = useState<string | null>(null);
+
+  // Check for permission errors
+  useEffect(() => {
+    if (micError || cameraError) {
+      const error = micError || cameraError;
+      if (error?.name === "NotAllowedError" || error?.name === "PermissionDeniedError") {
+        const isLocalhost = typeof window !== "undefined" && 
+          (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1");
+        
+        setPermissionError(
+          isLocalhost
+            ? "Camera/microphone access denied.\n\nPlease:\n1. Click the 'i' icon in the address bar\n2. Click 'Site settings'\n3. Allow Camera and Microphone\n4. Refresh the page"
+            : "Camera/microphone access denied.\n\nPlease:\n1. Click the lock icon in the address bar\n2. Click 'Site settings'\n3. Allow Camera and Microphone\n4. Refresh the page"
+        );
+      } else if (error?.name === "NotFoundError" || error?.name === "DevicesNotFoundError") {
+        setPermissionError("No camera/microphone found. Please connect a device and refresh.");
+      }
+    }
+  }, [micError, cameraError]);
 
   // Join channel
   useJoin(
@@ -78,24 +98,59 @@ function Videos({
     true
   );
 
-  // Publish local tracks (only if they exist)
-  const tracksToPublish = [localMicrophoneTrack, localCameraTrack].filter(Boolean);
+  // Publish local tracks (only if they exist and have no errors)
+  const tracksToPublish = useMemo(() => {
+    return [localMicrophoneTrack, localCameraTrack].filter(Boolean);
+  }, [localMicrophoneTrack, localCameraTrack]);
+  
   usePublish(tracksToPublish);
 
   // Play remote audio tracks safely
-  if (audioTracks && Array.isArray(audioTracks)) {
-    audioTracks.forEach((track) => {
-      if (track) {
-        try {
-          track.play();
-        } catch (error) {
-          console.warn("Error playing remote audio track:", error);
+  useEffect(() => {
+    if (audioTracks && Array.isArray(audioTracks)) {
+      audioTracks.forEach((track) => {
+        if (track) {
+          try {
+            track.play().catch((err) => {
+              console.warn("Error playing remote audio track:", err);
+            });
+          } catch (error) {
+            console.warn("Error playing remote audio track:", error);
+          }
         }
-      }
-    });
-  }
+      });
+    }
+  }, [audioTracks]);
 
   const isLoading = micLoading || cameraLoading;
+
+  // Show permission error
+  if (permissionError) {
+    return (
+      <Card className="p-6">
+        <div className="flex flex-col items-center gap-4">
+          <AlertCircle className="w-12 h-12 text-red-500" />
+          <div className="text-center">
+            <p className="font-semibold text-lg mb-2">Permission Required</p>
+            <p className="text-sm text-gray-600 dark:text-gray-400 whitespace-pre-line mb-4">
+              {permissionError}
+            </p>
+          </div>
+          <div className="flex gap-3 w-full">
+            <Button
+              onClick={() => window.location.reload()}
+              className="flex-1"
+            >
+              Refresh Page
+            </Button>
+            <Button onClick={onEndCall} variant="outline" className="flex-1">
+              Cancel
+            </Button>
+          </div>
+        </div>
+      </Card>
+    );
+  }
 
   if (isLoading) {
     return (
@@ -143,7 +198,9 @@ function Videos({
             ref={(node) => {
               if (localCameraTrack && node) {
                 try {
-                  localCameraTrack.play(node);
+                  localCameraTrack.play(node).catch((err) => {
+                    console.warn("Error playing local video track:", err);
+                  });
                 } catch (error) {
                   console.warn("Error playing local video track:", error);
                 }
@@ -178,7 +235,9 @@ function Videos({
                   ref={(node) => {
                     if (remoteUser?.videoTrack && node) {
                       try {
-                        remoteUser.videoTrack.play(node);
+                        remoteUser.videoTrack.play(node).catch((err) => {
+                          console.warn("Error playing remote video track:", err);
+                        });
                       } catch (error) {
                         console.warn("Error playing remote video track:", error);
                       }
@@ -214,6 +273,7 @@ function Videos({
           size="lg"
           onClick={toggleAudio}
           className="rounded-full w-14 h-14"
+          disabled={!localMicrophoneTrack}
         >
           {isAudioEnabled ? (
             <Mic className="w-5 h-5" />
@@ -227,6 +287,7 @@ function Videos({
           size="lg"
           onClick={toggleVideo}
           className="rounded-full w-14 h-14"
+          disabled={!localCameraTrack}
         >
           {isVideoEnabled ? (
             <Video className="w-5 h-5" />
@@ -268,31 +329,64 @@ export function VideoCall({
 }: VideoCallProps) {
   const [error, setError] = useState<string | null>(null);
 
-  // Create RTC client
+  // Create RTC client using useMemo to ensure stable reference
   const client = useRTCClient(
     () =>
       import("agora-rtc-sdk-ng").then((AgoraRTC) => {
         const RTC = AgoraRTC.default || AgoraRTC;
+        if (!RTC || !RTC.createClient) {
+          throw new Error("Failed to load Agora SDK");
+        }
         return RTC.createClient({ mode: "rtc", codec: "vp8" });
       })
   );
 
-  // Handle errors
+  // Handle errors - only set up listeners if client is valid
   useEffect(() => {
+    if (!client) {
+      setError("Failed to initialize video client");
+      return;
+    }
+
+    // Check if client has the 'on' method before using it
+    if (typeof client.on !== "function") {
+      console.error("Client does not have 'on' method:", client);
+      setError("Invalid client initialization");
+      return;
+    }
+
     const handleError = (err: any) => {
       console.error("Agora error:", err);
-      setError(err.message || "An error occurred");
+      // Don't show permission errors here - they're handled in Videos component
+      if (err?.name !== "NotAllowedError" && err?.name !== "PermissionDeniedError") {
+        setError(err?.message || "An error occurred");
+      }
     };
 
-    client.on("exception", handleError);
-    client.on("connection-state-change", (curState, revState) => {
+    const handleConnectionChange = (curState: string) => {
       if (curState === "DISCONNECTED") {
         setError("Connection lost. Please check your internet connection.");
+      } else if (curState === "CONNECTED") {
+        setError(null); // Clear error on successful connection
       }
-    });
+    };
+
+    try {
+      client.on("exception", handleError);
+      client.on("connection-state-change", handleConnectionChange);
+    } catch (err) {
+      console.error("Error setting up client listeners:", err);
+    }
 
     return () => {
-      client.off("exception", handleError);
+      try {
+        if (typeof client.off === "function") {
+          client.off("exception", handleError);
+          client.off("connection-state-change", handleConnectionChange);
+        }
+      } catch (err) {
+        console.error("Error cleaning up client listeners:", err);
+      }
     };
   }, [client]);
 
@@ -309,6 +403,22 @@ export function VideoCall({
         <Button onClick={onEndCall} className="mt-4 w-full">
           Close
         </Button>
+      </Card>
+    );
+  }
+
+  // Don't render provider if client is invalid
+  if (!client) {
+    return (
+      <Card className="p-6">
+        <div className="text-center">
+          <AlertCircle className="w-12 h-12 mx-auto mb-4 text-red-500" />
+          <p className="font-semibold mb-2">Failed to Initialize</p>
+          <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
+            Unable to initialize video client. Please refresh the page.
+          </p>
+          <Button onClick={onEndCall}>Close</Button>
+        </div>
       </Card>
     );
   }
