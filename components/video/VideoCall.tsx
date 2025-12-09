@@ -87,13 +87,32 @@ export function VideoCall({
           
           if (cameraPermission.state === "denied" || microphonePermission.state === "denied") {
             setPermissionRequested(false);
-            setPermissionError(
-              "Camera/microphone access is blocked.\n\n" +
-              "To fix this:\n" +
-              "1. Click the lock icon (🔒) in your browser's address bar\n" +
-              "2. Set Camera and Microphone to 'Allow'\n" +
-              "3. Click 'Request Permissions' again or refresh the page"
-            );
+            
+            // Check if we're on localhost (HTTP) vs HTTPS
+            const isLocalhost = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1";
+            const isHttp = window.location.protocol === "http:";
+            
+            let instructions = "";
+            if (isLocalhost || isHttp) {
+              instructions = 
+                "Camera/microphone access is blocked.\n\n" +
+                "To fix this on localhost:\n" +
+                "1. Click the 'i' icon (information) in the address bar\n" +
+                "2. Click 'Site settings'\n" +
+                "3. Set Camera and Microphone to 'Allow'\n" +
+                "4. Click 'Request Permissions' below to try again\n\n" +
+                "Or check: Browser Settings > Privacy > Site Settings > Camera/Microphone";
+            } else {
+              instructions = 
+                "Camera/microphone access is blocked.\n\n" +
+                "To fix this:\n" +
+                "1. Click the lock icon (🔒) in your browser's address bar\n" +
+                "2. Click 'Site settings'\n" +
+                "3. Set Camera and Microphone to 'Allow'\n" +
+                "4. Click 'Request Permissions' below to try again";
+            }
+            
+            setPermissionError(instructions);
             return false;
           }
         } catch {
@@ -118,13 +137,31 @@ export function VideoCall({
       setPermissionRequested(false);
       
       if (permError?.name === "NotAllowedError" || permError?.name === "PermissionDeniedError") {
-        setPermissionError(
-          "Camera/microphone access was denied.\n\n" +
-          "To fix this:\n" +
-          "1. Click the lock icon (🔒) in your browser's address bar\n" +
-          "2. Set Camera and Microphone to 'Allow'\n" +
-          "3. Click 'Request Permissions' again or refresh the page"
-        );
+        // Check if we're on localhost (HTTP) vs HTTPS
+        const isLocalhost = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1";
+        const isHttp = window.location.protocol === "http:";
+        
+        let instructions = "";
+        if (isLocalhost || isHttp) {
+          instructions = 
+            "Camera/microphone access was denied.\n\n" +
+            "To fix this on localhost:\n" +
+            "1. Click the 'i' icon (information) or lock icon in the address bar\n" +
+            "2. Click 'Site settings' or 'Permissions'\n" +
+            "3. Set Camera and Microphone to 'Allow'\n" +
+            "4. Click 'Request Permissions' below to try again\n\n" +
+            "Alternative: Check your browser's privacy settings for camera/microphone permissions.";
+        } else {
+          instructions = 
+            "Camera/microphone access was denied.\n\n" +
+            "To fix this:\n" +
+            "1. Click the lock icon (🔒) in your browser's address bar\n" +
+            "2. Click 'Site settings' or 'Permissions'\n" +
+            "3. Set Camera and Microphone to 'Allow'\n" +
+            "4. Click 'Request Permissions' below to try again";
+        }
+        
+        setPermissionError(instructions);
       } else if (permError?.name === "NotFoundError" || permError?.name === "DevicesNotFoundError") {
         setPermissionError("No camera/microphone found. Please connect a device and try again.");
       } else {
