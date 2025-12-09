@@ -25,9 +25,6 @@ GOOGLE_CLIENT_ID=...
 GOOGLE_CLIENT_SECRET=...
 SENTRY_DSN=...
 
-# Agora Video Calling
-AGORA_APP_ID=your-agora-app-id
-AGORA_APP_CERTIFICATE=your-agora-app-certificate
 ```
 
 ## Security Best Practices

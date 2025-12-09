@@ -53,11 +53,6 @@ export default async function DashboardPage({
                   email: true,
                 },
               },
-              videoSession: {
-                include: {
-                  review: true,
-                },
-              },
             },
             orderBy: {
               scheduledAt: "desc",

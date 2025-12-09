@@ -515,10 +515,9 @@ export function TutorDashboardClient({
                 <CardContent>
                   <div className="space-y-3">
                     {upcomingBookings.slice(0, 5).map((booking) => (
-                      <Link
+                      <div
                         key={booking.id}
-                        href={`/${locale}/video/${booking.id}`}
-                        className="block p-4 sm:p-5 bg-white/60 dark:bg-[#0a0a0a]/60 backdrop-blur-sm border border-[#e5e5e5] dark:border-[#262626] rounded-xl hover:border-[#ccf381] dark:hover:border-[#ccf381]/50 hover:shadow-md transition-all duration-200 cursor-pointer"
+                        className="block p-4 sm:p-5 bg-white/60 dark:bg-[#0a0a0a]/60 backdrop-blur-sm border border-[#e5e5e5] dark:border-[#262626] rounded-xl"
                       >
                         <div className="flex items-start justify-between gap-4">
                           <div className="flex items-start gap-3 flex-1">
@@ -555,7 +554,7 @@ export function TutorDashboardClient({
                             {getStatusBadge(booking.status)}
                           </div>
                         </div>
-                      </Link>
+                      </div>
                     ))}
                   </div>
                 </CardContent>

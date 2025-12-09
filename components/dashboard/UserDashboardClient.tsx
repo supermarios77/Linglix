@@ -351,22 +351,10 @@ export function UserDashboardClient({
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                {upcomingBookings.map((booking) => {
-                  const canJoinCall = booking.status === "CONFIRMED";
-                  const SessionCard = canJoinCall ? Link : "div";
-                  const sessionProps = canJoinCall
-                    ? { href: `/${locale}/video/${booking.id}` }
-                    : {};
-
-                  return (
-                    <SessionCard
+                {upcomingBookings.map((booking) => (
+                    <div
                       key={booking.id}
-                      {...sessionProps}
-                      className={`group p-6 sm:p-8 bg-gradient-to-br from-white/80 to-[#fafafa]/80 dark:from-[#0a0a0a]/80 dark:to-[#1a1a1a]/80 backdrop-blur-sm border-2 border-[#e5e5e5] dark:border-[#262626] rounded-[20px] transition-all duration-300 ${
-                        canJoinCall
-                          ? "hover:shadow-[0_20px_40px_rgba(0,0,0,0.1)] hover:-translate-y-1 cursor-pointer"
-                          : ""
-                      }`}
+                      className="group p-6 sm:p-8 bg-gradient-to-br from-white/80 to-[#fafafa]/80 dark:from-[#0a0a0a]/80 dark:to-[#1a1a1a]/80 backdrop-blur-sm border-2 border-[#e5e5e5] dark:border-[#262626] rounded-[20px] transition-all duration-300"
                     >
                     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                       <div className="flex-1">
@@ -454,9 +442,8 @@ export function UserDashboardClient({
                         </Link>
                       </div>
                     </div>
-                  </SessionCard>
-                );
-              })}
+                    </div>
+                ))}
               </div>
             </CardContent>
           </Card>
@@ -511,14 +498,6 @@ export function UserDashboardClient({
                             <Calendar className="w-4 h-4" />
                             <span>{formatDate(booking.scheduledAt)}</span>
                           </div>
-                          {booking.videoSession?.recordingUrl && (
-                            <Link
-                              href={booking.videoSession.recordingUrl}
-                              className="text-[#ccf381] hover:underline font-medium"
-                            >
-                              {t("viewRecording")}
-                            </Link>
-                          )}
                         </div>
                       </div>
                       <div>{getStatusBadge(booking.status)}</div>

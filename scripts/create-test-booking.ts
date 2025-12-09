@@ -1,7 +1,7 @@
 /**
  * Test Booking Creation Script
  * 
- * Creates a test booking for video call testing.
+ * Creates a test booking for testing.
  * Run with: bunx tsx scripts/create-test-booking.ts
  */
 
@@ -36,8 +36,8 @@ async function createTestBooking() {
 
     // Check if tutor is approved
     if (tutorProfile.approvalStatus !== "APPROVED") {
-      console.warn("⚠️  Tutor is not approved. Booking will be created but video calls require CONFIRMED status.");
-      console.log("   You may need to approve the tutor first or manually set booking status to CONFIRMED.");
+      console.warn("⚠️  Tutor is not approved. Booking will be created with CONFIRMED status.");
+      console.log("   You may need to approve the tutor first.");
     }
 
     // Create confirmed booking (1 hour from now)
@@ -49,7 +49,7 @@ async function createTestBooking() {
         tutorId: tutorProfile.id,
         scheduledAt,
         duration: 60, // 60 minutes
-        status: "CONFIRMED", // Important: must be CONFIRMED for video calls
+        status: "CONFIRMED",
         price: 50.00,
       },
     });
@@ -63,18 +63,6 @@ async function createTestBooking() {
     console.log(`   Duration: ${booking.duration} minutes`);
     console.log(`   Status: ${booking.status}`);
     console.log(`   Price: $${booking.price.toFixed(2)}\n`);
-
-    console.log("🎥 Test Video Call:");
-    console.log(`   Student URL: http://localhost:3000/en/video/${booking.id}`);
-    console.log(`   Tutor URL: http://localhost:3000/en/video/${booking.id}\n`);
-
-    console.log("📝 Instructions:");
-    console.log("   1. Open two browser windows (or use incognito for one)");
-    console.log("   2. Sign in as student in one window");
-    console.log("   3. Sign in as tutor in the other window");
-    console.log("   4. Navigate to the URL above in both windows");
-    console.log("   5. Allow camera/microphone permissions");
-    console.log("   6. You should see each other's video!\n");
   } catch (error) {
     console.error("❌ Error creating test booking:", error);
     process.exit(1);
