@@ -47,7 +47,7 @@ const nextConfig: NextConfig = {
           },
           {
             key: "Permissions-Policy",
-            value: "camera=(), microphone=(), geolocation=()",
+            value: "geolocation=()",
           },
         ],
       },
@@ -65,6 +65,7 @@ const nextConfig: NextConfig = {
       // },
     ],
   },
+  
 };
 
 export default withSentryConfig(withNextIntl(nextConfig), {

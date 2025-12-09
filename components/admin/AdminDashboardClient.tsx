@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -146,69 +146,97 @@ export function AdminDashboardClient({ locale }: AdminDashboardClientProps) {
   const [processing, setProcessing] = useState(false);
 
   // Fetch statistics
-  const fetchStats = async () => {
+  const fetchStats = async (signal?: AbortSignal) => {
     try {
       setStatsLoading(true);
-      const response = await fetch("/api/admin/stats");
+      const response = await fetch("/api/admin/stats", { signal });
       if (!response.ok) throw new Error("Failed to fetch stats");
       const data = await response.json();
-      setStats(data);
+      if (!signal?.aborted) {
+        setStats(data);
+      }
     } catch (error) {
+      if (error instanceof Error && error.name === "AbortError") {
+        return; // Request was aborted, ignore
+      }
       // Error is handled silently - stats will just not update
       if (process.env.NODE_ENV === "development") {
         console.error("Failed to fetch stats:", error);
       }
     } finally {
-      setStatsLoading(false);
+      if (!signal?.aborted) {
+        setStatsLoading(false);
+      }
     }
   };
 
-  // Fetch tutors
-  const fetchTutors = async () => {
+  // Fetch tutors - memoized to prevent stale closures
+  const fetchTutors = useCallback(async (signal?: AbortSignal, currentPage?: number, currentStatusFilter?: string, currentSearchQuery?: string) => {
     try {
       setLoading(true);
       const params = new URLSearchParams({
-        page: page.toString(),
+        page: (currentPage ?? page).toString(),
         limit: "20",
       });
-      if (statusFilter !== "ALL") {
-        params.append("status", statusFilter);
+      const filter = currentStatusFilter ?? statusFilter;
+      const query = currentSearchQuery ?? searchQuery;
+      if (filter !== "ALL") {
+        params.append("status", filter);
       }
-      if (searchQuery) {
-        params.append("search", searchQuery);
+      if (query) {
+        params.append("search", query);
       }
 
-      const response = await fetch(`/api/admin/tutors?${params.toString()}`);
+      const response = await fetch(`/api/admin/tutors?${params.toString()}`, { signal });
       if (!response.ok) throw new Error("Failed to fetch tutors");
       const data: TutorsResponse = await response.json();
-      setTutors(data.tutors);
-      setPagination(data.pagination);
+      if (!signal?.aborted) {
+        setTutors(data.tutors);
+        setPagination(data.pagination);
+      }
     } catch (error) {
+      if (error instanceof Error && error.name === "AbortError") {
+        return; // Request was aborted, ignore
+      }
       // Error is handled silently - tutors list will just not update
       if (process.env.NODE_ENV === "development") {
         console.error("Failed to fetch tutors:", error);
       }
     } finally {
-      setLoading(false);
+      if (!signal?.aborted) {
+        setLoading(false);
+      }
     }
-  };
+  }, [page, statusFilter, searchQuery]);
 
   // Initial load
   useEffect(() => {
-    fetchStats();
-    fetchTutors();
-  }, []);
+    const abortController = new AbortController();
+    fetchStats(abortController.signal);
+    fetchTutors(abortController.signal);
+    return () => {
+      abortController.abort();
+    };
+  }, [fetchTutors]);
 
   // Refetch when filters change
   useEffect(() => {
+    const abortController = new AbortController();
     setPage(1);
-    fetchTutors();
-  }, [statusFilter, searchQuery]);
+    fetchTutors(abortController.signal, 1, statusFilter, searchQuery);
+    return () => {
+      abortController.abort();
+    };
+  }, [statusFilter, searchQuery, fetchTutors]);
 
   // Refetch when page changes
   useEffect(() => {
-    fetchTutors();
-  }, [page]);
+    const abortController = new AbortController();
+    fetchTutors(abortController.signal, page, statusFilter, searchQuery);
+    return () => {
+      abortController.abort();
+    };
+  }, [page, statusFilter, searchQuery, fetchTutors]);
 
   // Handle approve
   const handleApprove = async () => {

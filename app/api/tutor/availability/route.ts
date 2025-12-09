@@ -146,7 +146,7 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     if (error instanceof z.ZodError) {
       return createErrorResponse(
-        Errors.BadRequest(error.errors[0]?.message || "Invalid input")
+        Errors.BadRequest(error.issues[0]?.message || "Invalid input")
       );
     }
 

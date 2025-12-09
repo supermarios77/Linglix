@@ -117,13 +117,23 @@
   },
   "booking": {
     "title": "Book a Session",
+    "subtitle": "Schedule your language learning session",
     "selectDate": "Select Date",
     "selectTime": "Select Time",
     "duration": "Duration",
     "minutes": "minutes",
     "min": "min",
-    "notes": "Notes (optional)",
+    "notes": "Notes",
+    "optional": "Optional",
+    "notesPlaceholder": "Any specific topics or areas you'd like to focus on?",
+    "characters": "characters",
+    "specialties": "Specialties",
+    "totalPrice": "Total Price",
+    "priceNote": "Payment will be processed after tutor confirms the booking",
+    "dateHint": "Bookings must be at least 24 hours in advance",
+    "noSlotsAvailable": "No available time slots for this date. Please select another date.",
     "confirmBooking": "Confirm Booking",
+    "creating": "Creating Booking...",
     "bookingConfirmed": "Booking Confirmed",
     "upcoming": "Upcoming",
     "past": "Past",
@@ -145,7 +155,6 @@
     "pastSessions": "Past Sessions",
     "pastSessionsDescription": "Your completed and cancelled sessions",
     "viewTutor": "View Tutor",
-    "viewRecording": "View Recording",
     "noBookings": "No Bookings Yet",
     "noBookingsDescription": "Start your language learning journey by booking your first session with a tutor",
     "tutorFallback": "Tutor",
@@ -217,6 +226,18 @@
       }
     }
   },
+  "video": {
+    "title": "Video Call",
+    "joining": "Joining video call...",
+    "error": "Call Error",
+    "leave": "Leave",
+    "mute": "Mute",
+    "unmute": "Unmute",
+    "startVideo": "Start Video",
+    "stopVideo": "Stop Video",
+    "startCall": "Start Video Call",
+    "startCallTutor": "Start Call"
+  },
   "errors": {
     "generic": "Something went wrong",
     "notFound": "Page not found",
@@ -255,10 +276,6 @@
           "title": "Affordable Pricing",
           "description": "Transparent pricing with no hidden fees. Pay only for what you use"
         },
-        "recordings": {
-          "title": "Session Recordings",
-          "description": "Review your sessions anytime with automatic recordings of every lesson"
-        },
         "support": {
           "title": "24/7 Support",
           "description": "Get help whenever you need it with our dedicated support team"
@@ -279,7 +296,7 @@
         },
         "3": {
           "title": "Start Learning",
-          "description": "Join your session via video call and start your language learning journey"
+          "description": "Start your language learning journey with personalized lessons"
         }
       }
     },

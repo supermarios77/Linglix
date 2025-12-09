@@ -117,13 +117,23 @@
   },
   "booking": {
     "title": "Reservar una Sesión",
+    "subtitle": "Programa tu sesión de aprendizaje de idiomas",
     "selectDate": "Seleccionar Fecha",
     "selectTime": "Seleccionar Hora",
     "duration": "Duración",
     "minutes": "minutos",
     "min": "min",
-    "notes": "Notas (opcional)",
+    "notes": "Notas",
+    "optional": "Opcional",
+    "notesPlaceholder": "¿Hay algún tema o área específica en la que te gustaría enfocarte?",
+    "characters": "caracteres",
+    "specialties": "Especialidades",
+    "totalPrice": "Precio Total",
+    "priceNote": "El pago se procesará después de que el tutor confirme la reserva",
+    "dateHint": "Las reservas deben ser con al menos 24 horas de anticipación",
+    "noSlotsAvailable": "No hay horarios disponibles para esta fecha. Por favor, selecciona otra fecha.",
     "confirmBooking": "Confirmar Reserva",
+    "creating": "Creando Reserva...",
     "bookingConfirmed": "Reserva Confirmada",
     "upcoming": "Próximas",
     "past": "Pasadas",
@@ -145,12 +155,13 @@
     "pastSessions": "Sesiones Pasadas",
     "pastSessionsDescription": "Tus sesiones completadas y canceladas",
     "viewTutor": "Ver Tutor",
-    "viewRecording": "Ver Grabación",
     "noBookings": "Aún No Hay Reservas",
     "noBookingsDescription": "Comienza tu viaje de aprendizaje de idiomas reservando tu primera sesión con un tutor",
     "tutorFallback": "Tutor",
     "signOutConfirmTitle": "¿Cerrar Sesión?",
     "signOutConfirmDescription": "¿Estás seguro de que quieres cerrar sesión? Tendrás que iniciar sesión nuevamente para acceder a tu panel.",
+    "joinCall": "Unirse a Llamada",
+    "startCall": "Iniciar Llamada",
     "tutor": {
       "title": "Bienvenido de Nuevo",
       "subtitle": "Gestiona tus sesiones de tutoría y haz crecer tu negocio de enseñanza",
@@ -217,6 +228,18 @@
       }
     }
   },
+  "video": {
+    "title": "Llamada de Video",
+    "joining": "Uniéndose a la llamada de video...",
+    "error": "Error de Llamada",
+    "leave": "Salir",
+    "mute": "Silenciar",
+    "unmute": "Activar Sonido",
+    "startVideo": "Iniciar Video",
+    "stopVideo": "Detener Video",
+    "startCall": "Iniciar Llamada de Video",
+    "startCallTutor": "Iniciar Llamada"
+  },
   "errors": {
     "generic": "Algo salió mal",
     "notFound": "Página no encontrada",
@@ -255,10 +278,6 @@
           "title": "Precios Asequibles",
           "description": "Precios transparentes sin tarifas ocultas. Paga solo por lo que uses"
         },
-        "recordings": {
-          "title": "Grabaciones de Sesiones",
-          "description": "Revisa tus sesiones en cualquier momento con grabaciones automáticas de cada lección"
-        },
         "support": {
           "title": "Soporte 24/7",
           "description": "Obtén ayuda cuando la necesites con nuestro equipo de soporte dedicado"
@@ -279,7 +298,7 @@
         },
         "3": {
           "title": "Comienza a Aprender",
-          "description": "Únete a tu sesión por videollamada y comienza tu viaje de aprendizaje de idiomas"
+          "description": "Comienza tu viaje de aprendizaje de idiomas con lecciones personalizadas"
         }
       }
     },

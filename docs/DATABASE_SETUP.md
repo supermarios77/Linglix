@@ -106,7 +106,6 @@ The schema includes:
 - **TutorProfile** - Additional tutor information
 - **Availability** - Tutor weekly schedules
 - **Booking** - Scheduled sessions
-- **VideoSession** - Actual video call sessions
 - **Review** - Student reviews of tutors
 - **Account** - NextAuth OAuth accounts
 - **AuthSession** - NextAuth sessions

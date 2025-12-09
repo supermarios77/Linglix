@@ -27,10 +27,11 @@ export function PublicNav({ locale, session }: PublicNavProps) {
 
   // Close mobile menu when clicking outside
   useEffect(() => {
+    if (!mobileMenuOpen) return;
+
     const handleClickOutside = (event: MouseEvent) => {
       const target = event.target as HTMLElement;
       if (
-        mobileMenuOpen &&
         !target.closest("header") &&
         !target.closest("nav")
       ) {
@@ -38,10 +39,8 @@ export function PublicNav({ locale, session }: PublicNavProps) {
       }
     };
 
-    if (mobileMenuOpen) {
-      document.addEventListener("click", handleClickOutside);
-      return () => document.removeEventListener("click", handleClickOutside);
-    }
+    document.addEventListener("click", handleClickOutside);
+    return () => document.removeEventListener("click", handleClickOutside);
   }, [mobileMenuOpen]);
 
   // Close mobile menu on route change

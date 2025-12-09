@@ -19,6 +19,10 @@ import { Role } from "@prisma/client";
  * - Server-side: Fetches data on server
  * - Matches landing page design style
  */
+
+// Mark as dynamic since it uses headers for authentication
+export const dynamic = "force-dynamic";
+
 export async function generateMetadata() {
   const t = await getTranslations("dashboard");
   return {
@@ -32,50 +36,119 @@ export default async function DashboardPage({
 }: {
   params: Promise<{ locale: string }>;
 }) {
+  // Get locale first (before try block so it's available in catch)
+  const { locale } = await params;
+  
   try {
     // Require authentication
     const user = await requireAuth();
-    const { locale } = await params;
 
     // If user is a tutor, fetch tutor-specific data
     if (user.role === Role.TUTOR) {
-      // Fetch tutor profile
-      const tutorProfile = await prisma.tutorProfile.findUnique({
-        where: { userId: user.id },
-        include: {
-          bookings: {
-            include: {
-              student: {
-                select: {
-                  id: true,
-                  name: true,
-                  image: true,
-                  email: true,
+      // Fetch tutor profile with error handling for timeout issues
+      let tutorProfile;
+      try {
+        tutorProfile = await prisma.tutorProfile.findUnique({
+          where: { userId: user.id },
+          include: {
+            bookings: {
+              include: {
+                student: {
+                  select: {
+                    id: true,
+                    name: true,
+                    image: true,
+                    email: true,
+                  },
                 },
               },
-              videoSession: {
-                include: {
-                  review: true,
-                },
+              orderBy: {
+                scheduledAt: "desc",
               },
+              take: 20,
             },
-            orderBy: {
-              scheduledAt: "desc",
+            availability: {
+              orderBy: [
+                { dayOfWeek: "asc" },
+                { startTime: "asc" },
+              ],
             },
-            take: 20,
           },
-          availability: {
-            orderBy: [
-              { dayOfWeek: "asc" },
-              { startTime: "asc" },
-            ],
-          },
-        },
-      });
+        });
+      } catch (error) {
+        // Handle database connection errors gracefully
+        console.error("[Dashboard] Error fetching tutor profile:", error);
+        
+        // If it's a timeout or connection error, try a simpler query
+        if (
+          error instanceof Error &&
+          (error.message.includes("timeout") ||
+            error.message.includes("ETIMEDOUT") ||
+            error.message.includes("ECONNREFUSED"))
+        ) {
+          // Fallback: try fetching just the profile without relations
+          try {
+            tutorProfile = await prisma.tutorProfile.findUnique({
+              where: { userId: user.id },
+            });
+          } catch (fallbackError) {
+            console.error("[Dashboard] Fallback query also failed:", fallbackError);
+            // If even the simple query fails, redirect to onboarding
+            redirect(`/${locale}/onboarding`);
+          }
+        } else {
+          // Re-throw non-timeout errors
+          throw error;
+        }
+      }
 
       if (!tutorProfile) {
         // Tutor profile not found, redirect to onboarding
         redirect(`/${locale}/onboarding`);
+      }
+      
+      // If we only got the profile without relations, fetch them separately
+      if (!tutorProfile.bookings || !tutorProfile.availability) {
+        try {
+          const [bookings, availability] = await Promise.all([
+            prisma.booking.findMany({
+              where: { tutorId: tutorProfile.id },
+              include: {
+                student: {
+                  select: {
+                    id: true,
+                    name: true,
+                    image: true,
+                    email: true,
+                  },
+                },
+              },
+              orderBy: { scheduledAt: "desc" },
+              take: 20,
+            }),
+            prisma.availability.findMany({
+              where: { tutorId: tutorProfile.id },
+              orderBy: [
+                { dayOfWeek: "asc" },
+                { startTime: "asc" },
+              ],
+            }),
+          ]);
+          
+          tutorProfile = {
+            ...tutorProfile,
+            bookings,
+            availability,
+          };
+        } catch (error) {
+          console.error("[Dashboard] Error fetching relations:", error);
+          // Continue with empty arrays if relations fail
+          tutorProfile = {
+            ...tutorProfile,
+            bookings: tutorProfile.bookings || [],
+            availability: tutorProfile.availability || [],
+          };
+        }
       }
 
       // Calculate stats
@@ -97,7 +170,8 @@ export default async function DashboardPage({
         0
       );
 
-      // Get reviews
+      // Get reviews for this tutor
+      // tutorId is stored directly in Review model for efficient querying
       const reviews = await prisma.review.findMany({
         where: {
           tutorId: tutorProfile.id,
@@ -152,11 +226,6 @@ export default async function DashboardPage({
             },
           },
         },
-        videoSession: {
-          include: {
-            review: true,
-          },
-        },
       },
       orderBy: {
         scheduledAt: "desc",
@@ -185,8 +254,15 @@ export default async function DashboardPage({
       </div>
     );
   } catch (error) {
-    // If unauthorized, redirect to sign in
-    redirect("/");
+    // Check if it's an authentication error
+    if (error instanceof Error && error.name === "HttpError") {
+      // Redirect to sign in with locale
+      redirect(`/${locale}/auth/signin`);
+    }
+    
+    // For other errors, log and redirect to home with locale
+    console.error("Dashboard error:", error);
+    redirect(`/${locale}`);
   }
 }
 

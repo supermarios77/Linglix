@@ -5,6 +5,14 @@
  * Exports all email templates and utilities
  */
 
+import { sendEmail } from "./resend";
+import {
+  emailVerificationTemplate,
+  welcomeEmailTemplate,
+  tutorApprovalTemplate,
+  passwordResetTemplate,
+} from "./templates";
+
 export { resend, sendEmail, FROM_EMAIL, FROM_NAME } from "./resend";
 export {
   emailVerificationTemplate,

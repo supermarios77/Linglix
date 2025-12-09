@@ -36,31 +36,40 @@ export async function FeaturedTutors({ locale }: FeaturedTutorsProps) {
   const t = await getTranslations("landing");
 
   // Fetch active and approved tutors with their profiles
-  const tutors = await prisma.user.findMany({
-    where: {
-      role: "TUTOR",
-      tutorProfile: {
-        isActive: true,
-        approvalStatus: "APPROVED", // Only show approved tutors
-      },
-    },
-    include: {
-      tutorProfile: {
-        select: {
-          specialties: true,
-          rating: true,
-          hourlyRate: true,
-          totalSessions: true,
+  // Gracefully handle database connection errors
+  let tutors;
+  try {
+    tutors = await prisma.user.findMany({
+      where: {
+        role: "TUTOR",
+        tutorProfile: {
+          isActive: true,
+          approvalStatus: "APPROVED", // Only show approved tutors
         },
       },
-    },
-    take: 8, // Limit to 8 for display
-    orderBy: {
-      tutorProfile: {
-        rating: "desc",
+      include: {
+        tutorProfile: {
+          select: {
+            specialties: true,
+            rating: true,
+            hourlyRate: true,
+            totalSessions: true,
+          },
+        },
       },
-    },
-  });
+      take: 8, // Limit to 8 for display
+      orderBy: {
+        tutorProfile: {
+          rating: "desc",
+        },
+      },
+    });
+  } catch (error) {
+    // Log error but don't crash the page
+    console.error("[FeaturedTutors] Database error:", error);
+    // Return empty array to show empty state
+    tutors = [];
+  }
 
   // Transform to simpler format
   const tutorData: TutorData[] = tutors
@@ -77,6 +86,22 @@ export async function FeaturedTutors({ locale }: FeaturedTutorsProps) {
     }));
 
   const tutorCount = tutorData.length;
+
+  // Empty state - no tutors available
+  if (tutorCount === 0) {
+    return (
+      <section className="py-12 sm:py-16 md:py-20 px-4 sm:px-6 md:px-12 max-w-[1400px] mx-auto">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-3 sm:gap-0 mb-6 sm:mb-8 md:mb-10">
+          <h3 className="text-[24px] sm:text-[28px] md:text-[32px] font-semibold text-black dark:text-white">{t("trending.title")}</h3>
+        </div>
+        <div className="text-center py-12 sm:py-16">
+          <p className="text-[#888] dark:text-[#a1a1aa] text-base sm:text-lg">
+            {t("trending.noTutorsAvailable") || "No tutors available at the moment. Please check back later."}
+          </p>
+        </div>
+      </section>
+    );
+  }
 
   // Get primary specialty or default
   const getPrimarySpecialty = (specialties: string[]) => {

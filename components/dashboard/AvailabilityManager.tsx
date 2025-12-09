@@ -102,22 +102,35 @@ export function AvailabilityManager({ locale }: AvailabilityManagerProps) {
   const [isActive, setIsActive] = useState(true);
 
   // Fetch availability
-  const fetchAvailability = async () => {
+  const fetchAvailability = async (signal?: AbortSignal) => {
     try {
       setLoading(true);
-      const response = await fetch("/api/tutor/availability");
+      const response = await fetch("/api/tutor/availability", { signal });
       if (!response.ok) throw new Error("Failed to fetch availability");
       const data = await response.json();
-      setAvailability(data.availability || []);
+      if (!signal?.aborted) {
+        setAvailability(data.availability || []);
+      }
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to load availability");
+      if (err instanceof Error && err.name === "AbortError") {
+        return; // Request was aborted, ignore
+      }
+      if (!signal?.aborted) {
+        setError(err instanceof Error ? err.message : "Failed to load availability");
+      }
     } finally {
-      setLoading(false);
+      if (!signal?.aborted) {
+        setLoading(false);
+      }
     }
   };
 
   useEffect(() => {
-    fetchAvailability();
+    const abortController = new AbortController();
+    fetchAvailability(abortController.signal);
+    return () => {
+      abortController.abort();
+    };
   }, []);
 
   // Open dialog for adding new availability

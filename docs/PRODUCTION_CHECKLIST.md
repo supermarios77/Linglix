@@ -33,8 +33,9 @@
 ### Additional (when implemented)
 - [ ] `STRIPE_SECRET_KEY` - Stripe API key
 - [ ] `STRIPE_WEBHOOK_SECRET` - Stripe webhook secret
-- [x] `AGORA_APP_ID` - Agora application ID (required for video calls)
-- [x] `AGORA_APP_CERTIFICATE` - Agora app certificate (required for video calls)
+- [x] `HMS100_APP_ID` - 100ms application ID (required for video calls)
+- [x] `HMS100_APP_SECRET` - 100ms app secret (required for video calls)
+- [ ] `HMS100_ROOM_ID` - Optional 100ms room ID (auto-generated if not provided)
 - [ ] `RESEND_API_KEY` - Resend email API key
 - [ ] `SENTRY_DSN` - Sentry error tracking DSN
 - [ ] `VERCEL_BLOB_READ_WRITE_TOKEN` - Vercel Blob storage token
@@ -100,7 +101,7 @@
 
 - [ ] Critical user flows tested
 - [ ] Payment flow tested (Stripe test mode)
-- [ ] Video calls tested (Agora test environment)
+- [ ] Video calls tested (100ms test environment)
 - [ ] Email delivery tested
 - [ ] Error handling tested
 

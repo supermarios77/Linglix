@@ -58,9 +58,9 @@ import { AvailabilityManager } from "./AvailabilityManager";
  */
 interface User {
   id: string;
-  name: string | null;
+  name?: string | null | undefined;
   email: string;
-  image: string | null;
+  image?: string | null | undefined;
   role: string;
 }
 
@@ -72,17 +72,6 @@ interface StudentUser {
 
 interface BookingWithStudent extends Booking {
   student: StudentUser;
-  videoSession: {
-    id: string;
-    startedAt: Date | null;
-    endedAt: Date | null;
-    recordingUrl: string | null;
-    review: {
-      id: string;
-      rating: number;
-      comment: string | null;
-    } | null;
-  } | null;
 }
 
 interface ReviewWithStudent extends Review {
@@ -514,49 +503,61 @@ export function TutorDashboardClient({
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-3">
-                    {upcomingBookings.slice(0, 5).map((booking) => (
-                      <Link
-                        key={booking.id}
-                        href={`/${locale}/video/${booking.id}`}
-                        className="block p-4 sm:p-5 bg-white/60 dark:bg-[#0a0a0a]/60 backdrop-blur-sm border border-[#e5e5e5] dark:border-[#262626] rounded-xl hover:border-[#ccf381] dark:hover:border-[#ccf381]/50 hover:shadow-md transition-all duration-200 cursor-pointer"
-                      >
-                        <div className="flex items-start justify-between gap-4">
-                          <div className="flex items-start gap-3 flex-1">
-                            {booking.student.image ? (
-                              <div className="relative w-10 h-10 rounded-full overflow-hidden border border-[#e5e5e5] dark:border-[#262626] flex-shrink-0">
-                                <Image
-                                  src={booking.student.image}
-                                  alt={booking.student.name || tTutor("student")}
-                                  fill
-                                  className="object-cover"
-                                />
-                              </div>
-                            ) : (
-                              <div className="w-10 h-10 rounded-full bg-[#f5f5f5] dark:bg-[#262626] border border-[#e5e5e5] dark:border-[#262626] flex items-center justify-center flex-shrink-0">
-                                <User className="w-5 h-5 text-[#666] dark:text-[#aaa]" />
-                              </div>
-                            )}
-                            <div className="flex-1 min-w-0">
-                              <h3 className="text-sm font-medium text-black dark:text-white mb-1">
-                                {booking.student.name || tTutor("student")}
-                              </h3>
-                              <div className="flex flex-wrap items-center gap-3 text-xs text-[#666] dark:text-[#aaa]">
-                                <span>{formatDate(booking.scheduledAt)}</span>
-                                <span>•</span>
-                                <span>{formatTime(booking.scheduledAt)}</span>
-                                <span>•</span>
-                                <span>{booking.duration} {tBooking("min")}</span>
-                                <span>•</span>
-                                <span className="font-medium text-black dark:text-white">${booking.price.toFixed(2)}</span>
+                    {upcomingBookings.slice(0, 5).map((booking) => {
+                      return (
+                        <div
+                          key={booking.id}
+                          className="block p-4 sm:p-5 bg-white/60 dark:bg-[#0a0a0a]/60 backdrop-blur-sm border border-[#e5e5e5] dark:border-[#262626] rounded-xl"
+                        >
+                          <div className="flex items-start justify-between gap-4">
+                            <div className="flex items-start gap-3 flex-1">
+                              {booking.student.image ? (
+                                <div className="relative w-10 h-10 rounded-full overflow-hidden border border-[#e5e5e5] dark:border-[#262626] flex-shrink-0">
+                                  <Image
+                                    src={booking.student.image}
+                                    alt={booking.student.name || tTutor("student")}
+                                    fill
+                                    className="object-cover"
+                                  />
+                                </div>
+                              ) : (
+                                <div className="w-10 h-10 rounded-full bg-[#f5f5f5] dark:bg-[#262626] border border-[#e5e5e5] dark:border-[#262626] flex items-center justify-center flex-shrink-0">
+                                  <User className="w-5 h-5 text-[#666] dark:text-[#aaa]" />
+                                </div>
+                              )}
+                              <div className="flex-1 min-w-0">
+                                <h3 className="text-sm font-medium text-black dark:text-white mb-1">
+                                  {booking.student.name || tTutor("student")}
+                                </h3>
+                                <div className="flex flex-wrap items-center gap-3 text-xs text-[#666] dark:text-[#aaa]">
+                                  <span>{formatDate(booking.scheduledAt)}</span>
+                                  <span>•</span>
+                                  <span>{formatTime(booking.scheduledAt)}</span>
+                                  <span>•</span>
+                                  <span>{booking.duration} {tBooking("min")}</span>
+                                  <span>•</span>
+                                  <span className="font-medium text-black dark:text-white">${booking.price.toFixed(2)}</span>
+                                </div>
                               </div>
                             </div>
-                          </div>
-                          <div className="flex-shrink-0">
-                            {getStatusBadge(booking.status)}
+                            <div className="flex flex-col items-end gap-2 flex-shrink-0">
+                              {getStatusBadge(booking.status)}
+                              {booking.status === "CONFIRMED" && (
+                                <Link href={`/${locale}/video/${booking.id}`}>
+                                  <Button
+                                    size="sm"
+                                    className="rounded-full bg-[#111] dark:bg-[#ccf381] text-white dark:text-black px-4 py-2 text-xs font-semibold transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg hover:bg-[#222] dark:hover:bg-[#d4f89a] inline-flex items-center justify-center gap-1.5"
+                                  >
+                                    <Video className="w-3 h-3" />
+                                    Start Call
+                                  </Button>
+                                </Link>
+                              )}
+                            </div>
                           </div>
                         </div>
-                      </Link>
-                    ))}
+                      );
+                    })}
                   </div>
                 </CardContent>
               </Card>
@@ -604,26 +605,6 @@ export function TutorDashboardClient({
                               </h3>
                               <div className="flex flex-wrap items-center gap-3 text-xs text-[#666] dark:text-[#aaa]">
                                 <span>{formatDate(booking.scheduledAt)}</span>
-                                {booking.videoSession?.recordingUrl && (
-                                  <>
-                                    <span>•</span>
-                                    <Link
-                                      href={booking.videoSession.recordingUrl}
-                                      className="text-[#ccf381] hover:underline"
-                                    >
-                                      {t("viewRecording")}
-                                    </Link>
-                                  </>
-                                )}
-                                {booking.videoSession?.review && (
-                                  <>
-                                    <span>•</span>
-                                    <div className="flex items-center gap-1">
-                                      <Star className="w-3 h-3 text-yellow-500 fill-current" />
-                                      <span>{booking.videoSession.review.rating}/5</span>
-                                    </div>
-                                  </>
-                                )}
                               </div>
                             </div>
                           </div>

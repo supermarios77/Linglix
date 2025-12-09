@@ -52,9 +52,9 @@ import type { Booking, BookingStatus } from "@prisma/client";
  */
 interface User {
   id: string;
-  name: string | null;
+  name?: string | null | undefined;
   email: string;
-  image: string | null;
+  image?: string | null | undefined;
   role: string;
 }
 
@@ -74,17 +74,6 @@ interface BookingWithTutor extends Booking {
     hourlyRate: number;
     rating: number;
   };
-  videoSession: {
-    id: string;
-    startedAt: Date | null;
-    endedAt: Date | null;
-    recordingUrl: string | null;
-    review: {
-      id: string;
-      rating: number;
-      comment: string | null;
-    } | null;
-  } | null;
 }
 
 interface UserDashboardClientProps {
@@ -276,7 +265,7 @@ export function UserDashboardClient({
         </div>
 
         {/* Quick Actions - Enhanced Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 mb-12 sm:mb-16">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-12 sm:mb-16">
           <Link href={`/${locale}/tutors`} className="w-full group">
             <Card className="bg-gradient-to-br from-white to-[#fafafa] dark:from-[#1a1a1a] dark:to-[#0a0a0a] rounded-[24px] sm:rounded-[32px] overflow-hidden border-2 border-[#e5e5e5] dark:border-[#262626] shadow-[0_20px_40px_rgba(0,0,0,0.08)] sm:shadow-[0_40px_80px_rgba(0,0,0,0.1)] transition-all duration-500 hover:shadow-[0_60px_120px_rgba(0,0,0,0.15)] hover:-translate-y-2 cursor-pointer h-full">
               <div className="absolute inset-0 bg-gradient-to-br from-[#ccf381]/5 via-transparent to-[#7928ca]/5 opacity-50 group-hover:opacity-70 transition-opacity duration-700" />
@@ -352,21 +341,10 @@ export function UserDashboardClient({
             <CardContent>
               <div className="space-y-4">
                 {upcomingBookings.map((booking) => {
-                  const canJoinCall = booking.status === "CONFIRMED";
-                  const SessionCard = canJoinCall ? Link : "div";
-                  const sessionProps = canJoinCall
-                    ? { href: `/${locale}/video/${booking.id}` }
-                    : {};
-
                   return (
-                    <SessionCard
+                    <div
                       key={booking.id}
-                      {...sessionProps}
-                      className={`group p-6 sm:p-8 bg-gradient-to-br from-white/80 to-[#fafafa]/80 dark:from-[#0a0a0a]/80 dark:to-[#1a1a1a]/80 backdrop-blur-sm border-2 border-[#e5e5e5] dark:border-[#262626] rounded-[20px] transition-all duration-300 ${
-                        canJoinCall
-                          ? "hover:shadow-[0_20px_40px_rgba(0,0,0,0.1)] hover:-translate-y-1 cursor-pointer"
-                          : ""
-                      }`}
+                      className="group p-6 sm:p-8 bg-gradient-to-br from-white/80 to-[#fafafa]/80 dark:from-[#0a0a0a]/80 dark:to-[#1a1a1a]/80 backdrop-blur-sm border-2 border-[#e5e5e5] dark:border-[#262626] rounded-[20px] transition-all duration-300 hover:shadow-[0_20px_40px_rgba(0,0,0,0.1)] hover:-translate-y-1"
                     >
                     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                       <div className="flex-1">
@@ -454,9 +432,45 @@ export function UserDashboardClient({
                         </Link>
                       </div>
                     </div>
-                  </SessionCard>
-                );
-              })}
+                  );
+                      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                        <div className="flex-1">
+                          <div className="flex items-center gap-4 mb-4">
+                            {booking.tutor.user.image ? (
+                              <div className="relative w-16 h-16 sm:w-20 sm:h-20 rounded-full overflow-hidden border-2 border-[#e5e5e5] dark:border-[#262626]">
+                                <Image
+                                  src={booking.tutor.user.image}
+                                  alt={booking.tutor.user.name || t("tutorFallback")}
+                                  fill
+                                  className="object-cover"
+                                />
+                              </div>
+                            ) : (
+                              <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-[#f5f5f5] dark:bg-[#262626] border-2 border-[#e5e5e5] dark:border-[#262626] flex items-center justify-center">
+                                <User className="w-8 h-8 text-[#666] dark:text-[#aaa]" />
+                              </div>
+                            )}
+                            <div>
+                              <h3 className="text-base sm:text-lg font-semibold text-black dark:text-white mb-1">
+                                {booking.tutor.user.name || t("tutorFallback")}
+                              </h3>
+                              <p className="text-xs sm:text-sm text-[#666] dark:text-[#aaa]">
+                                {booking.tutor.specialties.join(", ")}
+                              </p>
+                            </div>
+                          </div>
+                          <div className="flex flex-wrap items-center gap-4 text-sm text-[#666] dark:text-[#aaa]">
+                            <div className="flex items-center gap-2">
+                              <Calendar className="w-4 h-4" />
+                              <span>{formatDate(booking.scheduledAt)}</span>
+                            </div>
+                          </div>
+                        </div>
+                        <div>{getStatusBadge(booking.status)}</div>
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
             </CardContent>
           </Card>
@@ -511,14 +525,6 @@ export function UserDashboardClient({
                             <Calendar className="w-4 h-4" />
                             <span>{formatDate(booking.scheduledAt)}</span>
                           </div>
-                          {booking.videoSession?.recordingUrl && (
-                            <Link
-                              href={booking.videoSession.recordingUrl}
-                              className="text-[#ccf381] hover:underline font-medium"
-                            >
-                              {t("viewRecording")}
-                            </Link>
-                          )}
                         </div>
                       </div>
                       <div>{getStatusBadge(booking.status)}</div>
