@@ -44,6 +44,7 @@ export function VideoSessionClient({
 }: VideoSessionClientProps) {
   const router = useRouter();
   const [token, setToken] = useState<string | null>(null);
+  const [flexibleToken, setFlexibleToken] = useState<string | null>(null);
   const [channelName, setChannelName] = useState<string | null>(null);
   const [uid, setUid] = useState<number | null>(null);
   const [appId, setAppId] = useState<string | null>(null);
@@ -89,6 +90,7 @@ export function VideoSessionClient({
       }
 
       setToken(tokenData.token);
+      setFlexibleToken(tokenData.flexibleToken || null);
       setChannelName(tokenData.channelName);
       setUid(tokenData.uid);
       setAppId(tokenData.appId);
@@ -186,6 +188,7 @@ export function VideoSessionClient({
           channelName={channelName}
           uid={uid}
           token={token}
+          flexibleToken={flexibleToken || undefined}
           onEndCall={handleEndCall}
           userRole={userRole}
           userName={userName}

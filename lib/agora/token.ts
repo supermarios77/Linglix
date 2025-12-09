@@ -11,7 +11,7 @@ import { RtcTokenBuilder, RtcRole } from "agora-access-token";
 
 export interface AgoraTokenParams {
   channelName: string;
-  uid: number | string;
+  uid: number | string | null; // null allows any UID (for auto-assignment)
   role?: "publisher" | "subscriber";
   expirationTimeInSeconds?: number;
 }
@@ -39,9 +39,6 @@ export function generateAgoraToken(params: AgoraTokenParams): string {
     expirationTimeInSeconds = 3600, // Default 1 hour
   } = params;
 
-  // Convert string UID to number if needed
-  const numericUid = typeof uid === "string" ? parseInt(uid, 10) : uid;
-
   // Determine RTC role
   const rtcRole =
     role === "publisher" ? RtcRole.PUBLISHER : RtcRole.SUBSCRIBER;
@@ -51,6 +48,22 @@ export function generateAgoraToken(params: AgoraTokenParams): string {
   const privilegeExpiredTs = currentTimestamp + expirationTimeInSeconds;
 
   // Generate token
+  // If uid is null, use 0 which allows any UID (for auto-assignment)
+  if (uid === null) {
+    const token = RtcTokenBuilder.buildTokenWithUid(
+      appId,
+      appCertificate,
+      channelName,
+      0, // UID 0 allows any UID
+      rtcRole,
+      privilegeExpiredTs
+    );
+    return token;
+  }
+
+  // Convert string UID to number if needed
+  const numericUid = typeof uid === "string" ? parseInt(uid, 10) : uid;
+
   const token = RtcTokenBuilder.buildTokenWithUid(
     appId,
     appCertificate,
@@ -73,18 +86,27 @@ export function generateChannelName(bookingId: string): string {
 
 /**
  * Generate a unique UID for a user in a session
- * Uses a deterministic hash of userId to ensure same user gets same UID
+ * Uses a combination of userId and timestamp to ensure uniqueness
+ * This prevents UID conflicts when the same user joins multiple times
  */
-export function generateUid(userId: string): number {
-  // Simple hash function to convert userId to a number
-  // This ensures the same user always gets the same UID in the same session
+export function generateUid(userId: string, bookingId?: string): number {
+  // Combine userId, bookingId, and timestamp for uniqueness
+  const uniqueString = `${userId}-${bookingId || ''}-${Date.now()}`;
+  
+  // Hash function to convert to a number
   let hash = 0;
-  for (let i = 0; i < userId.length; i++) {
-    const char = userId.charCodeAt(i);
+  for (let i = 0; i < uniqueString.length; i++) {
+    const char = uniqueString.charCodeAt(i);
     hash = (hash << 5) - hash + char;
     hash = hash & hash; // Convert to 32-bit integer
   }
-  // Ensure positive number and within Agora's UID range
-  return Math.abs(hash) % 2147483647;
+  
+  // Ensure positive number and within Agora's UID range (0 to 2^31-1)
+  // Use a random component to further ensure uniqueness
+  const randomComponent = Math.floor(Math.random() * 1000000);
+  const finalUid = (Math.abs(hash) + randomComponent) % 2147483647;
+  
+  // Ensure UID is at least 1 (0 is reserved by Agora)
+  return Math.max(1, finalUid);
 }
 

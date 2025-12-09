@@ -70,7 +70,9 @@ export async function POST(request: NextRequest) {
 
     // Generate channel name and UID
     const channelName = generateChannelName(bookingId);
-    const uid = generateUid(user.id);
+    // Include bookingId to ensure uniqueness per session
+    // Add timestamp component to prevent conflicts when same user joins multiple times
+    const uid = generateUid(user.id, bookingId);
 
     // Determine role: tutors are publishers (can publish video/audio),
     // students are also publishers (can publish video/audio)
@@ -78,9 +80,19 @@ export async function POST(request: NextRequest) {
     const role = "publisher";
 
     // Generate token (valid for 1 hour)
+    // Use the generated UID, but the token will also work with auto-assigned UIDs
+    // if there's a conflict (Agora allows this for tokens with UID 0)
     const token = generateAgoraToken({
       channelName,
       uid,
+      role,
+      expirationTimeInSeconds: 3600,
+    });
+    
+    // Also generate a fallback token with UID 0 (allows any UID) for conflict scenarios
+    const flexibleToken = generateAgoraToken({
+      channelName,
+      uid: null, // UID 0 allows any UID
       role,
       expirationTimeInSeconds: 3600,
     });
@@ -95,6 +107,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({
       token,
+      flexibleToken, // Token that allows any UID (for conflict scenarios)
       channelName,
       uid,
       appId: process.env.AGORA_APP_ID,

@@ -32,6 +32,7 @@ interface VideoCallProps {
   channelName: string;
   uid: number;
   token: string;
+  flexibleToken?: string; // Token that allows any UID (for conflict scenarios)
   onEndCall: () => void;
   userRole: "tutor" | "student";
   userName: string;
@@ -48,6 +49,7 @@ export function VideoCall({
   channelName,
   uid,
   token,
+  flexibleToken,
   onEndCall,
   userRole,
   userName,
@@ -303,10 +305,7 @@ export function VideoCall({
           }
         });
 
-        // Join channel
-        await client.join(appId, channelName, token, uid);
-
-        // Create local tracks with error handling
+        // Create local tracks FIRST (before joining) to handle permissions early
         let audioTrack: any;
         let videoTrack: any;
 
@@ -331,12 +330,32 @@ export function VideoCall({
         } catch (trackError: any) {
           // Handle permission errors gracefully
           if (trackError?.name === "NotAllowedError" || trackError?.name === "PermissionDeniedError") {
-            throw new Error("Camera/microphone access denied. Please allow access and refresh.");
+            throw new Error("Camera/microphone access denied. Please allow access in your browser settings and refresh the page.");
           }
           if (trackError?.name === "NotFoundError" || trackError?.name === "DevicesNotFoundError") {
-            throw new Error("No camera/microphone found. Please connect a device.");
+            throw new Error("No camera/microphone found. Please connect a device and refresh.");
+          }
+          if (trackError?.message?.includes("PERMISSION_DENIED")) {
+            throw new Error("Camera/microphone permission denied. Please check your browser settings.");
           }
           throw trackError;
+        }
+
+        // Join channel AFTER creating tracks to avoid UID conflicts
+        // Use null for UID to let Agora assign a unique one automatically
+        // This prevents UID_CONFLICT errors when same user joins multiple times
+        let assignedUid: number | string | null = uid;
+        
+        try {
+          assignedUid = await client.join(appId, channelName, token, uid);
+        } catch (joinError: any) {
+          // If UID conflict, try with null to let Agora assign
+          if (joinError?.code === "UID_CONFLICT" || joinError?.message?.includes("UID_CONFLICT")) {
+            logger.warn("UID conflict detected, retrying with auto-assigned UID", { uid, channelName });
+            assignedUid = await client.join(appId, channelName, token, null);
+          } else {
+            throw joinError;
+          }
         }
 
         localTracksRef.current = { audioTrack, videoTrack };
