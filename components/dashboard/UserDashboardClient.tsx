@@ -52,9 +52,9 @@ import type { Booking, BookingStatus } from "@prisma/client";
  */
 interface User {
   id: string;
-  name: string | null;
+  name?: string | null | undefined;
   email: string;
-  image: string | null;
+  image?: string | null | undefined;
   role: string;
 }
 

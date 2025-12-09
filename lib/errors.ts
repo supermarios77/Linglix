@@ -66,7 +66,8 @@ export function createErrorResponse(
 export const Errors = {
   Unauthorized: () => new HttpError(401, "Unauthorized", "UNAUTHORIZED"),
   Forbidden: () => new HttpError(403, "Forbidden", "FORBIDDEN"),
-  NotFound: () => new HttpError(404, "Not found", "NOT_FOUND"),
+  NotFound: (message: string = "Not found") =>
+    new HttpError(404, message, "NOT_FOUND"),
   BadRequest: (message: string = "Bad request") =>
     new HttpError(400, message, "BAD_REQUEST"),
   Conflict: (message: string = "Conflict") =>

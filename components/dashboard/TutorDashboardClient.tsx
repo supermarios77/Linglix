@@ -58,9 +58,9 @@ import { AvailabilityManager } from "./AvailabilityManager";
  */
 interface User {
   id: string;
-  name: string | null;
+  name?: string | null | undefined;
   email: string;
-  image: string | null;
+  image?: string | null | undefined;
   role: string;
 }
 
@@ -72,7 +72,7 @@ interface StudentUser {
 
 interface BookingWithStudent extends Booking {
   student: StudentUser;
-  videoSession: {
+  videoSession?: {
     id: string;
     startedAt: Date | null;
     endedAt: Date | null;
@@ -565,8 +565,9 @@ export function TutorDashboardClient({
                             {getStatusBadge(booking.status)}
                           </div>
                         </div>
-                      </div>
-                    ))}
+                      </SessionCard>
+                      );
+                    })}
                   </div>
                 </CardContent>
               </Card>
