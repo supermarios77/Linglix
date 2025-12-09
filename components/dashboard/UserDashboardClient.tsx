@@ -454,8 +454,9 @@ export function UserDashboardClient({
                         </Link>
                       </div>
                     </div>
-                  </div>
-                ))}
+                  </SessionCard>
+                );
+              })}
               </div>
             </CardContent>
           </Card>
