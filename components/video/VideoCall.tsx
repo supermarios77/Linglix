@@ -79,6 +79,28 @@ export function VideoCall({
       setPermissionError(null);
       setPermissionRequested(true);
       
+      // Check if permissions API is available
+      if (navigator.permissions) {
+        try {
+          const cameraPermission = await navigator.permissions.query({ name: "camera" as PermissionName });
+          const microphonePermission = await navigator.permissions.query({ name: "microphone" as PermissionName });
+          
+          if (cameraPermission.state === "denied" || microphonePermission.state === "denied") {
+            setPermissionRequested(false);
+            setPermissionError(
+              "Camera/microphone access is blocked.\n\n" +
+              "To fix this:\n" +
+              "1. Click the lock icon (🔒) in your browser's address bar\n" +
+              "2. Set Camera and Microphone to 'Allow'\n" +
+              "3. Click 'Request Permissions' again or refresh the page"
+            );
+            return false;
+          }
+        } catch {
+          // Permissions API might not be supported, continue with getUserMedia
+        }
+      }
+      
       // Request permissions explicitly using getUserMedia
       // This must be called in response to user interaction
       const stream = await navigator.mediaDevices.getUserMedia({
@@ -101,7 +123,7 @@ export function VideoCall({
           "To fix this:\n" +
           "1. Click the lock icon (🔒) in your browser's address bar\n" +
           "2. Set Camera and Microphone to 'Allow'\n" +
-          "3. Refresh this page and try again"
+          "3. Click 'Request Permissions' again or refresh the page"
         );
       } else if (permError?.name === "NotFoundError" || permError?.name === "DevicesNotFoundError") {
         setPermissionError("No camera/microphone found. Please connect a device and try again.");
