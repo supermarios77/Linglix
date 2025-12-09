@@ -61,6 +61,8 @@ export function VideoCall({
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [connectionState, setConnectionState] = useState<"disconnected" | "connecting" | "connected">("disconnected");
+  const [permissionRequested, setPermissionRequested] = useState(false);
+  const [permissionError, setPermissionError] = useState<string | null>(null);
 
   const localVideoRef = useRef<HTMLDivElement>(null);
   const remoteVideoRefs = useRef<Map<number, HTMLDivElement>>(new Map());
@@ -70,6 +72,46 @@ export function VideoCall({
     audioTrack?: any;
   }>({});
   const remoteTracksRef = useRef<Map<number, { videoTrack?: any; audioTrack?: any }>>(new Map());
+
+  // Request permissions explicitly (must be triggered by user interaction)
+  const requestPermissions = useCallback(async () => {
+    try {
+      setPermissionError(null);
+      setPermissionRequested(true);
+      
+      // Request permissions explicitly using getUserMedia
+      // This must be called in response to user interaction
+      const stream = await navigator.mediaDevices.getUserMedia({
+        audio: true,
+        video: true,
+      });
+      
+      // Stop the stream immediately - we just needed permission
+      stream.getTracks().forEach((track) => track.stop());
+      
+      // Permissions granted, now initialize Agora
+      setPermissionRequested(false);
+      return true;
+    } catch (permError: any) {
+      setPermissionRequested(false);
+      
+      if (permError?.name === "NotAllowedError" || permError?.name === "PermissionDeniedError") {
+        setPermissionError(
+          "Camera/microphone access was denied.\n\n" +
+          "To fix this:\n" +
+          "1. Click the lock icon (🔒) in your browser's address bar\n" +
+          "2. Set Camera and Microphone to 'Allow'\n" +
+          "3. Refresh this page and try again"
+        );
+      } else if (permError?.name === "NotFoundError" || permError?.name === "DevicesNotFoundError") {
+        setPermissionError("No camera/microphone found. Please connect a device and try again.");
+      } else {
+        setPermissionError(`Permission error: ${permError?.message || "Unknown error"}`);
+      }
+      
+      return false;
+    }
+  }, []);
 
   // Cleanup function
   const cleanup = useCallback(async () => {
@@ -330,13 +372,32 @@ export function VideoCall({
         } catch (trackError: any) {
           // Handle permission errors gracefully
           if (trackError?.name === "NotAllowedError" || trackError?.name === "PermissionDeniedError") {
-            throw new Error("Camera/microphone access denied. Please allow access in your browser settings and refresh the page.");
+            const errorMsg = 
+              "Camera/microphone access denied.\n\n" +
+              "To fix this:\n" +
+              "1. Click the lock icon (🔒) in your browser's address bar\n" +
+              "2. Set Camera and Microphone to 'Allow'\n" +
+              "3. Refresh this page\n\n" +
+              "Or click 'Request Permissions' below to try again.";
+            setPermissionError(errorMsg);
+            setPermissionRequested(false);
+            setIsLoading(false);
+            return; // Don't throw, show permission request UI instead
           }
           if (trackError?.name === "NotFoundError" || trackError?.name === "DevicesNotFoundError") {
             throw new Error("No camera/microphone found. Please connect a device and refresh.");
           }
           if (trackError?.message?.includes("PERMISSION_DENIED")) {
-            throw new Error("Camera/microphone permission denied. Please check your browser settings.");
+            const errorMsg = 
+              "Camera/microphone permission denied.\n\n" +
+              "Please check your browser settings:\n" +
+              "1. Click the lock icon in the address bar\n" +
+              "2. Allow camera and microphone\n" +
+              "3. Refresh the page";
+            setPermissionError(errorMsg);
+            setPermissionRequested(false);
+            setIsLoading(false);
+            return;
           }
           throw trackError;
         }
@@ -420,14 +481,17 @@ export function VideoCall({
       }
     };
 
-    initializeAgora();
+    // Only initialize if permissions haven't been explicitly denied
+    if (!permissionError) {
+      initializeAgora();
+    }
 
     // Cleanup on unmount
     return () => {
       mounted = false;
       cleanup();
     };
-  }, [appId, channelName, token, uid, cleanup]);
+  }, [appId, channelName, token, uid, cleanup, permissionError]);
 
   const toggleVideo = useCallback(async () => {
     try {
@@ -460,6 +524,42 @@ export function VideoCall({
     onEndCall();
   }, [cleanup, onEndCall]);
 
+  // Show permission request UI if permission was denied
+  if (permissionError && !permissionRequested) {
+    return (
+      <Card className="p-6">
+        <div className="flex flex-col items-center gap-4">
+          <AlertCircle className="w-12 h-12 text-red-500" />
+          <div className="text-center">
+            <p className="font-semibold text-lg mb-2">Permission Required</p>
+            <p className="text-sm text-gray-600 dark:text-gray-400 whitespace-pre-line mb-4">
+              {permissionError}
+            </p>
+          </div>
+          <div className="flex gap-3 w-full">
+            <Button
+              onClick={async () => {
+                const granted = await requestPermissions();
+                if (granted) {
+                  setPermissionError(null);
+                  setIsLoading(true);
+                  // Re-initialize after permissions granted
+                  window.location.reload();
+                }
+              }}
+              className="flex-1"
+            >
+              Request Permissions
+            </Button>
+            <Button onClick={handleEndCall} variant="outline" className="flex-1">
+              Cancel
+            </Button>
+          </div>
+        </div>
+      </Card>
+    );
+  }
+
   if (error) {
     return (
       <Card className="p-6">
@@ -484,8 +584,19 @@ export function VideoCall({
           <Loader2 className="w-8 h-8 animate-spin mx-auto mb-4 text-primary" />
           <p className="text-lg font-semibold">Connecting to video call...</p>
           <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
-            Please allow camera and microphone access when prompted
+            {permissionRequested 
+              ? "Requesting camera and microphone access..." 
+              : "Please allow camera and microphone access when prompted"}
           </p>
+          {!permissionRequested && (
+            <Button
+              onClick={requestPermissions}
+              className="mt-4"
+              variant="outline"
+            >
+              Request Permissions Now
+            </Button>
+          )}
         </div>
       </Card>
     );
