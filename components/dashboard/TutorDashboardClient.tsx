@@ -542,17 +542,6 @@ export function TutorDashboardClient({
                             </div>
                             <div className="flex flex-col items-end gap-2 flex-shrink-0">
                               {getStatusBadge(booking.status)}
-                              {booking.status === "CONFIRMED" && (
-                                <Link href={`/${locale}/video/${booking.id}`}>
-                                  <Button
-                                    size="sm"
-                                    className="rounded-full bg-[#111] dark:bg-[#ccf381] text-white dark:text-black px-4 py-2 text-xs font-semibold transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg hover:bg-[#222] dark:hover:bg-[#d4f89a] inline-flex items-center justify-center gap-1.5"
-                                  >
-                                    <Video className="w-3 h-3" />
-                                    Start Call
-                                  </Button>
-                                </Link>
-                              )}
                             </div>
                           </div>
                         </div>
