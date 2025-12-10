@@ -228,18 +228,6 @@
       }
     }
   },
-  "video": {
-    "title": "Llamada de Video",
-    "joining": "Uniéndose a la llamada de video...",
-    "error": "Error de Llamada",
-    "leave": "Salir",
-    "mute": "Silenciar",
-    "unmute": "Activar Sonido",
-    "startVideo": "Iniciar Video",
-    "stopVideo": "Detener Video",
-    "startCall": "Iniciar Llamada de Video",
-    "startCallTutor": "Iniciar Llamada"
-  },
   "errors": {
     "generic": "Algo salió mal",
     "notFound": "Página no encontrada",

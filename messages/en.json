@@ -226,18 +226,6 @@
       }
     }
   },
-  "video": {
-    "title": "Video Call",
-    "joining": "Joining video call...",
-    "error": "Call Error",
-    "leave": "Leave",
-    "mute": "Mute",
-    "unmute": "Unmute",
-    "startVideo": "Start Video",
-    "stopVideo": "Stop Video",
-    "startCall": "Start Video Call",
-    "startCallTutor": "Start Call"
-  },
   "errors": {
     "generic": "Something went wrong",
     "notFound": "Page not found",
