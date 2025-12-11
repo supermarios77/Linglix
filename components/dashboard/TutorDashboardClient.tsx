@@ -257,6 +257,10 @@ export function TutorDashboardClient({
   const totalSessions = tutorProfile.totalSessions || completedSessions;
   const averageRating = tutorProfile.rating || 0;
 
+  // Get all bookings and completed bookings first (needed for chart functions)
+  const allBookings = [...pendingBookings, ...upcomingBookings, ...pastBookings];
+  const completedBookings = pastBookings.filter((b) => b.status === "COMPLETED");
+
   // Get today's sessions
   const today = new Date();
   today.setHours(0, 0, 0, 0);
@@ -321,10 +325,6 @@ export function TutorDashboardClient({
   };
 
   const sessionsChartData = prepareSessionsChartData();
-
-  // Get all bookings and completed bookings
-  const allBookings = [...pendingBookings, ...upcomingBookings, ...pastBookings];
-  const completedBookings = pastBookings.filter((b) => b.status === "COMPLETED");
 
   // Get unique students list
   const uniqueStudents = Array.from(
