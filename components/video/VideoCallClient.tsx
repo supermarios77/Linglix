@@ -72,6 +72,7 @@ interface VideoCallClientProps {
   user: User;
   otherParticipant: OtherParticipant;
   isTutor: boolean;
+  bookingId: string;
 }
 
 /**
