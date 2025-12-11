@@ -256,12 +256,21 @@
     "pricing": {
       "badge": "Pricing",
       "title": "Transparent Pricing",
-      "subtitle": "Choose the perfect tutor for your budget. All tutors set their own rates, ensuring fair pricing for every learning level.",
+      "subtitle": "Simple, straightforward pricing. $0.50 per minute for all sessions.",
       "popular": "Most Popular",
       "hour": "hour",
+      "minute": "minute",
       "cta": "Browse Tutors",
-      "note": "Prices vary by tutor experience, specialization, and availability. Book sessions in 30, 60, or 90-minute increments.",
+      "note": "Book sessions in 30 or 60-minute increments. Flexible scheduling with no commitments.",
       "guarantee": "No hidden fees. Cancel anytime.",
+      "ratePerMinute": "Our Rate",
+      "rateBreakdown": "$15 for 30 min • $30 for 1 hour",
+      "halfHour": "30 minutes",
+      "fullHour": "1 hour",
+      "selectMonthlyHours": "Select Monthly Hours",
+      "hours": "hours",
+      "month": "month",
+      "estimatedMonthly": "Estimated Monthly Cost",
       "tier": {
         "starter": {
           "name": "Starter",

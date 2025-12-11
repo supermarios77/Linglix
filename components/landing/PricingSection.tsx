@@ -1,8 +1,10 @@
+"use client";
+
+import { useState } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { CheckCircle2, Sparkles, ArrowRight } from "lucide-react";
-import { getTranslations } from "next-intl/server";
-import { prisma } from "@/lib/db/prisma";
+import { CheckCircle2, Sparkles, ArrowRight, Plus, Minus } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 interface PricingSectionProps {
   locale: string;
@@ -11,49 +13,39 @@ interface PricingSectionProps {
 /**
  * Pricing Section Component
  * 
- * Displays pricing information with average rates and pricing tiers
+ * Displays pricing information with interactive monthly hours selector
  * Production-ready with proper TypeScript types
  */
-export async function PricingSection({ locale }: PricingSectionProps) {
-  const t = await getTranslations("landing.pricing");
-
-  // Fetch average hourly rate from approved tutors
-  let averageRate = 25;
-  let minRate = 15;
-  let maxRate = 50;
+export function PricingSection({ locale }: PricingSectionProps) {
+  const t = useTranslations("landing.pricing");
   
-  try {
-    const rates = await prisma.tutorProfile.findMany({
-      where: {
-        isActive: true,
-        approvalStatus: "APPROVED",
-        hourlyRate: { not: null },
-      },
-      select: {
-        hourlyRate: true,
-      },
-      take: 100, // Sample size
-    });
+  const [monthlyHours, setMonthlyHours] = useState(4);
+  const pricePerMinute = 0.5;
+  const pricePerHour = 30;
+  const pricePerHalfHour = 15;
 
-    if (rates.length > 0) {
-      const hourlyRates = rates.map((r) => r.hourlyRate);
-      averageRate = Math.round(
-        hourlyRates.reduce((sum, rate) => sum + rate, 0) / hourlyRates.length
-      );
-      minRate = Math.min(...hourlyRates);
-      maxRate = Math.max(...hourlyRates);
-    }
-  } catch (error) {
-    // Fallback to default values if database query fails
-    if (process.env.NODE_ENV === "development") {
-      console.error("[PricingSection] Database error:", error);
-    }
-  }
+  const calculateMonthlyPrice = () => {
+    return monthlyHours * pricePerHour;
+  };
+
+  const handleIncrement = () => {
+    setMonthlyHours((prev) => Math.min(prev + 1, 100));
+  };
+
+  const handleDecrement = () => {
+    setMonthlyHours((prev) => Math.max(prev - 1, 1));
+  };
+
+  const handleHoursChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = parseInt(e.target.value) || 1;
+    setMonthlyHours(Math.max(1, Math.min(100, value)));
+  };
 
   const pricingTiers = [
     {
       name: t("tier.starter.name"),
-      price: minRate,
+      duration: "30 min",
+      price: pricePerHalfHour,
       description: t("tier.starter.description"),
       features: [
         t("tier.starter.feature1"),
@@ -64,7 +56,8 @@ export async function PricingSection({ locale }: PricingSectionProps) {
     },
     {
       name: t("tier.professional.name"),
-      price: averageRate,
+      duration: "1 hour",
+      price: pricePerHour,
       description: t("tier.professional.description"),
       features: [
         t("tier.professional.feature1"),
@@ -76,7 +69,8 @@ export async function PricingSection({ locale }: PricingSectionProps) {
     },
     {
       name: t("tier.premium.name"),
-      price: maxRate,
+      duration: "1 hour",
+      price: pricePerHour,
       description: t("tier.premium.description"),
       features: [
         t("tier.premium.feature1"),
@@ -104,6 +98,95 @@ export async function PricingSection({ locale }: PricingSectionProps) {
         <p className="text-base sm:text-lg md:text-xl text-[#666] dark:text-[#a1a1aa] max-w-2xl mx-auto font-light">
           {t("subtitle")}
         </p>
+      </div>
+
+      {/* Pricing Info Banner */}
+      <div className="mb-12 max-w-2xl mx-auto">
+        <div className="bg-gradient-to-br from-[#ccf381]/10 to-[#ccf381]/5 dark:from-[#ccf381]/20 dark:to-[#ccf381]/10 border-2 border-[#ccf381]/30 dark:border-[#ccf381]/30 rounded-[24px] p-6 sm:p-8">
+          <div className="text-center mb-6">
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-[#ccf381] text-black rounded-full text-xs font-bold uppercase tracking-wider mb-4">
+              {t("ratePerMinute")}
+            </div>
+            <div className="text-4xl sm:text-5xl font-bold text-black dark:text-white mb-2">
+              ${pricePerMinute.toFixed(2)}
+              <span className="text-xl sm:text-2xl font-normal text-[#666] dark:text-[#a1a1aa] ml-2">
+                /{t("minute")}
+              </span>
+            </div>
+            <p className="text-sm text-[#666] dark:text-[#a1a1aa] font-light">
+              {t("rateBreakdown")}
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-2 gap-4 mb-6">
+            <div className="text-center p-4 bg-white/60 dark:bg-[#1a1a1a]/60 rounded-xl">
+              <div className="text-2xl font-bold text-black dark:text-white mb-1">
+                ${pricePerHalfHour}
+              </div>
+              <div className="text-xs text-[#666] dark:text-[#a1a1aa] font-light">
+                {t("halfHour")}
+              </div>
+            </div>
+            <div className="text-center p-4 bg-white/60 dark:bg-[#1a1a1a]/60 rounded-xl">
+              <div className="text-2xl font-bold text-black dark:text-white mb-1">
+                ${pricePerHour}
+              </div>
+              <div className="text-xs text-[#666] dark:text-[#a1a1aa] font-light">
+                {t("fullHour")}
+              </div>
+            </div>
+          </div>
+
+          {/* Monthly Hours Selector */}
+          <div className="border-t border-[#ccf381]/20 dark:border-[#ccf381]/20 pt-6">
+            <label className="block text-sm font-semibold text-black dark:text-white mb-4 text-center">
+              {t("selectMonthlyHours")}
+            </label>
+            <div className="flex items-center justify-center gap-4">
+              <button
+                onClick={handleDecrement}
+                className="w-10 h-10 rounded-full bg-white dark:bg-[#1a1a1a] border-2 border-[#e5e5e5] dark:border-[#262626] flex items-center justify-center hover:border-[#ccf381] dark:hover:border-[#ccf381] hover:bg-[#ccf381]/10 dark:hover:bg-[#ccf381]/10 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                disabled={monthlyHours <= 1}
+              >
+                <Minus className="w-4 h-4 text-black dark:text-white" />
+              </button>
+              
+              <div className="flex flex-col items-center gap-2">
+                <input
+                  type="number"
+                  min="1"
+                  max="100"
+                  value={monthlyHours}
+                  onChange={handleHoursChange}
+                  className="w-20 text-center text-3xl font-bold text-black dark:text-white bg-transparent border-none focus:outline-none"
+                />
+                <span className="text-xs text-[#666] dark:text-[#a1a1aa] font-light">
+                  {t("hours")} / {t("month")}
+                </span>
+              </div>
+              
+              <button
+                onClick={handleIncrement}
+                className="w-10 h-10 rounded-full bg-white dark:bg-[#1a1a1a] border-2 border-[#e5e5e5] dark:border-[#262626] flex items-center justify-center hover:border-[#ccf381] dark:hover:border-[#ccf381] hover:bg-[#ccf381]/10 dark:hover:bg-[#ccf381]/10 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                disabled={monthlyHours >= 100}
+              >
+                <Plus className="w-4 h-4 text-black dark:text-white" />
+              </button>
+            </div>
+            
+            <div className="mt-6 text-center">
+              <div className="text-sm text-[#666] dark:text-[#a1a1aa] mb-2 font-light">
+                {t("estimatedMonthly")}
+              </div>
+              <div className="text-3xl sm:text-4xl font-bold text-black dark:text-white">
+                ${calculateMonthlyPrice().toLocaleString()}
+                <span className="text-lg font-normal text-[#666] dark:text-[#a1a1aa] ml-2">
+                  /{t("month")}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* Pricing Cards */}
@@ -135,7 +218,7 @@ export async function PricingSection({ locale }: PricingSectionProps) {
                   ${tier.price}
                 </span>
                 <span className="text-lg text-[#666] dark:text-[#a1a1aa] font-light">
-                  /{t("hour")}
+                  /{tier.duration}
                 </span>
               </div>
             </div>
