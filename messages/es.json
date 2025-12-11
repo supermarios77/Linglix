@@ -324,6 +324,42 @@
       "tutorFallback": "Tutor",
       "languageTutor": "Tutor de Idiomas"
     },
+    "pricing": {
+      "badge": "Precios",
+      "title": "Precios Transparentes",
+      "subtitle": "Elige el tutor perfecto para tu presupuesto. Todos los tutores establecen sus propias tarifas, garantizando precios justos para cada nivel de aprendizaje.",
+      "popular": "Más Popular",
+      "hour": "hora",
+      "cta": "Explorar Tutores",
+      "note": "Los precios varían según la experiencia del tutor, especialización y disponibilidad. Reserva sesiones de 30, 60 o 90 minutos.",
+      "guarantee": "Sin tarifas ocultas. Cancela en cualquier momento.",
+      "tier": {
+        "starter": {
+          "name": "Principiante",
+          "description": "Perfecto para principiantes",
+          "feature1": "Tutores experimentados",
+          "feature2": "Sesiones de 30-60 minutos",
+          "feature3": "Horarios flexibles"
+        },
+        "professional": {
+          "name": "Profesional",
+          "description": "Opción más popular",
+          "feature1": "Hablantes nativos certificados",
+          "feature2": "Todas las duraciones disponibles",
+          "feature3": "Métodos de enseñanza especializados",
+          "feature4": "Soporte prioritario"
+        },
+        "premium": {
+          "name": "Premium",
+          "description": "Instrucción de nivel experto",
+          "feature1": "Tutores mejor valorados",
+          "feature2": "Planes de aprendizaje personalizados",
+          "feature3": "Preparación para negocios y exámenes",
+          "feature4": "Disponibilidad extendida",
+          "feature5": "Seguimiento del progreso"
+        }
+      }
+    },
     "waitlist": {
       "badge": "Próximamente",
       "title": "Sé el Primero en Acceder a",
