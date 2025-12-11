@@ -497,5 +497,12 @@
     "cancelMessage": "Your payment was cancelled. You can try again from your dashboard.",
     "goToDashboard": "Go to Dashboard",
     "tryAgain": "Try Again"
+  },
+  "chat": {
+    "title": "Chat",
+    "loading": "Loading chat...",
+    "error": "Failed to load chat",
+    "placeholder": "Type a message...",
+    "send": "Send"
   }
 }

@@ -47,6 +47,8 @@ import {
   PhoneOff,
 } from "lucide-react";
 import Image from "next/image";
+import { InCallChat } from "@/components/chat/InCallChat";
+import { useStreamChatClient } from "@/components/chat/StreamChatProvider";
 
 // Import Stream CSS for default styling
 import "@stream-io/video-react-sdk/dist/css/styles.css";
@@ -91,11 +93,13 @@ export function VideoCallClient({
   const [isJoining, setIsJoining] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [callDuration, setCallDuration] = useState(0);
+  const [isChatOpen, setIsChatOpen] = useState(false);
   const callStartTimeRef = useRef<Date | null>(null);
   const durationIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Get Stream client from context (provided by StreamVideoProvider)
+  // Get Stream clients from context
   const streamClient = useStreamVideoClient();
+  const chatClient = useStreamChatClient();
 
   // Initialize call using Stream client from context
   useEffect(() => {
@@ -312,6 +316,14 @@ export function VideoCallClient({
         formatDuration={formatDuration}
         onLeave={handleLeaveCall}
         call={call}
+      />
+      {/* In-Call Chat */}
+      <InCallChat
+        chatClient={chatClient}
+        channelId={callId}
+        isOpen={isChatOpen}
+        onToggle={() => setIsChatOpen(!isChatOpen)}
+        memberIds={[user.id, otherParticipant.id]}
       />
     </StreamCall>
   );
@@ -588,6 +600,12 @@ function CustomVideoLayout({ otherParticipant }: CustomVideoLayoutProps) {
   // Separate local and remote participants
   const localParticipant = participants.find((p) => p.isLocalParticipant);
   const remoteParticipants = participants.filter((p) => !p.isLocalParticipant);
+  
+  // Check for active screen share (prioritize remote participant's screen share)
+  // ParticipantView automatically shows screen share when screenShareStream exists
+  const screenSharingParticipant = participants.find(
+    (p) => !!p.screenShareStream
+  );
 
   // If no remote participants, show only local participant in full screen
   if (remoteParticipants.length === 0 && localParticipant) {
@@ -629,6 +647,33 @@ function CustomVideoLayout({ otherParticipant }: CustomVideoLayoutProps) {
                   Camera off
                 </Badge>
               )}
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // If someone is sharing screen, show it prominently
+  if (screenSharingParticipant) {
+    const isLocalSharing = screenSharingParticipant.isLocalParticipant;
+    const sharingParticipantName = isLocalSharing ? "You" : otherParticipant.name;
+    
+    return (
+      <div className="h-full w-full flex items-center justify-center p-4">
+        <div className="relative w-full h-full max-w-7xl rounded-3xl overflow-hidden bg-gradient-to-br from-[#1a1a1a] to-[#0a0a0a] shadow-2xl border-2 border-[#262626]/50">
+          {/* Screen Share View */}
+          <ParticipantView
+            participant={screenSharingParticipant}
+            className="h-full w-full object-contain"
+          />
+          {/* Participant Info Overlay */}
+          <div className="absolute top-4 left-4 bg-black/70 backdrop-blur-sm rounded-lg px-4 py-2">
+            <div className="flex items-center gap-2">
+              <Monitor className="w-4 h-4 text-[#ccf381]" />
+              <p className="text-white font-semibold text-sm">
+                {sharingParticipantName} is sharing screen
+              </p>
             </div>
           </div>
         </div>

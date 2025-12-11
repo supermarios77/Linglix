@@ -35,7 +35,6 @@ bun run db:migrate
 
 This will add the following fields to the `Booking` table:
 - `callId` - Stream call ID (format: "booking-{bookingId}")
-- `recordingUrl` - URL to recording after session
 - `callStartedAt` - When call actually started
 - `callEndedAt` - When call ended
 
@@ -51,4 +50,3 @@ This will add the following fields to the `Booking` table:
 - [ ] Create video call page component
 - [ ] Integrate Stream Video Provider in layout
 - [ ] Add "Join Session" buttons to dashboard
-- [ ] Implement call recording functionality

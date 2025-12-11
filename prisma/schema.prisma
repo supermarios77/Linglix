@@ -130,7 +130,6 @@ model Booking {
   paymentId   String? // Stripe payment intent ID
   notes       String? // Student notes/requirements
   callId      String? // Stream call ID: "booking-{bookingId}"
-  recordingUrl String? // URL to recording after session
   callStartedAt DateTime? // When call actually started
   callEndedAt   DateTime? // When call ended
   createdAt   DateTime      @default(now())

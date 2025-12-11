@@ -15,6 +15,7 @@ import { prisma } from "@/lib/db/prisma";
 import { BookingStatus } from "@prisma/client";
 import { VideoCallClient } from "@/components/video/VideoCallClient";
 import { StreamVideoProvider } from "@/components/video/StreamVideoProvider";
+import { StreamChatProvider } from "@/components/chat/StreamChatProvider";
 import { BackgroundBlobs } from "@/components/landing/BackgroundBlobs";
 
 export const dynamic = "force-dynamic";
@@ -80,7 +81,6 @@ export default async function VideoCallPage({ params }: VideoCallPageProps) {
     }
 
     // Check booking status - only allow joining if booking is confirmed or completed
-    // Allow joining completed sessions for review/recording access
     if (
       booking.status !== BookingStatus.CONFIRMED &&
       booking.status !== BookingStatus.COMPLETED
@@ -121,13 +121,19 @@ export default async function VideoCallPage({ params }: VideoCallPageProps) {
           userName={user.name}
           userImage={user.image}
         >
-          <VideoCallClient
-            callId={callId}
-            locale={locale}
-            user={user}
-            otherParticipant={otherParticipant}
-            isTutor={isTutor}
-          />
+          <StreamChatProvider
+            userId={user.id}
+            userName={user.name}
+            userImage={user.image}
+          >
+            <VideoCallClient
+              callId={callId}
+              locale={locale}
+              user={user}
+              otherParticipant={otherParticipant}
+              isTutor={isTutor}
+            />
+          </StreamChatProvider>
         </StreamVideoProvider>
       </div>
     );

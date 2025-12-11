@@ -499,5 +499,12 @@
     "cancelMessage": "Tu pago fue cancelado. Puedes intentar nuevamente desde tu panel.",
     "goToDashboard": "Ir al Panel",
     "tryAgain": "Intentar Nuevamente"
+  },
+  "chat": {
+    "title": "Chat",
+    "loading": "Cargando chat...",
+    "error": "Error al cargar el chat",
+    "placeholder": "Escribe un mensaje...",
+    "send": "Enviar"
   }
 }

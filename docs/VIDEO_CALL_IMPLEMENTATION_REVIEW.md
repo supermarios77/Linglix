@@ -75,7 +75,6 @@
 
 **✅ Prisma Schema (`prisma/schema.prisma`)**
 - ✅ `callId` field added to Booking
-- ✅ `recordingUrl` field added
 - ✅ `callStartedAt` and `callEndedAt` fields added
 - ✅ Index on `callId` for performance
 
