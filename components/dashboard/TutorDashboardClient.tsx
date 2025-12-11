@@ -524,6 +524,87 @@ export function TutorDashboardClient({
             {/* Section Content */}
             {activeSection === "overview" && (
               <div className="space-y-6 sm:space-y-8">
+                {/* Header with Welcome and Key Stats */}
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+                  <div>
+                    <h1 className="text-2xl sm:text-3xl font-bold text-black dark:text-white mb-1">
+                      Welcome back, {user.name || tTutor("tutor")}
+                    </h1>
+                    <p className="text-sm text-[#666] dark:text-[#aaa]">
+                      {new Date().toLocaleDateString(locale === "es" ? "es-ES" : "en-US", { 
+                        weekday: "long", 
+                        year: "numeric", 
+                        month: "long", 
+                        day: "numeric" 
+                      })}
+                    </p>
+                  </div>
+                  <div className="flex flex-wrap gap-3">
+                    <div className="px-4 py-2 bg-white/80 dark:bg-[#1a1a1a]/80 backdrop-blur-sm border border-[#e5e5e5] dark:border-[#262626] rounded-xl">
+                      <div className="text-xs text-[#666] dark:text-[#aaa] mb-1">Total Earnings</div>
+                      <div className="text-lg font-bold text-black dark:text-white">${totalEarnings.toFixed(2)}</div>
+                    </div>
+                    <div className="px-4 py-2 bg-white/80 dark:bg-[#1a1a1a]/80 backdrop-blur-sm border border-[#e5e5e5] dark:border-[#262626] rounded-xl">
+                      <div className="text-xs text-[#666] dark:text-[#aaa] mb-1">Total Sessions</div>
+                      <div className="text-lg font-bold text-black dark:text-white">{totalSessions}</div>
+                    </div>
+                    <div className="px-4 py-2 bg-white/80 dark:bg-[#1a1a1a]/80 backdrop-blur-sm border border-[#e5e5e5] dark:border-[#262626] rounded-xl">
+                      <div className="text-xs text-[#666] dark:text-[#aaa] mb-1">Rating</div>
+                      <div className="text-lg font-bold text-black dark:text-white flex items-center gap-1">
+                        <Star className="w-4 h-4 text-yellow-500 fill-current" />
+                        {averageRating > 0 ? averageRating.toFixed(1) : "0.0"}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Key Stats Grid */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                  <Card className="bg-gradient-to-br from-green-50 to-green-100/50 dark:from-green-950/20 dark:to-green-900/10 border-green-200 dark:border-green-800 rounded-xl p-5">
+                    <div className="flex items-center justify-between mb-3">
+                      <div className="p-2 bg-green-500/20 dark:bg-green-500/10 rounded-lg">
+                        <TrendingUp className="w-5 h-5 text-green-600 dark:text-green-400" />
+                      </div>
+                      <span className="text-xs text-green-700 dark:text-green-300 font-medium">This Week</span>
+                    </div>
+                    <div className="text-2xl font-bold text-green-900 dark:text-green-100">${thisWeekEarnings.toFixed(2)}</div>
+                    <div className="text-xs text-green-700/70 dark:text-green-300/70 mt-1">Earnings</div>
+                  </Card>
+
+                  <Card className="bg-gradient-to-br from-blue-50 to-blue-100/50 dark:from-blue-950/20 dark:to-blue-900/10 border-blue-200 dark:border-blue-800 rounded-xl p-5">
+                    <div className="flex items-center justify-between mb-3">
+                      <div className="p-2 bg-blue-500/20 dark:bg-blue-500/10 rounded-lg">
+                        <DollarSign className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                      </div>
+                      <span className="text-xs text-blue-700 dark:text-blue-300 font-medium">This Month</span>
+                    </div>
+                    <div className="text-2xl font-bold text-blue-900 dark:text-blue-100">${thisMonthEarnings.toFixed(2)}</div>
+                    <div className="text-xs text-blue-700/70 dark:text-blue-300/70 mt-1">Earnings</div>
+                  </Card>
+
+                  <Card className="bg-gradient-to-br from-purple-50 to-purple-100/50 dark:from-purple-950/20 dark:to-purple-900/10 border-purple-200 dark:border-purple-800 rounded-xl p-5">
+                    <div className="flex items-center justify-between mb-3">
+                      <div className="p-2 bg-purple-500/20 dark:bg-purple-500/10 rounded-lg">
+                        <Users className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+                      </div>
+                      <span className="text-xs text-purple-700 dark:text-purple-300 font-medium">Students</span>
+                    </div>
+                    <div className="text-2xl font-bold text-purple-900 dark:text-purple-100">{totalStudents}</div>
+                    <div className="text-xs text-purple-700/70 dark:text-purple-300/70 mt-1">Total</div>
+                  </Card>
+
+                  <Card className="bg-gradient-to-br from-orange-50 to-orange-100/50 dark:from-orange-950/20 dark:to-orange-900/10 border-orange-200 dark:border-orange-800 rounded-xl p-5">
+                    <div className="flex items-center justify-between mb-3">
+                      <div className="p-2 bg-orange-500/20 dark:bg-orange-500/10 rounded-lg">
+                        <Calendar className="w-5 h-5 text-orange-600 dark:text-orange-400" />
+                      </div>
+                      <span className="text-xs text-orange-700 dark:text-orange-300 font-medium">Upcoming</span>
+                    </div>
+                    <div className="text-2xl font-bold text-orange-900 dark:text-orange-100">{upcomingBookings.length}</div>
+                    <div className="text-xs text-orange-700/70 dark:text-orange-300/70 mt-1">Sessions</div>
+                  </Card>
+                </div>
+
                 {/* Pending Bookings - Priority Section */}
                 {pendingBookings.length > 0 && (
                   <Card className="bg-gradient-to-br from-yellow-50/80 via-yellow-50/60 to-white dark:from-yellow-950/20 dark:via-yellow-950/10 dark:to-[#1a1a1a] rounded-[24px] p-6 sm:p-8 border-2 border-yellow-200 dark:border-yellow-800 shadow-lg">
