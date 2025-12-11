@@ -44,11 +44,16 @@ import {
   TrendingUp,
   Calendar,
   MessageSquare,
+  BarChart3,
+  TrendingDown,
+  Zap,
+  Bell,
 } from "lucide-react";
 import Image from "next/image";
 import type { Booking, BookingStatus, TutorProfile, TutorApprovalStatus, Review } from "@prisma/client";
 import { AvailabilityCalendar } from "./AvailabilityCalendar";
 import { AvailabilityManager } from "./AvailabilityManager";
+import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, AreaChart, Area } from "recharts";
 
 /**
  * Tutor Dashboard Client Component
@@ -251,6 +256,84 @@ export function TutorDashboardClient({
   const completedSessions = pastBookings.filter((b) => b.status === "COMPLETED").length;
   const totalSessions = tutorProfile.totalSessions || completedSessions;
   const averageRating = tutorProfile.rating || 0;
+
+  // Get today's sessions
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const tomorrow = new Date(today);
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  const todaysSessions = upcomingBookings.filter((booking) => {
+    const bookingDate = new Date(booking.scheduledAt);
+    bookingDate.setHours(0, 0, 0, 0);
+    return bookingDate.getTime() === today.getTime();
+  });
+
+  // Prepare earnings chart data (last 7 days)
+  const prepareEarningsChartData = () => {
+    const days = [];
+    const now = new Date();
+    for (let i = 6; i >= 0; i--) {
+      const date = new Date(now);
+      date.setDate(date.getDate() - i);
+      date.setHours(0, 0, 0, 0);
+      const nextDay = new Date(date);
+      nextDay.setDate(nextDay.getDate() + 1);
+      
+      const dayEarnings = completedBookings
+        .filter((b) => {
+          const bookingDate = new Date(b.scheduledAt);
+          return bookingDate >= date && bookingDate < nextDay;
+        })
+        .reduce((sum, b) => sum + b.price, 0);
+      
+      days.push({
+        date: date.toLocaleDateString(locale === "es" ? "es-ES" : "en-US", { month: "short", day: "numeric" }),
+        earnings: dayEarnings,
+      });
+    }
+    return days;
+  };
+
+  const earningsChartData = prepareEarningsChartData();
+
+  // Prepare sessions chart data (last 7 days)
+  const prepareSessionsChartData = () => {
+    const days = [];
+    const now = new Date();
+    for (let i = 6; i >= 0; i--) {
+      const date = new Date(now);
+      date.setDate(date.getDate() - i);
+      date.setHours(0, 0, 0, 0);
+      const nextDay = new Date(date);
+      nextDay.setDate(nextDay.getDate() + 1);
+      
+      const daySessions = completedBookings.filter((b) => {
+        const bookingDate = new Date(b.scheduledAt);
+        return bookingDate >= date && bookingDate < nextDay;
+      }).length;
+      
+      days.push({
+        date: date.toLocaleDateString(locale === "es" ? "es-ES" : "en-US", { month: "short", day: "numeric" }),
+        sessions: daySessions,
+      });
+    }
+    return days;
+  };
+
+  const sessionsChartData = prepareSessionsChartData();
+
+  // Get all bookings and completed bookings
+  const allBookings = [...pendingBookings, ...upcomingBookings, ...pastBookings];
+  const completedBookings = pastBookings.filter((b) => b.status === "COMPLETED");
+
+  // Get unique students list
+  const uniqueStudents = Array.from(
+    new Map(
+      allBookings
+        .filter((b) => b.student)
+        .map((b) => [b.studentId, b.student])
+    ).values()
+  ).slice(0, 10);
 
   // Handle booking approval/rejection
   const handleBookingAction = async (bookingId: string, action: "confirm" | "cancel") => {
@@ -541,6 +624,171 @@ export function TutorDashboardClient({
                     </div>
                   </Card>
                 )}
+
+                {/* Today's Sessions - Prominent Section */}
+                {todaysSessions.length > 0 && (
+                  <Card className="bg-gradient-to-br from-blue-50/80 via-blue-50/60 to-white dark:from-blue-950/20 dark:via-blue-950/10 dark:to-[#1a1a1a] rounded-[24px] p-6 sm:p-8 border-2 border-blue-200 dark:border-blue-800 shadow-lg">
+                    <div className="flex items-center justify-between mb-6">
+                      <div className="flex items-center gap-3">
+                        <div className="p-2 bg-blue-500/20 dark:bg-blue-500/10 rounded-xl">
+                          <Zap className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+                        </div>
+                        <div>
+                          <h2 className="text-xl sm:text-2xl font-bold text-black dark:text-white">
+                            {tTutor("todaysSessions") || "Today's Sessions"}
+                          </h2>
+                          <p className="text-sm text-[#666] dark:text-[#aaa]">
+                            {todaysSessions.length} {todaysSessions.length === 1 ? "session" : "sessions"} scheduled for today
+                          </p>
+                        </div>
+                      </div>
+                      <Badge className="bg-blue-500/20 text-blue-700 dark:text-blue-300 border-blue-500/50 rounded-full px-4 py-1.5 text-sm font-semibold">
+                        {todaysSessions.length}
+                      </Badge>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      {todaysSessions.map((booking) => (
+                        <div
+                          key={booking.id}
+                          className="p-4 bg-white/80 dark:bg-[#0a0a0a]/80 backdrop-blur-sm border border-blue-200 dark:border-blue-800 rounded-xl hover:border-blue-400 dark:hover:border-blue-600 transition-all"
+                        >
+                          <div className="flex items-start gap-3">
+                            {booking.student.image ? (
+                              <div className="relative w-12 h-12 rounded-full overflow-hidden border-2 border-blue-200 dark:border-blue-800 shrink-0">
+                                <Image
+                                  src={booking.student.image}
+                                  alt={booking.student.name || "Student"}
+                                  fill
+                                  className="object-cover"
+                                />
+                              </div>
+                            ) : (
+                              <div className="w-12 h-12 rounded-full bg-[#f5f5f5] dark:bg-[#262626] border-2 border-blue-200 dark:border-blue-800 flex items-center justify-center shrink-0">
+                                <User className="w-6 h-6 text-[#666] dark:text-[#aaa]" />
+                              </div>
+                            )}
+                            <div className="flex-1 min-w-0">
+                              <h3 className="text-base font-semibold text-black dark:text-white mb-1">
+                                {booking.student.name || "Student"}
+                              </h3>
+                              <div className="flex items-center gap-2 text-sm text-[#666] dark:text-[#aaa] mb-2">
+                                <Clock className="w-4 h-4" />
+                                <span>{formatTime(booking.scheduledAt)}</span>
+                                <span>•</span>
+                                <span>{booking.duration} {tBooking("min")}</span>
+                              </div>
+                              {canJoinSession(booking.scheduledAt, booking.status) && (
+                                <Link href={`/${locale}/sessions/${booking.id}`}>
+                                  <Button
+                                    size="sm"
+                                    className="rounded-full bg-[#111] dark:bg-[#ccf381] text-white dark:text-black px-4 py-2 text-xs font-semibold transition-all hover:bg-[#222] dark:hover:bg-[#d4f89a] hover:shadow-lg inline-flex items-center gap-1.5"
+                                  >
+                                    <Video className="w-3 h-3" />
+                                    {tVideoCall("joinSession")}
+                                  </Button>
+                                </Link>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </Card>
+                )}
+
+                {/* Stats and Charts Grid */}
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                  {/* Earnings Chart */}
+                  <Card className="bg-white/90 dark:bg-[#1a1a1a]/90 backdrop-blur-md border border-[#e5e5e5] dark:border-[#262626] rounded-[24px] p-6 shadow-[0_4px_12px_rgba(0,0,0,0.05)]">
+                    <CardHeader className="pb-4">
+                      <div className="flex items-center justify-between">
+                        <CardTitle className="text-lg font-semibold text-black dark:text-white flex items-center gap-2">
+                          <TrendingUp className="w-5 h-5 text-green-600 dark:text-green-400" />
+                          Earnings (Last 7 Days)
+                        </CardTitle>
+                      </div>
+                    </CardHeader>
+                    <CardContent>
+                      <ResponsiveContainer width="100%" height={250}>
+                        <AreaChart data={earningsChartData}>
+                          <defs>
+                            <linearGradient id="earningsGradient" x1="0" y1="0" x2="0" y2="1">
+                              <stop offset="5%" stopColor="#10b981" stopOpacity={0.3} />
+                              <stop offset="95%" stopColor="#10b981" stopOpacity={0} />
+                            </linearGradient>
+                          </defs>
+                          <CartesianGrid strokeDasharray="3 3" stroke="#e5e5e5" className="dark:stroke-[#262626]" />
+                          <XAxis 
+                            dataKey="date" 
+                            stroke="#666" 
+                            className="dark:stroke-[#aaa]"
+                            tick={{ fontSize: 12 }}
+                          />
+                          <YAxis 
+                            stroke="#666" 
+                            className="dark:stroke-[#aaa]"
+                            tick={{ fontSize: 12 }}
+                            tickFormatter={(value) => `$${value}`}
+                          />
+                          <Tooltip 
+                            contentStyle={{
+                              backgroundColor: "rgba(255, 255, 255, 0.95)",
+                              border: "1px solid #e5e5e5",
+                              borderRadius: "8px",
+                            }}
+                            formatter={(value: number) => [`$${value.toFixed(2)}`, "Earnings"]}
+                          />
+                          <Area
+                            type="monotone"
+                            dataKey="earnings"
+                            stroke="#10b981"
+                            fillOpacity={1}
+                            fill="url(#earningsGradient)"
+                            strokeWidth={2}
+                          />
+                        </AreaChart>
+                      </ResponsiveContainer>
+                    </CardContent>
+                  </Card>
+
+                  {/* Sessions Chart */}
+                  <Card className="bg-white/90 dark:bg-[#1a1a1a]/90 backdrop-blur-md border border-[#e5e5e5] dark:border-[#262626] rounded-[24px] p-6 shadow-[0_4px_12px_rgba(0,0,0,0.05)]">
+                    <CardHeader className="pb-4">
+                      <div className="flex items-center justify-between">
+                        <CardTitle className="text-lg font-semibold text-black dark:text-white flex items-center gap-2">
+                          <BarChart3 className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                          Sessions (Last 7 Days)
+                        </CardTitle>
+                      </div>
+                    </CardHeader>
+                    <CardContent>
+                      <ResponsiveContainer width="100%" height={250}>
+                        <BarChart data={sessionsChartData}>
+                          <CartesianGrid strokeDasharray="3 3" stroke="#e5e5e5" className="dark:stroke-[#262626]" />
+                          <XAxis 
+                            dataKey="date" 
+                            stroke="#666" 
+                            className="dark:stroke-[#aaa]"
+                            tick={{ fontSize: 12 }}
+                          />
+                          <YAxis 
+                            stroke="#666" 
+                            className="dark:stroke-[#aaa]"
+                            tick={{ fontSize: 12 }}
+                          />
+                          <Tooltip 
+                            contentStyle={{
+                              backgroundColor: "rgba(255, 255, 255, 0.95)",
+                              border: "1px solid #e5e5e5",
+                              borderRadius: "8px",
+                            }}
+                          />
+                          <Bar dataKey="sessions" fill="#3b82f6" radius={[8, 8, 0, 0]} />
+                        </BarChart>
+                      </ResponsiveContainer>
+                    </CardContent>
+                  </Card>
+                </div>
 
                 {/* Hero Summary Card */}
                 <Card className="relative bg-gradient-to-br from-white via-white to-[#fafafa] dark:from-[#1a1a1a] dark:via-[#1a1a1a] dark:to-[#0a0a0a] rounded-[32px] sm:rounded-[40px] p-8 sm:p-12 border-2 border-[#e5e5e5] dark:border-[#262626] shadow-[0_20px_40px_rgba(0,0,0,0.08)] sm:shadow-[0_40px_80px_rgba(0,0,0,0.1)] overflow-hidden mb-8 sm:mb-12">
