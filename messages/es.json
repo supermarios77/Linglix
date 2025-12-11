@@ -68,7 +68,6 @@
     "passwordResetSuccess": "La contraseña se ha restablecido correctamente. Ahora puedes iniciar sesión con tu nueva contraseña.",
     "invalidResetToken": "Token de restablecimiento inválido o expirado. Por favor, solicita un nuevo restablecimiento de contraseña.",
     "tokenRequired": "El token de restablecimiento es requerido",
-    "emailRequired": "El correo electrónico es requerido"
     "errorTypes": {
       "Configuration": "Hay un problema con la configuración del servidor",
       "AccessDenied": "No tienes permiso para iniciar sesión",
