@@ -194,8 +194,13 @@ export default async function DashboardPage({
       const allBookings = ('bookings' in tutorProfile && Array.isArray(tutorProfile.bookings)) 
         ? tutorProfile.bookings 
         : [];
+      
+      // Separate bookings by status and time
+      const pendingBookings = allBookings.filter(
+        (booking) => booking.status === "PENDING"
+      );
       const upcomingBookings = allBookings.filter(
-        (booking) => booking.scheduledAt > now && booking.status !== "CANCELLED"
+        (booking) => booking.scheduledAt > now && booking.status === "CONFIRMED"
       );
       const pastBookings = allBookings.filter(
         (booking) => booking.scheduledAt <= now || booking.status === "CANCELLED"
@@ -204,11 +209,29 @@ export default async function DashboardPage({
         (booking) => booking.status === "COMPLETED"
       );
 
-      // Calculate earnings (only from completed bookings)
+      // Calculate earnings breakdown
       const totalEarnings = completedBookings.reduce(
         (sum, booking) => sum + booking.price,
         0
       );
+
+      // Calculate earnings for this week
+      const weekAgo = new Date(now);
+      weekAgo.setDate(weekAgo.getDate() - 7);
+      const thisWeekEarnings = completedBookings
+        .filter((booking) => booking.scheduledAt >= weekAgo)
+        .reduce((sum, booking) => sum + booking.price, 0);
+
+      // Calculate earnings for this month
+      const monthAgo = new Date(now);
+      monthAgo.setMonth(monthAgo.getMonth() - 1);
+      const thisMonthEarnings = completedBookings
+        .filter((booking) => booking.scheduledAt >= monthAgo)
+        .reduce((sum, booking) => sum + booking.price, 0);
+
+      // Get unique students
+      const uniqueStudentIds = new Set(allBookings.map((b) => b.studentId));
+      const totalStudents = uniqueStudentIds.size;
 
       // Get reviews for this tutor
       // tutorId is stored directly in Review model for efficient querying
@@ -242,9 +265,13 @@ export default async function DashboardPage({
               bookings: allBookings as any,
               availability: ('availability' in tutorProfile && Array.isArray(tutorProfile.availability)) ? tutorProfile.availability : [] as any,
             } as any}
+            pendingBookings={pendingBookings}
             upcomingBookings={upcomingBookings}
             pastBookings={pastBookings}
             totalEarnings={totalEarnings}
+            thisWeekEarnings={thisWeekEarnings}
+            thisMonthEarnings={thisMonthEarnings}
+            totalStudents={totalStudents}
             reviews={reviews}
             availability={('availability' in tutorProfile && Array.isArray(tutorProfile.availability)) ? tutorProfile.availability : [] as any}
           />

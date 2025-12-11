@@ -187,6 +187,9 @@
         "averageRating": "Calificación Promedio",
         "totalStudents": "Total de Estudiantes"
       },
+      "pendingBookings": "Reservas Pendientes",
+      "approve": "Aprobar",
+      "reject": "Rechazar",
       "upcomingSessions": "Sesiones Próximas",
       "upcomingSessionsDescription": "Tus sesiones de enseñanza programadas",
       "pastSessions": "Sesiones Pasadas",

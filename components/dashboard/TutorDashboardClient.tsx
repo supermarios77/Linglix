@@ -40,6 +40,10 @@ import {
   Menu,
   X,
   Video,
+  AlertCircle,
+  TrendingUp,
+  Calendar,
+  MessageSquare,
 } from "lucide-react";
 import Image from "next/image";
 import type { Booking, BookingStatus, TutorProfile, TutorApprovalStatus, Review } from "@prisma/client";
@@ -97,9 +101,13 @@ interface TutorDashboardClientProps {
   locale: string;
   user: User;
   tutorProfile: TutorProfileWithBookings;
+  pendingBookings: BookingWithStudent[];
   upcomingBookings: BookingWithStudent[];
   pastBookings: BookingWithStudent[];
   totalEarnings: number;
+  thisWeekEarnings: number;
+  thisMonthEarnings: number;
+  totalStudents: number;
   reviews: ReviewWithStudent[];
   availability: Availability[];
 }
@@ -108,9 +116,13 @@ export function TutorDashboardClient({
   locale,
   user,
   tutorProfile,
+  pendingBookings,
   upcomingBookings,
   pastBookings,
   totalEarnings,
+  thisWeekEarnings,
+  thisMonthEarnings,
+  totalStudents,
   reviews,
   availability,
 }: TutorDashboardClientProps) {
@@ -239,7 +251,38 @@ export function TutorDashboardClient({
   const completedSessions = pastBookings.filter((b) => b.status === "COMPLETED").length;
   const totalSessions = tutorProfile.totalSessions || completedSessions;
   const averageRating = tutorProfile.rating || 0;
-  const totalStudents = new Set(pastBookings.map((b) => b.studentId)).size;
+
+  // Handle booking approval/rejection
+  const handleBookingAction = async (bookingId: string, action: "confirm" | "cancel") => {
+    try {
+      const response = await fetch(`/api/bookings/${bookingId}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          status: action === "confirm" ? "CONFIRMED" : "CANCELLED",
+        }),
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || "Failed to update booking");
+      }
+
+      // Refresh the page to show updated data
+      window.location.reload();
+    } catch (error) {
+      if (process.env.NODE_ENV === "development") {
+        console.error("Error updating booking:", error);
+      }
+      alert(
+        error instanceof Error
+          ? error.message
+          : "Failed to update booking. Please try again."
+      );
+    }
+  };
 
   const sections = [
     { id: "overview", label: tTutor("sections.overview"), icon: LayoutDashboard },
@@ -398,6 +441,107 @@ export function TutorDashboardClient({
             {/* Section Content */}
             {activeSection === "overview" && (
               <div className="space-y-6 sm:space-y-8">
+                {/* Pending Bookings - Priority Section */}
+                {pendingBookings.length > 0 && (
+                  <Card className="bg-gradient-to-br from-yellow-50/80 via-yellow-50/60 to-white dark:from-yellow-950/20 dark:via-yellow-950/10 dark:to-[#1a1a1a] rounded-[24px] p-6 sm:p-8 border-2 border-yellow-200 dark:border-yellow-800 shadow-lg">
+                    <div className="flex items-center justify-between mb-6">
+                      <div className="flex items-center gap-3">
+                        <div className="p-2 bg-yellow-500/20 dark:bg-yellow-500/10 rounded-xl">
+                          <AlertCircle className="w-6 h-6 text-yellow-600 dark:text-yellow-400" />
+                        </div>
+                        <div>
+                          <h2 className="text-xl sm:text-2xl font-bold text-black dark:text-white">
+                            {tTutor("pendingBookings") || "Pending Bookings"}
+                          </h2>
+                          <p className="text-sm text-[#666] dark:text-[#aaa]">
+                            {pendingBookings.length} {pendingBookings.length === 1 ? "booking" : "bookings"} awaiting your approval
+                          </p>
+                        </div>
+                      </div>
+                      <Badge className="bg-yellow-500/20 text-yellow-700 dark:text-yellow-300 border-yellow-500/50 rounded-full px-4 py-1.5 text-sm font-semibold">
+                        {pendingBookings.length}
+                      </Badge>
+                    </div>
+                    <div className="space-y-3">
+                      {pendingBookings.slice(0, 3).map((booking) => (
+                        <div
+                          key={booking.id}
+                          className="p-4 bg-white/80 dark:bg-[#0a0a0a]/80 backdrop-blur-sm border border-yellow-200 dark:border-yellow-800 rounded-xl"
+                        >
+                          <div className="flex items-start justify-between gap-4">
+                            <div className="flex items-start gap-3 flex-1">
+                              {booking.student.image ? (
+                                <div className="relative w-12 h-12 rounded-full overflow-hidden border-2 border-yellow-200 dark:border-yellow-800 flex-shrink-0">
+                                  <Image
+                                    src={booking.student.image}
+                                    alt={booking.student.name || "Student"}
+                                    fill
+                                    className="object-cover"
+                                  />
+                                </div>
+                              ) : (
+                                <div className="w-12 h-12 rounded-full bg-[#f5f5f5] dark:bg-[#262626] border-2 border-yellow-200 dark:border-yellow-800 flex items-center justify-center flex-shrink-0">
+                                  <User className="w-6 h-6 text-[#666] dark:text-[#aaa]" />
+                                </div>
+                              )}
+                              <div className="flex-1 min-w-0">
+                                <h3 className="text-base font-semibold text-black dark:text-white mb-1">
+                                  {booking.student.name || "Student"}
+                                </h3>
+                                <div className="flex flex-wrap items-center gap-2 text-sm text-[#666] dark:text-[#aaa] mb-2">
+                                  <span className="flex items-center gap-1">
+                                    <Calendar className="w-4 h-4" />
+                                    {formatDate(booking.scheduledAt)}
+                                  </span>
+                                  <span>•</span>
+                                  <span className="flex items-center gap-1">
+                                    <Clock className="w-4 h-4" />
+                                    {formatTime(booking.scheduledAt)}
+                                  </span>
+                                  <span>•</span>
+                                  <span>{booking.duration} {tBooking("min")}</span>
+                                  <span>•</span>
+                                  <span className="font-semibold text-black dark:text-white">${booking.price.toFixed(2)}</span>
+                                </div>
+                                {booking.notes && (
+                                  <p className="text-sm text-[#666] dark:text-[#aaa] line-clamp-2">
+                                    <MessageSquare className="w-3 h-3 inline mr-1" />
+                                    {booking.notes}
+                                  </p>
+                                )}
+                              </div>
+                            </div>
+                            <div className="flex flex-col gap-2 flex-shrink-0">
+                              <Button
+                                size="sm"
+                                onClick={() => handleBookingAction(booking.id, "confirm")}
+                                className="rounded-full bg-green-600 hover:bg-green-700 text-white px-4 py-2 text-sm font-semibold transition-all hover:shadow-lg"
+                              >
+                                <CheckCircle2 className="w-4 h-4 mr-1.5" />
+                                {tTutor("approve") || "Approve"}
+                              </Button>
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                onClick={() => handleBookingAction(booking.id, "cancel")}
+                                className="rounded-full border-red-300 dark:border-red-700 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/20 px-4 py-2 text-sm font-semibold"
+                              >
+                                <XCircle className="w-4 h-4 mr-1.5" />
+                                {tTutor("reject") || "Reject"}
+                              </Button>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                      {pendingBookings.length > 3 && (
+                        <p className="text-sm text-center text-[#666] dark:text-[#aaa] pt-2">
+                          +{pendingBookings.length - 3} more {pendingBookings.length - 3 === 1 ? "booking" : "bookings"}
+                        </p>
+                      )}
+                    </div>
+                  </Card>
+                )}
+
                 {/* Hero Summary Card */}
                 <Card className="relative bg-gradient-to-br from-white via-white to-[#fafafa] dark:from-[#1a1a1a] dark:via-[#1a1a1a] dark:to-[#0a0a0a] rounded-[32px] sm:rounded-[40px] p-8 sm:p-12 border-2 border-[#e5e5e5] dark:border-[#262626] shadow-[0_20px_40px_rgba(0,0,0,0.08)] sm:shadow-[0_40px_80px_rgba(0,0,0,0.1)] overflow-hidden mb-8 sm:mb-12">
                   {/* Background Gradient Overlay */}
@@ -429,15 +573,42 @@ export function TutorDashboardClient({
                             : `You've completed ${totalSessions} ${totalSessions === 1 ? 'session' : 'sessions'} with ${totalStudents} ${totalStudents === 1 ? 'student' : 'students'} and earned $${totalEarnings.toFixed(2)}`}
                         </p>
 
+                        {/* Earnings Breakdown */}
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+                          <div className="p-4 bg-white/80 dark:bg-[#0a0a0a]/80 backdrop-blur-sm border border-[#e5e5e5] dark:border-[#262626] rounded-xl">
+                            <div className="flex items-center gap-2 mb-2">
+                              <TrendingUp className="w-4 h-4 text-green-600 dark:text-green-400" />
+                              <span className="text-xs text-[#666] dark:text-[#aaa] uppercase tracking-wide">This Week</span>
+                            </div>
+                            <div className="text-2xl font-bold text-black dark:text-white">
+                              ${thisWeekEarnings.toFixed(2)}
+                            </div>
+                          </div>
+                          <div className="p-4 bg-white/80 dark:bg-[#0a0a0a]/80 backdrop-blur-sm border border-[#e5e5e5] dark:border-[#262626] rounded-xl">
+                            <div className="flex items-center gap-2 mb-2">
+                              <DollarSign className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                              <span className="text-xs text-[#666] dark:text-[#aaa] uppercase tracking-wide">This Month</span>
+                            </div>
+                            <div className="text-2xl font-bold text-black dark:text-white">
+                              ${thisMonthEarnings.toFixed(2)}
+                            </div>
+                          </div>
+                          <div className="p-4 bg-white/80 dark:bg-[#0a0a0a]/80 backdrop-blur-sm border border-[#e5e5e5] dark:border-[#262626] rounded-xl">
+                            <div className="flex items-center gap-2 mb-2">
+                              <DollarSign className="w-4 h-4 text-purple-600 dark:text-purple-400" />
+                              <span className="text-xs text-[#666] dark:text-[#aaa] uppercase tracking-wide">All Time</span>
+                            </div>
+                            <div className="text-2xl font-bold text-black dark:text-white">
+                              ${totalEarnings.toFixed(2)}
+                            </div>
+                          </div>
+                        </div>
+
                         {/* Quick Stats Pills */}
                         <div className="flex flex-wrap items-center gap-3">
                           <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/80 dark:bg-[#1a1a1a]/80 backdrop-blur-sm border border-[#e5e5e5] dark:border-[#262626] rounded-full text-sm font-medium text-black dark:text-white">
-                            <DollarSign className="w-4 h-4 text-green-600 dark:text-green-400" />
-                            <span>${totalEarnings.toFixed(2)}</span>
-                          </div>
-                          <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/80 dark:bg-[#1a1a1a]/80 backdrop-blur-sm border border-[#e5e5e5] dark:border-[#262626] rounded-full text-sm font-medium text-black dark:text-white">
                             <BookOpen className="w-4 h-4 text-blue-600 dark:text-blue-400" />
-                            <span>{totalSessions} Sessions</span>
+                            <span>{totalSessions} {totalSessions === 1 ? "Session" : "Sessions"}</span>
                           </div>
                           <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/80 dark:bg-[#1a1a1a]/80 backdrop-blur-sm border border-[#e5e5e5] dark:border-[#262626] rounded-full text-sm font-medium text-black dark:text-white">
                             <Star className="w-4 h-4 text-yellow-500 fill-current" />
@@ -445,7 +616,11 @@ export function TutorDashboardClient({
                           </div>
                           <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/80 dark:bg-[#1a1a1a]/80 backdrop-blur-sm border border-[#e5e5e5] dark:border-[#262626] rounded-full text-sm font-medium text-black dark:text-white">
                             <Users className="w-4 h-4 text-purple-600 dark:text-purple-400" />
-                            <span>{totalStudents} Students</span>
+                            <span>{totalStudents} {totalStudents === 1 ? "Student" : "Students"}</span>
+                          </div>
+                          <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/80 dark:bg-[#1a1a1a]/80 backdrop-blur-sm border border-[#e5e5e5] dark:border-[#262626] rounded-full text-sm font-medium text-black dark:text-white">
+                            <Calendar className="w-4 h-4 text-green-600 dark:text-green-400" />
+                            <span>{upcomingBookings.length} Upcoming</span>
                           </div>
                         </div>
                       </div>

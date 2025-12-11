@@ -185,6 +185,9 @@
         "averageRating": "Average Rating",
         "totalStudents": "Total Students"
       },
+      "pendingBookings": "Pending Bookings",
+      "approve": "Approve",
+      "reject": "Reject",
       "upcomingSessions": "Upcoming Sessions",
       "upcomingSessionsDescription": "Your scheduled teaching sessions",
       "pastSessions": "Past Sessions",
