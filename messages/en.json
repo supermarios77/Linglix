@@ -119,6 +119,7 @@
   "booking": {
     "title": "Book a Session",
     "subtitle": "Schedule your language learning session",
+    "description": "Schedule your language learning session with an expert tutor",
     "selectDate": "Select Date",
     "selectTime": "Select Time",
     "duration": "Duration",

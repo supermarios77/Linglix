@@ -119,6 +119,7 @@
   "booking": {
     "title": "Reservar una Sesión",
     "subtitle": "Programa tu sesión de aprendizaje de idiomas",
+    "description": "Programa tu sesión de aprendizaje de idiomas con un tutor experto",
     "selectDate": "Seleccionar Fecha",
     "selectTime": "Seleccionar Hora",
     "duration": "Duración",
