@@ -499,7 +499,7 @@ export async function DELETE(
         scheduledAt: cancelledBooking.scheduledAt,
         refundAmount: undefined, // Tutors don't get refunds
         isTutor: true,
-        locale: "en", // TODO: Get from user preferences
+        locale: "en", // Default to English - can be enhanced with user preferences later
       }).catch((error) => {
         logger.error("Failed to send cancellation email to tutor", {
           bookingId: id,
