@@ -87,7 +87,7 @@ export default async function SelectTutorPage({
     const specialtyMatches = getSpecialtyMatches(user.studentProfile.learningGoal);
 
     // Build query for relevant tutors
-    const tutorProfileConditions: any = {
+    const tutorProfileConditions: Prisma.TutorProfileWhereInput = {
       isActive: true,
       approvalStatus: "APPROVED",
     };
@@ -99,7 +99,7 @@ export default async function SelectTutorPage({
       };
     }
 
-    const where: any = {
+    const where: Prisma.UserWhereInput = {
       role: "TUTOR",
       tutorProfile: tutorProfileConditions,
     };
