@@ -229,21 +229,21 @@ export function TutorDashboardClient({
     switch (status) {
       case "PENDING":
         return (
-          <Badge className="bg-yellow-500/20 text-yellow-700 dark:text-yellow-300 border-yellow-500/50 rounded-full px-4 py-1.5">
+          <Badge className="bg-yellow-100 dark:bg-yellow-900/20 text-yellow-700 dark:text-yellow-400 border border-yellow-300 dark:border-yellow-700 rounded-md px-2.5 py-1 text-xs font-medium">
             <Clock className="w-3 h-3 mr-1.5" />
             {tTutor("status.pending")}
           </Badge>
         );
       case "APPROVED":
         return (
-          <Badge className="bg-green-500/20 text-green-700 dark:text-green-300 border-green-500/50 rounded-full px-4 py-1.5">
+          <Badge className="bg-green-100 dark:bg-green-900/20 text-green-700 dark:text-green-400 border border-green-300 dark:border-green-700 rounded-md px-2.5 py-1 text-xs font-medium">
             <CheckCircle2 className="w-3 h-3 mr-1.5" />
             {tTutor("status.approved")}
           </Badge>
         );
       case "REJECTED":
         return (
-          <Badge className="bg-red-500/20 text-red-700 dark:text-red-300 border-red-500/50 rounded-full px-4 py-1.5">
+          <Badge className="bg-red-100 dark:bg-red-900/20 text-red-700 dark:text-red-400 border border-red-300 dark:border-red-700 rounded-md px-2.5 py-1 text-xs font-medium">
             <XCircle className="w-3 h-3 mr-1.5" />
             {tTutor("status.rejected")}
           </Badge>
@@ -378,7 +378,7 @@ export function TutorDashboardClient({
   return (
     <div className="relative min-h-screen pt-16 sm:pt-20">
       {/* Navigation Bar */}
-      <header className="fixed top-0 z-[1000] w-full h-16 sm:h-20 flex justify-between items-center px-4 sm:px-6 md:px-12 bg-[rgba(250,250,250,0.90)] dark:bg-[rgba(5,5,5,0.90)] backdrop-blur-xl border-b border-[rgba(0,0,0,0.05)] dark:border-[#262626] shadow-[0_1px_3px_rgba(0,0,0,0.05)]">
+      <header className="fixed top-0 z-[1000] w-full h-16 sm:h-20 flex justify-between items-center px-4 sm:px-6 md:px-12 bg-white dark:bg-[#0a0a0a] border-b border-[#e5e5e5] dark:border-[#1a1a1a]">
         <div className="flex items-center gap-4">
           <Button
             variant="ghost"
@@ -435,16 +435,16 @@ export function TutorDashboardClient({
       <div className="flex">
         {/* Sidebar */}
         <aside
-          className={`fixed left-0 top-16 sm:top-20 h-[calc(100vh-4rem)] sm:h-[calc(100vh-5rem)] w-64 bg-white/95 dark:bg-[#1a1a1a]/95 backdrop-blur-xl border-r-2 border-[#e5e5e5] dark:border-[#262626] z-50 transition-transform duration-300 shadow-[2px_0_8px_rgba(0,0,0,0.05)] ${
+          className={`fixed left-0 top-16 sm:top-20 h-[calc(100vh-4rem)] sm:h-[calc(100vh-5rem)] w-64 bg-white dark:bg-[#0a0a0a] border-r border-[#e5e5e5] dark:border-[#1a1a1a] z-50 transition-transform duration-300 ${
             sidebarOpen ? "translate-x-0" : "-translate-x-full"
           } lg:translate-x-0`}
         >
-          <div className="p-6 h-full flex flex-col">
+          <div className="p-5 h-full flex flex-col">
             {/* Sidebar Header */}
-            <div className="mb-8">
+            <div className="mb-6 pb-6 border-b border-[#e5e5e5] dark:border-[#1a1a1a]">
               <div className="flex items-center gap-3 mb-3">
                 {user.image ? (
-                  <div className="relative w-12 h-12 rounded-full overflow-hidden border-2 border-[#e5e5e5] dark:border-[#262626]">
+                  <div className="relative w-12 h-12 rounded-full overflow-hidden border border-[#e5e5e5] dark:border-[#262626]">
                     <Image
                       src={user.image}
                       alt={user.name || "User"}
@@ -453,24 +453,26 @@ export function TutorDashboardClient({
                     />
                   </div>
                 ) : (
-                  <div className="w-12 h-12 rounded-full bg-[#f5f5f5] dark:bg-[#262626] border-2 border-[#e5e5e5] dark:border-[#262626] flex items-center justify-center">
-                    <User className="w-6 h-6 text-[#666] dark:text-[#aaa]" />
+                  <div className="w-12 h-12 rounded-full bg-[#f5f5f5] dark:bg-[#1a1a1a] border border-[#e5e5e5] dark:border-[#262626] flex items-center justify-center">
+                    <User className="w-6 h-6 text-[#666] dark:text-[#666]" />
                   </div>
                 )}
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-semibold text-black dark:text-white truncate">
                     {user.name || tTutor("tutor")}
                   </p>
-                  <p className="text-xs text-[#666] dark:text-[#a1a1aa] truncate">
+                  <p className="text-xs text-[#666] dark:text-[#888] truncate mt-0.5">
                     {user.email}
                   </p>
                 </div>
               </div>
-              {getApprovalStatusBadge(tutorProfile.approvalStatus)}
+              <div className="flex justify-start">
+                {getApprovalStatusBadge(tutorProfile.approvalStatus)}
+              </div>
             </div>
 
             {/* Navigation */}
-            <nav className="flex-1 space-y-2">
+            <nav className="flex-1 space-y-1">
               {sections.map((section) => {
                 const Icon = section.icon;
                 const isActive = activeSection === section.id;
@@ -481,29 +483,26 @@ export function TutorDashboardClient({
                       setActiveSection(section.id);
                       setSidebarOpen(false);
                     }}
-                    className={`group w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl transition-all duration-300 ${
+                    className={`group w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 ${
                       isActive
-                        ? "bg-gradient-to-r from-[#ccf381]/20 to-[#ccf381]/10 dark:from-[#ccf381]/15 dark:to-[#ccf381]/5 text-[#111] dark:text-[#ccf381] border-2 border-[#ccf381]/40 dark:border-[#ccf381]/40 shadow-lg backdrop-blur-sm"
-                        : "text-[#666] dark:text-[#a1a1aa] hover:bg-white/80 dark:hover:bg-[#262626]/80 hover:text-black dark:hover:text-white hover:border-2 hover:border-[#e5e5e5] dark:hover:border-[#404040] backdrop-blur-sm border-2 border-transparent"
+                        ? "bg-[#ccf381] text-black font-medium"
+                        : "text-[#666] dark:text-[#888] hover:bg-[#f5f5f5] dark:hover:bg-[#1a1a1a] hover:text-black dark:hover:text-white"
                     }`}
                   >
-                    <Icon className={`w-5 h-5 transition-transform duration-300 ${isActive ? "text-[#ccf381] scale-110" : "group-hover:scale-110"}`} />
-                    <span className={`text-sm font-semibold ${isActive ? "text-black dark:text-white" : ""}`}>{section.label}</span>
+                    <Icon className={`w-4 h-4 ${isActive ? "text-black" : "text-[#666] dark:text-[#888] group-hover:text-black dark:group-hover:text-white"}`} />
+                    <span className="text-sm">{section.label}</span>
                   </button>
                 );
               })}
             </nav>
 
             {/* Sidebar Footer */}
-            <div className="pt-4 border-t border-[#e5e5e5] dark:border-[#262626]">
+            <div className="pt-4 mt-auto border-t border-[#e5e5e5] dark:border-[#1a1a1a]">
               <Link href={`/${locale}`}>
-                <Button
-                  variant="ghost"
-                  className="w-full justify-start text-[#666] dark:text-[#a1a1aa] hover:text-black dark:hover:text-white"
-                >
-                  <ArrowRight className="w-4 h-4 mr-2" />
+                <button className="w-full flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm text-[#666] dark:text-[#888] hover:bg-[#f5f5f5] dark:hover:bg-[#1a1a1a] hover:text-black dark:hover:text-white transition-colors">
+                  <ArrowRight className="w-4 h-4" />
                   Back to Home
-                </Button>
+                </button>
               </Link>
             </div>
           </div>
@@ -512,7 +511,7 @@ export function TutorDashboardClient({
         {/* Sidebar Overlay for Mobile */}
         {sidebarOpen && (
           <div
-            className="fixed inset-0 bg-black/20 backdrop-blur-sm z-40 lg:hidden"
+            className="fixed inset-0 bg-black/40 z-40 lg:hidden transition-opacity duration-300"
             onClick={() => setSidebarOpen(false)}
           />
         )}
