@@ -4,7 +4,7 @@ import { auth } from "@/config/auth";
 import { prisma } from "@/lib/db/prisma";
 import { PublicNav } from "@/components/navigation/PublicNav";
 import { TutorSelectionClient } from "@/components/onboarding/TutorSelectionClient";
-import { slugify } from "@/lib/utils";
+import { slugify } from "@/lib/utils/slug";
 import { Prisma } from "@prisma/client";
 
 /**

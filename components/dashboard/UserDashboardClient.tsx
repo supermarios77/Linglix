@@ -25,6 +25,8 @@ import {
 import {
   Calendar,
   Clock,
+  Clock3,
+  DollarSign,
   User,
   BookOpen,
   ArrowRight,
@@ -357,28 +359,50 @@ export function UserDashboardClient({
 
         {/* Upcoming Bookings - Enhanced Design */}
         {upcomingBookings.length > 0 && (
-          <Card className="bg-white/90 dark:bg-[#1a1a1a]/90 backdrop-blur-md border border-[#e5e5e5] dark:border-[#262626] shadow-[0_4px_12px_rgba(0,0,0,0.05)] mb-8 sm:mb-12 rounded-[24px] sm:rounded-[32px] overflow-hidden">
-            <CardHeader className="pb-4">
-              <CardTitle className="text-xl sm:text-2xl md:text-3xl font-bold text-black dark:text-white">
-                {t("upcomingBookings")}
-              </CardTitle>
-              <CardDescription className="text-[#666] dark:text-[#aaa] text-base">
-                {t("upcomingBookingsDescription")}
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {upcomingBookings.map((booking) => {
-                  return (
-                    <div
-                      key={booking.id}
-                      className="group p-6 sm:p-8 bg-gradient-to-br from-white/80 to-[#fafafa]/80 dark:from-[#0a0a0a]/80 dark:to-[#1a1a1a]/80 backdrop-blur-sm border-2 border-[#e5e5e5] dark:border-[#262626] rounded-[20px] transition-all duration-300 hover:shadow-[0_20px_40px_rgba(0,0,0,0.1)] hover:-translate-y-1"
-                    >
-                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                      <div className="flex-1">
-                        <div className="flex items-center gap-4 mb-4">
+          <div className="space-y-6 mb-12">
+            <div className="flex items-center justify-between">
+              <div>
+                <h2 className="text-3xl font-bold text-black dark:text-white mb-2 flex items-center gap-3">
+                  <div className="p-2.5 bg-gradient-to-br from-green-500/20 to-emerald-500/20 dark:from-green-500/10 dark:to-emerald-500/10 rounded-2xl backdrop-blur-sm">
+                    <Calendar className="w-6 h-6 text-green-600 dark:text-green-400" />
+                  </div>
+                  {t("upcomingBookings")}
+                </h2>
+                <p className="text-sm text-[#666] dark:text-[#a1a1aa] ml-14">
+                  {t("upcomingBookingsDescription")}
+                </p>
+              </div>
+              <Badge className="bg-gradient-to-r from-green-500/20 to-emerald-500/20 text-green-700 dark:text-green-300 border-2 border-green-500/30 dark:border-green-500/20 rounded-full px-6 py-2.5 text-base font-bold shadow-lg backdrop-blur-sm">
+                {upcomingBookings.length}
+              </Badge>
+            </div>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              {upcomingBookings.map((booking) => {
+                const isToday = new Date(booking.scheduledAt).toDateString() === new Date().toDateString();
+                const hoursUntil = Math.floor((new Date(booking.scheduledAt).getTime() - new Date().getTime()) / (1000 * 60 * 60));
+                return (
+                  <Card
+                    key={booking.id}
+                    className="group relative overflow-hidden bg-gradient-to-br from-white via-white to-green-50/30 dark:from-[#1a1a1a] dark:via-[#1a1a1a] dark:to-green-950/20 border-2 border-[#e5e5e5] dark:border-[#262626] rounded-3xl shadow-[0_4px_20px_rgba(0,0,0,0.08)] hover:shadow-[0_20px_60px_rgba(34,197,94,0.15)] hover:border-green-400/50 dark:hover:border-green-600/50 transition-all duration-500 hover:-translate-y-2"
+                  >
+                    {/* Gradient overlay on hover */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-green-500/5 via-transparent to-emerald-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                    
+                    {/* Time indicator badge */}
+                    {isToday && (
+                      <div className="absolute top-4 right-4 z-10">
+                        <Badge className="bg-gradient-to-r from-green-500 to-emerald-500 text-white border-0 rounded-full px-3 py-1 text-xs font-bold shadow-lg animate-pulse">
+                          Today
+                        </Badge>
+                      </div>
+                    )}
+                    
+                    <CardContent className="relative z-10 p-6">
+                      <div className="flex items-start gap-5 mb-5">
+                        {/* Tutor Avatar */}
+                        <div className="relative shrink-0">
                           {booking.tutor.user.image ? (
-                            <div className="relative w-16 h-16 sm:w-20 sm:h-20 rounded-full overflow-hidden border-2 border-[#e5e5e5] dark:border-[#262626]">
+                            <div className="relative w-20 h-20 rounded-2xl overflow-hidden border-3 border-green-200/50 dark:border-green-800/50 shadow-lg ring-2 ring-green-100 dark:ring-green-900/50">
                               <Image
                                 src={booking.tutor.user.image}
                                 alt={booking.tutor.user.name || t("tutorFallback")}
@@ -387,199 +411,212 @@ export function UserDashboardClient({
                               />
                             </div>
                           ) : (
-                            <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-br from-[#ccf381]/20 to-[#7928ca]/20 border-2 border-[#e5e5e5] dark:border-[#262626] flex items-center justify-center">
-                              <User className="w-8 h-8 sm:w-10 sm:h-10 text-[#ccf381]" />
+                            <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-green-100 to-emerald-100 dark:from-green-900/30 dark:to-emerald-900/30 border-3 border-green-200/50 dark:border-green-800/50 flex items-center justify-center shadow-lg ring-2 ring-green-100 dark:ring-green-900/50">
+                              <User className="w-10 h-10 text-green-600 dark:text-green-400" />
                             </div>
                           )}
-                          <div>
-                            <h3 className="text-lg sm:text-xl font-bold text-black dark:text-white mb-1">
-                              {booking.tutor.user.name || t("tutorFallback")}
-                            </h3>
-                            <div className="flex items-center gap-2 mb-2">
-                              <div className="flex text-[#ffb800]">
-                                {[...Array(5)].map((_, i) => (
-                                  <Star
-                                    key={i}
-                                    className={`w-3 h-3 sm:w-4 sm:h-4 ${
-                                      i < Math.floor(booking.tutor.rating)
-                                        ? "fill-[#ffb800] text-[#ffb800]"
-                                        : "text-gray-300 dark:text-gray-600"
-                                    }`}
-                                  />
-                                ))}
-                              </div>
-                              <span className="text-sm font-semibold text-black dark:text-white">
-                                {booking.tutor.rating.toFixed(1)}
-                              </span>
-                            </div>
-                            <div className="flex flex-wrap gap-2">
-                              {booking.tutor.specialties.slice(0, 2).map((spec, idx) => (
-                                <Badge
-                                  key={idx}
-                                  variant="outline"
-                                  className="text-xs bg-white/80 dark:bg-[#0a0a0a]/80 backdrop-blur-sm border-[#e5e5e5] dark:border-[#262626] rounded-full"
-                                >
-                                  {spec}
-                                </Badge>
+                          {canJoinSession(booking.scheduledAt, booking.status, booking.duration, booking.callEndedAt) && (
+                            <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-green-500 rounded-full border-2 border-white dark:border-[#1a1a1a] animate-pulse" />
+                          )}
+                        </div>
+
+                        {/* Tutor Info */}
+                        <div className="flex-1 min-w-0">
+                          <h3 className="text-xl font-bold text-black dark:text-white mb-2">
+                            {booking.tutor.user.name || t("tutorFallback")}
+                          </h3>
+                          <div className="flex items-center gap-2 mb-3">
+                            <div className="flex text-[#ffb800]">
+                              {[...Array(5)].map((_, i) => (
+                                <Star
+                                  key={i}
+                                  className={`w-4 h-4 ${
+                                    i < Math.floor(booking.tutor.rating)
+                                      ? "fill-[#ffb800] text-[#ffb800]"
+                                      : "text-gray-300 dark:text-gray-600"
+                                  }`}
+                                />
                               ))}
                             </div>
+                            <span className="text-sm font-bold text-black dark:text-white">
+                              {booking.tutor.rating.toFixed(1)}
+                            </span>
+                          </div>
+                          <div className="flex flex-wrap gap-2 mb-3">
+                            {booking.tutor.specialties.slice(0, 3).map((spec, idx) => (
+                              <Badge
+                                key={idx}
+                                variant="outline"
+                                className="text-xs bg-white/80 dark:bg-[#0a0a0a]/80 backdrop-blur-sm border-[#e5e5e5] dark:border-[#262626] rounded-full px-3 py-1"
+                              >
+                                {spec}
+                              </Badge>
+                            ))}
+                            {booking.tutor.specialties.length > 3 && (
+                              <Badge variant="outline" className="text-xs rounded-full px-3 py-1">
+                                +{booking.tutor.specialties.length - 3}
+                              </Badge>
+                            )}
+                          </div>
+                          {isToday && hoursUntil <= 2 && (
+                            <p className="text-xs font-medium text-green-600 dark:text-green-400 mb-2">
+                              Starts in {hoursUntil === 0 ? "less than an hour" : `${hoursUntil} ${hoursUntil === 1 ? "hour" : "hours"}`}
+                            </p>
+                          )}
+                          {getStatusBadge(booking.status, booking.scheduledAt, booking.duration)}
+                        </div>
+                      </div>
+
+                      {/* Session Info Grid */}
+                      <div className="grid grid-cols-2 gap-3 mb-5">
+                        <div className="flex items-center gap-2.5 p-3 bg-white/60 dark:bg-[#0a0a0a]/60 backdrop-blur-sm rounded-xl border border-[#e5e5e5] dark:border-[#262626]">
+                          <div className="p-1.5 bg-green-100 dark:bg-green-900/30 rounded-lg">
+                            <Calendar className="w-4 h-4 text-green-600 dark:text-green-400" />
+                          </div>
+                          <div>
+                            <p className="text-xs text-[#666] dark:text-[#aaa] font-medium">Date</p>
+                            <p className="text-sm font-bold text-black dark:text-white">{formatDate(booking.scheduledAt)}</p>
                           </div>
                         </div>
-                        <div className="flex flex-wrap items-center gap-4 sm:gap-6 text-sm text-[#666] dark:text-[#aaa]">
-                          <div className="flex items-center gap-2">
-                            <Calendar className="w-4 h-4" />
-                            <span className="font-medium">{formatDate(booking.scheduledAt)}</span>
+                        <div className="flex items-center gap-2.5 p-3 bg-white/60 dark:bg-[#0a0a0a]/60 backdrop-blur-sm rounded-xl border border-[#e5e5e5] dark:border-[#262626]">
+                          <div className="p-1.5 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
+                            <Clock className="w-4 h-4 text-blue-600 dark:text-blue-400" />
                           </div>
-                          <div className="flex items-center gap-2">
-                            <Clock className="w-4 h-4" />
-                            <span className="font-medium">{formatTime(booking.scheduledAt)}</span>
+                          <div>
+                            <p className="text-xs text-[#666] dark:text-[#aaa] font-medium">Time</p>
+                            <p className="text-sm font-bold text-black dark:text-white">{formatTime(booking.scheduledAt)}</p>
                           </div>
-                          <div className="flex items-center gap-2">
-                            <span className="font-medium">{booking.duration} {tBooking("min")}</span>
+                        </div>
+                        <div className="flex items-center gap-2.5 p-3 bg-white/60 dark:bg-[#0a0a0a]/60 backdrop-blur-sm rounded-xl border border-[#e5e5e5] dark:border-[#262626]">
+                          <div className="p-1.5 bg-purple-100 dark:bg-purple-900/30 rounded-lg">
+                            <Clock3 className="w-4 h-4 text-purple-600 dark:text-purple-400" />
                           </div>
-                          <div className="flex items-center gap-2">
-                            <span className="font-semibold text-black dark:text-white">
-                              ${booking.price.toFixed(2)}
-                            </span>
+                          <div>
+                            <p className="text-xs text-[#666] dark:text-[#aaa] font-medium">Duration</p>
+                            <p className="text-sm font-bold text-black dark:text-white">{booking.duration} {tBooking("min")}</p>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-2.5 p-3 bg-white/60 dark:bg-[#0a0a0a]/60 backdrop-blur-sm rounded-xl border border-[#e5e5e5] dark:border-[#262626]">
+                          <div className="p-1.5 bg-amber-100 dark:bg-amber-900/30 rounded-lg">
+                            <DollarSign className="w-4 h-4 text-amber-600 dark:text-amber-400" />
+                          </div>
+                          <div>
+                            <p className="text-xs text-[#666] dark:text-[#aaa] font-medium">Price</p>
+                            <p className="text-sm font-bold text-black dark:text-white">${booking.price.toFixed(2)}</p>
                           </div>
                         </div>
                       </div>
-                      <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
-                        {getStatusBadge(booking.status, booking.scheduledAt, booking.duration)}
-                        <div className="flex flex-col sm:flex-row gap-2">
-                          {/* Payment button for confirmed bookings without payment */}
-                          {booking.status === "CONFIRMED" && !booking.paymentId && (
-                            <PaymentButton bookingId={booking.id} />
-                          )}
-                          {/* Join Session button */}
-                          {canJoinSession(booking.scheduledAt, booking.status, booking.duration, booking.callEndedAt) && (
-                            <Link href={`/${locale}/sessions/${booking.id}`}>
-                              <Button
-                                size="lg"
-                                className="rounded-full bg-[#111] dark:bg-[#ccf381] text-white dark:text-black px-6 py-5 font-semibold transition-all hover:bg-[#222] dark:hover:bg-[#d4f89a] hover:shadow-lg inline-flex items-center gap-2"
-                              >
-                                <Video className="w-4 h-4" />
-                                {tVideoCall("joinSession")}
-                              </Button>
-                            </Link>
-                          )}
-                        <Link
-                          href={`/${locale}/tutors/${slugify(booking.tutor.user.name || "")}`}
-                        >
+
+                      {/* Action Buttons */}
+                      <div className="flex flex-col sm:flex-row gap-3">
+                        {booking.status === "CONFIRMED" && !booking.paymentId && (
+                          <PaymentButton bookingId={booking.id} />
+                        )}
+                        {canJoinSession(booking.scheduledAt, booking.status, booking.duration, booking.callEndedAt) && (
+                          <Link href={`/${locale}/sessions/${booking.id}`} className="flex-1">
+                            <Button
+                              size="lg"
+                              className="w-full rounded-2xl bg-gradient-to-r from-[#111] to-[#222] dark:from-[#ccf381] dark:to-[#d4f89a] text-white dark:text-black px-6 py-6 text-base font-bold transition-all duration-300 hover:shadow-[0_12px_32px_rgba(0,0,0,0.25)] hover:-translate-y-1 inline-flex items-center justify-center gap-3 group/btn"
+                            >
+                              <Video className="w-5 h-5 group-hover/btn:scale-110 transition-transform" />
+                              {tVideoCall("joinSession")}
+                              <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
+                            </Button>
+                          </Link>
+                        )}
+                        <Link href={`/${locale}/tutors/${slugify(booking.tutor.user.name || "")}`} className="flex-1">
                           <Button
                             size="lg"
                             variant="outline"
-                            className="rounded-full bg-white/80 dark:bg-[#0a0a0a]/80 backdrop-blur-sm border-2 border-[#e5e5e5] dark:border-[#262626] hover:border-[#111] dark:hover:border-[#ccf381] transition-all"
+                            className="w-full rounded-2xl bg-white/80 dark:bg-[#0a0a0a]/80 backdrop-blur-sm border-2 border-[#e5e5e5] dark:border-[#262626] hover:border-[#111] dark:hover:border-[#ccf381] transition-all font-semibold"
                           >
                             {t("viewTutor")}
                             <ArrowRight className="w-4 h-4 ml-2" />
                           </Button>
                         </Link>
-                        </div>
                       </div>
-                    </div>
-                  );
-                      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                        <div className="flex-1">
-                          <div className="flex items-center gap-4 mb-4">
-                            {booking.tutor.user.image ? (
-                              <div className="relative w-16 h-16 sm:w-20 sm:h-20 rounded-full overflow-hidden border-2 border-[#e5e5e5] dark:border-[#262626]">
-                                <Image
-                                  src={booking.tutor.user.image}
-                                  alt={booking.tutor.user.name || t("tutorFallback")}
-                                  fill
-                                  className="object-cover"
-                                />
-                              </div>
-                            ) : (
-                              <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-[#f5f5f5] dark:bg-[#262626] border-2 border-[#e5e5e5] dark:border-[#262626] flex items-center justify-center">
-                                <User className="w-8 h-8 text-[#666] dark:text-[#aaa]" />
-                              </div>
-                            )}
-                            <div>
-                              <h3 className="text-base sm:text-lg font-semibold text-black dark:text-white mb-1">
-                                {booking.tutor.user.name || t("tutorFallback")}
-                              </h3>
-                              <p className="text-xs sm:text-sm text-[#666] dark:text-[#aaa]">
-                                {booking.tutor.specialties.join(", ")}
-                              </p>
-                            </div>
-                          </div>
-                          <div className="flex flex-wrap items-center gap-4 text-sm text-[#666] dark:text-[#aaa]">
-                            <div className="flex items-center gap-2">
-                              <Calendar className="w-4 h-4" />
-                              <span>{formatDate(booking.scheduledAt)}</span>
-                            </div>
-                          </div>
-                        </div>
-                        <div>{getStatusBadge(booking.status)}</div>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </CardContent>
-          </Card>
+                    </CardContent>
+                  </Card>
+                );
+              })}
+            </div>
+          </div>
         )}
 
         {/* Past Bookings - Enhanced Design */}
         {pastBookings.length > 0 && (
-          <Card className="bg-white/90 dark:bg-[#1a1a1a]/90 backdrop-blur-md border border-[#e5e5e5] dark:border-[#262626] shadow-[0_4px_12px_rgba(0,0,0,0.05)] rounded-[24px] sm:rounded-[32px] overflow-hidden">
-            <CardHeader className="pb-4">
-              <CardTitle className="text-xl sm:text-2xl md:text-3xl font-bold text-black dark:text-white">
-                {t("pastSessions")}
-              </CardTitle>
-              <CardDescription className="text-[#666] dark:text-[#aaa] text-base">
-                {t("pastSessionsDescription")}
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {pastBookings.slice(0, 5).map((booking) => (
-                  <div
-                    key={booking.id}
-                    className="p-6 sm:p-8 bg-gradient-to-br from-white/60 to-[#fafafa]/60 dark:from-[#0a0a0a]/60 dark:to-[#1a1a1a]/60 backdrop-blur-sm border border-[#e5e5e5] dark:border-[#262626] rounded-[20px] hover:shadow-md transition-all"
-                  >
-                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                      <div className="flex-1">
-                        <div className="flex items-center gap-4 mb-4">
-                          {booking.tutor.user.image ? (
-                            <div className="relative w-12 h-12 sm:w-16 sm:h-16 rounded-full overflow-hidden border-2 border-[#e5e5e5] dark:border-[#262626]">
-                              <Image
-                                src={booking.tutor.user.image}
-                                alt={booking.tutor.user.name || t("tutorFallback")}
-                                fill
-                                className="object-cover"
-                              />
-                            </div>
-                          ) : (
-                            <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-gradient-to-br from-[#ccf381]/20 to-[#7928ca]/20 border-2 border-[#e5e5e5] dark:border-[#262626] flex items-center justify-center">
-                              <User className="w-6 h-6 sm:w-8 sm:h-8 text-[#ccf381]" />
-                            </div>
-                          )}
-                          <div>
-                            <h3 className="text-base sm:text-lg font-semibold text-black dark:text-white mb-1">
-                              {booking.tutor.user.name || t("tutorFallback")}
-                            </h3>
-                            <p className="text-xs sm:text-sm text-[#666] dark:text-[#aaa]">
-                              {booking.tutor.specialties.join(", ")}
-                            </p>
-                          </div>
-                        </div>
-                        <div className="flex flex-wrap items-center gap-4 text-sm text-[#666] dark:text-[#aaa]">
-                          <div className="flex items-center gap-2">
-                            <Calendar className="w-4 h-4" />
-                            <span>{formatDate(booking.scheduledAt)}</span>
-                          </div>
-                        </div>
-                      </div>
-                      <div>{getStatusBadge(booking.status)}</div>
-                    </div>
+          <div className="space-y-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <h2 className="text-3xl font-bold text-black dark:text-white mb-2 flex items-center gap-3">
+                  <div className="p-2.5 bg-gradient-to-br from-blue-500/20 to-indigo-500/20 dark:from-blue-500/10 dark:to-indigo-500/10 rounded-2xl backdrop-blur-sm">
+                    <BookOpen className="w-6 h-6 text-blue-600 dark:text-blue-400" />
                   </div>
-                ))}
+                  {t("pastSessions")}
+                </h2>
+                <p className="text-sm text-[#666] dark:text-[#a1a1aa] ml-14">
+                  {t("pastSessionsDescription")}
+                </p>
               </div>
-            </CardContent>
-          </Card>
+              <Badge className="bg-gradient-to-r from-blue-500/20 to-indigo-500/20 text-blue-700 dark:text-blue-300 border-2 border-blue-500/30 dark:border-blue-500/20 rounded-full px-6 py-2.5 text-base font-bold shadow-lg backdrop-blur-sm">
+                {pastBookings.length}
+              </Badge>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+              {pastBookings.slice(0, 6).map((booking) => (
+                <Card
+                  key={booking.id}
+                  className="group relative overflow-hidden bg-gradient-to-br from-white via-white to-blue-50/20 dark:from-[#1a1a1a] dark:via-[#1a1a1a] dark:to-blue-950/10 border-2 border-[#e5e5e5] dark:border-[#262626] rounded-2xl shadow-[0_4px_16px_rgba(0,0,0,0.06)] hover:shadow-[0_12px_40px_rgba(59,130,246,0.15)] hover:border-blue-400/50 dark:hover:border-blue-600/50 transition-all duration-500 hover:-translate-y-1.5"
+                >
+                  {/* Gradient overlay on hover */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-transparent to-indigo-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  
+                  <CardContent className="relative z-10 p-5">
+                    <div className="flex items-start gap-4 mb-4">
+                      {booking.tutor.user.image ? (
+                        <div className="relative w-12 h-12 rounded-xl overflow-hidden border-2 border-blue-200/50 dark:border-blue-800/50 shadow-md ring-1 ring-blue-100 dark:ring-blue-900/50 shrink-0">
+                          <Image
+                            src={booking.tutor.user.image}
+                            alt={booking.tutor.user.name || t("tutorFallback")}
+                            fill
+                            className="object-cover"
+                          />
+                        </div>
+                      ) : (
+                        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-100 to-indigo-100 dark:from-blue-900/30 dark:to-indigo-900/30 border-2 border-blue-200/50 dark:border-blue-800/50 flex items-center justify-center shadow-md ring-1 ring-blue-100 dark:ring-blue-900/50 shrink-0">
+                          <User className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+                        </div>
+                      )}
+                      <div className="flex-1 min-w-0">
+                        <h3 className="text-base font-bold text-black dark:text-white mb-1.5 truncate">
+                          {booking.tutor.user.name || t("tutorFallback")}
+                        </h3>
+                        <div className="flex items-center gap-2 text-xs text-[#666] dark:text-[#aaa] mb-2">
+                          <Calendar className="w-3.5 h-3.5" />
+                          <span>{formatDate(booking.scheduledAt)}</span>
+                        </div>
+                        {getStatusBadge(booking.status, booking.scheduledAt, booking.duration)}
+                      </div>
+                    </div>
+                    <div className="flex items-center justify-between pt-4 border-t border-[#e5e5e5] dark:border-[#262626]">
+                      <div>
+                        <p className="text-xs text-[#666] dark:text-[#aaa] font-medium mb-1">Price</p>
+                        <p className="text-lg font-bold text-blue-600 dark:text-blue-400">
+                          ${booking.price.toFixed(2)}
+                        </p>
+                      </div>
+                      <div className="text-right">
+                        <p className="text-xs text-[#666] dark:text-[#aaa] font-medium mb-1">Duration</p>
+                        <p className="text-sm font-semibold text-black dark:text-white">
+                          {booking.duration} {tBooking("min")}
+                        </p>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
         )}
 
         {/* Empty State - Enhanced */}
