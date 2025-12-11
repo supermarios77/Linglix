@@ -60,7 +60,9 @@ export default async function PaymentSuccessPage({
       });
     } catch (error) {
       // If error, just show success page anyway
-      console.error("Error fetching booking:", error);
+      if (process.env.NODE_ENV === "development") {
+        console.error("Error fetching booking:", error);
+      }
     }
   }
 

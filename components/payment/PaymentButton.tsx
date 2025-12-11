@@ -49,7 +49,9 @@ export function PaymentButton({ bookingId, disabled }: PaymentButtonProps) {
       // Redirect to Stripe Checkout
       window.location.href = url;
     } catch (error) {
-      console.error("Payment error:", error);
+      if (process.env.NODE_ENV === "development") {
+        console.error("Payment error:", error);
+      }
       alert(
         error instanceof Error
           ? error.message

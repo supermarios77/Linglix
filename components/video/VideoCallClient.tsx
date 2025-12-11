@@ -124,7 +124,11 @@ export function VideoCallClient({
         
         if (!mounted) {
           // Component unmounted during join, leave the call
-          await callInstance.leave().catch(console.error);
+          await callInstance.leave().catch((err) => {
+            if (process.env.NODE_ENV === "development") {
+              console.error("Error leaving call on unmount:", err);
+            }
+          });
           return;
         }
         
@@ -201,7 +205,9 @@ export function VideoCallClient({
       }
       router.push(`/${locale}/dashboard`);
     } catch (err) {
-      console.error("Error leaving call:", err);
+      if (process.env.NODE_ENV === "development") {
+        console.error("Error leaving call:", err);
+      }
       // Still redirect even if leave fails
       router.push(`/${locale}/dashboard`);
     }
@@ -396,7 +402,9 @@ function VideoCallUI({
     try {
       await microphone.toggle();
     } catch (error) {
-      console.error("Error toggling audio:", error);
+      if (process.env.NODE_ENV === "development") {
+        console.error("Error toggling audio:", error);
+      }
     }
   };
 
@@ -405,7 +413,9 @@ function VideoCallUI({
     try {
       await camera.toggle();
     } catch (error) {
-      console.error("Error toggling video:", error);
+      if (process.env.NODE_ENV === "development") {
+        console.error("Error toggling video:", error);
+      }
     }
   };
 
@@ -414,7 +424,9 @@ function VideoCallUI({
     try {
       await screenShare.toggle();
     } catch (error) {
-      console.error("Error toggling screen share:", error);
+      if (process.env.NODE_ENV === "development") {
+        console.error("Error toggling screen share:", error);
+      }
     }
   };
 

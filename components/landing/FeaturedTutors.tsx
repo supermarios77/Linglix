@@ -66,7 +66,9 @@ export async function FeaturedTutors({ locale }: FeaturedTutorsProps) {
     });
   } catch (error) {
     // Log error but don't crash the page
-    console.error("[FeaturedTutors] Database error:", error);
+    if (process.env.NODE_ENV === "development") {
+      console.error("[FeaturedTutors] Database error:", error);
+    }
     // Return empty array to show empty state
     tutors = [];
   }

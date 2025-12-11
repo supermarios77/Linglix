@@ -60,7 +60,9 @@ export default async function PaymentCancelPage({
       });
     } catch (error) {
       // If error, just show cancel page anyway
-      console.error("Error fetching booking:", error);
+      if (process.env.NODE_ENV === "development") {
+        console.error("Error fetching booking:", error);
+      }
     }
   }
 

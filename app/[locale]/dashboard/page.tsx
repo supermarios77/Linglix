@@ -77,7 +77,9 @@ export default async function DashboardPage({
         });
       } catch (error) {
         // Handle database connection errors gracefully
-        console.error("[Dashboard] Error fetching tutor profile:", error);
+        if (process.env.NODE_ENV === "development") {
+          console.error("[Dashboard] Error fetching tutor profile:", error);
+        }
         
         // If it's a timeout or connection error, try a simpler query
         if (
@@ -92,7 +94,9 @@ export default async function DashboardPage({
               where: { userId: user.id },
             });
           } catch (fallbackError) {
-            console.error("[Dashboard] Fallback query also failed:", fallbackError);
+            if (process.env.NODE_ENV === "development") {
+              console.error("[Dashboard] Fallback query also failed:", fallbackError);
+            }
             // If even the simple query fails, redirect to onboarding
             redirect(`/${locale}/onboarding`);
           }
@@ -141,7 +145,9 @@ export default async function DashboardPage({
             availability,
           };
         } catch (error) {
-          console.error("[Dashboard] Error fetching relations:", error);
+          if (process.env.NODE_ENV === "development") {
+            console.error("[Dashboard] Error fetching relations:", error);
+          }
           // Continue with empty arrays if relations fail
           tutorProfile = {
             ...tutorProfile,
@@ -261,7 +267,9 @@ export default async function DashboardPage({
     }
     
     // For other errors, log and redirect to home with locale
-    console.error("Dashboard error:", error);
+    if (process.env.NODE_ENV === "development") {
+      console.error("Dashboard error:", error);
+    }
     redirect(`/${locale}`);
   }
 }

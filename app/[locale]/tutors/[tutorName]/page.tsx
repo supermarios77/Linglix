@@ -96,15 +96,23 @@ export default async function TutorDetailPage({
   }
 
   // Get reviews for this tutor
-  // TODO: Fetch actual reviews when Review model is populated
-  const reviews: {
-    id: string;
-    rating: number;
-    comment: string | null;
-    studentId: string;
-    createdAt: Date;
-    tags: string[];
-  }[] = [];
+  const reviews = await prisma.review.findMany({
+    where: {
+      tutorId: tutor.tutorProfile.id,
+    },
+    include: {
+      student: {
+        select: {
+          id: true,
+          name: true,
+          image: true,
+        },
+      },
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
 
   const tutorData = {
     id: tutor.id,
@@ -123,7 +131,16 @@ export default async function TutorDetailPage({
       endTime: avail.endTime,
       timezone: avail.timezone,
     })),
-    reviews,
+    reviews: reviews.map((review) => ({
+      id: review.id,
+      rating: review.rating,
+      comment: review.comment,
+      studentId: review.studentId,
+      studentName: review.student.name,
+      studentImage: review.student.image,
+      createdAt: review.createdAt,
+      tags: review.tags,
+    })),
   };
 
   const session = await auth();

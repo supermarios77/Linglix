@@ -125,7 +125,9 @@ export function InCallChat({
           setError(null);
         }
       } catch (error) {
-        console.error("Error initializing chat channel:", error);
+        if (process.env.NODE_ENV === "development") {
+          console.error("Error initializing chat channel:", error);
+        }
         if (mounted) {
           setError(error instanceof Error ? error.message : "Failed to load chat");
           setIsLoading(false);

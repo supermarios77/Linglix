@@ -139,7 +139,9 @@ export default async function VideoCallPage({ params }: VideoCallPageProps) {
     );
   } catch (error) {
     // Log error and redirect to dashboard
-    console.error("Video call page error:", error);
+    if (process.env.NODE_ENV === "development") {
+      console.error("Video call page error:", error);
+    }
     redirect(`/${locale}/dashboard`);
   }
 }

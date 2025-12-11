@@ -28,6 +28,8 @@ interface Tutor {
     rating: number;
     comment: string | null;
     studentId: string;
+    studentName: string | null;
+    studentImage: string | null;
     createdAt: Date;
     tags: string[];
   }[];
@@ -222,7 +224,74 @@ export function TutorDetailClient({
             </p>
           ) : (
             <div className="space-y-6">
-              {/* TODO: Render actual reviews when Review model is populated */}
+              {tutor.reviews.map((review) => (
+                <div
+                  key={review.id}
+                  className="border border-[#e5e5e5] dark:border-[#262626] rounded-2xl p-6 bg-[#fafafa] dark:bg-[#1a1a1a]"
+                >
+                  <div className="flex items-start justify-between mb-4">
+                    <div className="flex items-center gap-3">
+                      {review.studentImage ? (
+                        <Image
+                          src={review.studentImage}
+                          alt={review.studentName || "Student"}
+                          width={40}
+                          height={40}
+                          className="rounded-full"
+                        />
+                      ) : (
+                        <div className="w-10 h-10 rounded-full bg-[#ccf381] flex items-center justify-center text-black font-semibold">
+                          {(review.studentName || "S")[0].toUpperCase()}
+                        </div>
+                      )}
+                      <div>
+                        <p className="font-semibold text-black dark:text-white">
+                          {review.studentName || "Anonymous"}
+                        </p>
+                        <p className="text-sm text-[#666] dark:text-[#a1a1aa]">
+                          {new Date(review.createdAt).toLocaleDateString(
+                            locale === "es" ? "es-ES" : "en-US",
+                            {
+                              year: "numeric",
+                              month: "long",
+                              day: "numeric",
+                            }
+                          )}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      {[...Array(5)].map((_, i) => (
+                        <Star
+                          key={i}
+                          className={`w-5 h-5 ${
+                            i < review.rating
+                              ? "fill-[#ccf381] text-[#ccf381]"
+                              : "fill-none text-[#e5e5e5] dark:text-[#262626]"
+                          }`}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                  {review.comment && (
+                    <p className="text-[#111] dark:text-white mb-3">
+                      {review.comment}
+                    </p>
+                  )}
+                  {review.tags.length > 0 && (
+                    <div className="flex flex-wrap gap-2 mt-3">
+                      {review.tags.map((tag, idx) => (
+                        <span
+                          key={idx}
+                          className="px-3 py-1 bg-[#ccf381]/20 text-[#ccf381] rounded-full text-xs font-medium"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ))}
             </div>
           )}
         </div>
