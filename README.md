@@ -75,6 +75,7 @@ See the [docs](./docs/) directory for detailed guides:
 - [Database Setup](./docs/DATABASE_SETUP.md)
 - [Authentication Setup](./docs/AUTH_SETUP.md)
 - [Internationalization](./docs/I18N_SETUP.md)
+- [Email Setup](./docs/EMAIL_SETUP.md)
 - [Production Checklist](./docs/PRODUCTION_CHECKLIST.md)
 
 ## Scripts

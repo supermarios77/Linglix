@@ -175,9 +175,9 @@ export async function GET(request: NextRequest) {
             tutorName: booking.tutor.user.name || "Tutor",
             scheduledAt: booking.scheduledAt,
             duration: booking.duration,
-            sessionUrl: getSessionUrl(booking.id, "en", baseUrl), // TODO: Get locale from user
+            sessionUrl: getSessionUrl(booking.id, "en", baseUrl),
             hoursUntil: 24,
-            locale: "en", // TODO: Get from user preferences
+            locale: "en", // Default to English - can be enhanced with user preferences later
           });
         }
 

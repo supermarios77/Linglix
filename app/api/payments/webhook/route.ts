@@ -298,7 +298,7 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
           bookingId,
           tutorName: bookingWithRelations.tutor.user.name || "Tutor",
           scheduledAt: bookingWithRelations.scheduledAt,
-          locale: "en", // TODO: Get from user preferences
+          locale: "en", // Default to English - can be enhanced with user preferences later
         }).catch((error) => {
           logger.error("Failed to send payment receipt email", {
             bookingId,

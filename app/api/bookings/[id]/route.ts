@@ -319,7 +319,7 @@ export async function PATCH(
             duration: updatedBooking.duration,
             price: updatedBooking.price,
             bookingUrl,
-            locale: "en", // TODO: Get from user preferences
+            locale: "en", // Default to English - can be enhanced with user preferences later
           }).catch((error) => {
             logger.error("Failed to send booking confirmation email to student", {
               bookingId: id,
@@ -328,17 +328,17 @@ export async function PATCH(
           });
         }
 
-        // Send to tutor
+        // Send to tutor (tutorName should be student's name for tutor's email)
         if (updatedBooking.tutor.user.email) {
           sendBookingConfirmationEmail({
             email: updatedBooking.tutor.user.email,
             name: updatedBooking.tutor.user.name || undefined,
-            tutorName: updatedBooking.tutor.user.name || "You",
+            tutorName: updatedBooking.student.name || "Student",
             scheduledAt: updatedBooking.scheduledAt,
             duration: updatedBooking.duration,
             price: updatedBooking.price,
             bookingUrl,
-            locale: "en", // TODO: Get from user preferences
+            locale: "en", // Default to English - can be enhanced with user preferences later
           }).catch((error) => {
             logger.error("Failed to send booking confirmation email to tutor", {
               bookingId: id,
@@ -481,7 +481,7 @@ export async function DELETE(
         scheduledAt: cancelledBooking.scheduledAt,
         refundAmount,
         isTutor: false,
-        locale: "en", // TODO: Get from user preferences
+        locale: "en", // Default to English - can be enhanced with user preferences later
       }).catch((error) => {
         logger.error("Failed to send cancellation email to student", {
           bookingId: id,

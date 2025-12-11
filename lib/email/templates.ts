@@ -307,6 +307,8 @@ export function bookingConfirmationTemplate({
     minute: "2-digit",
   });
   
+  // For students: "Your session with [Tutor]"
+  // For tutors: "Your session with [Student]" (tutorName is actually student name in this case)
   const content = `
     <h2 style="margin-top: 0; color: #10b981;">Booking Confirmed!</h2>
     <p>${greeting}</p>
