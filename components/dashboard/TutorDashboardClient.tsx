@@ -870,167 +870,47 @@ export function TutorDashboardClient({
                     </CardContent>
                   </Card>
                 </div>
-
-                {/* Hero Summary Card */}
-                <Card className="relative bg-gradient-to-br from-white via-white to-[#fafafa] dark:from-[#1a1a1a] dark:via-[#1a1a1a] dark:to-[#0a0a0a] rounded-[32px] sm:rounded-[40px] p-8 sm:p-12 border-2 border-[#e5e5e5] dark:border-[#262626] shadow-[0_20px_40px_rgba(0,0,0,0.08)] sm:shadow-[0_40px_80px_rgba(0,0,0,0.1)] overflow-hidden mb-8 sm:mb-12">
-                  {/* Background Gradient Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-[#7928ca]/5 via-transparent to-[#ccf381]/5 opacity-50" />
-                  
-                  <div className="relative z-10">
-                    <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 lg:gap-12">
-                      {/* Left Side - Main Stats */}
-                      <div className="flex-1">
-                        <div className="inline-flex items-center gap-2 px-4 py-2 bg-[#ccf381]/10 dark:bg-[#ccf381]/20 rounded-full text-xs font-semibold uppercase tracking-wider mb-6">
-                          <Sparkles className="w-3 h-3 text-[#ccf381]" />
-                          <span>Dashboard Overview</span>
-                        </div>
-                        
-                        <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-[-0.03em] mb-4 text-black dark:text-white">
-                          Welcome back,
-                          <br />
-                          <span className="relative inline-block mt-2">
-                            <span className="inline-block bg-[#ffeb3b] dark:bg-[#ccf381] text-black dark:text-black px-4 py-2 -rotate-[-2deg] transform origin-center font-bold shadow-[0_4px_8px_rgba(0,0,0,0.1)] relative z-10">
-                              {user.name || tTutor("tutor")}
-                            </span>
-                            <span className="absolute inset-0 bg-[#ffeb3b]/20 dark:bg-[#ccf381]/20 blur-xl -rotate-[-2deg] transform origin-center" aria-hidden="true" />
-                          </span>
-                        </h2>
-                        
-                        <p className="text-lg sm:text-xl text-[#666] dark:text-[#a1a1aa] mb-8 max-w-2xl">
-                          {totalSessions === 0 
-                            ? tTutor("noSessionsDescription")
-                            : `You've completed ${totalSessions} ${totalSessions === 1 ? 'session' : 'sessions'} with ${totalStudents} ${totalStudents === 1 ? 'student' : 'students'} and earned $${totalEarnings.toFixed(2)}`}
-                        </p>
-
-                        {/* Earnings Breakdown */}
-                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
-                          <div className="p-4 bg-white/80 dark:bg-[#0a0a0a]/80 backdrop-blur-sm border border-[#e5e5e5] dark:border-[#262626] rounded-xl">
-                            <div className="flex items-center gap-2 mb-2">
-                              <TrendingUp className="w-4 h-4 text-green-600 dark:text-green-400" />
-                              <span className="text-xs text-[#666] dark:text-[#aaa] uppercase tracking-wide">This Week</span>
-                            </div>
-                            <div className="text-2xl font-bold text-black dark:text-white">
-                              ${thisWeekEarnings.toFixed(2)}
-                            </div>
-                          </div>
-                          <div className="p-4 bg-white/80 dark:bg-[#0a0a0a]/80 backdrop-blur-sm border border-[#e5e5e5] dark:border-[#262626] rounded-xl">
-                            <div className="flex items-center gap-2 mb-2">
-                              <DollarSign className="w-4 h-4 text-blue-600 dark:text-blue-400" />
-                              <span className="text-xs text-[#666] dark:text-[#aaa] uppercase tracking-wide">This Month</span>
-                            </div>
-                            <div className="text-2xl font-bold text-black dark:text-white">
-                              ${thisMonthEarnings.toFixed(2)}
-                            </div>
-                          </div>
-                          <div className="p-4 bg-white/80 dark:bg-[#0a0a0a]/80 backdrop-blur-sm border border-[#e5e5e5] dark:border-[#262626] rounded-xl">
-                            <div className="flex items-center gap-2 mb-2">
-                              <DollarSign className="w-4 h-4 text-purple-600 dark:text-purple-400" />
-                              <span className="text-xs text-[#666] dark:text-[#aaa] uppercase tracking-wide">All Time</span>
-                            </div>
-                            <div className="text-2xl font-bold text-black dark:text-white">
-                              ${totalEarnings.toFixed(2)}
-                            </div>
-                          </div>
-                        </div>
-
-                        {/* Quick Stats Pills */}
-                        <div className="flex flex-wrap items-center gap-3">
-                          <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/80 dark:bg-[#1a1a1a]/80 backdrop-blur-sm border border-[#e5e5e5] dark:border-[#262626] rounded-full text-sm font-medium text-black dark:text-white">
-                            <BookOpen className="w-4 h-4 text-blue-600 dark:text-blue-400" />
-                            <span>{totalSessions} {totalSessions === 1 ? "Session" : "Sessions"}</span>
-                          </div>
-                          <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/80 dark:bg-[#1a1a1a]/80 backdrop-blur-sm border border-[#e5e5e5] dark:border-[#262626] rounded-full text-sm font-medium text-black dark:text-white">
-                            <Star className="w-4 h-4 text-yellow-500 fill-current" />
-                            <span>{averageRating > 0 ? averageRating.toFixed(1) : "0.0"} Rating</span>
-                          </div>
-                          <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/80 dark:bg-[#1a1a1a]/80 backdrop-blur-sm border border-[#e5e5e5] dark:border-[#262626] rounded-full text-sm font-medium text-black dark:text-white">
-                            <Users className="w-4 h-4 text-purple-600 dark:text-purple-400" />
-                            <span>{totalStudents} {totalStudents === 1 ? "Student" : "Students"}</span>
-                          </div>
-                          <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/80 dark:bg-[#1a1a1a]/80 backdrop-blur-sm border border-[#e5e5e5] dark:border-[#262626] rounded-full text-sm font-medium text-black dark:text-white">
-                            <Calendar className="w-4 h-4 text-green-600 dark:text-green-400" />
-                            <span>{upcomingBookings.length} Upcoming</span>
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* Right Side - Visual Stats */}
-                      <div className="lg:w-80 space-y-4">
-                        <div className="grid grid-cols-2 gap-4">
-                          <div className="bg-white/60 dark:bg-[#0a0a0a]/60 backdrop-blur-sm border border-[#e5e5e5] dark:border-[#262626] rounded-2xl p-4 text-center">
-                            <div className="text-3xl font-bold text-black dark:text-white mb-1">
-                              {upcomingBookings.length}
-                            </div>
-                            <div className="text-xs text-[#666] dark:text-[#a1a1aa] uppercase tracking-wide">
-                              Upcoming
-                            </div>
-                          </div>
-                          <div className="bg-white/60 dark:bg-[#0a0a0a]/60 backdrop-blur-sm border border-[#e5e5e5] dark:border-[#262626] rounded-2xl p-4 text-center">
-                            <div className="text-3xl font-bold text-black dark:text-white mb-1">
-                              {reviews.length}
-                            </div>
-                            <div className="text-xs text-[#666] dark:text-[#a1a1aa] uppercase tracking-wide">
-                              Reviews
-                            </div>
-                          </div>
-                        </div>
-                        {averageRating > 0 && (
-                          <div className="bg-white/60 dark:bg-[#0a0a0a]/60 backdrop-blur-sm border border-[#e5e5e5] dark:border-[#262626] rounded-2xl p-6 text-center">
-                            <div className="flex items-center justify-center gap-1 mb-2">
-                              {[...Array(5)].map((_, i) => (
-                                <Star
-                                  key={i}
-                                  className={`w-5 h-5 ${
-                                    i < Math.round(averageRating)
-                                      ? "text-yellow-500 fill-current"
-                                      : "text-gray-300 dark:text-gray-600"
-                                  }`}
-                                />
-                              ))}
-                            </div>
-                            <div className="text-2xl font-bold text-black dark:text-white">
-                              {averageRating.toFixed(1)}
-                            </div>
-                            <div className="text-xs text-[#666] dark:text-[#a1a1aa] mt-1">
-                              Average Rating
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                </Card>
               </div>
             )}
 
             {activeSection === "sessions" && (
               <div className="space-y-6">
+                {/* Section Header */}
+                <div className="flex items-center justify-between mb-6">
+                  <div>
+                    <h1 className="text-2xl sm:text-3xl font-bold text-black dark:text-white mb-1">
+                      {tTutor("sections.sessions")}
+                    </h1>
+                    <p className="text-sm text-[#666] dark:text-[#aaa]">
+                      Manage your teaching sessions
+                    </p>
+                  </div>
+                </div>
 
                 {/* Upcoming Sessions */}
-                {upcomingBookings.length > 0 && (
-              <Card className="bg-white/90 dark:bg-[#1a1a1a]/90 backdrop-blur-md border border-[#e5e5e5] dark:border-[#262626] rounded-[20px] sm:rounded-[24px] shadow-[0_4px_12px_rgba(0,0,0,0.05)]">
-                <CardHeader className="pb-4">
-                  <div className="flex items-center justify-between">
-                    <CardTitle className="text-lg font-semibold text-black dark:text-white">
-                      {tTutor("upcomingSessions")}
-                    </CardTitle>
-                    <Badge variant="outline" className="rounded-md bg-green-500/10 text-green-700 dark:text-green-300 border-green-500/30">
-                      {upcomingBookings.length}
-                    </Badge>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-3">
-                    {upcomingBookings.slice(0, 5).map((booking) => {
-                      return (
-                        <div
-                          key={booking.id}
-                          className="block p-4 sm:p-5 bg-white/60 dark:bg-[#0a0a0a]/60 backdrop-blur-sm border border-[#e5e5e5] dark:border-[#262626] rounded-xl"
-                        >
-                          <div className="flex items-start justify-between gap-4">
-                            <div className="flex items-start gap-3 flex-1">
+                {upcomingBookings.length > 0 ? (
+                  <Card className="bg-white/90 dark:bg-[#1a1a1a]/90 backdrop-blur-md border border-[#e5e5e5] dark:border-[#262626] rounded-[24px] shadow-[0_4px_12px_rgba(0,0,0,0.05)]">
+                    <CardHeader className="pb-4">
+                      <div className="flex items-center justify-between">
+                        <CardTitle className="text-xl font-semibold text-black dark:text-white flex items-center gap-2">
+                          <Calendar className="w-5 h-5 text-green-600 dark:text-green-400" />
+                          {tTutor("upcomingSessions")}
+                        </CardTitle>
+                        <Badge className="bg-green-500/20 text-green-700 dark:text-green-300 border-green-500/50 rounded-full px-4 py-1.5 text-sm font-semibold">
+                          {upcomingBookings.length}
+                        </Badge>
+                      </div>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        {upcomingBookings.map((booking) => (
+                          <div
+                            key={booking.id}
+                            className="p-5 bg-gradient-to-br from-green-50/50 to-white dark:from-green-950/10 dark:to-[#0a0a0a]/50 backdrop-blur-sm border border-green-200 dark:border-green-800 rounded-xl hover:border-green-400 dark:hover:border-green-600 hover:shadow-lg transition-all"
+                          >
+                            <div className="flex items-start gap-4">
                               {booking.student.image ? (
-                                <div className="relative w-10 h-10 rounded-full overflow-hidden border border-[#e5e5e5] dark:border-[#262626] flex-shrink-0">
+                                <div className="relative w-14 h-14 rounded-full overflow-hidden border-2 border-green-200 dark:border-green-800 shrink-0">
                                   <Image
                                     src={booking.student.image}
                                     alt={booking.student.name || tTutor("student")}
@@ -1039,161 +919,239 @@ export function TutorDashboardClient({
                                   />
                                 </div>
                               ) : (
-                                <div className="w-10 h-10 rounded-full bg-[#f5f5f5] dark:bg-[#262626] border border-[#e5e5e5] dark:border-[#262626] flex items-center justify-center flex-shrink-0">
-                                  <User className="w-5 h-5 text-[#666] dark:text-[#aaa]" />
+                                <div className="w-14 h-14 rounded-full bg-[#f5f5f5] dark:bg-[#262626] border-2 border-green-200 dark:border-green-800 flex items-center justify-center shrink-0">
+                                  <User className="w-7 h-7 text-[#666] dark:text-[#aaa]" />
                                 </div>
                               )}
                               <div className="flex-1 min-w-0">
-                                <h3 className="text-sm font-medium text-black dark:text-white mb-1">
+                                <h3 className="text-base font-semibold text-black dark:text-white mb-2">
                                   {booking.student.name || tTutor("student")}
                                 </h3>
-                                <div className="flex flex-wrap items-center gap-3 text-xs text-[#666] dark:text-[#aaa]">
-                                  <span>{formatDate(booking.scheduledAt)}</span>
-                                  <span>•</span>
-                                  <span>{formatTime(booking.scheduledAt)}</span>
-                                  <span>•</span>
-                                  <span>{booking.duration} {tBooking("min")}</span>
-                                  <span>•</span>
-                                  <span className="font-medium text-black dark:text-white">${booking.price.toFixed(2)}</span>
+                                <div className="space-y-1.5 mb-3">
+                                  <div className="flex items-center gap-2 text-sm text-[#666] dark:text-[#aaa]">
+                                    <Calendar className="w-4 h-4" />
+                                    <span>{formatDate(booking.scheduledAt)}</span>
+                                  </div>
+                                  <div className="flex items-center gap-2 text-sm text-[#666] dark:text-[#aaa]">
+                                    <Clock className="w-4 h-4" />
+                                    <span>{formatTime(booking.scheduledAt)}</span>
+                                    <span>•</span>
+                                    <span>{booking.duration} {tBooking("min")}</span>
+                                  </div>
+                                  <div className="flex items-center gap-2 text-sm font-semibold text-green-700 dark:text-green-300">
+                                    <DollarSign className="w-4 h-4" />
+                                    <span>${booking.price.toFixed(2)}</span>
+                                  </div>
+                                </div>
+                                <div className="flex items-center gap-2">
+                                  {getStatusBadge(booking.status)}
+                                  {canJoinSession(booking.scheduledAt, booking.status) && (
+                                    <Link href={`/${locale}/sessions/${booking.id}`}>
+                                      <Button
+                                        size="sm"
+                                        className="rounded-full bg-[#111] dark:bg-[#ccf381] text-white dark:text-black px-4 py-2 text-xs font-semibold transition-all hover:bg-[#222] dark:hover:bg-[#d4f89a] hover:shadow-lg inline-flex items-center gap-1.5"
+                                      >
+                                        <Video className="w-3 h-3" />
+                                        {tVideoCall("joinSession")}
+                                      </Button>
+                                    </Link>
+                                  )}
                                 </div>
                               </div>
                             </div>
-                            <div className="flex flex-col items-end gap-2 flex-shrink-0">
-                              {getStatusBadge(booking.status)}
-                              {canJoinSession(booking.scheduledAt, booking.status) && (
-                                <Link href={`/${locale}/sessions/${booking.id}`}>
-                                  <Button
-                                    size="sm"
-                                    className="rounded-full bg-[#111] dark:bg-[#ccf381] text-white dark:text-black px-4 py-2 text-xs font-semibold transition-all hover:bg-[#222] dark:hover:bg-[#d4f89a] hover:shadow-lg inline-flex items-center gap-1.5"
-                                  >
-                                    <Video className="w-3 h-3" />
-                                    {tVideoCall("joinSession")}
-                                  </Button>
-                                </Link>
-                              )}
-                            </div>
                           </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </CardContent>
-              </Card>
+                        ))}
+                      </div>
+                    </CardContent>
+                  </Card>
+                ) : (
+                  <Card className="bg-white/90 dark:bg-[#1a1a1a]/90 backdrop-blur-md border border-[#e5e5e5] dark:border-[#262626] rounded-[24px] shadow-[0_4px_12px_rgba(0,0,0,0.05)]">
+                    <CardContent className="py-12 text-center">
+                      <Calendar className="w-16 h-16 mx-auto text-[#666] dark:text-[#aaa] mb-4" />
+                      <h3 className="text-lg font-semibold text-black dark:text-white mb-2">
+                        No Upcoming Sessions
+                      </h3>
+                      <p className="text-sm text-[#666] dark:text-[#a1a1aa]">
+                        You don't have any upcoming sessions scheduled
+                      </p>
+                    </CardContent>
+                  </Card>
                 )}
 
                 {/* Past Sessions */}
                 {pastBookings.length > 0 && (
-              <Card className="bg-white/90 dark:bg-[#1a1a1a]/90 backdrop-blur-md border border-[#e5e5e5] dark:border-[#262626] rounded-[20px] sm:rounded-[24px] shadow-[0_4px_12px_rgba(0,0,0,0.05)]">
-                <CardHeader className="pb-4">
-                  <div className="flex items-center justify-between">
-                    <CardTitle className="text-lg font-semibold text-black dark:text-white">
-                      {tTutor("pastSessions")}
-                    </CardTitle>
-                    <Badge variant="outline" className="rounded-md bg-blue-500/10 text-blue-700 dark:text-blue-300 border-blue-500/30">
-                      {pastBookings.length}
-                    </Badge>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-3">
-                    {pastBookings.slice(0, 5).map((booking) => (
-                      <div
-                        key={booking.id}
-                        className="p-4 sm:p-5 bg-white/60 dark:bg-[#0a0a0a]/60 backdrop-blur-sm border border-[#e5e5e5] dark:border-[#262626] rounded-xl hover:border-[#ccf381] dark:hover:border-[#ccf381]/50 hover:shadow-md transition-all duration-200"
-                      >
-                        <div className="flex items-start justify-between gap-4">
-                          <div className="flex items-start gap-3 flex-1">
-                            {booking.student.image ? (
-                              <div className="relative w-10 h-10 rounded-full overflow-hidden border border-[#e5e5e5] dark:border-[#262626] flex-shrink-0">
-                                <Image
-                                  src={booking.student.image}
-                                  alt={booking.student.name || tTutor("student")}
-                                  fill
-                                  className="object-cover"
-                                />
-                              </div>
-                            ) : (
-                              <div className="w-10 h-10 rounded-full bg-[#f5f5f5] dark:bg-[#262626] border border-[#e5e5e5] dark:border-[#262626] flex items-center justify-center flex-shrink-0">
-                                <User className="w-5 h-5 text-[#666] dark:text-[#aaa]" />
-                              </div>
-                            )}
-                            <div className="flex-1 min-w-0">
-                              <h3 className="text-sm font-medium text-black dark:text-white mb-1">
-                                {booking.student.name || tTutor("student")}
-                              </h3>
-                              <div className="flex flex-wrap items-center gap-3 text-xs text-[#666] dark:text-[#aaa]">
-                                <span>{formatDate(booking.scheduledAt)}</span>
+                  <Card className="bg-white/90 dark:bg-[#1a1a1a]/90 backdrop-blur-md border border-[#e5e5e5] dark:border-[#262626] rounded-[24px] shadow-[0_4px_12px_rgba(0,0,0,0.05)]">
+                    <CardHeader className="pb-4">
+                      <div className="flex items-center justify-between">
+                        <CardTitle className="text-xl font-semibold text-black dark:text-white flex items-center gap-2">
+                          <BookOpen className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                          {tTutor("pastSessions")}
+                        </CardTitle>
+                        <Badge className="bg-blue-500/20 text-blue-700 dark:text-blue-300 border-blue-500/50 rounded-full px-4 py-1.5 text-sm font-semibold">
+                          {pastBookings.length}
+                        </Badge>
+                      </div>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        {pastBookings.map((booking) => (
+                          <div
+                            key={booking.id}
+                            className="p-4 bg-white/60 dark:bg-[#0a0a0a]/60 backdrop-blur-sm border border-[#e5e5e5] dark:border-[#262626] rounded-xl hover:border-blue-400 dark:hover:border-blue-600 hover:shadow-md transition-all"
+                          >
+                            <div className="flex items-start gap-3 mb-3">
+                              {booking.student.image ? (
+                                <div className="relative w-10 h-10 rounded-full overflow-hidden border border-[#e5e5e5] dark:border-[#262626] shrink-0">
+                                  <Image
+                                    src={booking.student.image}
+                                    alt={booking.student.name || tTutor("student")}
+                                    fill
+                                    className="object-cover"
+                                  />
+                                </div>
+                              ) : (
+                                <div className="w-10 h-10 rounded-full bg-[#f5f5f5] dark:bg-[#262626] border border-[#e5e5e5] dark:border-[#262626] flex items-center justify-center shrink-0">
+                                  <User className="w-5 h-5 text-[#666] dark:text-[#aaa]" />
+                                </div>
+                              )}
+                              <div className="flex-1 min-w-0">
+                                <h3 className="text-sm font-semibold text-black dark:text-white mb-1">
+                                  {booking.student.name || tTutor("student")}
+                                </h3>
+                                <div className="text-xs text-[#666] dark:text-[#aaa]">
+                                  {formatDate(booking.scheduledAt)}
+                                </div>
                               </div>
                             </div>
+                            <div className="flex items-center justify-between">
+                              <div className="text-sm font-semibold text-black dark:text-white">
+                                ${booking.price.toFixed(2)}
+                              </div>
+                              {getStatusBadge(booking.status)}
+                            </div>
                           </div>
-                          <div className="flex-shrink-0">
-                            {getStatusBadge(booking.status)}
-                          </div>
-                        </div>
+                        ))}
                       </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
+                    </CardContent>
+                  </Card>
                 )}
               </div>
             )}
 
             {activeSection === "calendar" && (
               <div className="space-y-6">
-                <AvailabilityCalendar
-                  bookings={[...upcomingBookings, ...pastBookings]}
-                />
+                {/* Section Header */}
+                <div className="flex items-center justify-between mb-6">
+                  <div>
+                    <h1 className="text-2xl sm:text-3xl font-bold text-black dark:text-white mb-1">
+                      {tTutor("sections.calendar")}
+                    </h1>
+                    <p className="text-sm text-[#666] dark:text-[#aaa]">
+                      View all your sessions in calendar format
+                    </p>
+                  </div>
+                </div>
+
+                <Card className="bg-white/90 dark:bg-[#1a1a1a]/90 backdrop-blur-md border border-[#e5e5e5] dark:border-[#262626] rounded-[24px] shadow-[0_4px_12px_rgba(0,0,0,0.05)]">
+                  <CardContent className="p-6">
+                    <AvailabilityCalendar
+                      bookings={[...upcomingBookings, ...pastBookings]}
+                    />
+                  </CardContent>
+                </Card>
               </div>
             )}
 
             {activeSection === "availability" && (
-              <div>
-                <AvailabilityManager locale={locale} />
+              <div className="space-y-6">
+                {/* Section Header */}
+                <div className="flex items-center justify-between mb-6">
+                  <div>
+                    <h1 className="text-2xl sm:text-3xl font-bold text-black dark:text-white mb-1">
+                      {tTutor("sections.availability")}
+                    </h1>
+                    <p className="text-sm text-[#666] dark:text-[#aaa]">
+                      Set your weekly availability schedule
+                    </p>
+                  </div>
+                </div>
+
+                <Card className="bg-white/90 dark:bg-[#1a1a1a]/90 backdrop-blur-md border border-[#e5e5e5] dark:border-[#262626] rounded-[24px] shadow-[0_4px_12px_rgba(0,0,0,0.05)]">
+                  <CardContent className="p-6">
+                    <AvailabilityManager locale={locale} />
+                  </CardContent>
+                </Card>
               </div>
             )}
 
             {activeSection === "reviews" && (
-              <div>
+              <div className="space-y-6">
+                {/* Section Header */}
+                <div className="flex items-center justify-between mb-6">
+                  <div>
+                    <h1 className="text-2xl sm:text-3xl font-bold text-black dark:text-white mb-1">
+                      {tTutor("sections.reviews")}
+                    </h1>
+                    <p className="text-sm text-[#666] dark:text-[#aaa]">
+                      What your students are saying about you
+                    </p>
+                  </div>
+                  {reviews.length > 0 && (
+                    <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-1">
+                        {[...Array(5)].map((_, i) => (
+                          <Star
+                            key={i}
+                            className={`w-5 h-5 ${
+                              i < Math.round(averageRating)
+                                ? "text-yellow-500 fill-current"
+                                : "text-gray-300 dark:text-gray-600"
+                            }`}
+                          />
+                        ))}
+                      </div>
+                      <span className="text-lg font-bold text-black dark:text-white">
+                        {averageRating > 0 ? averageRating.toFixed(1) : "0.0"}
+                      </span>
+                      <span className="text-sm text-[#666] dark:text-[#aaa]">
+                        ({reviews.length} {reviews.length === 1 ? "review" : "reviews"})
+                      </span>
+                    </div>
+                  )}
+                </div>
+
                 {reviews.length > 0 ? (
-                  <Card className="bg-white/90 dark:bg-[#1a1a1a]/90 backdrop-blur-md border border-[#e5e5e5] dark:border-[#262626] rounded-[20px] sm:rounded-[24px] shadow-[0_4px_12px_rgba(0,0,0,0.05)]">
-                <CardHeader className="pb-4">
-                  <CardTitle className="text-lg font-semibold text-black dark:text-white">
-                    {tTutor("reviews")}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    {reviews.slice(0, 3).map((review) => (
-                            <div
-                              key={review.id}
-                              className="p-4 sm:p-5 bg-white/60 dark:bg-[#0a0a0a]/60 backdrop-blur-sm border border-[#e5e5e5] dark:border-[#262626] rounded-xl hover:shadow-md transition-all duration-200"
-                            >
-                        <div className="flex items-start gap-3">
-                          {review.student.image ? (
-                            <div className="relative w-8 h-8 rounded-full overflow-hidden border border-[#e5e5e5] dark:border-[#262626] flex-shrink-0">
-                              <Image
-                                src={review.student.image}
-                                alt={review.student.name || tTutor("student")}
-                                fill
-                                className="object-cover"
-                              />
-                            </div>
-                          ) : (
-                            <div className="w-8 h-8 rounded-full bg-[#f5f5f5] dark:bg-[#262626] border border-[#e5e5e5] dark:border-[#262626] flex items-center justify-center flex-shrink-0">
-                              <User className="w-4 h-4 text-[#666] dark:text-[#aaa]" />
-                            </div>
-                          )}
-                          <div className="flex-1 min-w-0">
-                            <div className="flex items-center gap-2 mb-1">
-                              <h4 className="text-sm font-medium text-black dark:text-white truncate">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {reviews.map((review) => (
+                      <Card
+                        key={review.id}
+                        className="bg-white/90 dark:bg-[#1a1a1a]/90 backdrop-blur-md border border-[#e5e5e5] dark:border-[#262626] rounded-[24px] shadow-[0_4px_12px_rgba(0,0,0,0.05)] hover:shadow-lg transition-all"
+                      >
+                        <CardContent className="p-6">
+                          <div className="flex items-start gap-4 mb-4">
+                            {review.student.image ? (
+                              <div className="relative w-12 h-12 rounded-full overflow-hidden border-2 border-[#e5e5e5] dark:border-[#262626] shrink-0">
+                                <Image
+                                  src={review.student.image}
+                                  alt={review.student.name || tTutor("student")}
+                                  fill
+                                  className="object-cover"
+                                />
+                              </div>
+                            ) : (
+                              <div className="w-12 h-12 rounded-full bg-[#f5f5f5] dark:bg-[#262626] border-2 border-[#e5e5e5] dark:border-[#262626] flex items-center justify-center shrink-0">
+                                <User className="w-6 h-6 text-[#666] dark:text-[#aaa]" />
+                              </div>
+                            )}
+                            <div className="flex-1 min-w-0">
+                              <h4 className="text-base font-semibold text-black dark:text-white mb-1">
                                 {review.student.name || tTutor("student")}
                               </h4>
-                              <div className="flex items-center gap-0.5">
+                              <div className="flex items-center gap-1 mb-2">
                                 {[...Array(5)].map((_, i) => (
                                   <Star
                                     key={i}
-                                    className={`w-3 h-3 ${
+                                    className={`w-4 h-4 ${
                                       i < review.rating
                                         ? "text-yellow-500 fill-current"
                                         : "text-gray-300 dark:text-gray-600"
@@ -1201,28 +1159,46 @@ export function TutorDashboardClient({
                                   />
                                 ))}
                               </div>
-                            </div>
-                            {review.comment && (
-                              <p className="text-xs text-[#666] dark:text-[#aaa] line-clamp-2">
-                                {review.comment}
+                              <p className="text-xs text-[#666] dark:text-[#aaa]">
+                                {new Date(review.createdAt).toLocaleDateString(
+                                  locale === "es" ? "es-ES" : "en-US",
+                                  { year: "numeric", month: "long", day: "numeric" }
+                                )}
                               </p>
-                            )}
+                            </div>
                           </div>
-                        </div>
-                      </div>
+                          {review.comment && (
+                            <p className="text-sm text-[#666] dark:text-[#aaa] leading-relaxed">
+                              {review.comment}
+                            </p>
+                          )}
+                          {review.tags && review.tags.length > 0 && (
+                            <div className="flex flex-wrap gap-2 mt-4">
+                              {review.tags.map((tag, idx) => (
+                                <span
+                                  key={idx}
+                                  className="px-3 py-1 bg-[#ccf381]/20 text-[#ccf381] rounded-full text-xs font-medium"
+                                >
+                                  {tag}
+                                </span>
+                              ))}
+                            </div>
+                          )}
+                        </CardContent>
+                      </Card>
                     ))}
                   </div>
-                </CardContent>
-              </Card>
                 ) : (
-                  <Card className="bg-white/90 dark:bg-[#1a1a1a]/90 backdrop-blur-md border border-[#e5e5e5] dark:border-[#262626] rounded-[20px] sm:rounded-[24px] shadow-[0_4px_12px_rgba(0,0,0,0.05)]">
-                    <CardContent className="py-12 sm:py-16 text-center">
-                      <Star className="w-12 h-12 sm:w-16 sm:h-16 mx-auto text-[#666] dark:text-[#aaa] mb-4" />
-                      <h3 className="text-lg sm:text-xl font-semibold text-black dark:text-white mb-2">
+                  <Card className="bg-white/90 dark:bg-[#1a1a1a]/90 backdrop-blur-md border border-[#e5e5e5] dark:border-[#262626] rounded-[24px] shadow-[0_4px_12px_rgba(0,0,0,0.05)]">
+                    <CardContent className="py-16 text-center">
+                      <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-yellow-100 dark:bg-yellow-900/20 flex items-center justify-center">
+                        <Star className="w-10 h-10 text-yellow-500 dark:text-yellow-400" />
+                      </div>
+                      <h3 className="text-xl font-semibold text-black dark:text-white mb-2">
                         No Reviews Yet
                       </h3>
-                      <p className="text-sm sm:text-base text-[#666] dark:text-[#a1a1aa]">
-                        Reviews from your students will appear here
+                      <p className="text-sm text-[#666] dark:text-[#a1a1aa] max-w-md mx-auto">
+                        Reviews from your students will appear here once they complete sessions with you
                       </p>
                     </CardContent>
                   </Card>
