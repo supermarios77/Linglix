@@ -444,18 +444,18 @@ export function UserDashboardClient({
                               </Button>
                             </Link>
                           )}
-                          <Link
-                            href={`/${locale}/tutors/${slugify(booking.tutor.user.name || "")}`}
+                        <Link
+                          href={`/${locale}/tutors/${slugify(booking.tutor.user.name || "")}`}
+                        >
+                          <Button
+                            size="lg"
+                            variant="outline"
+                            className="rounded-full bg-white/80 dark:bg-[#0a0a0a]/80 backdrop-blur-sm border-2 border-[#e5e5e5] dark:border-[#262626] hover:border-[#111] dark:hover:border-[#ccf381] transition-all"
                           >
-                            <Button
-                              size="lg"
-                              variant="outline"
-                              className="rounded-full bg-white/80 dark:bg-[#0a0a0a]/80 backdrop-blur-sm border-2 border-[#e5e5e5] dark:border-[#262626] hover:border-[#111] dark:hover:border-[#ccf381] transition-all"
-                            >
-                              {t("viewTutor")}
-                              <ArrowRight className="w-4 h-4 ml-2" />
-                            </Button>
-                          </Link>
+                            {t("viewTutor")}
+                            <ArrowRight className="w-4 h-4 ml-2" />
+                          </Button>
+                        </Link>
                         </div>
                       </div>
                     </div>
