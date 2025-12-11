@@ -486,5 +486,16 @@
       "teachingStyle": "Teaching Style (Optional)",
       "teachingStylePlaceholder": "Describe your teaching approach and methods..."
     }
+  },
+  "payment": {
+    "payNow": "Pay Now",
+    "processing": "Processing...",
+    "successTitle": "Payment Successful",
+    "successMessage": "Your payment for the session with {tutorName} has been confirmed!",
+    "successMessageGeneric": "Your payment has been confirmed successfully!",
+    "cancelTitle": "Payment Cancelled",
+    "cancelMessage": "Your payment was cancelled. You can try again from your dashboard.",
+    "goToDashboard": "Go to Dashboard",
+    "tryAgain": "Try Again"
   }
 }

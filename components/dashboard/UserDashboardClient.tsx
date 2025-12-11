@@ -28,14 +28,14 @@ import {
   User,
   BookOpen,
   ArrowRight,
+  Video,
+  Sparkles,
+  LogOut,
+  Search,
+  Star,
   CheckCircle2,
   XCircle,
-  Search,
-  Sparkles,
-  Star,
   TrendingUp,
-  LogOut,
-  Video,
 } from "lucide-react";
 import Image from "next/image";
 import { slugify } from "@/lib/utils/slug";
@@ -94,6 +94,7 @@ export function UserDashboardClient({
   const tBooking = useTranslations("booking");
   const tCommon = useTranslations("common");
   const tVideoCall = useTranslations("videoCall");
+  const tPayment = useTranslations("payment");
 
   const [showSignOutDialog, setShowSignOutDialog] = useState(false);
 
@@ -433,6 +434,11 @@ export function UserDashboardClient({
                       <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
                         {getStatusBadge(booking.status)}
                         <div className="flex flex-col sm:flex-row gap-2">
+                          {/* Payment button for confirmed bookings without payment */}
+                          {booking.status === "CONFIRMED" && !booking.paymentId && (
+                            <PaymentButton bookingId={booking.id} />
+                          )}
+                          {/* Join Session button */}
                           {canJoinSession(booking.scheduledAt, booking.status) && (
                             <Link href={`/${locale}/sessions/${booking.id}`}>
                               <Button

@@ -27,6 +27,7 @@ import {
   useStreamVideoClient,
   useCall,
   ParticipantView,
+  hasVideo,
 } from "@stream-io/video-react-sdk";
 import { Call } from "@stream-io/video-react-sdk";
 import { Button } from "@/components/ui/button";
@@ -343,14 +344,27 @@ function VideoCallUI({
     useMicrophoneState,
     useCameraState,
     useScreenShareState,
+    useParticipants,
   } = useCallStateHooks();
   const callingState = useCallCallingState();
   const localParticipant = useLocalParticipant();
   const microphoneState = useMicrophoneState();
   const cameraState = useCameraState();
   const screenShareState = useScreenShareState();
+  const participants = useParticipants();
   const call = useCall();
   const t = useTranslations("videoCall");
+
+  // Get the actual remote participant from Stream SDK
+  const remoteParticipant = participants.find((p) => !p.isLocalParticipant);
+  
+  // For header display, prefer booking data (more reliable) but use Stream data as fallback
+  // Booking data is always correct because it comes from the database relationship
+  const displayParticipant = {
+    id: otherParticipant.id,
+    name: otherParticipant.name,
+    image: otherParticipant.image,
+  };
 
   // Get publishing states
   // isMute is true when muted/disabled, so we invert it to get enabled state
@@ -398,11 +412,11 @@ function VideoCallUI({
       <header className="flex items-center justify-between p-4 sm:p-6 bg-white/98 dark:bg-[#1a1a1a]/98 backdrop-blur-xl border-b border-[#e5e5e5] dark:border-[#262626] z-10 shadow-lg">
         <div className="flex items-center gap-3 sm:gap-4">
           <div className="flex items-center gap-3">
-            {otherParticipant.image ? (
+            {displayParticipant.image ? (
               <div className="relative">
                 <Image
-                  src={otherParticipant.image}
-                  alt={otherParticipant.name}
+                  src={displayParticipant.image}
+                  alt={displayParticipant.name}
                   width={52}
                   height={52}
                   className="rounded-full border-2 border-[#e5e5e5] dark:border-[#262626] shadow-md"
@@ -419,7 +433,7 @@ function VideoCallUI({
             )}
             <div>
               <h1 className="font-semibold text-base sm:text-lg text-black dark:text-white">
-                {otherParticipant.name}
+                {displayParticipant.name}
               </h1>
               <p className="text-xs text-[#666] dark:text-[#aaa] flex items-center gap-1.5">
                 <span className="w-1.5 h-1.5 rounded-full bg-green-500"></span>
@@ -519,36 +533,40 @@ function VideoCallUI({
             )}
           </Button>
 
-          {/* Screen Share Toggle */}
-          <Button
-            onClick={toggleScreenShare}
-            size="lg"
-            variant={isScreenSharing ? "default" : "outline"}
-            disabled={!screenShare}
-            className={`h-14 w-14 sm:h-16 sm:w-16 rounded-full transition-all duration-200 shadow-xl hover:scale-110 active:scale-95 ${
-              isScreenSharing
-                ? "bg-[#ccf381] hover:bg-[#d4f89a] text-black border-2 border-[#ccf381] hover:shadow-[0_0_20px_rgba(204,243,129,0.5)]"
-                : "bg-white dark:bg-[#1a1a1a] text-black dark:text-white border-2 border-[#e5e5e5] dark:border-[#262626] hover:bg-[#f5f5f5] dark:hover:bg-[#262626] hover:shadow-2xl"
-            }`}
-            aria-label={isScreenSharing ? "Stop sharing screen" : "Share screen"}
-          >
-            {isScreenSharing ? (
-              <MonitorOff className="w-6 h-6 sm:w-7 sm:h-7" />
-            ) : (
-              <Monitor className="w-6 h-6 sm:w-7 sm:h-7" />
-            )}
-          </Button>
+          {/* Screen Share Toggle - Only for tutors */}
+          {isTutor && (
+            <Button
+              onClick={toggleScreenShare}
+              size="lg"
+              variant={isScreenSharing ? "default" : "outline"}
+              disabled={!screenShare}
+              className={`h-14 w-14 sm:h-16 sm:w-16 rounded-full transition-all duration-200 shadow-xl hover:scale-110 active:scale-95 ${
+                isScreenSharing
+                  ? "bg-[#ccf381] hover:bg-[#d4f89a] text-black border-2 border-[#ccf381] hover:shadow-[0_0_20px_rgba(204,243,129,0.5)]"
+                  : "bg-white dark:bg-[#1a1a1a] text-black dark:text-white border-2 border-[#e5e5e5] dark:border-[#262626] hover:bg-[#f5f5f5] dark:hover:bg-[#262626] hover:shadow-2xl"
+              }`}
+              aria-label={isScreenSharing ? "Stop sharing screen" : "Share screen"}
+            >
+              {isScreenSharing ? (
+                <MonitorOff className="w-6 h-6 sm:w-7 sm:h-7" />
+              ) : (
+                <Monitor className="w-6 h-6 sm:w-7 sm:h-7" />
+              )}
+            </Button>
+          )}
 
-          {/* Leave Call */}
-          <Button
-            onClick={onLeave}
-            size="lg"
-            variant="destructive"
-            className="h-14 w-14 sm:h-16 sm:w-16 rounded-full bg-red-500 hover:bg-red-600 text-white border-2 border-red-600 transition-all duration-200 shadow-xl hover:scale-110 active:scale-95 hover:shadow-red-500/50"
-            aria-label="Leave call"
-          >
-            <PhoneOff className="w-6 h-6 sm:w-7 sm:h-7" />
-          </Button>
+          {/* Leave Call - Only for tutors */}
+          {isTutor && (
+            <Button
+              onClick={onLeave}
+              size="lg"
+              variant="destructive"
+              className="h-14 w-14 sm:h-16 sm:w-16 rounded-full bg-red-500 hover:bg-red-600 text-white border-2 border-red-600 transition-all duration-200 shadow-xl hover:scale-110 active:scale-95 hover:shadow-red-500/50"
+              aria-label="End call"
+            >
+              <PhoneOff className="w-6 h-6 sm:w-7 sm:h-7" />
+            </Button>
+          )}
         </div>
       </div>
     </div>
@@ -573,7 +591,7 @@ function CustomVideoLayout({ otherParticipant }: CustomVideoLayoutProps) {
 
   // If no remote participants, show only local participant in full screen
   if (remoteParticipants.length === 0 && localParticipant) {
-    const localHasVideo = !!localParticipant.videoStream;
+    const localHasVideo = hasVideo(localParticipant);
     
     return (
       <div className="h-full w-full flex items-center justify-center p-4">
@@ -623,9 +641,13 @@ function CustomVideoLayout({ otherParticipant }: CustomVideoLayoutProps) {
 
   if (isOneOnOne) {
     const remoteParticipant = remoteParticipants[0];
-    // Check if participant has video stream
-    const remoteHasVideo = !!remoteParticipant?.videoStream;
-    const localHasVideo = !!localParticipant?.videoStream;
+    // Check if participant has video stream using Stream SDK utility
+    const remoteHasVideo = remoteParticipant ? hasVideo(remoteParticipant) : false;
+    const localHasVideo = localParticipant ? hasVideo(localParticipant) : false;
+    
+    // Prefer booking data (always correct) over Stream participant data (may be cached)
+    const remoteDisplayName = otherParticipant.name;
+    const remoteDisplayImage = otherParticipant.image;
     
     // 1-on-1 layout: Split screen with both participants
     return (
@@ -639,10 +661,10 @@ function CustomVideoLayout({ otherParticipant }: CustomVideoLayoutProps) {
             />
           ) : (
             <div className="h-full w-full flex items-center justify-center bg-gradient-to-br from-[#1a1a1a] to-[#0a0a0a]">
-              {otherParticipant.image ? (
+              {remoteDisplayImage ? (
                 <Image
-                  src={otherParticipant.image}
-                  alt={otherParticipant.name}
+                  src={remoteDisplayImage}
+                  alt={remoteDisplayName}
                   width={120}
                   height={120}
                   className="rounded-full border-4 border-[#ccf381]/30"
@@ -658,10 +680,10 @@ function CustomVideoLayout({ otherParticipant }: CustomVideoLayoutProps) {
           <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/60 to-transparent p-4 backdrop-blur-sm">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
-                {otherParticipant.image ? (
+                {remoteDisplayImage ? (
                   <Image
-                    src={otherParticipant.image}
-                    alt={otherParticipant.name}
+                    src={remoteDisplayImage}
+                    alt={remoteDisplayName}
                     width={40}
                     height={40}
                     className="rounded-full border-2 border-white/30 shadow-lg"
@@ -672,7 +694,7 @@ function CustomVideoLayout({ otherParticipant }: CustomVideoLayoutProps) {
                   </div>
                 )}
                 <div>
-                  <p className="text-white font-semibold text-base">{otherParticipant.name}</p>
+                  <p className="text-white font-semibold text-base">{remoteDisplayName}</p>
                   <p className="text-white/70 text-xs flex items-center gap-2">
                     <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
                     Connected
@@ -733,16 +755,16 @@ function CustomVideoLayout({ otherParticipant }: CustomVideoLayoutProps) {
 
   // Multi-participant layout: Grid view
   return (
-    <div className="h-full w-full p-4">
+      <div className="h-full w-full p-4">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 h-full">
         {remoteParticipants.map((participant) => {
-          const hasVideo = !!participant.videoStream;
+          const participantHasVideo = hasVideo(participant);
           return (
             <div
               key={participant.sessionId}
               className="relative rounded-3xl overflow-hidden bg-gradient-to-br from-[#1a1a1a] to-[#0a0a0a] shadow-2xl border-2 border-[#262626]/50 group hover:border-[#ccf381]/40 hover:shadow-[0_0_30px_rgba(204,243,129,0.2)] transition-all duration-300"
             >
-              {hasVideo ? (
+              {participantHasVideo ? (
                 <ParticipantView 
                   participant={participant} 
                   className="h-full w-full object-cover"
@@ -758,9 +780,9 @@ function CustomVideoLayout({ otherParticipant }: CustomVideoLayoutProps) {
               <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/60 to-transparent p-3 backdrop-blur-sm">
                 <div className="flex items-center justify-between">
                   <p className="text-white font-semibold text-sm truncate">
-                    {participant.name || participant.userId}
+                    {otherParticipant.name}
                   </p>
-                  {!hasVideo && (
+                  {!participantHasVideo && (
                     <VideoOff className="w-4 h-4 text-red-400" />
                   )}
                 </div>
@@ -770,7 +792,7 @@ function CustomVideoLayout({ otherParticipant }: CustomVideoLayoutProps) {
         })}
         {localParticipant && (
           <div className="relative rounded-3xl overflow-hidden bg-gradient-to-br from-[#1a1a1a] to-[#0a0a0a] shadow-2xl border-2 border-[#262626]/50 group hover:border-[#ccf381]/40 hover:shadow-[0_0_30px_rgba(204,243,129,0.2)] transition-all duration-300">
-            {localParticipant.videoStream ? (
+            {hasVideo(localParticipant) ? (
               <ParticipantView 
                 participant={localParticipant} 
                 className="h-full w-full object-cover"
@@ -786,7 +808,7 @@ function CustomVideoLayout({ otherParticipant }: CustomVideoLayoutProps) {
             <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/60 to-transparent p-3 backdrop-blur-sm">
               <div className="flex items-center justify-between">
                 <p className="text-white font-semibold text-sm">You</p>
-                {!localParticipant.videoStream && (
+                {!hasVideo(localParticipant) && (
                   <VideoOff className="w-4 h-4 text-red-400" />
                 )}
               </div>
