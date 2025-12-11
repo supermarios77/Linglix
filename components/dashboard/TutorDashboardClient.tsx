@@ -378,7 +378,7 @@ export function TutorDashboardClient({
   return (
     <div className="relative min-h-screen pt-16 sm:pt-20">
       {/* Navigation Bar */}
-      <header className="fixed top-0 z-[1000] w-full h-16 sm:h-20 flex justify-between items-center px-4 sm:px-6 md:px-12 bg-[rgba(250,250,250,0.85)] dark:bg-[rgba(5,5,5,0.85)] backdrop-blur-xl border-b border-[rgba(0,0,0,0.03)] dark:border-[#262626]">
+      <header className="fixed top-0 z-[1000] w-full h-16 sm:h-20 flex justify-between items-center px-4 sm:px-6 md:px-12 bg-[rgba(250,250,250,0.90)] dark:bg-[rgba(5,5,5,0.90)] backdrop-blur-xl border-b border-[rgba(0,0,0,0.05)] dark:border-[#262626] shadow-[0_1px_3px_rgba(0,0,0,0.05)]">
         <div className="flex items-center gap-4">
           <Button
             variant="ghost"
@@ -435,7 +435,7 @@ export function TutorDashboardClient({
       <div className="flex">
         {/* Sidebar */}
         <aside
-          className={`fixed left-0 top-16 sm:top-20 h-[calc(100vh-4rem)] sm:h-[calc(100vh-5rem)] w-64 bg-white/90 dark:bg-[#1a1a1a]/90 backdrop-blur-xl border-r border-[#e5e5e5] dark:border-[#262626] z-50 transition-transform duration-300 ${
+          className={`fixed left-0 top-16 sm:top-20 h-[calc(100vh-4rem)] sm:h-[calc(100vh-5rem)] w-64 bg-white/95 dark:bg-[#1a1a1a]/95 backdrop-blur-xl border-r-2 border-[#e5e5e5] dark:border-[#262626] z-50 transition-transform duration-300 shadow-[2px_0_8px_rgba(0,0,0,0.05)] ${
             sidebarOpen ? "translate-x-0" : "-translate-x-full"
           } lg:translate-x-0`}
         >
@@ -481,14 +481,14 @@ export function TutorDashboardClient({
                       setActiveSection(section.id);
                       setSidebarOpen(false);
                     }}
-                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 ${
+                    className={`group w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl transition-all duration-300 ${
                       isActive
-                        ? "bg-[#ccf381]/20 dark:bg-[#ccf381]/10 text-[#111] dark:text-[#ccf381] border border-[#ccf381]/30 dark:border-[#ccf381]/30 shadow-sm backdrop-blur-sm"
-                        : "text-[#666] dark:text-[#a1a1aa] hover:bg-white/60 dark:hover:bg-[#262626]/60 hover:text-black dark:hover:text-white backdrop-blur-sm"
+                        ? "bg-gradient-to-r from-[#ccf381]/20 to-[#ccf381]/10 dark:from-[#ccf381]/15 dark:to-[#ccf381]/5 text-[#111] dark:text-[#ccf381] border-2 border-[#ccf381]/40 dark:border-[#ccf381]/40 shadow-lg backdrop-blur-sm"
+                        : "text-[#666] dark:text-[#a1a1aa] hover:bg-white/80 dark:hover:bg-[#262626]/80 hover:text-black dark:hover:text-white hover:border-2 hover:border-[#e5e5e5] dark:hover:border-[#404040] backdrop-blur-sm border-2 border-transparent"
                     }`}
                   >
-                    <Icon className={`w-5 h-5 ${isActive ? "text-[#ccf381]" : ""}`} />
-                    <span className="text-sm font-medium">{section.label}</span>
+                    <Icon className={`w-5 h-5 transition-transform duration-300 ${isActive ? "text-[#ccf381] scale-110" : "group-hover:scale-110"}`} />
+                    <span className={`text-sm font-semibold ${isActive ? "text-black dark:text-white" : ""}`}>{section.label}</span>
                   </button>
                 );
               })}
@@ -1270,15 +1270,15 @@ export function TutorDashboardClient({
                     ))}
                   </div>
                 ) : (
-                  <Card className="bg-white/90 dark:bg-[#1a1a1a]/90 backdrop-blur-md border border-[#e5e5e5] dark:border-[#262626] rounded-[24px] shadow-[0_4px_12px_rgba(0,0,0,0.05)]">
-                    <CardContent className="py-16 text-center">
-                      <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-yellow-100 dark:bg-yellow-900/20 flex items-center justify-center">
-                        <Star className="w-10 h-10 text-yellow-500 dark:text-yellow-400" />
+                  <Card className="bg-white/90 dark:bg-[#1a1a1a]/90 backdrop-blur-md border-2 border-[#e5e5e5] dark:border-[#262626] rounded-[32px] shadow-[0_4px_12px_rgba(0,0,0,0.05)]">
+                    <CardContent className="py-20 text-center">
+                      <div className="w-24 h-24 mx-auto mb-6 rounded-full bg-gradient-to-br from-yellow-100 to-yellow-50 dark:from-yellow-900/30 dark:to-yellow-900/10 flex items-center justify-center border-2 border-yellow-200 dark:border-yellow-800">
+                        <Star className="w-12 h-12 text-yellow-500 dark:text-yellow-400" />
                       </div>
-                      <h3 className="text-xl font-semibold text-black dark:text-white mb-2">
+                      <h3 className="text-2xl font-bold text-black dark:text-white mb-3">
                         No Reviews Yet
                       </h3>
-                      <p className="text-sm text-[#666] dark:text-[#a1a1aa] max-w-md mx-auto">
+                      <p className="text-base text-[#666] dark:text-[#a1a1aa] max-w-md mx-auto font-light">
                         Reviews from your students will appear here once they complete sessions with you
                       </p>
                     </CardContent>
