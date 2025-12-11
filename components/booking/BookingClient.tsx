@@ -38,6 +38,7 @@ import {
   Loader2,
   ArrowLeft,
   User,
+  CalendarDays,
 } from "lucide-react";
 import Image from "next/image";
 
@@ -81,12 +82,55 @@ export function BookingClient({ tutor, locale }: BookingClientProps) {
   const [duration, setDuration] = useState<"30" | "60" | "90">("60");
   const [notes, setNotes] = useState<string>("");
   const [timeSlots, setTimeSlots] = useState<TimeSlot[]>([]);
+  const [availableDates, setAvailableDates] = useState<string[]>([]);
+  const [loadingDates, setLoadingDates] = useState(true);
   const [loadingSlots, setLoadingSlots] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   // Calculate price
   const price = Math.round((tutor.hourlyRate * (parseInt(duration) / 60)) * 100) / 100;
+
+  // Fetch available dates on mount and when duration changes
+  useEffect(() => {
+    const fetchAvailableDates = async () => {
+      setLoadingDates(true);
+      setError(null);
+      setSelectedDate("");
+      setSelectedTime("");
+      setTimeSlots([]);
+
+      try {
+        const startDate = new Date();
+        startDate.setUTCHours(0, 0, 0, 0);
+        const endDate = new Date(startDate);
+        endDate.setUTCDate(endDate.getUTCDate() + 30); // Next 30 days
+
+        const response = await fetch(
+          `/api/bookings/availability?tutorId=${tutor.id}&startDate=${startDate.toISOString().split("T")[0]}&endDate=${endDate.toISOString().split("T")[0]}&duration=${duration}`
+        );
+
+        if (!response.ok) {
+          const errorData = await response.json().catch(() => ({}));
+          throw new Error(errorData.error || "Failed to fetch available dates");
+        }
+
+        const data = await response.json();
+        setAvailableDates(data.availableDates || []);
+      } catch (err) {
+        setError(
+          err instanceof Error
+            ? err.message
+            : "Failed to load available dates"
+        );
+        setAvailableDates([]);
+      } finally {
+        setLoadingDates(false);
+      }
+    };
+
+    fetchAvailableDates();
+  }, [duration, tutor.id]);
 
   // Fetch available time slots when date is selected
   useEffect(() => {
@@ -175,17 +219,43 @@ export function BookingClient({ tutor, locale }: BookingClientProps) {
     }
   };
 
-  // Get minimum date (24 hours from now)
-  const minDate = new Date();
-  minDate.setDate(minDate.getDate() + 1);
-  const minDateString = minDate.toISOString().split("T")[0];
-
-  // Get maximum date (90 days from now)
-  const maxDate = new Date();
-  maxDate.setDate(maxDate.getDate() + 90);
-  const maxDateString = maxDate.toISOString().split("T")[0];
-
   const availableSlots = timeSlots.filter((slot) => slot.available);
+
+  // Format date for display
+  const formatDate = (dateString: string): string => {
+    const date = new Date(dateString + "T00:00:00Z");
+    return date.toLocaleDateString(locale === "es" ? "es-ES" : "en-US", {
+      weekday: "short",
+      month: "short",
+      day: "numeric",
+    });
+  };
+
+  // Format date for calendar display
+  const formatDateShort = (dateString: string): string => {
+    const date = new Date(dateString + "T00:00:00Z");
+    return date.toLocaleDateString(locale === "es" ? "es-ES" : "en-US", {
+      day: "numeric",
+      month: "short",
+    });
+  };
+
+  // Check if date is today
+  const isToday = (dateString: string): boolean => {
+    const today = new Date();
+    today.setUTCHours(0, 0, 0, 0);
+    const checkDate = new Date(dateString + "T00:00:00Z");
+    return today.getTime() === checkDate.getTime();
+  };
+
+  // Check if date is tomorrow
+  const isTomorrow = (dateString: string): boolean => {
+    const tomorrow = new Date();
+    tomorrow.setUTCDate(tomorrow.getUTCDate() + 1);
+    tomorrow.setUTCHours(0, 0, 0, 0);
+    const checkDate = new Date(dateString + "T00:00:00Z");
+    return tomorrow.getTime() === checkDate.getTime();
+  };
 
   return (
     <div className="min-h-screen bg-[#fafafa] dark:bg-[#050505] text-[#111] dark:text-white">
@@ -290,31 +360,54 @@ export function BookingClient({ tutor, locale }: BookingClientProps) {
                     </Select>
                   </div>
 
-                  {/* Date Selection */}
+                  {/* Available Dates Selection */}
                   <div>
-                    <Label
-                      htmlFor="date"
-                      className="text-sm font-medium text-black dark:text-white mb-2 block"
-                    >
+                    <Label className="text-sm font-medium text-black dark:text-white mb-3 flex items-center gap-2">
+                      <CalendarDays className="w-4 h-4" />
                       {t("selectDate")}
                     </Label>
-                    <div className="relative">
-                      <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#666] dark:text-[#aaa]" />
-                      <Input
-                        id="date"
-                        type="date"
-                        value={selectedDate}
-                        onChange={(e) => {
-                          setSelectedDate(e.target.value);
-                          setSelectedTime(""); // Reset time when date changes
-                        }}
-                        min={minDateString}
-                        max={maxDateString}
-                        className="pl-10"
-                        required
-                      />
-                    </div>
-                    <p className="text-xs text-[#666] dark:text-[#aaa] mt-1">
+                    {loadingDates ? (
+                      <div className="flex items-center justify-center py-8">
+                        <Loader2 className="w-6 h-6 animate-spin text-[#ccf381]" />
+                      </div>
+                    ) : availableDates.length === 0 ? (
+                      <div className="p-4 bg-[#f5f5f5] dark:bg-[#262626] rounded-lg text-center text-sm text-[#666] dark:text-[#aaa]">
+                        {t("noDatesAvailable") || "No available dates in the next 30 days"}
+                      </div>
+                    ) : (
+                      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 max-h-64 overflow-y-auto p-1">
+                        {availableDates.map((dateString) => {
+                          const isSelected = selectedDate === dateString;
+                          return (
+                            <button
+                              key={dateString}
+                              type="button"
+                              onClick={() => {
+                                setSelectedDate(dateString);
+                                setSelectedTime(""); // Reset time when date changes
+                              }}
+                              className={`p-3 rounded-xl border-2 transition-all text-center ${
+                                isSelected
+                                  ? "border-[#ccf381] bg-[#ccf381]/20 text-[#ccf381] shadow-md"
+                                  : "border-[#e5e5e5] dark:border-[#262626] bg-white dark:bg-[#0a0a0a] text-black dark:text-white hover:border-[#ccf381]/50 hover:bg-[#ccf381]/5"
+                              }`}
+                            >
+                              <div className="text-xs font-medium mb-1">
+                                {isToday(dateString)
+                                  ? t("today") || "Today"
+                                  : isTomorrow(dateString)
+                                  ? t("tomorrow") || "Tomorrow"
+                                  : formatDate(dateString).split(" ")[0]}
+                              </div>
+                              <div className="text-sm font-semibold">
+                                {formatDateShort(dateString)}
+                              </div>
+                            </button>
+                          );
+                        })}
+                      </div>
+                    )}
+                    <p className="text-xs text-[#666] dark:text-[#aaa] mt-2">
                       {t("dateHint")}
                     </p>
                   </div>
@@ -322,7 +415,8 @@ export function BookingClient({ tutor, locale }: BookingClientProps) {
                   {/* Time Slot Selection */}
                   {selectedDate && (
                     <div>
-                      <Label className="text-sm font-medium text-black dark:text-white mb-2 block">
+                      <Label className="text-sm font-medium text-black dark:text-white mb-3 flex items-center gap-2">
+                        <Clock className="w-4 h-4" />
                         {t("selectTime")}
                       </Label>
                       {loadingSlots ? (
@@ -334,23 +428,28 @@ export function BookingClient({ tutor, locale }: BookingClientProps) {
                           {t("noSlotsAvailable")}
                         </div>
                       ) : (
-                        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 max-h-64 overflow-y-auto">
+                        <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-2 max-h-64 overflow-y-auto p-1">
                           {availableSlots.map((slot, idx) => {
-                            const timeString = new Date(slot.start).toLocaleTimeString("en-US", {
-                              hour: "numeric",
-                              minute: "2-digit",
-                              hour12: true,
-                            });
+                            const timeString = new Date(slot.start).toLocaleTimeString(
+                              locale === "es" ? "es-ES" : "en-US",
+                              {
+                                hour: "numeric",
+                                minute: "2-digit",
+                                hour12: true,
+                              }
+                            );
+                            const timeValue = slot.start.split("T")[1].slice(0, 5);
+                            const isSelected = selectedTime === timeValue;
 
                             return (
                               <button
                                 key={idx}
                                 type="button"
-                                onClick={() => setSelectedTime(slot.start.split("T")[1].slice(0, 5))}
-                                className={`p-3 rounded-lg border-2 transition-all text-sm font-medium ${
-                                  selectedTime === slot.start.split("T")[1].slice(0, 5)
-                                    ? "border-[#ccf381] bg-[#ccf381]/10 text-[#ccf381]"
-                                    : "border-[#e5e5e5] dark:border-[#262626] bg-white dark:bg-[#0a0a0a] text-black dark:text-white hover:border-[#ccf381]/50"
+                                onClick={() => setSelectedTime(timeValue)}
+                                className={`p-3 rounded-xl border-2 transition-all text-sm font-semibold ${
+                                  isSelected
+                                    ? "border-[#ccf381] bg-[#ccf381]/20 text-[#ccf381] shadow-md scale-105"
+                                    : "border-[#e5e5e5] dark:border-[#262626] bg-white dark:bg-[#0a0a0a] text-black dark:text-white hover:border-[#ccf381]/50 hover:bg-[#ccf381]/5 hover:scale-102"
                                 }`}
                               >
                                 {timeString}
@@ -405,7 +504,7 @@ export function BookingClient({ tutor, locale }: BookingClientProps) {
                   {/* Error Message */}
                   {error && (
                     <div className="flex items-center gap-2 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
-                      <AlertCircle className="w-5 h-5 text-red-600 dark:text-red-400 flex-shrink-0" />
+                      <AlertCircle className="w-5 h-5 text-red-600 dark:text-red-400 shrink-0" />
                       <p className="text-sm text-red-600 dark:text-red-400">{error}</p>
                     </div>
                   )}
