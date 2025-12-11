@@ -186,7 +186,7 @@ export async function GET(request: NextRequest) {
           await sendSessionReminderEmail({
             email: booking.tutor.user.email,
             name: booking.tutor.user.name || undefined,
-            tutorName: booking.tutor.user.name || "You",
+            tutorName: booking.student.name || "Student",
             scheduledAt: booking.scheduledAt,
             duration: booking.duration,
             sessionUrl: getSessionUrl(booking.id, "en", baseUrl),
@@ -227,7 +227,7 @@ export async function GET(request: NextRequest) {
           await sendSessionReminderEmail({
             email: booking.tutor.user.email,
             name: booking.tutor.user.name || undefined,
-            tutorName: booking.tutor.user.name || "You",
+            tutorName: booking.student.name || "Student",
             scheduledAt: booking.scheduledAt,
             duration: booking.duration,
             sessionUrl: getSessionUrl(booking.id, "en", baseUrl),
