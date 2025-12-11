@@ -5,7 +5,6 @@ import { BackgroundBlobs } from "@/components/landing/BackgroundBlobs";
 import { HeroSection } from "@/components/landing/HeroSection";
 import { MarqueeTicker } from "@/components/landing/MarqueeTicker";
 import { FeaturedTutors } from "@/components/landing/FeaturedTutors";
-import { PricingSection } from "@/components/landing/PricingSection";
 import { Testimonials } from "@/components/landing/Testimonials";
 import { Footer } from "@/components/landing/Footer";
 
@@ -49,7 +48,6 @@ export default async function HomePage({
         <HeroSection locale={locale} session={session} />
         <MarqueeTicker items={marqueeItems} />
         <FeaturedTutors locale={locale} />
-        <PricingSection locale={locale} />
         <Testimonials locale={locale} />
         <Footer locale={locale} session={session} />
       </div>
