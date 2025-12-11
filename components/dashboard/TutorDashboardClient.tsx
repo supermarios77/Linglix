@@ -39,6 +39,7 @@ import {
   Clock3,
   Menu,
   X,
+  Video,
 } from "lucide-react";
 import Image from "next/image";
 import type { Booking, BookingStatus, TutorProfile, TutorApprovalStatus, Review } from "@prisma/client";
@@ -117,6 +118,7 @@ export function TutorDashboardClient({
   const tTutor = useTranslations("dashboard.tutor");
   const tBooking = useTranslations("booking");
   const tCommon = useTranslations("common");
+  const tVideoCall = useTranslations("videoCall");
 
   const [showSignOutDialog, setShowSignOutDialog] = useState(false);
   const [activeSection, setActiveSection] = useState("overview");
@@ -145,6 +147,18 @@ export function TutorDashboardClient({
       hour: "numeric",
       minute: "2-digit",
     }).format(new Date(date));
+  };
+
+  // Check if session is ready to join (5 minutes before scheduled time)
+  const canJoinSession = (scheduledAt: Date, status: BookingStatus) => {
+    if (status !== "CONFIRMED") {
+      return false;
+    }
+    const now = new Date();
+    const sessionTime = new Date(scheduledAt);
+    // Allow joining 5 minutes before session starts
+    const joinTime = new Date(sessionTime.getTime() - 5 * 60 * 1000);
+    return now >= joinTime;
   };
 
   const getStatusBadge = (status: BookingStatus) => {
@@ -542,6 +556,17 @@ export function TutorDashboardClient({
                             </div>
                             <div className="flex flex-col items-end gap-2 flex-shrink-0">
                               {getStatusBadge(booking.status)}
+                              {canJoinSession(booking.scheduledAt, booking.status) && (
+                                <Link href={`/${locale}/sessions/${booking.id}`}>
+                                  <Button
+                                    size="sm"
+                                    className="rounded-full bg-[#111] dark:bg-[#ccf381] text-white dark:text-black px-4 py-2 text-xs font-semibold transition-all hover:bg-[#222] dark:hover:bg-[#d4f89a] hover:shadow-lg inline-flex items-center gap-1.5"
+                                  >
+                                    <Video className="w-3 h-3" />
+                                    {tVideoCall("joinSession")}
+                                  </Button>
+                                </Link>
+                              )}
                             </div>
                           </div>
                         </div>

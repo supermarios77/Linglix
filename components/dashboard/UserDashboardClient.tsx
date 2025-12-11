@@ -35,6 +35,7 @@ import {
   Star,
   TrendingUp,
   LogOut,
+  Video,
 } from "lucide-react";
 import Image from "next/image";
 import { slugify } from "@/lib/utils/slug";
@@ -92,6 +93,7 @@ export function UserDashboardClient({
   const t = useTranslations("dashboard");
   const tBooking = useTranslations("booking");
   const tCommon = useTranslations("common");
+  const tVideoCall = useTranslations("videoCall");
 
   const [showSignOutDialog, setShowSignOutDialog] = useState(false);
 
@@ -120,6 +122,18 @@ export function UserDashboardClient({
       hour: "numeric",
       minute: "2-digit",
     }).format(new Date(date));
+  };
+
+  // Check if session is ready to join (5 minutes before scheduled time)
+  const canJoinSession = (scheduledAt: Date, status: BookingStatus) => {
+    if (status !== "CONFIRMED") {
+      return false;
+    }
+    const now = new Date();
+    const sessionTime = new Date(scheduledAt);
+    // Allow joining 5 minutes before session starts
+    const joinTime = new Date(sessionTime.getTime() - 5 * 60 * 1000);
+    return now >= joinTime;
   };
 
   const getStatusBadge = (status: BookingStatus) => {
@@ -418,18 +432,31 @@ export function UserDashboardClient({
                       </div>
                       <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
                         {getStatusBadge(booking.status)}
-                        <Link
-                          href={`/${locale}/tutors/${slugify(booking.tutor.user.name || "")}`}
-                        >
-                          <Button
-                            size="lg"
-                            variant="outline"
-                            className="rounded-full bg-white/80 dark:bg-[#0a0a0a]/80 backdrop-blur-sm border-2 border-[#e5e5e5] dark:border-[#262626] hover:border-[#111] dark:hover:border-[#ccf381] transition-all"
+                        <div className="flex flex-col sm:flex-row gap-2">
+                          {canJoinSession(booking.scheduledAt, booking.status) && (
+                            <Link href={`/${locale}/sessions/${booking.id}`}>
+                              <Button
+                                size="lg"
+                                className="rounded-full bg-[#111] dark:bg-[#ccf381] text-white dark:text-black px-6 py-5 font-semibold transition-all hover:bg-[#222] dark:hover:bg-[#d4f89a] hover:shadow-lg inline-flex items-center gap-2"
+                              >
+                                <Video className="w-4 h-4" />
+                                {tVideoCall("joinSession")}
+                              </Button>
+                            </Link>
+                          )}
+                          <Link
+                            href={`/${locale}/tutors/${slugify(booking.tutor.user.name || "")}`}
                           >
-                            {t("viewTutor")}
-                            <ArrowRight className="w-4 h-4 ml-2" />
-                          </Button>
-                        </Link>
+                            <Button
+                              size="lg"
+                              variant="outline"
+                              className="rounded-full bg-white/80 dark:bg-[#0a0a0a]/80 backdrop-blur-sm border-2 border-[#e5e5e5] dark:border-[#262626] hover:border-[#111] dark:hover:border-[#ccf381] transition-all"
+                            >
+                              {t("viewTutor")}
+                              <ArrowRight className="w-4 h-4 ml-2" />
+                            </Button>
+                          </Link>
+                        </div>
                       </div>
                     </div>
                   );

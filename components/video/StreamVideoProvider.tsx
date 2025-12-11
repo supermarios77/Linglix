@@ -44,17 +44,27 @@ const createTokenProvider = () => {
       });
 
       if (!response.ok) {
-        const errorText = await response.text();
         let errorMessage = `Token fetch failed with status: ${response.status}`;
         
         try {
-          const errorData = JSON.parse(errorText);
-          errorMessage = errorData.error || errorMessage;
+          const errorText = await response.text();
+          if (errorText) {
+            try {
+              const errorData = JSON.parse(errorText);
+              errorMessage = errorData.error || errorData.message || errorMessage;
+            } catch {
+              // If JSON parsing fails, use the text as error message
+              errorMessage = errorText || errorMessage;
+            }
+          }
         } catch {
           // If parsing fails, use default message
         }
 
-        throw new Error(errorMessage);
+        // Create a more descriptive error
+        const error = new Error(errorMessage);
+        error.name = "TokenProviderError";
+        throw error;
       }
 
       const data = await response.json();
@@ -177,7 +187,14 @@ export function StreamVideoProvider({
 
   // If client is not ready, render children without StreamVideo wrapper
   // This allows the app to work even if Stream is not configured
+  // However, if there's an error and we're trying to use video features, show error
   if (!client) {
+    // If we have an error and API key exists, it means initialization failed
+    if (error && apiKey) {
+      if (process.env.NODE_ENV === "development") {
+        console.error("Stream Video Provider: Failed to initialize client", error);
+      }
+    }
     return <>{children}</>;
   }
 

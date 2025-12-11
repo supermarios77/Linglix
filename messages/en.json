@@ -18,7 +18,8 @@
     "back": "Back",
     "next": "Next",
     "previous": "Previous",
-    "dashboard": "Dashboard"
+    "dashboard": "Dashboard",
+    "backToDashboard": "Back to Dashboard"
   },
   "auth": {
     "signInTitle": "Sign In",
@@ -397,6 +398,18 @@
     },
     "signOutConfirmTitle": "Sign Out?",
     "signOutConfirmDescription": "Are you sure you want to sign out? You'll need to sign in again to access the admin dashboard."
+  },
+  "videoCall": {
+    "title": "Video Session",
+    "description": "Join your language learning session",
+    "joining": "Joining Session...",
+    "joiningDescription": "Please wait while we connect you to the video call",
+    "connecting": "Connecting...",
+    "connected": "Connected",
+    "errorTitle": "Failed to Join Session",
+    "backToDashboard": "Back to Dashboard",
+    "joinSession": "Join Session",
+    "sessionNotReady": "Session starts soon"
   },
   "onboarding": {
     "title": "Complete Your Profile",

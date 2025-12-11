@@ -18,7 +18,8 @@
     "back": "Atrás",
     "next": "Siguiente",
     "previous": "Anterior",
-    "dashboard": "Panel de Control"
+    "dashboard": "Panel de Control",
+    "backToDashboard": "Volver al Panel"
   },
   "auth": {
     "signInTitle": "Iniciar Sesión",
@@ -399,6 +400,18 @@
     },
     "signOutConfirmTitle": "¿Cerrar Sesión?",
     "signOutConfirmDescription": "¿Estás seguro de que quieres cerrar sesión? Tendrás que iniciar sesión nuevamente para acceder al panel de administración."
+  },
+  "videoCall": {
+    "title": "Sesión de Video",
+    "description": "Únete a tu sesión de aprendizaje de idiomas",
+    "joining": "Uniéndose a la Sesión...",
+    "joiningDescription": "Por favor espera mientras te conectamos a la videollamada",
+    "connecting": "Conectando...",
+    "connected": "Conectado",
+    "errorTitle": "Error al Unirse a la Sesión",
+    "backToDashboard": "Volver al Panel",
+    "joinSession": "Unirse a la Sesión",
+    "sessionNotReady": "La sesión comenzará pronto"
   },
   "onboarding": {
     "title": "Completa Tu Perfil",
