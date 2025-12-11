@@ -37,7 +37,25 @@ export async function FeaturedTutors({ locale }: FeaturedTutorsProps) {
 
   // Fetch active and approved tutors with their profiles
   // Gracefully handle database connection errors
-  let tutors;
+  let tutors: Awaited<ReturnType<typeof prisma.user.findMany<{
+    where: {
+      role: "TUTOR";
+      tutorProfile: {
+        isActive: true;
+        approvalStatus: "APPROVED";
+      };
+    };
+    include: {
+      tutorProfile: {
+        select: {
+          specialties: true;
+          rating: true;
+          hourlyRate: true;
+          totalSessions: true;
+        };
+      };
+    };
+  }>>> = [];
   try {
     tutors = await prisma.user.findMany({
       where: {

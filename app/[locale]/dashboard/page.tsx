@@ -46,7 +46,30 @@ export default async function DashboardPage({
     // If user is a tutor, fetch tutor-specific data
     if (user.role === Role.TUTOR) {
       // Fetch tutor profile with error handling for timeout issues
-      let tutorProfile;
+      type TutorProfileWithRelations = Awaited<ReturnType<typeof prisma.tutorProfile.findUnique<{
+        where: { userId: string };
+        include: {
+          bookings: {
+            include: {
+              student: {
+                select: {
+                  id: true;
+                  name: true;
+                  image: true;
+                  email: true;
+                };
+              };
+            };
+          };
+          availability: true;
+        };
+      }>>>;
+      
+      type TutorProfileBasic = Awaited<ReturnType<typeof prisma.tutorProfile.findUnique<{
+        where: { userId: string };
+      }>>>;
+      
+      let tutorProfile: (TutorProfileWithRelations & { bookings?: any[]; availability?: any[] }) | TutorProfileBasic | null = null;
       try {
         tutorProfile = await prisma.tutorProfile.findUnique({
           where: { userId: user.id },
@@ -106,13 +129,14 @@ export default async function DashboardPage({
         }
       }
 
+      // Ensure tutorProfile is not null
       if (!tutorProfile) {
-        // Tutor profile not found, redirect to onboarding
         redirect(`/${locale}/onboarding`);
       }
-      
+
       // If we only got the profile without relations, fetch them separately
-      if (!tutorProfile.bookings || !tutorProfile.availability) {
+      // Type guard: check if relations exist by checking for 'bookings' property
+      if (!('bookings' in tutorProfile) || !tutorProfile.bookings || !('availability' in tutorProfile) || !tutorProfile.availability) {
         try {
           const [bookings, availability] = await Promise.all([
             prisma.booking.findMany({
@@ -143,23 +167,33 @@ export default async function DashboardPage({
             ...tutorProfile,
             bookings,
             availability,
-          };
+          } as TutorProfileWithRelations;
         } catch (error) {
           if (process.env.NODE_ENV === "development") {
             console.error("[Dashboard] Error fetching relations:", error);
           }
           // Continue with empty arrays if relations fail
-          tutorProfile = {
-            ...tutorProfile,
-            bookings: tutorProfile.bookings || [],
-            availability: tutorProfile.availability || [],
-          };
+          if (tutorProfile) {
+            tutorProfile = {
+              ...tutorProfile,
+              bookings: ('bookings' in tutorProfile && Array.isArray(tutorProfile.bookings)) ? tutorProfile.bookings : [],
+              availability: ('availability' in tutorProfile && Array.isArray(tutorProfile.availability)) ? tutorProfile.availability : [],
+            } as TutorProfileWithRelations;
+          }
         }
+      }
+
+      // Ensure tutorProfile is not null before proceeding
+      if (!tutorProfile) {
+        redirect(`/${locale}/onboarding`);
       }
 
       // Calculate stats
       const now = new Date();
-      const allBookings = tutorProfile.bookings;
+      // Type guard: ensure bookings exists and is an array
+      const allBookings = ('bookings' in tutorProfile && Array.isArray(tutorProfile.bookings)) 
+        ? tutorProfile.bookings 
+        : [];
       const upcomingBookings = allBookings.filter(
         (booking) => booking.scheduledAt > now && booking.status !== "CANCELLED"
       );
@@ -203,12 +237,16 @@ export default async function DashboardPage({
           <TutorDashboardClient
             locale={locale}
             user={user}
-            tutorProfile={tutorProfile}
+            tutorProfile={{
+              ...tutorProfile,
+              bookings: allBookings as any,
+              availability: ('availability' in tutorProfile && Array.isArray(tutorProfile.availability)) ? tutorProfile.availability : [] as any,
+            } as any}
             upcomingBookings={upcomingBookings}
             pastBookings={pastBookings}
             totalEarnings={totalEarnings}
             reviews={reviews}
-            availability={tutorProfile.availability}
+            availability={('availability' in tutorProfile && Array.isArray(tutorProfile.availability)) ? tutorProfile.availability : [] as any}
           />
         </div>
       );

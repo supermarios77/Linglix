@@ -40,6 +40,7 @@ import {
 import Image from "next/image";
 import { slugify } from "@/lib/utils/slug";
 import type { Booking, BookingStatus } from "@prisma/client";
+import { PaymentButton } from "@/components/payment/PaymentButton";
 
 /**
  * User Dashboard Client Component
