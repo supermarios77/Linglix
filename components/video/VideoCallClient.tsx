@@ -200,6 +200,24 @@ export function VideoCallClient({
   // Handle leaving call
   const handleLeaveCall = useCallback(async () => {
     try {
+      // If tutor is ending the call, mark it as ended in the database
+      if (isTutor && bookingId) {
+        try {
+          await fetch(`/api/bookings/${bookingId}/end-call`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          });
+        } catch (err) {
+          // Log error but continue with leaving the call
+          if (process.env.NODE_ENV === "development") {
+            console.error("Error ending call in database:", err);
+          }
+        }
+      }
+
+      // Leave the Stream call
       if (call) {
         await call.leave();
       }
@@ -211,7 +229,7 @@ export function VideoCallClient({
       // Still redirect even if leave fails
       router.push(`/${locale}/dashboard`);
     }
-  }, [call, router, locale]);
+  }, [call, router, locale, isTutor, bookingId]);
 
   // Format duration as MM:SS
   const formatDuration = (seconds: number) => {

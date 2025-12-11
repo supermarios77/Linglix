@@ -144,6 +144,7 @@ export default async function VideoCallPage({ params }: VideoCallPageProps) {
               user={user}
               otherParticipant={otherParticipant}
               isTutor={isTutor}
+              bookingId={bookingId}
             />
           </StreamChatProvider>
         </StreamVideoProvider>
