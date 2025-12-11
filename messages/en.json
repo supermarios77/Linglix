@@ -67,7 +67,6 @@
     "passwordResetSuccess": "Password has been reset successfully. You can now sign in with your new password.",
     "invalidResetToken": "Invalid or expired reset token. Please request a new password reset.",
     "tokenRequired": "Reset token is required",
-    "backToSignIn": "Back to Sign In",
     "errorGoBack": "Go back to sign in",
     "errorTypes": {
       "Configuration": "There is a problem with the server configuration",
