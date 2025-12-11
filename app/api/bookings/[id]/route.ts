@@ -23,6 +23,11 @@ import {
   canRescheduleBooking,
   validateStatusTransition,
 } from "@/lib/booking/validation";
+import {
+  sendBookingConfirmationEmail,
+  sendBookingCancellationEmail,
+} from "@/lib/email";
+import { getBaseUrl, getBookingUrl } from "@/lib/utils/url";
 
 /**
  * GET /api/bookings/[id]
@@ -252,6 +257,7 @@ export async function PATCH(
 
     // Handle status change (tutors/admins can confirm/complete)
     if (body.status) {
+      const origin = request.headers.get("origin");
       // Only tutors and admins can change status
       if (!isTutor && !isAdmin) {
         return createErrorResponse(
@@ -297,6 +303,50 @@ export async function PATCH(
           },
         },
       });
+
+      // Send confirmation email when tutor confirms booking
+      if (newStatus === BookingStatus.CONFIRMED && booking.status === BookingStatus.PENDING) {
+        const baseUrl = getBaseUrl(request.headers.get("origin"));
+        const bookingUrl = getBookingUrl(id, "en", baseUrl); // TODO: Get locale from user
+        
+        // Send to student
+        if (updatedBooking.student.email) {
+          sendBookingConfirmationEmail({
+            email: updatedBooking.student.email,
+            name: updatedBooking.student.name || undefined,
+            tutorName: updatedBooking.tutor.user.name || "Tutor",
+            scheduledAt: updatedBooking.scheduledAt,
+            duration: updatedBooking.duration,
+            price: updatedBooking.price,
+            bookingUrl,
+            locale: "en", // TODO: Get from user preferences
+          }).catch((error) => {
+            logger.error("Failed to send booking confirmation email to student", {
+              bookingId: id,
+              error: error instanceof Error ? error.message : String(error),
+            });
+          });
+        }
+
+        // Send to tutor
+        if (updatedBooking.tutor.user.email) {
+          sendBookingConfirmationEmail({
+            email: updatedBooking.tutor.user.email,
+            name: updatedBooking.tutor.user.name || undefined,
+            tutorName: updatedBooking.tutor.user.name || "You",
+            scheduledAt: updatedBooking.scheduledAt,
+            duration: updatedBooking.duration,
+            price: updatedBooking.price,
+            bookingUrl,
+            locale: "en", // TODO: Get from user preferences
+          }).catch((error) => {
+            logger.error("Failed to send booking confirmation email to tutor", {
+              bookingId: id,
+              error: error instanceof Error ? error.message : String(error),
+            });
+          });
+        }
+      }
 
       logger.info("Booking status updated", {
         bookingId: id,
@@ -344,6 +394,7 @@ export async function DELETE(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  const origin = request.headers.get("origin");
   try {
     const user = await requireAuth();
     const { id } = await params;
@@ -416,6 +467,46 @@ export async function DELETE(
       cancelledBy: user.id,
       role: user.role,
     });
+
+    // Send cancellation emails
+    const isTutorCancelling = cancelledBooking.tutor.userId === user.id;
+    const refundAmount = cancelledBooking.paymentId ? cancelledBooking.price : undefined;
+
+    // Send to student
+    if (cancelledBooking.student.email) {
+      sendBookingCancellationEmail({
+        email: cancelledBooking.student.email,
+        name: cancelledBooking.student.name || undefined,
+        tutorName: cancelledBooking.tutor.user.name || undefined,
+        scheduledAt: cancelledBooking.scheduledAt,
+        refundAmount,
+        isTutor: false,
+        locale: "en", // TODO: Get from user preferences
+      }).catch((error) => {
+        logger.error("Failed to send cancellation email to student", {
+          bookingId: id,
+          error: error instanceof Error ? error.message : String(error),
+        });
+      });
+    }
+
+    // Send to tutor
+    if (cancelledBooking.tutor.user.email) {
+      sendBookingCancellationEmail({
+        email: cancelledBooking.tutor.user.email,
+        name: cancelledBooking.tutor.user.name || undefined,
+        studentName: cancelledBooking.student.name || undefined,
+        scheduledAt: cancelledBooking.scheduledAt,
+        refundAmount: undefined, // Tutors don't get refunds
+        isTutor: true,
+        locale: "en", // TODO: Get from user preferences
+      }).catch((error) => {
+        logger.error("Failed to send cancellation email to tutor", {
+          bookingId: id,
+          error: error instanceof Error ? error.message : String(error),
+        });
+      });
+    }
 
     return NextResponse.json({
       message: "Booking cancelled successfully",

@@ -30,6 +30,47 @@ interface PasswordResetProps {
   locale?: string;
 }
 
+interface BookingConfirmationProps {
+  name?: string;
+  tutorName: string;
+  scheduledAt: Date;
+  duration: number;
+  price: number;
+  bookingUrl?: string;
+  locale?: string;
+}
+
+interface PaymentReceiptProps {
+  name?: string;
+  amount: number;
+  currency: string;
+  bookingId: string;
+  tutorName: string;
+  scheduledAt: Date;
+  receiptUrl?: string;
+  locale?: string;
+}
+
+interface SessionReminderProps {
+  name?: string;
+  tutorName: string;
+  scheduledAt: Date;
+  duration: number;
+  sessionUrl: string;
+  hoursUntil: number;
+  locale?: string;
+}
+
+interface BookingCancellationProps {
+  name?: string;
+  tutorName?: string;
+  studentName?: string;
+  scheduledAt: Date;
+  refundAmount?: number;
+  isTutor: boolean;
+  locale?: string;
+}
+
 /**
  * Base email template wrapper
  */
@@ -244,3 +285,190 @@ export function passwordResetTemplate({
   return baseTemplate(content, locale);
 }
 
+/**
+ * Booking confirmation email template
+ */
+export function bookingConfirmationTemplate({
+  name,
+  tutorName,
+  scheduledAt,
+  duration,
+  price,
+  bookingUrl,
+  locale = "en",
+}: BookingConfirmationProps): string {
+  const greeting = name ? `Hello ${name},` : "Hello,";
+  const dateTime = new Date(scheduledAt).toLocaleString(locale === "es" ? "es-ES" : "en-US", {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+  });
+  
+  const content = `
+    <h2 style="margin-top: 0; color: #10b981;">Booking Confirmed!</h2>
+    <p>${greeting}</p>
+    <p>Your session with <strong>${tutorName}</strong> has been confirmed.</p>
+    <div style="background-color: #f5f5f5; padding: 20px; border-radius: 8px; margin: 24px 0;">
+      <p style="margin: 0 0 8px 0;"><strong>Date & Time:</strong> ${dateTime}</p>
+      <p style="margin: 0 0 8px 0;"><strong>Duration:</strong> ${duration} minutes</p>
+      <p style="margin: 0;"><strong>Price:</strong> $${price.toFixed(2)}</p>
+    </div>
+    ${bookingUrl ? `
+      <div style="text-align: center;">
+        <a href="${bookingUrl}" class="button">View Booking</a>
+      </div>
+    ` : ""}
+    <p style="color: #666; font-size: 14px;">
+      You'll receive a reminder 24 hours and 1 hour before your session. We look forward to seeing you!
+    </p>
+  `;
+  
+  return baseTemplate(content, locale);
+}
+
+/**
+ * Payment receipt email template
+ */
+export function paymentReceiptTemplate({
+  name,
+  amount,
+  currency,
+  bookingId,
+  tutorName,
+  scheduledAt,
+  receiptUrl,
+  locale = "en",
+}: PaymentReceiptProps): string {
+  const greeting = name ? `Hello ${name},` : "Hello,";
+  const dateTime = new Date(scheduledAt).toLocaleString(locale === "es" ? "es-ES" : "en-US", {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+  });
+  
+  const content = `
+    <h2 style="margin-top: 0; color: #111;">Payment Receipt</h2>
+    <p>${greeting}</p>
+    <p>Thank you for your payment. Your receipt is below:</p>
+    <div style="background-color: #f5f5f5; padding: 20px; border-radius: 8px; margin: 24px 0;">
+      <p style="margin: 0 0 8px 0;"><strong>Booking ID:</strong> ${bookingId}</p>
+      <p style="margin: 0 0 8px 0;"><strong>Tutor:</strong> ${tutorName}</p>
+      <p style="margin: 0 0 8px 0;"><strong>Session Date:</strong> ${dateTime}</p>
+      <p style="margin: 0 0 16px 0;"><strong>Amount:</strong> ${currency.toUpperCase()} $${amount.toFixed(2)}</p>
+      <div style="border-top: 1px solid #e5e5e5; padding-top: 16px; margin-top: 16px;">
+        <p style="margin: 0; font-size: 18px; font-weight: 700;">Total Paid: ${currency.toUpperCase()} $${amount.toFixed(2)}</p>
+      </div>
+    </div>
+    ${receiptUrl ? `
+      <div style="text-align: center;">
+        <a href="${receiptUrl}" class="button">Download Receipt</a>
+      </div>
+    ` : ""}
+    <p style="color: #666; font-size: 14px;">
+      This receipt confirms your payment. If you have any questions, please contact our support team.
+    </p>
+  `;
+  
+  return baseTemplate(content, locale);
+}
+
+/**
+ * Session reminder email template
+ */
+export function sessionReminderTemplate({
+  name,
+  tutorName,
+  scheduledAt,
+  duration,
+  sessionUrl,
+  hoursUntil,
+  locale = "en",
+}: SessionReminderProps): string {
+  const greeting = name ? `Hello ${name},` : "Hello,";
+  const dateTime = new Date(scheduledAt).toLocaleString(locale === "es" ? "es-ES" : "en-US", {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+  });
+  
+  const timeText = hoursUntil === 24 ? "24 hours" : hoursUntil === 1 ? "1 hour" : `${hoursUntil} hours`;
+  
+  const content = `
+    <h2 style="margin-top: 0; color: #111;">Session Reminder</h2>
+    <p>${greeting}</p>
+    <p>This is a reminder that your session with <strong>${tutorName}</strong> starts in ${timeText}.</p>
+    <div style="background-color: #f5f5f5; padding: 20px; border-radius: 8px; margin: 24px 0;">
+      <p style="margin: 0 0 8px 0;"><strong>Date & Time:</strong> ${dateTime}</p>
+      <p style="margin: 0;"><strong>Duration:</strong> ${duration} minutes</p>
+    </div>
+    <div style="text-align: center;">
+      <a href="${sessionUrl}" class="button">Join Session</a>
+    </div>
+    <p style="color: #666; font-size: 14px;">
+      Make sure you have a stable internet connection and your camera/microphone ready. See you soon!
+    </p>
+  `;
+  
+  return baseTemplate(content, locale);
+}
+
+/**
+ * Booking cancellation email template
+ */
+export function bookingCancellationTemplate({
+  name,
+  tutorName,
+  studentName,
+  scheduledAt,
+  refundAmount,
+  isTutor,
+  locale = "en",
+}: BookingCancellationProps): string {
+  const greeting = name ? `Hello ${name},` : "Hello,";
+  const dateTime = new Date(scheduledAt).toLocaleString(locale === "es" ? "es-ES" : "en-US", {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+  });
+  
+  const cancellationMessage = isTutor
+    ? `Your session with ${studentName} scheduled for ${dateTime} has been cancelled.`
+    : `Your session with ${tutorName} scheduled for ${dateTime} has been cancelled.`;
+  
+  const content = `
+    <h2 style="margin-top: 0; color: #ef4444;">Booking Cancelled</h2>
+    <p>${greeting}</p>
+    <p>${cancellationMessage}</p>
+    <div style="background-color: #fef2f2; padding: 20px; border-radius: 8px; margin: 24px 0; border-left: 4px solid #ef4444;">
+      <p style="margin: 0 0 8px 0;"><strong>Original Session Date:</strong> ${dateTime}</p>
+      ${refundAmount !== undefined ? `
+        <p style="margin: 0;"><strong>Refund Amount:</strong> $${refundAmount.toFixed(2)}</p>
+        <p style="margin: 8px 0 0 0; color: #666; font-size: 14px;">
+          Your refund will be processed within 5-10 business days.
+        </p>
+      ` : ""}
+    </div>
+    ${!isTutor && refundAmount !== undefined ? `
+      <p style="color: #666; font-size: 14px;">
+        If you'd like to book another session, you can browse our tutors and schedule a new session.
+      </p>
+    ` : ""}
+    <div style="text-align: center;">
+      <a href="https://linglix.com/dashboard" class="button">Go to Dashboard</a>
+    </div>
+  `;
+  
+  return baseTemplate(content, locale);
+}

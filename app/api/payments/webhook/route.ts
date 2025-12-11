@@ -20,6 +20,8 @@ import { getStripeClient, isStripeConfigured } from "@/lib/stripe/client";
 import { prisma } from "@/lib/db/prisma";
 import { logger } from "@/lib/logger";
 import { BookingStatus } from "@prisma/client";
+import { sendPaymentReceiptEmail } from "@/lib/email";
+import { getBaseUrl } from "@/lib/utils/url";
 
 export const dynamic = "force-dynamic";
 
@@ -243,6 +245,31 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
     // Only update if booking is still CONFIRMED (not already paid/completed)
     // This provides idempotency - if already processed, skip update
     if (booking.status === BookingStatus.CONFIRMED) {
+      // Fetch full booking data for email
+      const bookingWithRelations = await prisma.booking.findUnique({
+        where: { id: bookingId },
+        include: {
+          student: {
+            select: {
+              id: true,
+              name: true,
+              email: true,
+            },
+          },
+          tutor: {
+            include: {
+              user: {
+                select: {
+                  id: true,
+                  name: true,
+                  email: true,
+                },
+              },
+            },
+          },
+        },
+      });
+
       await prisma.booking.update({
         where: { id: bookingId },
         data: {
@@ -257,6 +284,28 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
         amount: session.amount_total ? session.amount_total / 100 : 0,
         currency: session.currency || "usd",
       });
+
+      // Send payment receipt email
+      if (bookingWithRelations?.student.email) {
+        const amount = session.amount_total ? session.amount_total / 100 : bookingWithRelations.price;
+        const currency = session.currency || "usd";
+        
+        sendPaymentReceiptEmail({
+          email: bookingWithRelations.student.email,
+          name: bookingWithRelations.student.name || undefined,
+          amount,
+          currency,
+          bookingId,
+          tutorName: bookingWithRelations.tutor.user.name || "Tutor",
+          scheduledAt: bookingWithRelations.scheduledAt,
+          locale: "en", // TODO: Get from user preferences
+        }).catch((error) => {
+          logger.error("Failed to send payment receipt email", {
+            bookingId,
+            error: error instanceof Error ? error.message : String(error),
+          });
+        });
+      }
     } else if (booking.paymentId === session.id) {
       // Payment already processed for this session - idempotent success
       logger.info("Booking payment already processed (idempotent)", {
