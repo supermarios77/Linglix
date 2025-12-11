@@ -129,6 +129,10 @@ model Booking {
   price       Float
   paymentId   String? // Stripe payment intent ID
   notes       String? // Student notes/requirements
+  callId      String? // Stream call ID: "booking-{bookingId}"
+  recordingUrl String? // URL to recording after session
+  callStartedAt DateTime? // When call actually started
+  callEndedAt   DateTime? // When call ended
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
 
@@ -141,6 +145,7 @@ model Booking {
   @@index([tutorId])
   @@index([scheduledAt])
   @@index([status])
+  @@index([callId])
 }
 
 // Reviews - student reviews of tutors

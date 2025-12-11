@@ -28,6 +28,8 @@
     "@radix-ui/react-select": "^2.2.6",
     "@radix-ui/react-switch": "^1.2.6",
     "@sentry/nextjs": "^10",
+    "@stream-io/node-sdk": "^0.7.26",
+    "@stream-io/video-react-sdk": "^1.28.1",
     "@types/jsonwebtoken": "^9.0.10",
     "bcryptjs": "^3.0.3",
     "class-variance-authority": "^0.7.1",
