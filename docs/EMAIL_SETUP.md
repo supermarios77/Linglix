@@ -46,10 +46,13 @@ For production, you should verify your domain:
 5. **Booking Cancellation** - Sent when booking is cancelled (to both student and tutor)
 6. **Session Reminders** - Sent 24h and 1h before session (via cron job)
 
+### ✅ Implemented (Continued)
+
+7. **Password Reset** - Sent when user requests password reset
+
 ### 🔄 Ready to Use (Not Yet Integrated)
 
 - **Email Verification** - Template ready, needs integration
-- **Password Reset** - Template ready, needs integration
 
 ## Email Templates
 
@@ -128,6 +131,26 @@ All templates are located in `lib/email/templates.ts` and use a consistent base 
 - Session date & time
 - Duration
 - Direct link to join session
+
+### Password Reset
+
+**Trigger:** When user requests password reset (`POST /api/auth/forgot-password`)
+
+**Location:** `app/api/auth/forgot-password/route.ts`
+
+**Recipients:**
+- User who requested reset
+
+**Email includes:**
+- Reset link with token
+- Expiration notice (1 hour)
+- Security instructions
+
+**Flow:**
+1. User requests reset → Email sent with token
+2. User clicks link → Redirected to reset password page
+3. User enters new password → Password updated
+4. Token is consumed (one-time use)
 
 ## Cron Job Setup
 
