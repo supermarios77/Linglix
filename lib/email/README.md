@@ -57,6 +57,10 @@ await sendTutorApprovalEmail({
 
 - ✅ **Onboarding Completion** - Sends welcome email
 - ✅ **Tutor Approval** - Sends approval/rejection email
+- ✅ **Booking Confirmation** - Sent when tutor confirms booking (to both student and tutor)
+- ✅ **Payment Receipt** - Sent after successful payment
+- ✅ **Booking Cancellation** - Sent when booking is cancelled (to both student and tutor)
+- ✅ **Session Reminders** - Sent 24h and 1h before session (via cron job)
 - 🔄 **Email Verification** - Ready to integrate
 - 🔄 **Password Reset** - Ready to integrate
 
