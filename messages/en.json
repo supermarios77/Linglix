@@ -253,6 +253,42 @@
       "featureFlexible": "Flexible Schedule",
       "featureAffordable": "Affordable Pricing"
     },
+    "pricing": {
+      "badge": "Pricing",
+      "title": "Transparent Pricing",
+      "subtitle": "Choose the perfect tutor for your budget. All tutors set their own rates, ensuring fair pricing for every learning level.",
+      "popular": "Most Popular",
+      "hour": "hour",
+      "cta": "Browse Tutors",
+      "note": "Prices vary by tutor experience, specialization, and availability. Book sessions in 30, 60, or 90-minute increments.",
+      "guarantee": "No hidden fees. Cancel anytime.",
+      "tier": {
+        "starter": {
+          "name": "Starter",
+          "description": "Perfect for beginners",
+          "feature1": "Experienced tutors",
+          "feature2": "30-60 minute sessions",
+          "feature3": "Flexible scheduling"
+        },
+        "professional": {
+          "name": "Professional",
+          "description": "Most popular choice",
+          "feature1": "Certified native speakers",
+          "feature2": "All session lengths available",
+          "feature3": "Specialized teaching methods",
+          "feature4": "Priority support"
+        },
+        "premium": {
+          "name": "Premium",
+          "description": "Expert-level instruction",
+          "feature1": "Top-rated tutors",
+          "feature2": "Customized learning plans",
+          "feature3": "Business & exam prep",
+          "feature4": "Extended availability",
+          "feature5": "Progress tracking"
+        }
+      }
+    },
     "features": {
       "title": "Why Choose Linglix",
       "subtitle": "Everything you need to master a new language",
