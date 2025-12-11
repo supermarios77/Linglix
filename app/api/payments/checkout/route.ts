@@ -124,10 +124,13 @@ export async function POST(request: NextRequest) {
     }
 
     // Get base URL for redirects
+    // Priority: NEXT_PUBLIC_APP_URL > NEXTAUTH_URL > request origin > localhost
     const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 
                    process.env.NEXTAUTH_URL || 
                    request.headers.get("origin") || 
-                   "http://localhost:3000";
+                   (process.env.NODE_ENV === "production" 
+                     ? "https://linglix.com" // Fallback for production
+                     : "http://localhost:3000");
 
     // Create Stripe Checkout Session
     const session = await stripe.checkout.sessions.create({
@@ -157,6 +160,13 @@ export async function POST(request: NextRequest) {
       success_url: `${baseUrl}/payments/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${baseUrl}/payments/cancel?booking_id=${bookingId}`,
       expires_at: Math.floor(new Date(booking.scheduledAt).getTime() / 1000), // Expire before session time
+      payment_intent_data: {
+        metadata: {
+          bookingId: booking.id,
+          studentId: booking.studentId,
+          tutorId: booking.tutorId,
+        },
+      },
     });
 
     // Update booking with checkout session ID

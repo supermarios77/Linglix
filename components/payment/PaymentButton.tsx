@@ -52,11 +52,14 @@ export function PaymentButton({ bookingId, disabled }: PaymentButtonProps) {
       if (process.env.NODE_ENV === "development") {
         console.error("Payment error:", error);
       }
-      alert(
-        error instanceof Error
-          ? error.message
-          : "Failed to start payment. Please try again."
-      );
+      
+      // Show user-friendly error message
+      const errorMessage = error instanceof Error
+        ? error.message
+        : "Failed to start payment. Please try again.";
+      
+      // Use a better error display method (could be a toast notification)
+      alert(errorMessage);
       setIsLoading(false);
     }
   };

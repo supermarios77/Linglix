@@ -89,23 +89,33 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Handle the event
+    // Handle the event with idempotency check
+    // Check if we've already processed this event by checking the booking's paymentId
     logger.info("Stripe webhook event received", {
       type: event.type,
       id: event.id,
     });
 
     try {
+      // Process event based on type
+      let alreadyProcessed = false;
+      
       switch (event.type) {
         case "checkout.session.completed": {
           const session = event.data.object as Stripe.Checkout.Session;
-          await handleCheckoutCompleted(session);
+          alreadyProcessed = await checkIfEventProcessed(session.id, session.metadata?.bookingId);
+          if (!alreadyProcessed) {
+            await handleCheckoutCompleted(session);
+          }
           break;
         }
 
         case "checkout.session.async_payment_succeeded": {
           const session = event.data.object as Stripe.Checkout.Session;
-          await handleCheckoutCompleted(session);
+          alreadyProcessed = await checkIfEventProcessed(session.id, session.metadata?.bookingId);
+          if (!alreadyProcessed) {
+            await handleCheckoutCompleted(session);
+          }
           break;
         }
 
@@ -121,6 +131,13 @@ export async function POST(request: NextRequest) {
           });
       }
 
+      if (alreadyProcessed) {
+        logger.info("Webhook event already processed, skipping", {
+          eventId: event.id,
+          eventType: event.type,
+        });
+      }
+
       return NextResponse.json({ received: true });
     } catch (error) {
       logger.error("Error processing webhook event", {
@@ -130,10 +147,11 @@ export async function POST(request: NextRequest) {
         stack: error instanceof Error ? error.stack : undefined,
       });
 
-      // Return 200 to prevent Stripe from retrying (we'll handle retries manually if needed)
+      // Return 500 to allow Stripe to retry the webhook
+      // Stripe will retry failed webhooks with exponential backoff
       return NextResponse.json(
         { error: "Event processing failed" },
-        { status: 200 }
+        { status: 500 }
       );
     }
   } catch (error) {
@@ -146,6 +164,42 @@ export async function POST(request: NextRequest) {
       { error: "Webhook processing failed" },
       { status: 500 }
     );
+  }
+}
+
+/**
+ * Check if webhook event has already been processed
+ * This provides idempotency to prevent duplicate processing
+ */
+async function checkIfEventProcessed(
+  sessionId: string,
+  bookingId?: string
+): Promise<boolean> {
+  if (!bookingId) {
+    return false;
+  }
+
+  try {
+    const booking = await prisma.booking.findUnique({
+      where: { id: bookingId },
+      select: { paymentId: true, status: true },
+    });
+
+    // If booking already has this paymentId and is not in PENDING status,
+    // the event has likely been processed
+    if (booking?.paymentId === sessionId && booking.status !== BookingStatus.PENDING) {
+      return true;
+    }
+
+    return false;
+  } catch (error) {
+    logger.warn("Error checking if event was processed", {
+      sessionId,
+      bookingId,
+      error: error instanceof Error ? error.message : String(error),
+    });
+    // If check fails, proceed with processing (safer than skipping)
+    return false;
   }
 }
 
@@ -187,6 +241,7 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
     }
 
     // Only update if booking is still CONFIRMED (not already paid/completed)
+    // This provides idempotency - if already processed, skip update
     if (booking.status === BookingStatus.CONFIRMED) {
       await prisma.booking.update({
         where: { id: bookingId },
@@ -200,12 +255,22 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
         bookingId,
         sessionId: session.id,
         amount: session.amount_total ? session.amount_total / 100 : 0,
+        currency: session.currency || "usd",
       });
-    } else {
-      logger.info("Booking payment already processed", {
+    } else if (booking.paymentId === session.id) {
+      // Payment already processed for this session - idempotent success
+      logger.info("Booking payment already processed (idempotent)", {
         bookingId,
         sessionId: session.id,
         currentStatus: booking.status,
+      });
+    } else {
+      // Booking status changed but paymentId doesn't match - log warning
+      logger.warn("Booking status changed but paymentId mismatch", {
+        bookingId,
+        sessionId: session.id,
+        currentStatus: booking.status,
+        currentPaymentId: booking.paymentId,
       });
     }
   } catch (error) {

@@ -30,9 +30,11 @@
 - [ ] `NEXTAUTH_SECRET` - Strong random secret (32+ characters)
 - [ ] `NODE_ENV=production`
 
-### Additional (when implemented)
-- [ ] `STRIPE_SECRET_KEY` - Stripe API key
-- [ ] `STRIPE_WEBHOOK_SECRET` - Stripe webhook secret
+### Additional
+- [x] `STRIPE_SECRET_KEY` - Stripe API key (live mode for production)
+- [x] `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` - Stripe publishable key
+- [x] `STRIPE_WEBHOOK_SECRET` - Stripe webhook signing secret
+- [x] `NEXT_PUBLIC_APP_URL` - Production application URL
 - [ ] `RESEND_API_KEY` - Resend email API key
 - [ ] `SENTRY_DSN` - Sentry error tracking DSN
 - [ ] `VERCEL_BLOB_READ_WRITE_TOKEN` - Vercel Blob storage token
@@ -54,9 +56,12 @@
 - [ ] Environment variables secured (not in code)
 
 ### Payments
-- [ ] Stripe webhooks properly secured
-- [ ] Payment data never stored (only IDs)
-- [ ] PCI compliance (handled by Stripe)
+- [x] Stripe webhooks properly secured (signature verification)
+- [x] Payment data never stored (only IDs)
+- [x] PCI compliance (handled by Stripe)
+- [x] Idempotency implemented (prevents duplicate processing)
+- [x] Error handling and logging
+- [x] Production-ready webhook handler
 
 ## Performance
 

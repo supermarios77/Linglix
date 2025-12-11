@@ -8,6 +8,9 @@ Language learning platform connecting students with expert tutors.
 - **Database**: PostgreSQL (Neon)
 - **ORM**: Prisma
 - **Authentication**: NextAuth v5
+- **Payments**: Stripe (Checkout Sessions)
+- **Video Chat**: Stream Video SDK
+- **Chat**: Stream Chat SDK
 - **Styling**: Tailwind CSS
 - **Internationalization**: next-intl
 - **Error Tracking**: Sentry
@@ -43,6 +46,10 @@ cp .env.example .env
    - `DIRECT_URL` - Direct database connection (for migrations)
    - `NEXTAUTH_URL` - Your application URL
    - `NEXTAUTH_SECRET` - Generate with: `openssl rand -base64 32`
+   - `STRIPE_SECRET_KEY` - Stripe secret key (for payments)
+   - `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` - Stripe publishable key
+   - `STRIPE_WEBHOOK_SECRET` - Stripe webhook signing secret
+   - `NEXT_PUBLIC_APP_URL` - Your application URL (for payment redirects)
 
 5. Set up the database:
 ```bash
