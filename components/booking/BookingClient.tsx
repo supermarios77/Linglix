@@ -37,9 +37,9 @@ import {
   CheckCircle2,
   Loader2,
   ArrowLeft,
+  User,
 } from "lucide-react";
 import Image from "next/image";
-import { User } from "lucide-react";
 
 interface Availability {
   dayOfWeek: number;

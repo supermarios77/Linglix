@@ -23,7 +23,6 @@ import { useTranslations } from "next-intl";
 import {
   StreamCall,
   useCallStateHooks,
-  SpeakerLayout,
   useStreamVideoClient,
   useCall,
   ParticipantView,
