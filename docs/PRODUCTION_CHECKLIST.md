@@ -35,7 +35,10 @@
 - [x] `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` - Stripe publishable key
 - [x] `STRIPE_WEBHOOK_SECRET` - Stripe webhook signing secret
 - [x] `NEXT_PUBLIC_APP_URL` - Production application URL
-- [ ] `RESEND_API_KEY` - Resend email API key
+- [x] `RESEND_API_KEY` - Resend email API key
+- [ ] `FROM_EMAIL` - Verified email address for sending emails
+- [ ] `FROM_NAME` - Sender name (default: Linglix)
+- [ ] `CRON_SECRET` - Secret token for cron job authentication (optional)
 - [ ] `SENTRY_DSN` - Sentry error tracking DSN
 - [ ] `VERCEL_BLOB_READ_WRITE_TOKEN` - Vercel Blob storage token
 
@@ -106,10 +109,22 @@
 - [ ] Email delivery tested
 - [ ] Error handling tested
 
+## Email Notifications
+
+- [x] Resend integration complete
+- [x] Email templates created
+- [x] Booking confirmation emails
+- [x] Payment receipt emails
+- [x] Cancellation emails
+- [x] Session reminder cron job
+- [ ] Domain verified in Resend
+- [ ] Test emails sent and verified
+
 ## Documentation
 
 - [x] Database setup guide
 - [x] Production checklist
+- [x] Email setup guide
 - [ ] API documentation (when APIs are created)
 - [ ] Deployment guide
 - [ ] Environment variables reference

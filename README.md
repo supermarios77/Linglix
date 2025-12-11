@@ -50,6 +50,10 @@ cp .env.example .env
    - `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` - Stripe publishable key
    - `STRIPE_WEBHOOK_SECRET` - Stripe webhook signing secret
    - `NEXT_PUBLIC_APP_URL` - Your application URL (for payment redirects)
+   - `RESEND_API_KEY` - Resend email API key (for email notifications)
+   - `FROM_EMAIL` - Email address to send from (default: onboarding@resend.dev)
+   - `FROM_NAME` - Sender name (default: Linglix)
+   - `CRON_SECRET` - Secret token for cron job authentication (optional, for manual testing)
 
 5. Set up the database:
 ```bash

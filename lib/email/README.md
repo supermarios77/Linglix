@@ -28,6 +28,10 @@ All email templates are responsive and work in both light and dark mode email cl
 
 - **Welcome Email** - Sent after onboarding completion
 - **Tutor Approval Email** - Sent when tutor profile is approved/rejected
+- **Booking Confirmation** - Sent when tutor confirms a booking
+- **Payment Receipt** - Sent after successful payment
+- **Session Reminder** - Sent 24h and 1h before session starts
+- **Booking Cancellation** - Sent when a booking is cancelled
 - **Email Verification** - For email verification (ready to use)
 - **Password Reset** - For password reset flow (ready to use)
 
