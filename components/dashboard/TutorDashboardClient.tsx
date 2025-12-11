@@ -167,18 +167,30 @@ export function TutorDashboardClient({
   };
 
   // Check if session is ready to join (5 minutes before scheduled time)
-  const canJoinSession = (scheduledAt: Date, status: BookingStatus) => {
+  const canJoinSession = (scheduledAt: Date, status: BookingStatus, duration: number, callEndedAt?: Date | null) => {
     if (status !== "CONFIRMED") {
       return false;
     }
+    
+    // If tutor has ended the call, prevent rejoining
+    if (callEndedAt) {
+      return false;
+    }
+    
     const now = new Date();
-    const sessionTime = new Date(scheduledAt);
-    // Allow joining 5 minutes before session starts
-    const joinTime = new Date(sessionTime.getTime() - 5 * 60 * 1000);
-    return now >= joinTime;
+    const sessionStart = new Date(scheduledAt);
+    const sessionEnd = new Date(sessionStart.getTime() + duration * 60 * 1000);
+    
+    // Only allow joining at the exact time or during the session, not before or after
+    return now >= sessionStart && now <= sessionEnd;
   };
 
-  const getStatusBadge = (status: BookingStatus) => {
+  const getStatusBadge = (status: BookingStatus, scheduledAt: Date, duration: number) => {
+    const now = new Date();
+    const sessionStart = new Date(scheduledAt);
+    const sessionEnd = new Date(sessionStart.getTime() + duration * 60 * 1000);
+    const isPast = now > sessionEnd;
+    
     switch (status) {
       case "PENDING":
         return (
@@ -187,7 +199,7 @@ export function TutorDashboardClient({
             className="bg-yellow-50/80 dark:bg-yellow-950/80 backdrop-blur-sm text-yellow-700 dark:text-yellow-300 border-yellow-300 dark:border-yellow-700 rounded-full px-3 py-1"
           >
             <Clock className="w-3 h-3 mr-1.5" />
-            {tBooking("upcoming")}
+            {isPast ? tBooking("past") : tBooking("upcoming")}
           </Badge>
         );
       case "CONFIRMED":
@@ -197,7 +209,7 @@ export function TutorDashboardClient({
             className="bg-green-50/80 dark:bg-green-950/80 backdrop-blur-sm text-green-700 dark:text-green-300 border-green-300 dark:border-green-700 rounded-full px-3 py-1"
           >
             <CheckCircle2 className="w-3 h-3 mr-1.5" />
-            {tBooking("upcoming")}
+            {isPast ? tBooking("past") : tBooking("upcoming")}
           </Badge>
         );
       case "COMPLETED":
@@ -992,7 +1004,7 @@ export function TutorDashboardClient({
                                   </div>
                                 </div>
                                 <div className="flex items-center gap-3">
-                                  {getStatusBadge(booking.status)}
+                                  {getStatusBadge(booking.status, booking.scheduledAt, booking.duration)}
                                   {canJoinSession(booking.scheduledAt, booking.status) && (
                                     <Link href={`/${locale}/sessions/${booking.id}`}>
                                       <Button

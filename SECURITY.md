@@ -47,7 +47,7 @@ SENTRY_DSN=...
 
 - [ ] Rate limiting on API routes
 - [ ] Email verification flow
-- [ ] Password reset flow
+- [x] Password reset flow ✅
 - [ ] Two-factor authentication (optional)
 - [ ] API rate limiting per user
 - [ ] Content Security Policy headers

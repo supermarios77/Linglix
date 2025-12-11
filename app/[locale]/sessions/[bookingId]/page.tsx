@@ -80,11 +80,23 @@ export default async function VideoCallPage({ params }: VideoCallPageProps) {
       redirect(`/${locale}/dashboard`);
     }
 
-    // Check booking status - only allow joining if booking is confirmed or completed
-    if (
-      booking.status !== BookingStatus.CONFIRMED &&
-      booking.status !== BookingStatus.COMPLETED
-    ) {
+    // Check booking status - only allow joining if booking is confirmed
+    if (booking.status !== BookingStatus.CONFIRMED) {
+      redirect(`/${locale}/dashboard`);
+    }
+
+    // Check if tutor has ended the call - prevent rejoining
+    if (booking.callEndedAt) {
+      redirect(`/${locale}/dashboard`);
+    }
+
+    // Check if session time is valid - only allow joining at exact time or during session
+    const now = new Date();
+    const sessionStart = new Date(booking.scheduledAt);
+    const sessionEnd = new Date(sessionStart.getTime() + booking.duration * 60 * 1000);
+    
+    // Only allow joining at the exact time or during the session, not before or after
+    if (now < sessionStart || now > sessionEnd) {
       redirect(`/${locale}/dashboard`);
     }
 

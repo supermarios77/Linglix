@@ -83,6 +83,7 @@ export function VideoCallClient({
   user,
   otherParticipant,
   isTutor,
+  bookingId,
 }: VideoCallClientProps) {
   const router = useRouter();
   const t = useTranslations("videoCall");
