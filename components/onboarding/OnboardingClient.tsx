@@ -92,8 +92,8 @@ export function OnboardingClient({ locale, user }: OnboardingClientProps) {
         return;
       }
 
-      // Redirect to dashboard
-      window.location.href = `/${locale}/dashboard`;
+      // Redirect to tutor selection page
+      window.location.href = `/${locale}/onboarding/select-tutor`;
     } catch (err) {
       setError(t("error"));
       setIsLoading(false);

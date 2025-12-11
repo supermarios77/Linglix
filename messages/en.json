@@ -554,6 +554,23 @@
       },
       "teachingStyle": "Teaching Style (Optional)",
       "teachingStylePlaceholder": "Describe your teaching approach and methods..."
+    },
+    "selectTutor": {
+      "title": "Select Tutor",
+      "titleRecommended": "Recommended Tutors for You",
+      "titleTopTutors": "Top Tutors",
+      "description": "Choose a tutor to start your learning journey",
+      "descriptionRecommended": "We've found tutors that match your learning goals and preferences.",
+      "descriptionTopTutors": "Here are some of our top-rated tutors to get you started.",
+      "badge": "Perfect Match",
+      "recommended": "Recommended",
+      "bookNow": "Book Now",
+      "viewProfile": "View Profile",
+      "skipToDashboard": "Skip to Dashboard",
+      "browseAllTutors": "Browse All Tutors",
+      "noTutorsTitle": "No Tutors Available",
+      "noTutorsDescription": "We're working on adding more tutors. Check back soon!",
+      "goToDashboard": "Go to Dashboard"
     }
   },
   "payment": {

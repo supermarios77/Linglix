@@ -556,6 +556,23 @@
       },
       "teachingStyle": "Estilo de Enseñanza (Opcional)",
       "teachingStylePlaceholder": "Describe tu enfoque y métodos de enseñanza..."
+    },
+    "selectTutor": {
+      "title": "Seleccionar Tutor",
+      "titleRecommended": "Tutores Recomendados para Ti",
+      "titleTopTutors": "Mejores Tutores",
+      "description": "Elige un tutor para comenzar tu viaje de aprendizaje",
+      "descriptionRecommended": "Hemos encontrado tutores que coinciden con tus objetivos y preferencias de aprendizaje.",
+      "descriptionTopTutors": "Aquí tienes algunos de nuestros tutores mejor valorados para comenzar.",
+      "badge": "Coincidencia Perfecta",
+      "recommended": "Recomendado",
+      "bookNow": "Reservar Ahora",
+      "viewProfile": "Ver Perfil",
+      "skipToDashboard": "Ir al Panel",
+      "browseAllTutors": "Ver Todos los Tutores",
+      "noTutorsTitle": "No Hay Tutores Disponibles",
+      "noTutorsDescription": "Estamos trabajando en agregar más tutores. ¡Vuelve pronto!",
+      "goToDashboard": "Ir al Panel"
     }
   },
   "payment": {
