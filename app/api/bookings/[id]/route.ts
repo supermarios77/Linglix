@@ -282,6 +282,23 @@ export async function PATCH(
         );
       }
 
+      // If tutor is rejecting/cancelling a PENDING booking, process refund
+      if (newStatus === BookingStatus.CANCELLED && booking.status === BookingStatus.PENDING && isTutor) {
+        const { processRefundWithBookingUpdate } = await import("@/lib/stripe/refunds");
+        const refundResult = await processRefundWithBookingUpdate(
+          booking.id,
+          "tutor_rejected_booking"
+        );
+
+        if (!refundResult.success) {
+          logger.error("Failed to process refund when tutor rejected booking", {
+            bookingId: booking.id,
+            error: refundResult.error,
+          });
+          // Continue with cancellation even if refund fails - admin can handle manually
+        }
+      }
+
       const updatedBooking = await prisma.booking.update({
         where: { id },
         data: { status: newStatus },
@@ -518,9 +535,37 @@ export async function DELETE(
       role: user.role,
     });
 
-    // Send cancellation emails
+    // Process refund if tutor cancelled or if booking was paid
     const isTutorCancelling = cancelledBooking.tutor.userId === user.id;
-    const refundAmount = cancelledBooking.paymentId ? cancelledBooking.price : undefined;
+    let refundAmount: number | undefined;
+    
+    // If tutor cancelled or booking was paid, process refund
+    if (isTutorCancelling && cancelledBooking.paymentId) {
+      const { processRefundWithBookingUpdate } = await import("@/lib/stripe/refunds");
+      const refundResult = await processRefundWithBookingUpdate(
+        cancelledBooking.id,
+        "tutor_cancelled_session"
+      );
+      
+      if (refundResult.success && refundResult.refund) {
+        refundAmount = refundResult.refund.amount / 100; // Convert from cents
+        // Update booking status to REFUNDED
+        await prisma.booking.update({
+          where: { id: cancelledBooking.id },
+          data: { status: BookingStatus.REFUNDED },
+        });
+      } else {
+        logger.error("Failed to process refund for tutor cancellation", {
+          bookingId: cancelledBooking.id,
+          error: refundResult.error,
+        });
+        // Still show refund amount in email even if processing failed
+        refundAmount = cancelledBooking.price;
+      }
+    } else if (cancelledBooking.paymentId) {
+      // Student cancelled - refund amount for email (but don't auto-refund)
+      refundAmount = cancelledBooking.price;
+    }
 
     // Send to student
     if (cancelledBooking.student.email) {

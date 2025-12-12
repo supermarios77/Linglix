@@ -276,11 +276,9 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
         where: { id: bookingId },
         data: {
           paymentId: session.id,
-          // Update status to CONFIRMED if it was PENDING (immediate payment flow)
-          // If already CONFIRMED, keep it as CONFIRMED
-          status: booking.status === BookingStatus.PENDING 
-            ? BookingStatus.CONFIRMED 
-            : BookingStatus.CONFIRMED,
+          // Keep booking as PENDING - waiting for tutor confirmation
+          // Status will be updated to CONFIRMED when tutor approves
+          status: BookingStatus.PENDING,
         },
       });
 

@@ -259,7 +259,7 @@ export function UserDashboardClient({
             className="bg-warning/10 backdrop-blur-sm text-warning border-warning/30 rounded-full px-3 py-1"
           >
             <Clock className="w-3 h-3 mr-1.5" />
-            {isPast ? tBooking("past") : tBooking("upcoming")}
+            Waiting for tutor confirmation
           </Badge>
         );
       case "CONFIRMED":
@@ -690,6 +690,16 @@ export function UserDashboardClient({
                         </div>
                       </div>
 
+                      {/* Waiting for tutor confirmation message */}
+                      {booking.status === "PENDING" && (
+                        <div className="mb-4 p-4 bg-warning/10 border border-warning/30 rounded-xl">
+                          <p className="text-sm text-warning font-medium flex items-center gap-2">
+                            <Clock className="w-4 h-4" />
+                            Waiting for tutor to confirm your booking. You'll be notified once they respond.
+                          </p>
+                        </div>
+                      )}
+
                       {/* Action Buttons */}
                       <div className="flex flex-col sm:flex-row gap-3">
                         {booking.status === "CONFIRMED" && !booking.paymentId && (
@@ -707,7 +717,7 @@ export function UserDashboardClient({
                             </Button>
                           </Link>
                         )}
-                        {booking.status !== "CANCELLED" && booking.status !== "COMPLETED" && (
+                        {booking.status !== "CANCELLED" && booking.status !== "COMPLETED" && booking.status !== "PENDING" && (
                           <Button
                             size="lg"
                             variant="outline"
