@@ -84,6 +84,19 @@
     "profile": "Profile",
     "settings": "Settings"
   },
+  "profile": {
+    "title": "Profile",
+    "description": "Manage your profile picture and account information",
+    "profilePicture": "Profile Picture",
+    "profilePictureDescription": "Upload a profile picture to personalize your account. Supported formats: JPEG, PNG, WebP, GIF (max 5MB)",
+    "accountInfo": "Account Information",
+    "accountInfoDescription": "Your account details",
+    "name": "Name",
+    "email": "Email",
+    "role": "Role",
+    "notSet": "Not set",
+    "updateSuccess": "Profile picture updated successfully!"
+  },
   "tutor": {
     "title": "Find Your Perfect Tutor",
     "subtitle": "Learn languages with native speakers",

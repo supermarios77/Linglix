@@ -1,0 +1,60 @@
+import { getTranslations } from "next-intl/server";
+import { redirect } from "next/navigation";
+import { requireAuth } from "@/lib/auth";
+import { ProfileClient } from "@/components/profile/ProfileClient";
+import { BackgroundBlobs } from "@/components/landing/BackgroundBlobs";
+
+/**
+ * Profile Page
+ * 
+ * Allows users to:
+ * - Upload and update their profile picture
+ * - View their account information
+ * 
+ * - Secure: Requires authentication
+ * - Localized: Full i18n support
+ * - Server-side: Fetches user data on server
+ */
+
+// Mark as dynamic since it uses headers for authentication
+export const dynamic = "force-dynamic";
+
+export async function generateMetadata() {
+  const t = await getTranslations("profile");
+  return {
+    title: `${t("title")} | Linglix`,
+    description: t("description"),
+  };
+}
+
+export default async function ProfilePage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+
+  try {
+    // Require authentication
+    const user = await requireAuth();
+
+    return (
+      <div className="relative min-h-screen bg-[#fafafa] dark:bg-[#050505] text-[#111] dark:text-white overflow-x-hidden">
+        <BackgroundBlobs />
+        <ProfileClient locale={locale} user={user} />
+      </div>
+    );
+  } catch (error) {
+    // Check if it's an authentication error
+    if (error instanceof Error && error.name === "HttpError") {
+      // Redirect to sign in with locale
+      redirect(`/${locale}/auth/signin`);
+    }
+
+    // For other errors, log and redirect to home with locale
+    if (process.env.NODE_ENV === "development") {
+      console.error("Profile page error:", error);
+    }
+    redirect(`/${locale}`);
+  }
+}

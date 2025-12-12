@@ -58,11 +58,16 @@ const nextConfig: NextConfig = {
   images: {
     formats: ["image/avif", "image/webp"],
     remotePatterns: [
-      // Add remote image patterns as needed
-      // {
-      //   protocol: "https",
-      //   hostname: "example.com",
-      // },
+      // Vercel Blob Storage
+      {
+        protocol: "https",
+        hostname: "*.public.blob.vercel-storage.com",
+      },
+      // Google OAuth profile images
+      {
+        protocol: "https",
+        hostname: "lh3.googleusercontent.com",
+      },
     ],
   },
   

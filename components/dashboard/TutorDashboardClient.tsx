@@ -149,6 +149,16 @@ export function TutorDashboardClient({
   const [showSignOutDialog, setShowSignOutDialog] = useState(false);
   const [activeSection, setActiveSection] = useState("overview");
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  
+  // Mobile phone detection for warning popup
+  const [showMobileWarning, setShowMobileWarning] = useState(false);
+  
+  // Check if user is on a mobile phone and show warning
+  useEffect(() => {
+    if (isMobilePhone()) {
+      setShowMobileWarning(true);
+    }
+  }, []);
 
   const handleSignOut = async () => {
     try {
