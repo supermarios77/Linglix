@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import { Separator } from "@/components/ui/separator";
 import {
   Select,
   SelectContent,
@@ -33,13 +34,6 @@ import {
   AlertCircle,
   Info
 } from "lucide-react";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 
 interface ProfileClientProps {
   locale: string;
@@ -293,69 +287,65 @@ export function ProfileClient({ locale, user, studentProfile, tutorProfile }: Pr
       </header>
 
       {/* Main Content */}
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 md:px-12 py-8 sm:py-12 md:py-16 pt-32 sm:pt-36 md:pt-40">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 md:px-12 pt-32 sm:pt-36 md:pt-40 pb-16 sm:pb-20 md:pb-24">
         {/* Page Header */}
-        <div className="mb-8 sm:mb-12">
-          <div className="inline-flex items-center px-3 sm:px-4 py-1.5 sm:py-2 bg-card/90 dark:bg-card/90 backdrop-blur-md border border-border rounded-full text-xs font-semibold uppercase tracking-wider mb-4 sm:mb-6 shadow-md">
+        <div className="mb-12 sm:mb-16">
+          <div className="inline-flex items-center px-3 sm:px-4 py-1.5 sm:py-2 bg-card/90 dark:bg-card/90 backdrop-blur-md border border-border rounded-full text-xs font-semibold uppercase tracking-wider mb-6 shadow-sm">
             <Sparkles className="w-3 h-3 mr-2 text-brand-primary" />
             <span>{t("editProfile")}</span>
           </div>
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 text-black dark:text-white">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-4 text-black dark:text-white tracking-tight">
             {t("title")}
           </h1>
-          <p className="text-muted-foreground text-base sm:text-lg max-w-2xl">
+          <p className="text-muted-foreground text-lg sm:text-xl max-w-2xl leading-relaxed">
             {t("description")}
           </p>
         </div>
 
-        <div className="space-y-6">
-          {/* Profile Picture */}
-          <Card className="bg-white dark:bg-gradient-to-b from-[#1a1a1a] to-[#121212] border border-[#e5e5e5] dark:border-[#262626] rounded-[24px] sm:rounded-[32px] shadow-sm hover:shadow-md transition-shadow">
-            <CardHeader className="pb-4">
-              <div className="flex items-center gap-3">
-                <div className="p-2 bg-primary/10 dark:bg-primary/20 rounded-xl">
-                  <User className="w-5 h-5 text-primary" />
-                </div>
-                <div>
-                  <CardTitle className="text-xl sm:text-2xl font-bold text-black dark:text-white">
-                    {t("profilePicture")}
-                  </CardTitle>
-                  <CardDescription className="text-[#666] dark:text-[#a1a1aa] mt-1">
-                    {t("profilePictureDescription")}
-                  </CardDescription>
-                </div>
+        {/* Profile Picture & Basic Info Section */}
+        <section className="mb-16 sm:mb-20">
+          <div className="bg-white dark:bg-gradient-to-b from-[#1a1a1a] to-[#121212] rounded-2xl sm:rounded-3xl border border-[#e5e5e5] dark:border-[#262626] shadow-sm p-6 sm:p-8 md:p-10">
+            <div className="flex items-center gap-3 mb-8">
+              <div className="p-2.5 bg-primary/10 dark:bg-primary/20 rounded-xl">
+                <User className="w-5 h-5 text-primary" />
               </div>
-            </CardHeader>
-            <CardContent>
+              <div>
+                <h2 className="text-xl sm:text-2xl font-bold text-black dark:text-white">
+                  {t("profilePicture")}
+                </h2>
+                <p className="text-sm text-[#666] dark:text-[#a1a1aa] mt-0.5">
+                  {t("profilePictureDescription")}
+                </p>
+              </div>
+            </div>
+            
+            <div className="mb-10">
               <AvatarUpload
                 currentImage={user.image}
                 onImageUpdate={handleImageUpdate}
               />
-            </CardContent>
-          </Card>
+            </div>
 
-          {/* User Profile */}
-          <Card className="bg-white dark:bg-gradient-to-b from-[#1a1a1a] to-[#121212] border border-[#e5e5e5] dark:border-[#262626] rounded-[24px] sm:rounded-[32px] shadow-sm hover:shadow-md transition-shadow">
-            <CardHeader className="pb-4">
-              <div className="flex items-center gap-3">
-                <div className="p-2 bg-blue-500/10 dark:bg-blue-500/20 rounded-xl">
+            <Separator className="my-10 bg-[#e5e5e5] dark:bg-[#262626]" />
+
+            <div className="space-y-6">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="p-2.5 bg-blue-500/10 dark:bg-blue-500/20 rounded-xl">
                   <Shield className="w-5 h-5 text-blue-500" />
                 </div>
-                <div className="flex-1">
-                  <CardTitle className="text-xl sm:text-2xl font-bold text-black dark:text-white">
+                <div>
+                  <h2 className="text-xl sm:text-2xl font-bold text-black dark:text-white">
                     {t("accountInfo")}
-                  </CardTitle>
-                  <CardDescription className="text-[#666] dark:text-[#a1a1aa] mt-1">
+                  </h2>
+                  <p className="text-sm text-[#666] dark:text-[#a1a1aa] mt-0.5">
                     {t("accountInfoDescription")}
-                  </CardDescription>
+                  </p>
                 </div>
               </div>
-            </CardHeader>
-            <CardContent className="space-y-5">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <div className="space-y-2">
-                  <Label htmlFor="name" className="text-sm font-semibold text-[#444] dark:text-[#a1a1aa] flex items-center gap-2">
-                    <User className="w-4 h-4" />
+                  <Label htmlFor="name" className="text-sm font-semibold text-[#444] dark:text-[#a1a1aa]">
                     {t("name")}
                   </Label>
                   <Input
@@ -363,58 +353,57 @@ export function ProfileClient({ locale, user, studentProfile, tutorProfile }: Pr
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     placeholder={t("namePlaceholder")}
-                    className="h-11 rounded-xl border-[#e5e5e5] dark:border-[#262626] bg-white/80 dark:bg-[#0a0a0a]/80 backdrop-blur-sm focus:border-primary dark:focus:border-[#ccf381] focus:ring-2 focus:ring-primary/10 dark:focus:ring-[#ccf381]/20 transition-all"
+                    className="h-12 rounded-xl border-[#e5e5e5] dark:border-[#262626] bg-white/80 dark:bg-[#0a0a0a]/80 backdrop-blur-sm focus:border-primary dark:focus:border-[#ccf381] focus:ring-2 focus:ring-primary/10 dark:focus:ring-[#ccf381]/20 transition-all"
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label className="text-sm font-semibold text-[#444] dark:text-[#a1a1aa] flex items-center gap-2">
-                    <Mail className="w-4 h-4" />
+                  <Label className="text-sm font-semibold text-[#444] dark:text-[#a1a1aa]">
                     {t("email")}
                   </Label>
                   <Input
                     value={user.email}
                     disabled
-                    className="h-11 rounded-xl border-[#e5e5e5] dark:border-[#262626] bg-[#f5f5f5] dark:bg-[#0a0a0a] opacity-60 cursor-not-allowed"
+                    className="h-12 rounded-xl border-[#e5e5e5] dark:border-[#262626] bg-[#f5f5f5] dark:bg-[#0a0a0a] opacity-60 cursor-not-allowed"
                   />
-                  <p className="text-xs text-[#888] dark:text-[#666] flex items-center gap-1">
-                    <Info className="w-3 h-3" />
+                  <p className="text-xs text-[#888] dark:text-[#666] flex items-center gap-1.5 mt-1.5">
+                    <Info className="w-3.5 h-3.5" />
                     {t("emailCannotChange")}
                   </p>
                 </div>
               </div>
+              
               <div className="space-y-2">
-                <Label className="text-sm font-semibold text-[#444] dark:text-[#a1a1aa] flex items-center gap-2">
-                  <Shield className="w-4 h-4" />
+                <Label className="text-sm font-semibold text-[#444] dark:text-[#a1a1aa]">
                   {t("role")}
                 </Label>
                 <Input
                   value={user.role.toLowerCase()}
                   disabled
-                  className="h-11 rounded-xl border-[#e5e5e5] dark:border-[#262626] bg-[#f5f5f5] dark:bg-[#0a0a0a] opacity-60 cursor-not-allowed capitalize"
+                  className="h-12 rounded-xl border-[#e5e5e5] dark:border-[#262626] bg-[#f5f5f5] dark:bg-[#0a0a0a] opacity-60 cursor-not-allowed capitalize"
                 />
               </div>
 
               {/* Save Button & Feedback */}
-              <div className="pt-4 border-t border-[#e5e5e5] dark:border-[#262626]">
+              <div className="pt-6 mt-6 border-t border-[#e5e5e5] dark:border-[#262626]">
                 <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-                  <div className="flex-1">
+                  <div className="flex-1 min-w-0">
                     {userSuccess && (
                       <div className="flex items-center gap-2 text-sm text-green-600 dark:text-green-400 animate-in fade-in slide-in-from-top-2">
-                        <CheckCircle2 className="w-4 h-4" />
-                        {t("updateSuccess")}
+                        <CheckCircle2 className="w-4 h-4 shrink-0" />
+                        <span>{t("updateSuccess")}</span>
                       </div>
                     )}
                     {userError && (
                       <div className="flex items-center gap-2 text-sm text-red-600 dark:text-red-400 animate-in fade-in slide-in-from-top-2">
-                        <AlertCircle className="w-4 h-4" />
-                        {userError}
+                        <AlertCircle className="w-4 h-4 shrink-0" />
+                        <span className="truncate">{userError}</span>
                       </div>
                     )}
                   </div>
                   <Button
                     onClick={handleSaveUserProfile}
                     disabled={savingUser || !hasUserChanges}
-                    className="bg-[#111] dark:bg-[#ccf381] text-white dark:text-black hover:bg-[#222] dark:hover:bg-[#d4f89a] rounded-full px-6 min-w-[120px] disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="bg-[#111] dark:bg-[#ccf381] text-white dark:text-black hover:bg-[#222] dark:hover:bg-[#d4f89a] rounded-full px-6 h-11 min-w-[140px] disabled:opacity-50 disabled:cursor-not-allowed shrink-0"
                   >
                     {savingUser ? (
                       <>
@@ -430,35 +419,36 @@ export function ProfileClient({ locale, user, studentProfile, tutorProfile }: Pr
                   </Button>
                 </div>
               </div>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
+        </section>
 
-          {/* Student Profile */}
-          {user.role === "STUDENT" && (
-            <Card className="bg-white dark:bg-gradient-to-b from-[#1a1a1a] to-[#121212] border border-[#e5e5e5] dark:border-[#262626] rounded-[24px] sm:rounded-[32px] shadow-sm hover:shadow-md transition-shadow">
-              <CardHeader className="pb-4">
-                <div className="flex items-center gap-3">
-                  <div className="p-2 bg-purple-500/10 dark:bg-purple-500/20 rounded-xl">
-                    <GraduationCap className="w-5 h-5 text-purple-500" />
-                  </div>
-                  <div className="flex-1">
-                    <CardTitle className="text-xl sm:text-2xl font-bold text-black dark:text-white">
-                      {t("studentProfile")}
-                    </CardTitle>
-                    <CardDescription className="text-[#666] dark:text-[#a1a1aa] mt-1">
-                      {t("studentProfileDescription")}
-                    </CardDescription>
-                  </div>
+        {/* Student Profile Section */}
+        {user.role === "STUDENT" && (
+          <section className="mb-16 sm:mb-20">
+            <div className="bg-white dark:bg-gradient-to-b from-[#1a1a1a] to-[#121212] rounded-2xl sm:rounded-3xl border border-[#e5e5e5] dark:border-[#262626] shadow-sm p-6 sm:p-8 md:p-10">
+              <div className="flex items-center gap-3 mb-8">
+                <div className="p-2.5 bg-purple-500/10 dark:bg-purple-500/20 rounded-xl">
+                  <GraduationCap className="w-5 h-5 text-purple-500" />
                 </div>
-              </CardHeader>
-              <CardContent className="space-y-5">
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
+                <div>
+                  <h2 className="text-xl sm:text-2xl font-bold text-black dark:text-white">
+                    {t("studentProfile")}
+                  </h2>
+                  <p className="text-sm text-[#666] dark:text-[#a1a1aa] mt-0.5">
+                    {t("studentProfileDescription")}
+                  </p>
+                </div>
+              </div>
+
+              <div className="space-y-8">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
                   <div className="space-y-2">
                     <Label htmlFor="learningGoal" className="text-sm font-semibold text-[#444] dark:text-[#a1a1aa]">
                       {tStudent("learningGoal")}
                     </Label>
                     <Select value={learningGoal} onValueChange={setLearningGoal}>
-                      <SelectTrigger className="h-11 rounded-xl border-[#e5e5e5] dark:border-[#262626] bg-white/80 dark:bg-[#0a0a0a]/80">
+                      <SelectTrigger className="h-12 rounded-xl border-[#e5e5e5] dark:border-[#262626] bg-white/80 dark:bg-[#0a0a0a]/80">
                         <SelectValue placeholder={tStudent("learningGoalPlaceholder")} />
                       </SelectTrigger>
                       <SelectContent>
@@ -477,7 +467,7 @@ export function ProfileClient({ locale, user, studentProfile, tutorProfile }: Pr
                       {tStudent("currentLevel")}
                     </Label>
                     <Select value={currentLevel} onValueChange={setCurrentLevel}>
-                      <SelectTrigger className="h-11 rounded-xl border-[#e5e5e5] dark:border-[#262626] bg-white/80 dark:bg-[#0a0a0a]/80">
+                      <SelectTrigger className="h-12 rounded-xl border-[#e5e5e5] dark:border-[#262626] bg-white/80 dark:bg-[#0a0a0a]/80">
                         <SelectValue placeholder={tStudent("currentLevelPlaceholder")} />
                       </SelectTrigger>
                       <SelectContent>
@@ -495,7 +485,7 @@ export function ProfileClient({ locale, user, studentProfile, tutorProfile }: Pr
                       {tStudent("preferredSchedule")}
                     </Label>
                     <Select value={preferredSchedule} onValueChange={setPreferredSchedule}>
-                      <SelectTrigger className="h-11 rounded-xl border-[#e5e5e5] dark:border-[#262626] bg-white/80 dark:bg-[#0a0a0a]/80">
+                      <SelectTrigger className="h-12 rounded-xl border-[#e5e5e5] dark:border-[#262626] bg-white/80 dark:bg-[#0a0a0a]/80">
                         <SelectValue placeholder={tStudent("preferredSchedulePlaceholder")} />
                       </SelectTrigger>
                       <SelectContent>
@@ -519,32 +509,32 @@ export function ProfileClient({ locale, user, studentProfile, tutorProfile }: Pr
                     value={motivation}
                     onChange={(e) => setMotivation(e.target.value)}
                     placeholder={tStudent("motivationPlaceholder")}
-                    className="min-h-[120px] rounded-xl border-[#e5e5e5] dark:border-[#262626] bg-white/80 dark:bg-[#0a0a0a]/80 focus:border-primary dark:focus:border-[#ccf381] focus:ring-2 focus:ring-primary/10 dark:focus:ring-[#ccf381]/20 transition-all resize-none"
-                    rows={4}
+                    className="min-h-[140px] rounded-xl border-[#e5e5e5] dark:border-[#262626] bg-white/80 dark:bg-[#0a0a0a]/80 focus:border-primary dark:focus:border-[#ccf381] focus:ring-2 focus:ring-primary/10 dark:focus:ring-[#ccf381]/20 transition-all resize-none"
+                    rows={5}
                   />
                 </div>
 
                 {/* Save Button & Feedback */}
-                <div className="pt-4 border-t border-[#e5e5e5] dark:border-[#262626]">
+                <div className="pt-6 mt-6 border-t border-[#e5e5e5] dark:border-[#262626]">
                   <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-                    <div className="flex-1">
+                    <div className="flex-1 min-w-0">
                       {studentSuccess && (
                         <div className="flex items-center gap-2 text-sm text-green-600 dark:text-green-400 animate-in fade-in slide-in-from-top-2">
-                          <CheckCircle2 className="w-4 h-4" />
-                          {t("updateSuccess")}
+                          <CheckCircle2 className="w-4 h-4 shrink-0" />
+                          <span>{t("updateSuccess")}</span>
                         </div>
                       )}
                       {studentError && (
                         <div className="flex items-center gap-2 text-sm text-red-600 dark:text-red-400 animate-in fade-in slide-in-from-top-2">
-                          <AlertCircle className="w-4 h-4" />
-                          {studentError}
+                          <AlertCircle className="w-4 h-4 shrink-0" />
+                          <span className="truncate">{studentError}</span>
                         </div>
                       )}
                     </div>
                     <Button
                       onClick={handleSaveStudentProfile}
                       disabled={savingStudent || !hasStudentChanges}
-                      className="bg-[#111] dark:bg-[#ccf381] text-white dark:text-black hover:bg-[#222] dark:hover:bg-[#d4f89a] rounded-full px-6 min-w-[120px] disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="bg-[#111] dark:bg-[#ccf381] text-white dark:text-black hover:bg-[#222] dark:hover:bg-[#d4f89a] rounded-full px-6 h-11 min-w-[140px] disabled:opacity-50 disabled:cursor-not-allowed shrink-0"
                     >
                       {savingStudent ? (
                         <>
@@ -560,32 +550,32 @@ export function ProfileClient({ locale, user, studentProfile, tutorProfile }: Pr
                     </Button>
                   </div>
                 </div>
-              </CardContent>
-            </Card>
-          )}
+              </div>
+            </div>
+          </section>
+        )}
 
-          {/* Tutor Profile */}
-          {user.role === "TUTOR" && (
-            <Card className="bg-white dark:bg-gradient-to-b from-[#1a1a1a] to-[#121212] border border-[#e5e5e5] dark:border-[#262626] rounded-[24px] sm:rounded-[32px] shadow-sm hover:shadow-md transition-shadow">
-              <CardHeader className="pb-4">
-                <div className="flex items-center gap-3">
-                  <div className="p-2 bg-green-500/10 dark:bg-green-500/20 rounded-xl">
-                    <BookOpen className="w-5 h-5 text-green-500" />
-                  </div>
-                  <div className="flex-1">
-                    <CardTitle className="text-xl sm:text-2xl font-bold text-black dark:text-white">
-                      {t("tutorProfile")}
-                    </CardTitle>
-                    <CardDescription className="text-[#666] dark:text-[#a1a1aa] mt-1">
-                      {t("tutorProfileDescription")}
-                    </CardDescription>
-                  </div>
+        {/* Tutor Profile Section */}
+        {user.role === "TUTOR" && (
+          <section className="mb-16 sm:mb-20">
+            <div className="bg-white dark:bg-gradient-to-b from-[#1a1a1a] to-[#121212] rounded-2xl sm:rounded-3xl border border-[#e5e5e5] dark:border-[#262626] shadow-sm p-6 sm:p-8 md:p-10">
+              <div className="flex items-center gap-3 mb-8">
+                <div className="p-2.5 bg-green-500/10 dark:bg-green-500/20 rounded-xl">
+                  <BookOpen className="w-5 h-5 text-green-500" />
                 </div>
-              </CardHeader>
-              <CardContent className="space-y-5">
-                <div className="space-y-2">
-                  <Label htmlFor="bio" className="text-sm font-semibold text-[#444] dark:text-[#a1a1aa] flex items-center gap-2">
-                    <BookOpen className="w-4 h-4" />
+                <div>
+                  <h2 className="text-xl sm:text-2xl font-bold text-black dark:text-white">
+                    {t("tutorProfile")}
+                  </h2>
+                  <p className="text-sm text-[#666] dark:text-[#a1a1aa] mt-0.5">
+                    {t("tutorProfileDescription")}
+                  </p>
+                </div>
+              </div>
+
+              <div className="space-y-8">
+                <div className="space-y-3">
+                  <Label htmlFor="bio" className="text-sm font-semibold text-[#444] dark:text-[#a1a1aa]">
                     {tTutor("bio")}
                   </Label>
                   <Textarea
@@ -593,12 +583,12 @@ export function ProfileClient({ locale, user, studentProfile, tutorProfile }: Pr
                     value={bio}
                     onChange={(e) => setBio(e.target.value)}
                     placeholder={tTutor("bioPlaceholder")}
-                    className="min-h-[140px] rounded-xl border-[#e5e5e5] dark:border-[#262626] bg-white/80 dark:bg-[#0a0a0a]/80 focus:border-primary dark:focus:border-[#ccf381] focus:ring-2 focus:ring-primary/10 dark:focus:ring-[#ccf381]/20 transition-all resize-none"
+                    className="min-h-[160px] rounded-xl border-[#e5e5e5] dark:border-[#262626] bg-white/80 dark:bg-[#0a0a0a]/80 focus:border-primary dark:focus:border-[#ccf381] focus:ring-2 focus:ring-primary/10 dark:focus:ring-[#ccf381]/20 transition-all resize-none"
                     rows={6}
                   />
-                  <div className="flex items-center justify-between">
-                    <p className="text-xs text-[#888] dark:text-[#666] flex items-center gap-1">
-                      <Info className="w-3 h-3" />
+                  <div className="flex items-center justify-between pt-1">
+                    <p className="text-xs text-[#888] dark:text-[#666] flex items-center gap-1.5">
+                      <Info className="w-3.5 h-3.5" />
                       {tTutor("bioHint")}
                     </p>
                     <p className={`text-xs font-medium ${bio.length < 50 ? "text-red-500" : "text-green-600 dark:text-green-400"}`}>
@@ -607,7 +597,9 @@ export function ProfileClient({ locale, user, studentProfile, tutorProfile }: Pr
                   </div>
                 </div>
 
-                <div className="space-y-3">
+                <Separator className="bg-[#e5e5e5] dark:bg-[#262626]" />
+
+                <div className="space-y-4">
                   <Label className="text-sm font-semibold text-[#444] dark:text-[#a1a1aa] flex items-center gap-2">
                     <Sparkles className="w-4 h-4" />
                     {tTutor("specialties")}
@@ -623,23 +615,23 @@ export function ProfileClient({ locale, user, studentProfile, tutorProfile }: Pr
                         }
                       }}
                       placeholder={tTutor("specialtyPlaceholder")}
-                      className="h-11 rounded-xl border-[#e5e5e5] dark:border-[#262626] bg-white/80 dark:bg-[#0a0a0a]/80 focus:border-primary dark:focus:border-[#ccf381] focus:ring-2 focus:ring-primary/10 dark:focus:ring-[#ccf381]/20 transition-all"
+                      className="h-12 rounded-xl border-[#e5e5e5] dark:border-[#262626] bg-white/80 dark:bg-[#0a0a0a]/80 focus:border-primary dark:focus:border-[#ccf381] focus:ring-2 focus:ring-primary/10 dark:focus:ring-[#ccf381]/20 transition-all"
                     />
                     <Button
                       type="button"
                       onClick={addSpecialty}
                       variant="outline"
-                      className="rounded-xl border-[#e5e5e5] dark:border-[#262626] hover:border-primary dark:hover:border-[#ccf381] min-w-[48px]"
+                      className="rounded-xl border-[#e5e5e5] dark:border-[#262626] hover:border-primary dark:hover:border-[#ccf381] min-w-[52px] h-12"
                     >
                       <Plus className="w-4 h-4" />
                     </Button>
                   </div>
                   {specialties.length > 0 && (
-                    <div className="flex flex-wrap gap-2 pt-2">
+                    <div className="flex flex-wrap gap-2.5 pt-2">
                       {specialties.map((specialty, index) => (
                         <div
                           key={index}
-                          className="group flex items-center gap-2 px-3 py-1.5 bg-gradient-to-br from-primary/10 to-primary/5 dark:from-primary/20 dark:to-primary/10 rounded-full border border-primary/20 dark:border-primary/30 hover:border-primary/40 transition-colors"
+                          className="group flex items-center gap-2 px-4 py-2 bg-gradient-to-br from-primary/10 to-primary/5 dark:from-primary/20 dark:to-primary/10 rounded-full border border-primary/20 dark:border-primary/30 hover:border-primary/40 transition-colors"
                         >
                           <span className="text-sm font-medium text-black dark:text-white">{specialty}</span>
                           <button
@@ -655,20 +647,22 @@ export function ProfileClient({ locale, user, studentProfile, tutorProfile }: Pr
                     </div>
                   )}
                   {specialties.length === 0 && (
-                    <p className="text-xs text-[#888] dark:text-[#666] flex items-center gap-1">
-                      <AlertCircle className="w-3 h-3" />
+                    <p className="text-xs text-[#888] dark:text-[#666] flex items-center gap-1.5 pt-1">
+                      <AlertCircle className="w-3.5 h-3.5" />
                       {tTutor("specialtiesRequired")}
                     </p>
                   )}
                 </div>
 
-                <div className="space-y-2">
+                <Separator className="bg-[#e5e5e5] dark:bg-[#262626]" />
+
+                <div className="space-y-3">
                   <Label htmlFor="hourlyRate" className="text-sm font-semibold text-[#444] dark:text-[#a1a1aa] flex items-center gap-2">
                     <DollarSign className="w-4 h-4" />
                     {tTutor("hourlyRate")}
                   </Label>
-                  <div className="relative">
-                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-[#666] dark:text-[#888] font-medium">$</span>
+                  <div className="relative max-w-xs">
+                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-[#666] dark:text-[#888] font-medium text-base">$</span>
                     <Input
                       id="hourlyRate"
                       type="number"
@@ -677,36 +671,36 @@ export function ProfileClient({ locale, user, studentProfile, tutorProfile }: Pr
                       value={hourlyRate}
                       onChange={(e) => setHourlyRate(e.target.value)}
                       placeholder="0.00"
-                      className="h-11 pl-8 rounded-xl border-[#e5e5e5] dark:border-[#262626] bg-white/80 dark:bg-[#0a0a0a]/80 focus:border-primary dark:focus:border-[#ccf381] focus:ring-2 focus:ring-primary/10 dark:focus:ring-[#ccf381]/20 transition-all"
+                      className="h-12 pl-8 rounded-xl border-[#e5e5e5] dark:border-[#262626] bg-white/80 dark:bg-[#0a0a0a]/80 focus:border-primary dark:focus:border-[#ccf381] focus:ring-2 focus:ring-primary/10 dark:focus:ring-[#ccf381]/20 transition-all"
                     />
                   </div>
-                  <p className="text-xs text-[#888] dark:text-[#666] flex items-center gap-1">
-                    <Info className="w-3 h-3" />
+                  <p className="text-xs text-[#888] dark:text-[#666] flex items-center gap-1.5 pt-1">
+                    <Info className="w-3.5 h-3.5" />
                     {tTutor("hourlyRateHint")}
                   </p>
                 </div>
 
                 {/* Save Button & Feedback */}
-                <div className="pt-4 border-t border-[#e5e5e5] dark:border-[#262626]">
+                <div className="pt-6 mt-6 border-t border-[#e5e5e5] dark:border-[#262626]">
                   <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-                    <div className="flex-1">
+                    <div className="flex-1 min-w-0">
                       {tutorSuccess && (
                         <div className="flex items-center gap-2 text-sm text-green-600 dark:text-green-400 animate-in fade-in slide-in-from-top-2">
-                          <CheckCircle2 className="w-4 h-4" />
-                          {t("updateSuccess")}
+                          <CheckCircle2 className="w-4 h-4 shrink-0" />
+                          <span>{t("updateSuccess")}</span>
                         </div>
                       )}
                       {tutorError && (
                         <div className="flex items-center gap-2 text-sm text-red-600 dark:text-red-400 animate-in fade-in slide-in-from-top-2">
-                          <AlertCircle className="w-4 h-4" />
-                          {tutorError}
+                          <AlertCircle className="w-4 h-4 shrink-0" />
+                          <span className="truncate">{tutorError}</span>
                         </div>
                       )}
                     </div>
                     <Button
                       onClick={handleSaveTutorProfile}
                       disabled={savingTutor || !hasTutorChanges}
-                      className="bg-[#111] dark:bg-[#ccf381] text-white dark:text-black hover:bg-[#222] dark:hover:bg-[#d4f89a] rounded-full px-6 min-w-[120px] disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="bg-[#111] dark:bg-[#ccf381] text-white dark:text-black hover:bg-[#222] dark:hover:bg-[#d4f89a] rounded-full px-6 h-11 min-w-[140px] disabled:opacity-50 disabled:cursor-not-allowed shrink-0"
                     >
                       {savingTutor ? (
                         <>
@@ -722,10 +716,10 @@ export function ProfileClient({ locale, user, studentProfile, tutorProfile }: Pr
                     </Button>
                   </div>
                 </div>
-              </CardContent>
-            </Card>
-          )}
-        </div>
+              </div>
+            </div>
+          </section>
+        )}
       </div>
     </div>
   );
