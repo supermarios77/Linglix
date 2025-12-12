@@ -27,9 +27,40 @@
 
 @layer base {
   :root {
+    /* ========================================================================
+       DESIGN TOKENS - COLOR SYSTEM
+       ======================================================================== */
+    
+    /* Brand Colors - Primary Accent */
+    --brand-primary: 75 100% 75%; /* #ccf381 */
+    --brand-primary-dark: 75 60% 65%; /* #a8d46f */
+    --brand-primary-light: 75 100% 80%; /* #d4f89a */
+    
+    /* Semantic Colors */
+    --color-success: 142 76% 36%; /* #10b981 */
+    --color-success-foreground: 0 0% 98%;
+    --color-error: 0 84% 60%; /* #ef4444 */
+    --color-error-foreground: 0 0% 98%;
+    --color-warning: 38 92% 50%; /* #f59e0b */
+    --color-warning-foreground: 0 0% 98%;
+    --color-info: 217 91% 60%; /* #3b82f6 */
+    --color-info-foreground: 0 0% 98%;
+
+    /* Neutral Colors - Gray Scale */
+    --gray-50: 0 0% 98%;
+    --gray-100: 0 0% 96%;
+    --gray-200: 0 0% 90%;
+    --gray-300: 0 0% 83%;
+    --gray-400: 0 0% 64%;
+    --gray-500: 0 0% 45%;
+    --gray-600: 0 0% 32%;
+    --gray-700: 0 0% 25%;
+    --gray-800: 0 0% 15%;
+    --gray-900: 0 0% 9%;
+
     /* Base Colors */
-    --background: 0 0% 100%;
-    --foreground: 0 0% 3.9%;
+    --background: 0 0% 98%; /* gray-50 */
+    --foreground: 0 0% 9%; /* gray-900 */
 
     /* Card Colors */
     --card: 0 0% 100%;
@@ -60,12 +91,85 @@
     --destructive-foreground: 0 0% 98%;
 
     /* Border & Input Colors */
-    --border: 0 0% 89.8%;
-    --input: 0 0% 89.8%;
+    --border: 0 0% 90%; /* gray-200 */
+    --input: 0 0% 90%; /* gray-200 */
     --ring: 0 0% 3.9%;
 
-    /* Border Radius */
-    --radius: 0.5rem;
+    /* ========================================================================
+       DESIGN TOKENS - SPACING SYSTEM (8px grid)
+       ======================================================================== */
+    --space-1: 0.25rem; /* 4px */
+    --space-2: 0.5rem; /* 8px */
+    --space-3: 0.75rem; /* 12px */
+    --space-4: 1rem; /* 16px */
+    --space-5: 1.25rem; /* 20px */
+    --space-6: 1.5rem; /* 24px */
+    --space-8: 2rem; /* 32px */
+    --space-10: 2.5rem; /* 40px */
+    --space-12: 3rem; /* 48px */
+    --space-16: 4rem; /* 64px */
+    --space-20: 5rem; /* 80px */
+    --space-24: 6rem; /* 96px */
+
+    /* ========================================================================
+       DESIGN TOKENS - TYPOGRAPHY SCALE
+       ======================================================================== */
+    --text-xs: 0.75rem; /* 12px */
+    --text-sm: 0.875rem; /* 14px */
+    --text-base: 1rem; /* 16px */
+    --text-lg: 1.125rem; /* 18px */
+    --text-xl: 1.25rem; /* 20px */
+    --text-2xl: 1.5rem; /* 24px */
+    --text-3xl: 1.875rem; /* 30px */
+    --text-4xl: 2.25rem; /* 36px */
+    --text-5xl: 3rem; /* 48px */
+    --text-6xl: 3.75rem; /* 60px */
+    --text-7xl: 4.5rem; /* 72px */
+    --text-8xl: 6rem; /* 96px */
+
+    /* Line Heights */
+    --leading-tight: 1.25;
+    --leading-snug: 1.375;
+    --leading-normal: 1.5;
+    --leading-relaxed: 1.625;
+    --leading-loose: 2;
+
+    /* Letter Spacing */
+    --tracking-tighter: -0.05em;
+    --tracking-tight: -0.025em;
+    --tracking-normal: 0em;
+    --tracking-wide: 0.025em;
+    --tracking-wider: 0.05em;
+
+    /* ========================================================================
+       DESIGN TOKENS - BORDER RADIUS
+       ======================================================================== */
+    --radius-sm: 0.5rem; /* 8px */
+    --radius-md: 0.75rem; /* 12px */
+    --radius-lg: 1rem; /* 16px */
+    --radius-xl: 1.5rem; /* 24px */
+    --radius-2xl: 2rem; /* 32px */
+    --radius-full: 9999px;
+    --radius: var(--radius-md); /* Default */
+
+    /* ========================================================================
+       DESIGN TOKENS - SHADOWS
+       ======================================================================== */
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+    --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+
+    /* ========================================================================
+       DESIGN TOKENS - OPACITY
+       ======================================================================== */
+    --opacity-disabled: 0.5;
+    --opacity-hover: 0.8;
+    --opacity-active: 0.9;
+    --opacity-backdrop: 0.85;
+    --opacity-overlay: 0.5;
   }
 
   .dark {
@@ -118,13 +222,7 @@
  */
 
 @theme inline {
-  /* Radius Scale */
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
-
-  /* Color Mappings */
+  /* Color Mappings - Base */
   --color-background: hsl(var(--background));
   --color-foreground: hsl(var(--foreground));
   --color-card: hsl(var(--card));
@@ -144,6 +242,69 @@
   --color-border: hsl(var(--border));
   --color-input: hsl(var(--input));
   --color-ring: hsl(var(--ring));
+
+  /* Color Mappings - Brand */
+  --color-brand-primary: hsl(var(--brand-primary));
+  --color-brand-primary-dark: hsl(var(--brand-primary-dark));
+  --color-brand-primary-light: hsl(var(--brand-primary-light));
+
+  /* Color Mappings - Semantic */
+  --color-success: hsl(var(--color-success));
+  --color-success-foreground: hsl(var(--color-success-foreground));
+  --color-error: hsl(var(--color-error));
+  --color-error-foreground: hsl(var(--color-error-foreground));
+  --color-warning: hsl(var(--color-warning));
+  --color-warning-foreground: hsl(var(--color-warning-foreground));
+  --color-info: hsl(var(--color-info));
+  --color-info-foreground: hsl(var(--color-info-foreground));
+
+  /* Color Mappings - Neutral Gray Scale */
+  --color-gray-50: hsl(var(--gray-50));
+  --color-gray-100: hsl(var(--gray-100));
+  --color-gray-200: hsl(var(--gray-200));
+  --color-gray-300: hsl(var(--gray-300));
+  --color-gray-400: hsl(var(--gray-400));
+  --color-gray-500: hsl(var(--gray-500));
+  --color-gray-600: hsl(var(--gray-600));
+  --color-gray-700: hsl(var(--gray-700));
+  --color-gray-800: hsl(var(--gray-800));
+  --color-gray-900: hsl(var(--gray-900));
+
+  /* Spacing Mappings */
+  --spacing-1: var(--space-1);
+  --spacing-2: var(--space-2);
+  --spacing-3: var(--space-3);
+  --spacing-4: var(--space-4);
+  --spacing-5: var(--space-5);
+  --spacing-6: var(--space-6);
+  --spacing-8: var(--space-8);
+  --spacing-10: var(--space-10);
+  --spacing-12: var(--space-12);
+  --spacing-16: var(--space-16);
+  --spacing-20: var(--space-20);
+  --spacing-24: var(--space-24);
+
+  /* Typography Mappings */
+  --font-size-xs: var(--text-xs);
+  --font-size-sm: var(--text-sm);
+  --font-size-base: var(--text-base);
+  --font-size-lg: var(--text-lg);
+  --font-size-xl: var(--text-xl);
+  --font-size-2xl: var(--text-2xl);
+  --font-size-3xl: var(--text-3xl);
+  --font-size-4xl: var(--text-4xl);
+  --font-size-5xl: var(--text-5xl);
+  --font-size-6xl: var(--text-6xl);
+  --font-size-7xl: var(--text-7xl);
+  --font-size-8xl: var(--text-8xl);
+
+  /* Radius Mappings */
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
+  --radius-xl: var(--radius-xl);
+  --radius-2xl: var(--radius-2xl);
+  --radius-full: var(--radius-full);
 }
 
 /* ============================================================================

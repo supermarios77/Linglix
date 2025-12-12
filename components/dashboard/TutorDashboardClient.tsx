@@ -196,7 +196,7 @@ export function TutorDashboardClient({
         return (
           <Badge
             variant="outline"
-            className="bg-yellow-50/80 dark:bg-yellow-950/80 backdrop-blur-sm text-yellow-700 dark:text-yellow-300 border-yellow-300 dark:border-yellow-700 rounded-full px-3 py-1"
+            className="bg-warning/10 backdrop-blur-sm text-warning border-warning/30 rounded-full px-3 py-1"
           >
             <Clock className="w-3 h-3 mr-1.5" />
             {isPast ? tBooking("past") : tBooking("upcoming")}
@@ -206,7 +206,7 @@ export function TutorDashboardClient({
         return (
           <Badge
             variant="outline"
-            className="bg-green-50/80 dark:bg-green-950/80 backdrop-blur-sm text-green-700 dark:text-green-300 border-green-300 dark:border-green-700 rounded-full px-3 py-1"
+            className="bg-success/10 backdrop-blur-sm text-success border-success/30 rounded-full px-3 py-1"
           >
             <CheckCircle2 className="w-3 h-3 mr-1.5" />
             {isPast ? tBooking("past") : tBooking("upcoming")}
@@ -216,7 +216,7 @@ export function TutorDashboardClient({
         return (
           <Badge
             variant="outline"
-            className="bg-blue-50/80 dark:bg-blue-950/80 backdrop-blur-sm text-blue-700 dark:text-blue-300 border-blue-300 dark:border-blue-700 rounded-full px-3 py-1"
+            className="bg-info/10 backdrop-blur-sm text-info border-info/30 rounded-full px-3 py-1"
           >
             <CheckCircle2 className="w-3 h-3 mr-1.5" />
             {tBooking("past")}
@@ -226,7 +226,7 @@ export function TutorDashboardClient({
         return (
           <Badge
             variant="outline"
-            className="bg-red-50/80 dark:bg-red-950/80 backdrop-blur-sm text-red-700 dark:text-red-300 border-red-300 dark:border-red-700 rounded-full px-3 py-1"
+            className="bg-error/10 backdrop-blur-sm text-error border-error/30 rounded-full px-3 py-1"
           >
             <XCircle className="w-3 h-3 mr-1.5" />
             {tBooking("cancelled")}
@@ -241,21 +241,21 @@ export function TutorDashboardClient({
     switch (status) {
       case "PENDING":
         return (
-          <Badge className="bg-yellow-100 dark:bg-yellow-900/20 text-yellow-700 dark:text-yellow-400 border border-yellow-300 dark:border-yellow-700 rounded-md px-2.5 py-1 text-xs font-medium">
+          <Badge className="bg-warning/10 text-warning border border-warning/30 rounded-md px-2.5 py-1 text-xs font-medium">
             <Clock className="w-3 h-3 mr-1.5" />
             {tTutor("status.pending")}
           </Badge>
         );
       case "APPROVED":
         return (
-          <Badge className="bg-green-100 dark:bg-green-900/20 text-green-700 dark:text-green-400 border border-green-300 dark:border-green-700 rounded-md px-2.5 py-1 text-xs font-medium">
+          <Badge className="bg-success/10 text-success border border-success/30 rounded-md px-2.5 py-1 text-xs font-medium">
             <CheckCircle2 className="w-3 h-3 mr-1.5" />
             {tTutor("status.approved")}
           </Badge>
         );
       case "REJECTED":
         return (
-          <Badge className="bg-red-100 dark:bg-red-900/20 text-red-700 dark:text-red-400 border border-red-300 dark:border-red-700 rounded-md px-2.5 py-1 text-xs font-medium">
+          <Badge className="bg-error/10 text-error border border-error/30 rounded-md px-2.5 py-1 text-xs font-medium">
             <XCircle className="w-3 h-3 mr-1.5" />
             {tTutor("status.rejected")}
           </Badge>
@@ -447,7 +447,7 @@ export function TutorDashboardClient({
       <div className="flex">
         {/* Sidebar */}
         <aside
-          className={`fixed left-0 top-16 sm:top-20 h-[calc(100vh-4rem)] sm:h-[calc(100vh-5rem)] w-64 bg-white dark:bg-[#0a0a0a] border-r border-[#e5e5e5] dark:border-[#1a1a1a] z-50 transition-transform duration-300 ${
+          className={`fixed left-0 top-16 sm:top-20 h-[calc(100vh-4rem)] sm:h-[calc(100vh-5rem)] w-64 bg-background border-r border-border z-50 transition-transform duration-300 ${
             sidebarOpen ? "translate-x-0" : "-translate-x-full"
           } lg:translate-x-0`}
         >
@@ -538,22 +538,22 @@ export function TutorDashboardClient({
                 {/* Header with Welcome and Key Stats */}
                 <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-8">
                   <div>
-                    <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/90 dark:bg-[#121212]/90 backdrop-blur-md border border-[#e5e5e5] dark:border-[#262626] rounded-full text-xs font-semibold uppercase tracking-wider mb-4 shadow-[0_4px_12px_rgba(0,0,0,0.05)]">
-                      <span className="w-2 h-2 bg-[#ccf381] rounded-full animate-pulse" />
+                    <div className="inline-flex items-center gap-2 px-4 py-2 bg-card/90 backdrop-blur-md border border-border rounded-full text-xs font-semibold uppercase tracking-wider mb-4 shadow-md">
+                      <span className="w-2 h-2 bg-brand-primary rounded-full animate-pulse" />
                       <span>Dashboard</span>
-                      <Sparkles className="w-3 h-3 text-[#ccf381] opacity-70" />
+                      <Sparkles className="w-3 h-3 text-brand-primary opacity-70" />
                     </div>
-                    <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-[-0.04em] text-black dark:text-white mb-3">
+                    <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-foreground mb-3">
                       Welcome back,
                       <br />
                       <span className="relative inline-block mt-2">
-                        <span className="inline-block bg-[#ffeb3b] dark:bg-[#ccf381] text-black dark:text-black px-4 py-2 -rotate-[-2deg] transform origin-center font-bold shadow-[0_4px_8px_rgba(0,0,0,0.1)] relative z-10">
+                        <span className="inline-block bg-brand-primary text-black px-4 py-2 -rotate-2 transform origin-center font-bold shadow-lg relative z-10">
                           {user.name || tTutor("tutor")}
                         </span>
-                        <span className="absolute inset-0 bg-[#ffeb3b]/20 dark:bg-[#ccf381]/20 blur-xl -rotate-[-2deg] transform origin-center" aria-hidden="true" />
+                        <span className="absolute inset-0 bg-brand-primary/20 blur-xl -rotate-2 transform origin-center" aria-hidden="true" />
                       </span>
                     </h1>
-                    <p className="text-base sm:text-lg text-[#666] dark:text-[#a1a1aa] font-light mt-4">
+                    <p className="text-base sm:text-lg text-muted-foreground font-light mt-4">
                       {new Date().toLocaleDateString(locale === "es" ? "es-ES" : "en-US", { 
                         weekday: "long", 
                         year: "numeric", 
@@ -563,13 +563,13 @@ export function TutorDashboardClient({
                     </p>
                   </div>
                   <div className="flex flex-wrap gap-4">
-                    <div className="px-6 py-4 bg-white/90 dark:bg-[#1a1a1a]/90 backdrop-blur-md border border-[#e5e5e5] dark:border-[#262626] rounded-2xl shadow-[0_4px_12px_rgba(0,0,0,0.05)] hover:shadow-lg transition-all">
-                      <div className="text-xs text-[#666] dark:text-[#aaa] mb-1.5 uppercase tracking-wide">Total Earnings</div>
-                      <div className="text-2xl font-bold text-black dark:text-white">${totalEarnings.toFixed(2)}</div>
+                    <div className="px-6 py-4 bg-card/90 backdrop-blur-md border border-border rounded-2xl shadow-md hover:shadow-lg transition-all">
+                      <div className="text-xs text-muted-foreground mb-1.5 uppercase tracking-wide">Total Earnings</div>
+                      <div className="text-2xl font-bold text-foreground">${totalEarnings.toFixed(2)}</div>
                     </div>
-                    <div className="px-6 py-4 bg-white/90 dark:bg-[#1a1a1a]/90 backdrop-blur-md border border-[#e5e5e5] dark:border-[#262626] rounded-2xl shadow-[0_4px_12px_rgba(0,0,0,0.05)] hover:shadow-lg transition-all">
-                      <div className="text-xs text-[#666] dark:text-[#aaa] mb-1.5 uppercase tracking-wide">Total Sessions</div>
-                      <div className="text-2xl font-bold text-black dark:text-white">{totalSessions}</div>
+                    <div className="px-6 py-4 bg-card/90 backdrop-blur-md border border-border rounded-2xl shadow-md hover:shadow-lg transition-all">
+                      <div className="text-xs text-muted-foreground mb-1.5 uppercase tracking-wide">Total Sessions</div>
+                      <div className="text-2xl font-bold text-foreground">{totalSessions}</div>
                     </div>
                     <div className="px-6 py-4 bg-white/90 dark:bg-[#1a1a1a]/90 backdrop-blur-md border border-[#e5e5e5] dark:border-[#262626] rounded-2xl shadow-[0_4px_12px_rgba(0,0,0,0.05)] hover:shadow-lg transition-all">
                       <div className="text-xs text-[#666] dark:text-[#aaa] mb-1.5 uppercase tracking-wide">Rating</div>
@@ -930,15 +930,15 @@ export function TutorDashboardClient({
               <div className="space-y-8">
                 {/* Section Header */}
                 <div className="mb-8">
-                  <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/90 dark:bg-[#121212]/90 backdrop-blur-md border border-[#e5e5e5] dark:border-[#262626] rounded-full text-xs font-semibold uppercase tracking-wider mb-4 shadow-[0_4px_12px_rgba(0,0,0,0.05)]">
-                    <span className="w-2 h-2 bg-[#ccf381] rounded-full animate-pulse" />
+                  <div className="inline-flex items-center gap-2 px-4 py-2 bg-card/90 backdrop-blur-md border border-border rounded-full text-xs font-semibold uppercase tracking-wider mb-4 shadow-md">
+                    <span className="w-2 h-2 bg-brand-primary rounded-full animate-pulse" />
                     <span>Sessions</span>
-                    <Sparkles className="w-3 h-3 text-[#ccf381] opacity-70" />
+                    <Sparkles className="w-3 h-3 text-brand-primary opacity-70" />
                   </div>
-                  <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-[-0.04em] text-black dark:text-white mb-3">
+                  <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-foreground mb-3">
                     {tTutor("sections.sessions")}
                   </h1>
-                  <p className="text-base sm:text-lg text-[#666] dark:text-[#a1a1aa] font-light">
+                  <p className="text-base sm:text-lg text-muted-foreground font-light">
                     Manage your teaching sessions
                   </p>
                 </div>
@@ -948,17 +948,17 @@ export function TutorDashboardClient({
                   <div className="space-y-6">
                     <div className="flex items-center justify-between mb-6">
                       <div>
-                        <h2 className="text-3xl font-bold text-black dark:text-white mb-2 flex items-center gap-3">
-                          <div className="p-2.5 bg-gradient-to-br from-green-500/20 to-emerald-500/20 dark:from-green-500/10 dark:to-emerald-500/10 rounded-2xl backdrop-blur-sm">
-                            <Calendar className="w-6 h-6 text-green-600 dark:text-green-400" />
+                        <h2 className="text-3xl font-bold text-foreground mb-2 flex items-center gap-3">
+                          <div className="p-2.5 bg-success/20 rounded-xl backdrop-blur-sm">
+                            <Calendar className="w-6 h-6 text-success" />
                           </div>
                           {tTutor("upcomingSessions")}
                         </h2>
-                        <p className="text-sm text-[#666] dark:text-[#a1a1aa] ml-14">
+                        <p className="text-sm text-muted-foreground ml-14">
                           {upcomingBookings.length} {upcomingBookings.length === 1 ? "session" : "sessions"} scheduled
                         </p>
                       </div>
-                      <Badge className="bg-gradient-to-r from-green-500/20 to-emerald-500/20 text-green-700 dark:text-green-300 border-2 border-green-500/30 dark:border-green-500/20 rounded-full px-6 py-2.5 text-base font-bold shadow-lg backdrop-blur-sm">
+                      <Badge className="bg-success/20 text-success border-2 border-success/30 rounded-full px-6 py-2.5 text-base font-bold shadow-lg backdrop-blur-sm">
                         {upcomingBookings.length}
                       </Badge>
                     </div>
@@ -969,15 +969,15 @@ export function TutorDashboardClient({
                         return (
                           <Card
                             key={booking.id}
-                            className="group relative overflow-hidden bg-gradient-to-br from-white via-white to-green-50/30 dark:from-[#1a1a1a] dark:via-[#1a1a1a] dark:to-green-950/20 border-2 border-[#e5e5e5] dark:border-[#262626] rounded-3xl shadow-[0_4px_20px_rgba(0,0,0,0.08)] hover:shadow-[0_20px_60px_rgba(34,197,94,0.15)] hover:border-green-400/50 dark:hover:border-green-600/50 transition-all duration-500 hover:-translate-y-2"
+                            className="group relative overflow-hidden bg-card border-2 border-border rounded-3xl shadow-xl hover:shadow-2xl hover:border-success/50 transition-all duration-500 hover:-translate-y-2"
                           >
                             {/* Gradient overlay on hover */}
-                            <div className="absolute inset-0 bg-gradient-to-br from-green-500/5 via-transparent to-emerald-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                            <div className="absolute inset-0 bg-success/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                             
                             {/* Time indicator badge */}
                             {isToday && (
                               <div className="absolute top-4 right-4 z-10">
-                                <Badge className="bg-gradient-to-r from-green-500 to-emerald-500 text-white border-0 rounded-full px-3 py-1 text-xs font-bold shadow-lg animate-pulse">
+                                <Badge className="bg-success text-white border-0 rounded-full px-3 py-1 text-xs font-bold shadow-lg animate-pulse">
                                   Today
                                 </Badge>
                               </div>
@@ -988,7 +988,7 @@ export function TutorDashboardClient({
                                 {/* Student Avatar */}
                                 <div className="relative shrink-0">
                                   {booking.student.image ? (
-                                    <div className="relative w-16 h-16 rounded-2xl overflow-hidden border-3 border-green-200/50 dark:border-green-800/50 shadow-lg ring-2 ring-green-100 dark:ring-green-900/50">
+                                    <div className="relative w-16 h-16 rounded-xl overflow-hidden border-2 border-success/20 shadow-lg ring-2 ring-success/10">
                                       <Image
                                         src={booking.student.image}
                                         alt={booking.student.name || tTutor("student")}
@@ -997,12 +997,12 @@ export function TutorDashboardClient({
                                       />
                                     </div>
                                   ) : (
-                                    <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-green-100 to-emerald-100 dark:from-green-900/30 dark:to-emerald-900/30 border-3 border-green-200/50 dark:border-green-800/50 flex items-center justify-center shadow-lg ring-2 ring-green-100 dark:ring-green-900/50">
-                                      <User className="w-8 h-8 text-green-600 dark:text-green-400" />
+                                    <div className="w-16 h-16 rounded-xl bg-success/20 border-2 border-success/20 flex items-center justify-center shadow-lg ring-2 ring-success/10">
+                                      <User className="w-8 h-8 text-success" />
                                     </div>
                                   )}
                                   {canJoinSession(booking.scheduledAt, booking.status, booking.duration, booking.callEndedAt) && (
-                                    <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-green-500 rounded-full border-2 border-white dark:border-[#1a1a1a] animate-pulse" />
+                                    <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-success rounded-full border-2 border-card animate-pulse" />
                                   )}
                                 </div>
 
@@ -1024,40 +1024,40 @@ export function TutorDashboardClient({
 
                                   {/* Session Info Grid */}
                                   <div className="grid grid-cols-2 gap-3 mb-4">
-                                    <div className="flex items-center gap-2.5 p-2.5 bg-white/60 dark:bg-[#0a0a0a]/60 backdrop-blur-sm rounded-xl border border-[#e5e5e5] dark:border-[#262626]">
-                                      <div className="p-1.5 bg-green-100 dark:bg-green-900/30 rounded-lg">
-                                        <Calendar className="w-4 h-4 text-green-600 dark:text-green-400" />
+                                    <div className="flex items-center gap-2.5 p-2.5 bg-muted/60 backdrop-blur-sm rounded-xl border border-border">
+                                      <div className="p-1.5 bg-success/20 rounded-lg">
+                                        <Calendar className="w-4 h-4 text-success" />
                                       </div>
                                       <div>
-                                        <p className="text-xs text-[#666] dark:text-[#aaa] font-medium">Date</p>
-                                        <p className="text-sm font-bold text-black dark:text-white">{formatDate(booking.scheduledAt)}</p>
+                                        <p className="text-xs text-muted-foreground font-medium">Date</p>
+                                        <p className="text-sm font-bold text-foreground">{formatDate(booking.scheduledAt)}</p>
                                       </div>
                                     </div>
-                                    <div className="flex items-center gap-2.5 p-2.5 bg-white/60 dark:bg-[#0a0a0a]/60 backdrop-blur-sm rounded-xl border border-[#e5e5e5] dark:border-[#262626]">
-                                      <div className="p-1.5 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
-                                        <Clock className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                                    <div className="flex items-center gap-2.5 p-2.5 bg-muted/60 backdrop-blur-sm rounded-xl border border-border">
+                                      <div className="p-1.5 bg-info/20 rounded-lg">
+                                        <Clock className="w-4 h-4 text-info" />
                                       </div>
                                       <div>
-                                        <p className="text-xs text-[#666] dark:text-[#aaa] font-medium">Time</p>
-                                        <p className="text-sm font-bold text-black dark:text-white">{formatTime(booking.scheduledAt)}</p>
+                                        <p className="text-xs text-muted-foreground font-medium">Time</p>
+                                        <p className="text-sm font-bold text-foreground">{formatTime(booking.scheduledAt)}</p>
                                       </div>
                                     </div>
-                                    <div className="flex items-center gap-2.5 p-2.5 bg-white/60 dark:bg-[#0a0a0a]/60 backdrop-blur-sm rounded-xl border border-[#e5e5e5] dark:border-[#262626]">
-                                      <div className="p-1.5 bg-purple-100 dark:bg-purple-900/30 rounded-lg">
-                                        <Clock3 className="w-4 h-4 text-purple-600 dark:text-purple-400" />
+                                    <div className="flex items-center gap-2.5 p-2.5 bg-muted/60 backdrop-blur-sm rounded-xl border border-border">
+                                      <div className="p-1.5 bg-warning/20 rounded-lg">
+                                        <Clock3 className="w-4 h-4 text-warning" />
                                       </div>
                                       <div>
-                                        <p className="text-xs text-[#666] dark:text-[#aaa] font-medium">Duration</p>
-                                        <p className="text-sm font-bold text-black dark:text-white">{booking.duration} {tBooking("min")}</p>
+                                        <p className="text-xs text-muted-foreground font-medium">Duration</p>
+                                        <p className="text-sm font-bold text-foreground">{booking.duration} {tBooking("min")}</p>
                                       </div>
                                     </div>
-                                    <div className="flex items-center gap-2.5 p-2.5 bg-white/60 dark:bg-[#0a0a0a]/60 backdrop-blur-sm rounded-xl border border-[#e5e5e5] dark:border-[#262626]">
-                                      <div className="p-1.5 bg-amber-100 dark:bg-amber-900/30 rounded-lg">
-                                        <DollarSign className="w-4 h-4 text-amber-600 dark:text-amber-400" />
+                                    <div className="flex items-center gap-2.5 p-2.5 bg-muted/60 backdrop-blur-sm rounded-xl border border-border">
+                                      <div className="p-1.5 bg-brand-primary/20 rounded-lg">
+                                        <DollarSign className="w-4 h-4 text-brand-primary" />
                                       </div>
                                       <div>
-                                        <p className="text-xs text-[#666] dark:text-[#aaa] font-medium">Price</p>
-                                        <p className="text-sm font-bold text-black dark:text-white">${booking.price.toFixed(2)}</p>
+                                        <p className="text-xs text-muted-foreground font-medium">Price</p>
+                                        <p className="text-sm font-bold text-foreground">${booking.price.toFixed(2)}</p>
                                       </div>
                                     </div>
                                   </div>
@@ -1067,7 +1067,7 @@ export function TutorDashboardClient({
                                     <Link href={`/${locale}/sessions/${booking.id}`} className="block">
                                       <Button
                                         size="lg"
-                                        className="w-full rounded-2xl bg-gradient-to-r from-[#111] to-[#222] dark:from-[#ccf381] dark:to-[#d4f89a] text-white dark:text-black px-6 py-6 text-base font-bold transition-all duration-300 hover:shadow-[0_12px_32px_rgba(0,0,0,0.25)] hover:-translate-y-1 inline-flex items-center justify-center gap-3 group/btn"
+                                        className="w-full rounded-xl bg-primary text-primary-foreground px-6 py-6 text-base font-bold transition-all duration-300 hover:shadow-xl hover:-translate-y-1 inline-flex items-center justify-center gap-3 group/btn"
                                       >
                                         <Video className="w-5 h-5 group-hover/btn:scale-110 transition-transform" />
                                         {tVideoCall("joinSession")}
@@ -1084,15 +1084,15 @@ export function TutorDashboardClient({
                     </div>
                   </div>
                 ) : (
-                  <Card className="bg-gradient-to-br from-white via-white to-green-50/20 dark:from-[#1a1a1a] dark:via-[#1a1a1a] dark:to-green-950/10 border-2 border-[#e5e5e5] dark:border-[#262626] rounded-3xl shadow-[0_4px_20px_rgba(0,0,0,0.08)] overflow-hidden">
+                  <Card className="bg-card border-2 border-border rounded-3xl shadow-xl overflow-hidden">
                     <CardContent className="py-20 text-center">
-                      <div className="w-24 h-24 mx-auto mb-6 rounded-3xl bg-gradient-to-br from-green-100 to-emerald-100 dark:from-green-900/30 dark:to-emerald-900/30 flex items-center justify-center shadow-lg">
-                        <Calendar className="w-12 h-12 text-green-600 dark:text-green-400" />
+                      <div className="w-24 h-24 mx-auto mb-6 rounded-3xl bg-success/20 flex items-center justify-center shadow-lg">
+                        <Calendar className="w-12 h-12 text-success" />
                       </div>
-                      <h3 className="text-2xl font-bold text-black dark:text-white mb-3">
+                      <h3 className="text-2xl font-bold text-foreground mb-3">
                         No Upcoming Sessions
                       </h3>
-                      <p className="text-base text-[#666] dark:text-[#a1a1aa] font-light max-w-md mx-auto">
+                      <p className="text-base text-muted-foreground font-light max-w-md mx-auto">
                         You don't have any upcoming sessions scheduled. New bookings will appear here once students book with you.
                       </p>
                     </CardContent>
@@ -1104,17 +1104,17 @@ export function TutorDashboardClient({
                   <div className="space-y-6 mt-12">
                     <div className="flex items-center justify-between mb-6">
                       <div>
-                        <h2 className="text-3xl font-bold text-black dark:text-white mb-2 flex items-center gap-3">
-                          <div className="p-2.5 bg-gradient-to-br from-blue-500/20 to-indigo-500/20 dark:from-blue-500/10 dark:to-indigo-500/10 rounded-2xl backdrop-blur-sm">
-                            <BookOpen className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+                        <h2 className="text-3xl font-bold text-foreground mb-2 flex items-center gap-3">
+                          <div className="p-2.5 bg-info/20 rounded-xl backdrop-blur-sm">
+                            <BookOpen className="w-6 h-6 text-info" />
                           </div>
                           {tTutor("pastSessions")}
                         </h2>
-                        <p className="text-sm text-[#666] dark:text-[#a1a1aa] ml-14">
+                        <p className="text-sm text-muted-foreground ml-14">
                           {pastBookings.length} completed {pastBookings.length === 1 ? "session" : "sessions"}
                         </p>
                       </div>
-                      <Badge className="bg-gradient-to-r from-blue-500/20 to-indigo-500/20 text-blue-700 dark:text-blue-300 border-2 border-blue-500/30 dark:border-blue-500/20 rounded-full px-6 py-2.5 text-base font-bold shadow-lg backdrop-blur-sm">
+                      <Badge className="bg-info/20 text-info border-2 border-info/30 rounded-full px-6 py-2.5 text-base font-bold shadow-lg backdrop-blur-sm">
                         {pastBookings.length}
                       </Badge>
                     </div>
@@ -1122,15 +1122,15 @@ export function TutorDashboardClient({
                       {pastBookings.map((booking) => (
                         <Card
                           key={booking.id}
-                          className="group relative overflow-hidden bg-gradient-to-br from-white via-white to-blue-50/20 dark:from-[#1a1a1a] dark:via-[#1a1a1a] dark:to-blue-950/10 border-2 border-[#e5e5e5] dark:border-[#262626] rounded-2xl shadow-[0_4px_16px_rgba(0,0,0,0.06)] hover:shadow-[0_12px_40px_rgba(59,130,246,0.15)] hover:border-blue-400/50 dark:hover:border-blue-600/50 transition-all duration-500 hover:-translate-y-1.5"
+                          className="group relative overflow-hidden bg-card border-2 border-border rounded-2xl shadow-lg hover:shadow-xl hover:border-info/50 transition-all duration-500 hover:-translate-y-1.5"
                         >
                           {/* Gradient overlay on hover */}
-                          <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-transparent to-indigo-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                          <div className="absolute inset-0 bg-info/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                           
                           <CardContent className="relative z-10 p-5">
                             <div className="flex items-start gap-4 mb-4">
                               {booking.student.image ? (
-                                <div className="relative w-12 h-12 rounded-xl overflow-hidden border-2 border-blue-200/50 dark:border-blue-800/50 shadow-md ring-1 ring-blue-100 dark:ring-blue-900/50 shrink-0">
+                                <div className="relative w-12 h-12 rounded-xl overflow-hidden border-2 border-info/20 shadow-md ring-1 ring-info/10 shrink-0">
                                   <Image
                                     src={booking.student.image}
                                     alt={booking.student.name || tTutor("student")}
@@ -1139,31 +1139,31 @@ export function TutorDashboardClient({
                                   />
                                 </div>
                               ) : (
-                                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-100 to-indigo-100 dark:from-blue-900/30 dark:to-indigo-900/30 border-2 border-blue-200/50 dark:border-blue-800/50 flex items-center justify-center shadow-md ring-1 ring-blue-100 dark:ring-blue-900/50 shrink-0">
-                                  <User className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+                                <div className="w-12 h-12 rounded-xl bg-info/20 border-2 border-info/20 flex items-center justify-center shadow-md ring-1 ring-info/10 shrink-0">
+                                  <User className="w-6 h-6 text-info" />
                                 </div>
                               )}
                               <div className="flex-1 min-w-0">
-                                <h3 className="text-base font-bold text-black dark:text-white mb-1.5 truncate">
+                                <h3 className="text-base font-bold text-foreground mb-1.5 truncate">
                                   {booking.student.name || tTutor("student")}
                                 </h3>
-                                <div className="flex items-center gap-2 text-xs text-[#666] dark:text-[#aaa] mb-2">
+                                <div className="flex items-center gap-2 text-xs text-muted-foreground mb-2">
                                   <Calendar className="w-3.5 h-3.5" />
                                   <span>{formatDate(booking.scheduledAt)}</span>
                                 </div>
                                 {getStatusBadge(booking.status, booking.scheduledAt, booking.duration)}
                               </div>
                             </div>
-                            <div className="flex items-center justify-between pt-4 border-t border-[#e5e5e5] dark:border-[#262626]">
+                            <div className="flex items-center justify-between pt-4 border-t border-border">
                               <div>
-                                <p className="text-xs text-[#666] dark:text-[#aaa] font-medium mb-1">Earnings</p>
-                                <p className="text-lg font-bold text-blue-600 dark:text-blue-400">
+                                <p className="text-xs text-muted-foreground font-medium mb-1">Earnings</p>
+                                <p className="text-lg font-bold text-info">
                                   ${booking.price.toFixed(2)}
                                 </p>
                               </div>
                               <div className="text-right">
-                                <p className="text-xs text-[#666] dark:text-[#aaa] font-medium mb-1">Duration</p>
-                                <p className="text-sm font-semibold text-black dark:text-white">
+                                <p className="text-xs text-muted-foreground font-medium mb-1">Duration</p>
+                                <p className="text-sm font-semibold text-foreground">
                                   {booking.duration} {tBooking("min")}
                                 </p>
                               </div>
