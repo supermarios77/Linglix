@@ -207,13 +207,13 @@ export async function FeaturedTutors({ locale }: FeaturedTutorsProps) {
               </div>
               
               {/* Right Side - Image/Visual */}
-              <div className="relative h-[300px] sm:h-[350px] md:h-auto bg-gradient-to-br from-[#1a1a1a] to-[#121212] dark:from-[#1a1a1a] dark:to-[#0a0a0a] flex items-center justify-center overflow-hidden order-1 md:order-2">
+              <div className="relative h-[300px] sm:h-[350px] md:h-[500px] lg:h-[600px] bg-gradient-to-br from-[#f5f5f5] to-[#e5e5e5] dark:from-[#1a1a1a] dark:to-[#0a0a0a] flex items-center justify-center overflow-hidden order-1 md:order-2">
                 {tutor.image ? (
                   <Image
                     src={tutor.image}
                     alt={tutor.name || t("trending.tutorFallback")}
                     fill
-                    className="object-cover"
+                    className="object-contain"
                   />
                 ) : (
                   <div className="relative">
