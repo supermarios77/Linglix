@@ -637,7 +637,7 @@ export function UserDashboardClient({
                                 src={booking.tutor.user.image}
                                 alt={booking.tutor.user.name || t("tutorFallback")}
                                 fill
-                                className="object-contain"
+                                className="object-cover"
                               />
                             </div>
                           ) : (
