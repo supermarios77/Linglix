@@ -343,7 +343,14 @@ export async function POST(request: NextRequest) {
             },
             success_url: `${baseUrl}/${locale}/dashboard?payment=success`,
             cancel_url: `${baseUrl}/${locale}/tutors/${tutorSlug}/book?canceled=true`,
-            expires_at: Math.floor(new Date(booking.scheduledAt).getTime() / 1000), // Expire before session time
+            expires_at: (() => {
+              // Stripe requires expires_at to be within 24 hours
+              // Set to 24 hours from now, or booking time if sooner
+              const now = Math.floor(Date.now() / 1000);
+              const maxExpiry = now + (24 * 60 * 60); // 24 hours from now
+              const bookingTime = Math.floor(booking.scheduledAt.getTime() / 1000);
+              return Math.min(maxExpiry, bookingTime);
+            })(),
             payment_intent_data: {
               metadata: {
                 bookingId: booking.id,
@@ -380,17 +387,21 @@ export async function POST(request: NextRequest) {
         bookingId: booking.id,
         error: paymentError instanceof Error ? paymentError.message : String(paymentError),
       });
-      // Continue and return booking even if payment setup fails
-      // This allows the booking to be created, but payment will need to be handled separately
+      
+      // If payment setup fails, delete the booking and return an error
+      // This ensures we don't have unpaid bookings
+      await prisma.booking.delete({
+        where: { id: booking.id },
+      });
+      
+      return createErrorResponse(
+        Errors.InternalServerError(
+          paymentError instanceof Error 
+            ? `Failed to create payment session: ${paymentError.message}`
+            : "Failed to create payment session. Please try again."
+        )
+      );
     }
-
-    return NextResponse.json(
-      {
-        message: "Booking created successfully",
-        booking,
-      },
-      { status: 201 }
-    );
   } catch (error) {
     if (error instanceof z.ZodError) {
       return createErrorResponse(
