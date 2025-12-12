@@ -18,6 +18,7 @@ import {
   validateBookingTime,
   validateAvailability,
   checkConflicts,
+  isUserPenalized,
 } from "@/lib/booking/validation";
 import { checkTimeSlotAvailability } from "@/lib/booking/availability";
 
@@ -131,6 +132,16 @@ export async function POST(request: NextRequest) {
   try {
     // Only students can create bookings
     const user = await requireRole(Role.STUDENT);
+
+    // Check if user is penalized
+    const penalized = await isUserPenalized(user.id, prisma);
+    if (penalized) {
+      return createErrorResponse(
+        Errors.BadRequest(
+          "You are currently penalized and cannot create new bookings. Please submit an appeal if you believe this is an error."
+        )
+      );
+    }
 
     // Parse and validate request body
     const body = await request.json();

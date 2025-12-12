@@ -218,20 +218,61 @@ export function canCancelBooking(booking: Booking): {
     };
   }
 
-  // Check if booking is too close to start time (within 2 hours)
+  // Allow cancellation but track if it's late (less than 12 hours before)
+  // Late cancellations will be tracked for penalty purposes
+  return { canCancel: true };
+}
+
+/**
+ * Check if cancellation is late (less than 12 hours before session)
+ */
+export function isLateCancellation(booking: Booking): boolean {
   const now = new Date();
   const bookingTime = booking.scheduledAt;
   const hoursUntilBooking =
     (bookingTime.getTime() - now.getTime()) / (1000 * 60 * 60);
 
-  if (hoursUntilBooking < 2) {
-    return {
-      canCancel: false,
-      error: "Cannot cancel booking less than 2 hours before start time",
-    };
+  return hoursUntilBooking < 12;
+}
+
+/**
+ * Check if user is currently penalized
+ */
+export async function isUserPenalized(userId: string, prisma: any): Promise<boolean> {
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    select: { penaltyUntil: true },
+  });
+
+  if (!user || !user.penaltyUntil) {
+    return false;
   }
 
-  return { canCancel: true };
+  return new Date() < new Date(user.penaltyUntil);
+}
+
+/**
+ * Count late cancellations in the last period (for penalty calculation)
+ */
+export async function countLateCancellations(
+  userId: string,
+  prisma: any,
+  sinceDate?: Date
+): Promise<number> {
+  const cutoffDate = sinceDate || new Date(Date.now() - 30 * 24 * 60 * 60 * 1000); // Last 30 days
+
+  const lateCancellations = await prisma.booking.count({
+    where: {
+      studentId: userId,
+      status: "CANCELLED",
+      isLateCancellation: true,
+      cancelledAt: {
+        gte: cutoffDate,
+      },
+    },
+  });
+
+  return lateCancellations;
 }
 
 /**

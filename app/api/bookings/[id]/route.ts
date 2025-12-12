@@ -22,6 +22,9 @@ import {
   canCancelBooking,
   canRescheduleBooking,
   validateStatusTransition,
+  isLateCancellation,
+  isUserPenalized,
+  countLateCancellations,
 } from "@/lib/booking/validation";
 import {
   sendBookingConfirmationEmail,
@@ -436,30 +439,77 @@ export async function DELETE(
       );
     }
 
-    // Cancel booking
-    const cancelledBooking = await prisma.booking.update({
-      where: { id },
-      data: { status: BookingStatus.CANCELLED },
-      include: {
-        student: {
-          select: {
-            id: true,
-            name: true,
-            email: true,
-          },
+    // Check if user is penalized (only for students)
+    if (isStudent) {
+      const penalized = await isUserPenalized(user.id, prisma);
+      if (penalized) {
+        return createErrorResponse(
+          Errors.BadRequest(
+            "You are currently penalized and cannot cancel bookings. Please submit an appeal if you believe this is an error."
+          )
+        );
+      }
+    }
+
+    // Check if this is a late cancellation (less than 12 hours before)
+    const isLate = isLateCancellation(booking);
+    const cancelledBy = isStudent ? user.id : booking.tutor.userId;
+
+    // Cancel booking with cancellation details
+    const cancelledBooking = await prisma.$transaction(async (tx) => {
+      const updatedBooking = await tx.booking.update({
+        where: { id },
+        data: {
+          status: BookingStatus.CANCELLED,
+          cancelledAt: new Date(),
+          cancelledBy,
+          isLateCancellation: isLate,
         },
-        tutor: {
-          include: {
-            user: {
-              select: {
-                id: true,
-                name: true,
-                email: true,
+        include: {
+          student: {
+            select: {
+              id: true,
+              name: true,
+              email: true,
+            },
+          },
+          tutor: {
+            include: {
+              user: {
+                select: {
+                  id: true,
+                  name: true,
+                  email: true,
+                },
               },
             },
           },
         },
-      },
+      });
+
+      // If student cancelled late, check penalty threshold
+      if (isStudent && isLate) {
+        const lateCancellationCount = await countLateCancellations(user.id, tx);
+        
+        // If more than 2 late cancellations, apply penalty (1 week ban)
+        if (lateCancellationCount > 2) {
+          const penaltyUntil = new Date();
+          penaltyUntil.setDate(penaltyUntil.getDate() + 7); // 1 week from now
+
+          await tx.user.update({
+            where: { id: user.id },
+            data: { penaltyUntil },
+          });
+
+          logger.warn("Penalty applied to user for late cancellations", {
+            userId: user.id,
+            lateCancellationCount,
+            penaltyUntil: penaltyUntil.toISOString(),
+          });
+        }
+      }
+
+      return updatedBooking;
     });
 
     logger.info("Booking cancelled", {
