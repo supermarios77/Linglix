@@ -87,7 +87,7 @@ export function TutorDetailClient({
                     src={tutor.image}
                     alt={tutor.name}
                     fill
-                    className="object-cover"
+                    className="object-contain"
                   />
                 ) : (
                   <Users className="w-32 h-32 text-[#ccc] dark:text-[#404040]" />

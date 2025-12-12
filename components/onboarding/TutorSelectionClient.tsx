@@ -107,13 +107,13 @@ export function TutorSelectionClient({
             <CardContent className="p-6">
               {/* Tutor Image & Basic Info */}
               <div className="flex items-start gap-4 mb-4">
-                <div className="relative w-16 h-16 rounded-full overflow-hidden shrink-0 border-2 border-primary/20">
+                <div className="relative w-16 h-16 rounded-full overflow-hidden shrink-0 border-2 border-primary/20 bg-muted">
                   {tutor.image ? (
                     <Image
                       src={tutor.image}
                       alt={tutor.name}
                       fill
-                      className="object-cover"
+                      className="object-contain"
                     />
                   ) : (
                     <div className="w-full h-full bg-primary/10 flex items-center justify-center text-primary font-bold text-xl">

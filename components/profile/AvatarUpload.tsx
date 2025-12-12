@@ -91,8 +91,7 @@ export function AvatarUpload({ currentImage, onImageUpdate }: AvatarUploadProps)
               alt="Profile picture"
               width={128}
               height={128}
-              className="w-full h-full object-cover object-center"
-              style={{ objectFit: "cover" }}
+              className="w-full h-full object-contain object-center"
             />
           ) : (
             <User className="w-16 h-16 text-muted-foreground" />
@@ -105,7 +104,7 @@ export function AvatarUpload({ currentImage, onImageUpdate }: AvatarUploadProps)
         )}
       </div>
 
-      <div className="flex flex-col items-center gap-2">
+      <div className="flex flex-col items-center gap-2 w-full">
         <input
           ref={fileInputRef}
           type="file"
@@ -119,7 +118,7 @@ export function AvatarUpload({ currentImage, onImageUpdate }: AvatarUploadProps)
           variant="outline"
           onClick={() => fileInputRef.current?.click()}
           disabled={uploading}
-          className="flex items-center gap-2"
+          className="flex items-center gap-2 w-full sm:w-auto"
         >
           {uploading ? (
             <>
@@ -134,7 +133,7 @@ export function AvatarUpload({ currentImage, onImageUpdate }: AvatarUploadProps)
           )}
         </Button>
         {error && (
-          <p className="text-sm text-destructive text-center max-w-xs">{error}</p>
+          <p className="text-sm text-destructive text-center max-w-full px-4">{error}</p>
         )}
       </div>
     </div>

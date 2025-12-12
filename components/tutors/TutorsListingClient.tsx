@@ -290,7 +290,7 @@ export function TutorsListingClient({
                         src={tutor.image}
                         alt={tutor.name}
                         fill
-                        className="object-cover"
+                        className="object-contain"
                       />
                     ) : (
                       <Users className="w-16 h-16 text-[#ccc] dark:text-[#404040]" />
