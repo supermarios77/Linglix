@@ -131,142 +131,91 @@ export async function FeaturedTutors({ locale }: FeaturedTutorsProps) {
     return t("trending.languageTutor");
   };
 
-  // Single Tutor - Premium Exclusive Layout
+  // Single Tutor - Clean Professional Layout
   if (tutorCount === 1) {
     const tutor = tutorData[0];
     return (
-      <section className="py-16 sm:py-20 md:py-24 px-4 sm:px-6 md:px-12 max-w-[1400px] mx-auto">
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-3 sm:gap-0 mb-8 sm:mb-10 md:mb-12">
-          <div>
-            <h3 className="text-[28px] sm:text-[32px] md:text-[36px] font-bold text-black dark:text-white mb-2">{t("trending.title")}</h3>
-            <p className="text-sm sm:text-base text-[#666] dark:text-[#a1a1aa]">Meet our featured expert</p>
-          </div>
+      <section className="py-12 sm:py-16 px-4 sm:px-6 md:px-12 max-w-[1400px] mx-auto">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
+          <h3 className="text-2xl sm:text-3xl font-semibold text-black dark:text-white">{t("trending.title")}</h3>
           <Link 
             href={`/${locale}/tutors`} 
-            className="text-sm sm:text-base font-medium text-[#444] dark:text-[#a1a1aa] hover:text-black dark:hover:text-white transition-colors underline underline-offset-4"
+            className="text-sm font-medium text-[#666] dark:text-[#a1a1aa] hover:text-black dark:hover:text-white transition-colors"
           >
             {t("trending.seeAll")} →
           </Link>
         </div>
         
-        <div className="relative">
-          {/* Premium Card with Elevated Design */}
-          <div className="group relative bg-white dark:bg-[#0a0a0a] rounded-[32px] sm:rounded-[40px] md:rounded-[48px] overflow-hidden border border-[#e5e5e5] dark:border-[#1a1a1a] shadow-[0_8px_32px_rgba(0,0,0,0.06)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.3)] transition-all duration-700 hover:shadow-[0_24px_64px_rgba(0,0,0,0.12)] dark:hover:shadow-[0_24px_64px_rgba(0,0,0,0.4)] hover:-translate-y-1">
-            {/* Subtle Background Pattern */}
-            <div className="absolute inset-0 opacity-[0.02] dark:opacity-[0.05]">
-              <div className="absolute inset-0" style={{
-                backgroundImage: `radial-gradient(circle at 2px 2px, currentColor 1px, transparent 0)`,
-                backgroundSize: '32px 32px'
-              }} />
-            </div>
-            
-            {/* Premium Gradient Accent */}
-            <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#7928ca] via-[#ccf381] to-[#7928ca] opacity-60" />
-            
-            <div className="grid lg:grid-cols-[1.2fr_1fr] gap-0">
-              {/* Left Side - Premium Content */}
-              <div className="p-8 sm:p-10 md:p-12 lg:p-16 xl:p-20 flex flex-col justify-center relative z-10">
-                {/* Exclusive Badge */}
-                <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-[#ccf381]/10 to-[#7928ca]/10 dark:from-[#ccf381]/20 dark:to-[#7928ca]/20 rounded-full text-xs font-bold uppercase tracking-widest mb-6 w-fit border border-[#ccf381]/20 dark:border-[#ccf381]/30 backdrop-blur-sm">
-                  <Sparkles className="w-3.5 h-3.5 text-[#ccf381] animate-pulse" />
-                  <span className="bg-gradient-to-r from-[#ccf381] to-[#7928ca] bg-clip-text text-transparent">{t("trending.featuredTutor")}</span>
-                </div>
-                
-                {/* Name with Premium Typography */}
-                <h2 className="text-[36px] sm:text-[44px] md:text-[52px] lg:text-[64px] xl:text-[72px] leading-[1.05] font-black tracking-[-0.04em] mb-4 text-black dark:text-white">
-                  {tutor.name}
-                </h2>
-                
-                {/* Specialty with Elegant Styling */}
-                <div className="mb-8">
-                  <p className="text-lg sm:text-xl md:text-2xl font-medium text-[#666] dark:text-[#a1a1aa] mb-2">
-                    {getPrimarySpecialty(tutor.specialties)}
-                  </p>
-                  <div className="w-16 h-0.5 bg-gradient-to-r from-[#ccf381] to-transparent" />
-                </div>
-                
-                {/* Premium Stats Grid */}
-                <div className="grid grid-cols-3 gap-4 sm:gap-6 mb-8 pb-8 border-b border-[#e5e5e5] dark:border-[#1a1a1a]">
-                  <div className="flex flex-col">
-                    <div className="flex items-center gap-1 mb-1">
-                      {[...Array(5)].map((_, i) => (
-                        <Star key={i} className="w-3.5 h-3.5 sm:w-4 sm:h-4 fill-[#ffb800] text-[#ffb800]" />
-                      ))}
-                    </div>
-                    <span className="text-2xl sm:text-3xl font-bold text-black dark:text-white">{tutor.rating.toFixed(1)}</span>
-                    <span className="text-xs text-[#888] dark:text-[#666] mt-1">Rating</span>
-                  </div>
-                  <div className="flex flex-col">
-                    <span className="text-2xl sm:text-3xl font-bold text-black dark:text-white mb-1">{tutor.totalSessions}+</span>
-                    <span className="text-xs text-[#888] dark:text-[#666]">{t("trending.sessions")}</span>
-                  </div>
-                  <div className="flex flex-col">
-                    <span className="text-2xl sm:text-3xl font-bold text-black dark:text-white mb-1">${tutor.hourlyRate}</span>
-                    <span className="text-xs text-[#888] dark:text-[#666]">{t("trending.hourly")}</span>
-                  </div>
-                </div>
-                
-                {/* Specialties with Refined Pills */}
-                <div className="flex flex-wrap gap-2 sm:gap-3 mb-8">
-                  {tutor.specialties.slice(0, 3).map((specialty, index) => (
-                    <div
-                      key={index}
-                      className="inline-flex items-center gap-2 px-4 py-2 bg-[#f9f9f9] dark:bg-[#1a1a1a] border border-[#e5e5e5] dark:border-[#262626] rounded-full text-sm font-medium text-black dark:text-white transition-all hover:border-[#ccf381]/50 hover:bg-[#ccf381]/5 dark:hover:bg-[#ccf381]/10"
-                    >
-                      <CheckCircle2 className="w-4 h-4 text-[#ccf381]" />
-                      <span>{specialty}</span>
-                    </div>
-                  ))}
-                </div>
-                
-                {/* Premium CTA Button */}
-                <Link href={`/${locale}/tutors/${tutor.slug}`}>
-                  <button className="group relative w-full sm:w-auto bg-black dark:bg-[#ccf381] text-white dark:text-black px-10 py-4 rounded-full font-bold text-base transition-all duration-300 hover:scale-105 hover:shadow-[0_16px_32px_rgba(0,0,0,0.2)] dark:hover:shadow-[0_16px_32px_rgba(204,243,129,0.3)] overflow-hidden">
-                    <span className="relative z-10 flex items-center justify-center gap-2">
-                      {t("trending.viewProfile")}
-                      <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                    </span>
-                    <div className="absolute inset-0 bg-gradient-to-r from-[#7928ca] to-[#ccf381] opacity-0 group-hover:opacity-20 dark:group-hover:opacity-10 transition-opacity" />
-                  </button>
-                </Link>
-              </div>
-              
-              {/* Right Side - Premium Image Display */}
-              <div className="relative h-[400px] sm:h-[500px] md:h-[600px] lg:h-full min-h-[500px] bg-gradient-to-br from-[#fafafa] via-[#f5f5f5] to-[#f0f0f0] dark:from-[#0a0a0a] dark:via-[#121212] dark:to-[#1a1a1a] flex items-center justify-center overflow-hidden">
-                {/* Decorative Elements */}
-                <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-[#ccf381]/10 to-transparent rounded-full blur-3xl" />
-                <div className="absolute bottom-0 left-0 w-64 h-64 bg-gradient-to-tr from-[#7928ca]/10 to-transparent rounded-full blur-3xl" />
-                
+        <Link href={`/${locale}/tutors/${tutor.slug}`}>
+          <div className="group bg-white dark:bg-[#0a0a0a] rounded-2xl border border-[#e5e5e5] dark:border-[#1a1a1a] overflow-hidden hover:shadow-lg transition-all duration-300 hover:-translate-y-0.5">
+            <div className="flex flex-col md:flex-row">
+              {/* Image Section */}
+              <div className="relative w-full md:w-80 h-64 md:h-auto bg-[#f5f5f5] dark:bg-[#121212] flex-shrink-0">
                 {tutor.image ? (
-                  <div className="relative w-full h-full">
-                    <Image
-                      src={tutor.image}
-                      alt={tutor.name || t("trending.tutorFallback")}
-                      fill
-                      className="object-cover"
-                      style={{ objectFit: "cover", objectPosition: "center" }}
-                    />
-                    {/* Subtle overlay for depth */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/5 via-transparent to-transparent" />
-                  </div>
+                  <Image
+                    src={tutor.image}
+                    alt={tutor.name || t("trending.tutorFallback")}
+                    fill
+                    className="object-cover"
+                  />
                 ) : (
-                  <div className="relative z-10">
-                    <Users className="w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 text-[#ccf381] opacity-40" />
-                    <div className="absolute inset-0 bg-[#ccf381]/10 blur-3xl rounded-full" aria-hidden="true" />
+                  <div className="w-full h-full flex items-center justify-center">
+                    <Users className="w-16 h-16 text-[#ccc] dark:text-[#404040]" />
                   </div>
                 )}
-                
-                {/* Premium Badge - Top Right */}
-                <div className="absolute top-6 right-6 sm:top-8 sm:right-8 w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 flex items-center justify-center bg-gradient-to-br from-[#ccf381] via-[#a8e063] to-[#ccf381] rounded-2xl text-black font-black text-center shadow-[0_8px_24px_rgba(204,243,129,0.4)] border-2 border-white/20 backdrop-blur-sm">
-                  <div className="text-center">
-                    <div className="text-[10px] sm:text-xs md:text-sm leading-tight font-black">TOP</div>
-                    <div className="text-[10px] sm:text-xs md:text-sm leading-tight font-black">TUTOR</div>
+                {/* Featured Badge */}
+                <div className="absolute top-4 left-4 px-3 py-1 bg-[#ccf381] text-black text-xs font-semibold rounded-full">
+                  {t("trending.featuredTutor")}
+                </div>
+              </div>
+              
+              {/* Content Section */}
+              <div className="flex-1 p-6 sm:p-8 flex flex-col justify-between">
+                <div>
+                  <h2 className="text-2xl sm:text-3xl font-bold text-black dark:text-white mb-2">
+                    {tutor.name}
+                  </h2>
+                  <p className="text-[#666] dark:text-[#a1a1aa] mb-4">
+                    {getPrimarySpecialty(tutor.specialties)}
+                  </p>
+                  
+                  {/* Stats */}
+                  <div className="flex items-center gap-6 mb-4">
+                    <div className="flex items-center gap-1.5">
+                      <Star className="w-4 h-4 fill-[#ffb800] text-[#ffb800]" />
+                      <span className="font-semibold text-black dark:text-white">{tutor.rating.toFixed(1)}</span>
+                    </div>
+                    <div className="text-sm text-[#888] dark:text-[#666]">
+                      {tutor.totalSessions}+ {t("trending.sessions")}
+                    </div>
+                    <div className="text-sm font-semibold text-black dark:text-white">
+                      ${tutor.hourlyRate}{t("trending.hourly")}
+                    </div>
                   </div>
+                  
+                  {/* Specialties */}
+                  <div className="flex flex-wrap gap-2">
+                    {tutor.specialties.slice(0, 3).map((specialty, index) => (
+                      <span
+                        key={index}
+                        className="px-3 py-1 bg-[#f5f5f5] dark:bg-[#1a1a1a] text-sm text-[#666] dark:text-[#a1a1aa] rounded-full"
+                      >
+                        {specialty}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+                
+                {/* CTA */}
+                <div className="mt-6 pt-6 border-t border-[#e5e5e5] dark:border-[#1a1a1a]">
+                  <span className="text-sm font-medium text-[#666] dark:text-[#a1a1aa] group-hover:text-black dark:group-hover:text-white transition-colors">
+                    {t("trending.viewProfile")} →
+                  </span>
                 </div>
               </div>
             </div>
           </div>
-        </div>
+        </Link>
       </section>
     );
   }
