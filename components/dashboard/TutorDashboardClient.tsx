@@ -411,13 +411,13 @@ export function TutorDashboardClient({
           <Link href={`/${locale}/tutors`}>
             <Button
               variant="outline"
-              className="hidden sm:flex items-center gap-2 bg-white/80 dark:bg-[#1a1a1a]/80 backdrop-blur-sm border-[#e5e5e5] dark:border-[#262626] rounded-full"
+              className="hidden sm:flex items-center gap-2 bg-card/80 backdrop-blur-sm border-border rounded-full"
             >
               <Search className="w-4 h-4" />
               {t("browseTutors")}
             </Button>
           </Link>
-          <div className="flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 bg-white/80 dark:bg-[#1a1a1a]/80 backdrop-blur-sm border border-[#e5e5e5] dark:border-[#262626] rounded-full">
+          <div className="flex items-center gap-2 px-4 py-2 bg-card/80 backdrop-blur-sm border border-border rounded-full">
             {user.image ? (
               <Image
                 src={user.image}
@@ -427,16 +427,16 @@ export function TutorDashboardClient({
                 className="rounded-full"
               />
             ) : (
-              <User className="w-4 h-4 text-[#666] dark:text-[#aaa]" />
+              <User className="w-4 h-4 text-muted-foreground" />
             )}
-            <span className="text-xs sm:text-sm font-medium text-black dark:text-white">
+            <span className="text-xs sm:text-sm font-medium text-foreground">
               {user.name || user.email}
             </span>
           </div>
           <Button
             variant="outline"
             onClick={() => setShowSignOutDialog(true)}
-            className="flex items-center gap-2 bg-white/80 dark:bg-[#1a1a1a]/80 backdrop-blur-sm border-[#e5e5e5] dark:border-[#262626] rounded-full hover:border-red-500 dark:hover:border-red-500 hover:text-red-600 dark:hover:text-red-400 transition-colors"
+            className="flex items-center gap-2 bg-card/80 backdrop-blur-sm border-border rounded-full hover:border-error hover:text-error transition-colors"
           >
             <LogOut className="w-4 h-4" />
             <span className="hidden sm:inline">{tCommon("signOut")}</span>
@@ -453,10 +453,10 @@ export function TutorDashboardClient({
         >
           <div className="p-5 h-full flex flex-col">
             {/* Sidebar Header */}
-            <div className="mb-6 pb-6 border-b border-[#e5e5e5] dark:border-[#1a1a1a]">
+            <div className="mb-6 pb-6 border-b border-border">
               <div className="flex items-center gap-3 mb-3">
                 {user.image ? (
-                  <div className="relative w-12 h-12 rounded-full overflow-hidden border border-[#e5e5e5] dark:border-[#262626]">
+                  <div className="relative w-12 h-12 rounded-full overflow-hidden border border-border">
                     <Image
                       src={user.image}
                       alt={user.name || "User"}
@@ -465,15 +465,15 @@ export function TutorDashboardClient({
                     />
                   </div>
                 ) : (
-                  <div className="w-12 h-12 rounded-full bg-[#f5f5f5] dark:bg-[#1a1a1a] border border-[#e5e5e5] dark:border-[#262626] flex items-center justify-center">
-                    <User className="w-6 h-6 text-[#666] dark:text-[#666]" />
+                  <div className="w-12 h-12 rounded-full bg-muted border border-border flex items-center justify-center">
+                    <User className="w-6 h-6 text-muted-foreground" />
                   </div>
                 )}
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-semibold text-black dark:text-white truncate">
+                  <p className="text-sm font-semibold text-foreground truncate">
                     {user.name || tTutor("tutor")}
                   </p>
-                  <p className="text-xs text-[#666] dark:text-[#888] truncate mt-0.5">
+                  <p className="text-xs text-muted-foreground truncate mt-0.5">
                     {user.email}
                   </p>
                 </div>
@@ -497,11 +497,11 @@ export function TutorDashboardClient({
                     }}
                     className={`group w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 ${
                       isActive
-                        ? "bg-[#ccf381] text-black font-medium"
-                        : "text-[#666] dark:text-[#888] hover:bg-[#f5f5f5] dark:hover:bg-[#1a1a1a] hover:text-black dark:hover:text-white"
+                        ? "bg-brand-primary text-black font-medium"
+                        : "text-muted-foreground hover:bg-muted hover:text-foreground"
                     }`}
                   >
-                    <Icon className={`w-4 h-4 ${isActive ? "text-black" : "text-[#666] dark:text-[#888] group-hover:text-black dark:group-hover:text-white"}`} />
+                    <Icon className={`w-4 h-4 ${isActive ? "text-black" : "text-muted-foreground group-hover:text-foreground"}`} />
                     <span className="text-sm">{section.label}</span>
                   </button>
                 );
@@ -509,9 +509,9 @@ export function TutorDashboardClient({
             </nav>
 
             {/* Sidebar Footer */}
-            <div className="pt-4 mt-auto border-t border-[#e5e5e5] dark:border-[#1a1a1a]">
+            <div className="pt-4 mt-auto border-t border-border">
               <Link href={`/${locale}`}>
-                <button className="w-full flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm text-[#666] dark:text-[#888] hover:bg-[#f5f5f5] dark:hover:bg-[#1a1a1a] hover:text-black dark:hover:text-white transition-colors">
+                <button className="w-full flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm text-muted-foreground hover:bg-muted hover:text-foreground transition-colors">
                   <ArrowRight className="w-4 h-4" />
                   Back to Home
                 </button>
@@ -571,10 +571,10 @@ export function TutorDashboardClient({
                       <div className="text-xs text-muted-foreground mb-1.5 uppercase tracking-wide">Total Sessions</div>
                       <div className="text-2xl font-bold text-foreground">{totalSessions}</div>
                     </div>
-                    <div className="px-6 py-4 bg-white/90 dark:bg-[#1a1a1a]/90 backdrop-blur-md border border-[#e5e5e5] dark:border-[#262626] rounded-2xl shadow-[0_4px_12px_rgba(0,0,0,0.05)] hover:shadow-lg transition-all">
-                      <div className="text-xs text-[#666] dark:text-[#aaa] mb-1.5 uppercase tracking-wide">Rating</div>
-                      <div className="text-2xl font-bold text-black dark:text-white flex items-center gap-2">
-                        <Star className="w-5 h-5 text-yellow-500 fill-current" />
+                    <div className="px-6 py-4 bg-card/90 backdrop-blur-md border border-border rounded-2xl shadow-md hover:shadow-lg transition-all">
+                      <div className="text-xs text-muted-foreground mb-1.5 uppercase tracking-wide">Rating</div>
+                      <div className="text-2xl font-bold text-foreground flex items-center gap-2">
+                        <Star className="w-5 h-5 text-warning fill-current" />
                         {averageRating > 0 ? averageRating.toFixed(1) : "0.0"}
                       </div>
                     </div>

@@ -81,21 +81,21 @@ export function SignInForm() {
   return (
     <div className="relative w-full max-w-[480px] px-4 sm:px-0">
       {/* Glassmorphism Form Container */}
-      <div className="relative bg-gradient-to-br from-white/90 to-white/70 dark:from-[#1a1a1a]/95 dark:to-[#0a0a0a]/90 backdrop-blur-2xl rounded-[24px] sm:rounded-[40px] p-6 sm:p-10 border border-white/60 dark:border-[#262626]/80 shadow-[0_20px_40px_rgba(0,0,0,0.06)] dark:shadow-[0_20px_40px_rgba(0,0,0,0.4)] sm:shadow-[0_40px_80px_rgba(0,0,0,0.08)] dark:sm:shadow-[0_40px_80px_rgba(0,0,0,0.5)] overflow-hidden">
+      <div className="relative bg-card/95 backdrop-blur-2xl rounded-3xl p-6 sm:p-10 border border-border/80 shadow-2xl overflow-hidden">
         {/* Decorative elements */}
-        <div className="absolute top-0 right-0 w-[150px] h-[150px] sm:w-[200px] sm:h-[200px] rounded-full opacity-20 dark:opacity-15 blur-[60px] bg-[radial-gradient(circle,rgb(255,143,112)_0%,rgba(255,255,255,0)_70%)] dark:bg-[radial-gradient(circle,rgb(204,243,129)_0%,rgba(0,0,0,0)_70%)]" />
-        <div className="absolute bottom-0 left-0 w-[100px] h-[100px] sm:w-[150px] sm:h-[150px] rounded-full opacity-20 dark:opacity-15 blur-[60px] bg-[radial-gradient(circle,rgb(224,231,255)_0%,rgba(255,255,255,0)_70%)] dark:bg-[radial-gradient(circle,rgb(255,235,59)_0%,rgba(0,0,0,0)_70%)]" />
+        <div className="absolute top-0 right-0 w-[150px] h-[150px] sm:w-[200px] sm:h-[200px] rounded-full opacity-20 dark:opacity-15 blur-[60px] bg-brand-primary/20" />
+        <div className="absolute bottom-0 left-0 w-[100px] h-[100px] sm:w-[150px] sm:h-[150px] rounded-full opacity-20 dark:opacity-15 blur-[60px] bg-info/20" />
 
         <div className="relative z-10">
           {/* Badge */}
-          <div className="inline-flex items-center px-3 py-1.5 sm:px-4 sm:py-2 bg-white/80 dark:bg-[#0a0a0a]/80 border border-[#e5e5e5] dark:border-[#262626] rounded-full text-[10px] sm:text-xs font-semibold uppercase tracking-wider mb-6 sm:mb-8 shadow-[0_2px_10px_rgba(0,0,0,0.03)] dark:shadow-[0_2px_10px_rgba(0,0,0,0.3)] text-black dark:text-white">
-            <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-[#10b981] dark:bg-[#ccf381] rounded-full mr-2" />
+          <div className="inline-flex items-center px-4 py-2 bg-card/80 border border-border rounded-full text-xs font-semibold uppercase tracking-wider mb-6 sm:mb-8 shadow-md text-foreground">
+            <span className="w-2 h-2 bg-success rounded-full mr-2" />
             Welcome Back
           </div>
 
           {/* Header */}
           <div className="mb-8 sm:mb-10">
-            <h1 className="text-[36px] sm:text-[48px] md:text-[56px] leading-[1.1] font-semibold tracking-[-0.03em] mb-3 sm:mb-4 text-black dark:text-white">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl leading-tight font-semibold tracking-tight mb-3 sm:mb-4 text-foreground">
               {t("signInTitle")}
             </h1>
             <p className="text-base sm:text-lg leading-relaxed text-[#555] dark:text-[#a1a1aa]">
