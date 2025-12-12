@@ -74,9 +74,12 @@ See the [docs](./docs/) directory for detailed guides:
 
 - [Database Setup](./docs/DATABASE_SETUP.md)
 - [Authentication Setup](./docs/AUTH_SETUP.md)
-- [Internationalization](./docs/I18N_SETUP.md)
 - [Email Setup](./docs/EMAIL_SETUP.md)
+- [Stripe Setup](./docs/STRIPE_SETUP.md)
+- [Stream Video Setup](./docs/STREAM_VIDEO_SETUP.md)
+- [Cron Jobs Setup](./docs/CRON_SETUP.md)
 - [Production Checklist](./docs/PRODUCTION_CHECKLIST.md)
+- [Security Guidelines](./SECURITY.md)
 
 ## Scripts
 
