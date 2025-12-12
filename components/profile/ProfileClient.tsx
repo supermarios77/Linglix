@@ -417,17 +417,19 @@ export function ProfileClient({ locale, user, studentProfile, tutorProfile }: Pr
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
           {/* Left Column - Profile Picture & Personal Info */}
           <div className="space-y-8">
-            {/* Banner Image with Profile Picture */}
-            <div className="relative rounded-2xl overflow-hidden bg-gradient-to-br from-primary/20 via-primary/10 to-primary/5 dark:from-primary/30 dark:via-primary/20 dark:to-primary/10 border border-[#e5e5e5] dark:border-[#262626]">
-              {/* Banner Background */}
-              <div className="relative h-48 sm:h-56 bg-gradient-to-br from-[#ccf381]/20 via-[#4831d4]/20 to-[#ccf381]/20 dark:from-[#ccf381]/10 dark:via-[#4831d4]/10 dark:to-[#ccf381]/10">
-                <div className="absolute inset-0 bg-[url('/pattern.svg')] opacity-5"></div>
-              </div>
+            {/* Your Photo Section */}
+            <div>
+              <h3 className="text-base font-semibold text-black dark:text-white mb-1">
+                {t("yourPhoto")}
+              </h3>
+              <p className="text-sm text-[#666] dark:text-[#888] mb-4">
+                {t("photoDescription")}
+              </p>
               
-              {/* Profile Picture Overlay */}
-              <div className="absolute bottom-0 left-6 sm:left-8 transform translate-y-1/2">
-                <div className="relative w-24 h-24 sm:w-28 sm:h-28">
-                  <div className="w-full h-full rounded-full overflow-hidden border-4 border-white dark:border-[#1a1a1a] bg-white dark:bg-[#1a1a1a] shadow-lg">
+              {/* Profile Picture */}
+              <div className="flex items-start gap-6 mb-6">
+                <div className="relative">
+                  <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full overflow-hidden border-2 border-[#e5e5e5] dark:border-[#262626] bg-white dark:bg-[#0a0a0a]">
                     {user.image ? (
                       <Image
                         src={user.image}
@@ -437,8 +439,8 @@ export function ProfileClient({ locale, user, studentProfile, tutorProfile }: Pr
                         className="w-full h-full object-cover"
                       />
                     ) : (
-                      <div className="w-full h-full bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center">
-                        <User className="w-12 h-12 text-primary" />
+                      <div className="w-full h-full bg-[#f5f5f5] dark:bg-[#1a1a1a] flex items-center justify-center">
+                        <User className="w-12 h-12 text-[#999] dark:text-[#666]" />
                       </div>
                     )}
                   </div>
@@ -468,90 +470,77 @@ export function ProfileClient({ locale, user, studentProfile, tutorProfile }: Pr
                       };
                       input.click();
                     }}
-                    className="absolute bottom-0 right-0 w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center shadow-lg hover:bg-primary/90 transition-colors border-2 border-white dark:border-[#1a1a1a]"
+                    className="absolute -bottom-1 -right-1 w-7 h-7 rounded-full bg-primary text-white flex items-center justify-center shadow-md hover:bg-primary/90 transition-colors border-2 border-white dark:border-[#0a0a0a]"
                   >
-                    <Pencil className="w-4 h-4" />
+                    <Pencil className="w-3.5 h-3.5" />
                   </button>
                 </div>
-              </div>
-              
-              {/* Edit Banner Button */}
-              <button className="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/90 dark:bg-[#1a1a1a]/90 backdrop-blur-sm flex items-center justify-center shadow-md hover:bg-white dark:hover:bg-[#1a1a1a] transition-colors border border-[#e5e5e5] dark:border-[#262626]">
-                <Pencil className="w-4 h-4 text-[#666] dark:text-[#888]" />
-              </button>
-            </div>
-
-            {/* Your Photo Section */}
-            <div className="pt-16 sm:pt-20">
-              <div className="mb-4">
-                <h3 className="text-base font-semibold text-black dark:text-white mb-1">
-                  {t("yourPhoto")}
-                </h3>
-                <p className="text-sm text-[#666] dark:text-[#888]">
-                  {t("photoDescription")}
-                </p>
-              </div>
-              <div className="flex gap-3">
-                <Button
-                  variant="outline"
-                  onClick={() => {
-                    const input = document.createElement("input");
-                    input.type = "file";
-                    input.accept = "image/*";
-                    input.onchange = async (e) => {
-                      const file = (e.target as HTMLInputElement).files?.[0];
-                      if (file) {
-                        const formData = new FormData();
-                        formData.append("file", file);
-                        try {
-                          const response = await fetch("/api/upload/avatar", {
-                            method: "POST",
-                            body: formData,
-                          });
-                          if (response.ok) {
-                            const { url } = await response.json();
-                            await handleImageUpdate(url);
+                <div className="flex-1 pt-2">
+                  <div className="flex gap-3">
+                    <Button
+                      variant="outline"
+                      onClick={() => {
+                        const input = document.createElement("input");
+                        input.type = "file";
+                        input.accept = "image/*";
+                        input.onchange = async (e) => {
+                          const file = (e.target as HTMLInputElement).files?.[0];
+                          if (file) {
+                            const formData = new FormData();
+                            formData.append("file", file);
+                            try {
+                              const response = await fetch("/api/upload/avatar", {
+                                method: "POST",
+                                body: formData,
+                              });
+                              if (response.ok) {
+                                const { url } = await response.json();
+                                await handleImageUpdate(url);
+                              }
+                            } catch (error) {
+                              console.error("Failed to upload image:", error);
+                            }
                           }
-                        } catch (error) {
-                          console.error("Failed to upload image:", error);
-                        }
-                      }
-                    };
-                    input.click();
-                  }}
-                  className="flex-1 border-[#e5e5e5] dark:border-[#262626] hover:border-primary dark:hover:border-[#ccf381]"
-                >
-                  {t("uploadNew")}
-                </Button>
-                <Button
-                  onClick={handleSaveUserProfile}
-                  disabled={savingUser || !hasUserChanges}
-                  className="flex-1 bg-[#111] dark:bg-[#ccf381] text-white dark:text-black hover:bg-[#222] dark:hover:bg-[#d4f89a] disabled:opacity-50"
-                >
-                  {savingUser ? (
-                    <Loader2 className="w-4 h-4 animate-spin" />
-                  ) : (
-                    t("save")
-                  )}
-                </Button>
-              </div>
-              {(userSuccess || userError) && (
-                <div className="mt-3">
-                  {userSuccess && (
-                    <div className="flex items-center gap-2 text-sm text-green-600 dark:text-green-400">
-                      <CheckCircle2 className="w-4 h-4" />
-                      <span>{t("updateSuccess")}</span>
-                    </div>
-                  )}
-                  {userError && (
-                    <div className="flex items-center gap-2 text-sm text-red-600 dark:text-red-400">
-                      <AlertCircle className="w-4 h-4" />
-                      <span>{userError}</span>
+                        };
+                        input.click();
+                      }}
+                      className="flex-1 border-[#e5e5e5] dark:border-[#262626] hover:border-primary dark:hover:border-[#ccf381] rounded-xl h-10"
+                    >
+                      {t("uploadNew")}
+                    </Button>
+                    <Button
+                      onClick={handleSaveUserProfile}
+                      disabled={savingUser || !hasUserChanges}
+                      className="flex-1 bg-[#111] dark:bg-[#ccf381] text-white dark:text-black hover:bg-[#222] dark:hover:bg-[#d4f89a] disabled:opacity-50 rounded-xl h-10"
+                    >
+                      {savingUser ? (
+                        <Loader2 className="w-4 h-4 animate-spin" />
+                      ) : (
+                        t("save")
+                      )}
+                    </Button>
+                  </div>
+                  {(userSuccess || userError) && (
+                    <div className="mt-3">
+                      {userSuccess && (
+                        <div className="flex items-center gap-2 text-sm text-green-600 dark:text-green-400">
+                          <CheckCircle2 className="w-4 h-4" />
+                          <span>{t("updateSuccess")}</span>
+                        </div>
+                      )}
+                      {userError && (
+                        <div className="flex items-center gap-2 text-sm text-red-600 dark:text-red-400">
+                          <AlertCircle className="w-4 h-4" />
+                          <span>{userError}</span>
+                        </div>
+                      )}
                     </div>
                   )}
                 </div>
-              )}
+              </div>
             </div>
+
+            <Separator className="bg-[#e5e5e5] dark:bg-[#262626]" />
 
             {/* Personal Information */}
             <div>
@@ -617,7 +606,7 @@ export function ProfileClient({ locale, user, studentProfile, tutorProfile }: Pr
                   }
                 }}
                 placeholder={user.role === "TUTOR" ? t("tutor.aboutMePlaceholder") : t("bioPlaceholder")}
-                className="min-h-[180px] rounded-xl border-[#e5e5e5] dark:border-[#262626] bg-white dark:bg-[#0a0a0a] focus:border-primary dark:focus:border-[#ccf381] resize-none"
+                className="min-h-[200px] rounded-xl border-[#e5e5e5] dark:border-[#262626] bg-white dark:bg-[#0a0a0a] focus:border-primary dark:focus:border-[#ccf381] resize-none"
                 rows={8}
               />
             </div>
@@ -741,20 +730,15 @@ export function ProfileClient({ locale, user, studentProfile, tutorProfile }: Pr
 
         {/* Student Profile Section */}
         {user.role === "STUDENT" && (
-          <section className="mb-16 sm:mb-20">
-            <div className="bg-white dark:bg-gradient-to-b from-[#1a1a1a] to-[#121212] rounded-2xl sm:rounded-3xl border border-[#e5e5e5] dark:border-[#262626] shadow-sm p-6 sm:p-8 md:p-10">
-              <div className="flex items-center gap-3 mb-8">
-                <div className="p-2.5 bg-purple-500/10 dark:bg-purple-500/20 rounded-xl">
-                  <GraduationCap className="w-5 h-5 text-purple-500" />
-                </div>
-                <div>
-                  <h2 className="text-xl sm:text-2xl font-bold text-black dark:text-white">
-                    {t("studentProfile")}
-                  </h2>
-                  <p className="text-sm text-[#666] dark:text-[#a1a1aa] mt-0.5">
-                    {t("studentProfileDescription")}
-                  </p>
-                </div>
+          <section className="mt-12">
+            <div className="space-y-8">
+              <div>
+                <h2 className="text-2xl sm:text-3xl font-bold text-black dark:text-white mb-2">
+                  {t("studentProfile")}
+                </h2>
+                <p className="text-sm text-[#666] dark:text-[#888]">
+                  {t("studentProfileDescription")}
+                </p>
               </div>
 
               <div className="space-y-8">
@@ -764,7 +748,7 @@ export function ProfileClient({ locale, user, studentProfile, tutorProfile }: Pr
                       {tStudent("learningGoal")}
                     </Label>
                     <Select value={learningGoal} onValueChange={setLearningGoal}>
-                      <SelectTrigger className="h-12 rounded-xl border-[#e5e5e5] dark:border-[#262626] bg-white/80 dark:bg-[#0a0a0a]/80">
+                      <SelectTrigger className="h-12 rounded-xl border-[#e5e5e5] dark:border-[#262626] bg-white dark:bg-[#0a0a0a]">
                         <SelectValue placeholder={tStudent("learningGoalPlaceholder")} />
                       </SelectTrigger>
                       <SelectContent>
@@ -783,7 +767,7 @@ export function ProfileClient({ locale, user, studentProfile, tutorProfile }: Pr
                       {tStudent("currentLevel")}
                     </Label>
                     <Select value={currentLevel} onValueChange={setCurrentLevel}>
-                      <SelectTrigger className="h-12 rounded-xl border-[#e5e5e5] dark:border-[#262626] bg-white/80 dark:bg-[#0a0a0a]/80">
+                      <SelectTrigger className="h-12 rounded-xl border-[#e5e5e5] dark:border-[#262626] bg-white dark:bg-[#0a0a0a]">
                         <SelectValue placeholder={tStudent("currentLevelPlaceholder")} />
                       </SelectTrigger>
                       <SelectContent>
@@ -801,7 +785,7 @@ export function ProfileClient({ locale, user, studentProfile, tutorProfile }: Pr
                       {tStudent("preferredSchedule")}
                     </Label>
                     <Select value={preferredSchedule} onValueChange={setPreferredSchedule}>
-                      <SelectTrigger className="h-12 rounded-xl border-[#e5e5e5] dark:border-[#262626] bg-white/80 dark:bg-[#0a0a0a]/80">
+                      <SelectTrigger className="h-12 rounded-xl border-[#e5e5e5] dark:border-[#262626] bg-white dark:bg-[#0a0a0a]">
                         <SelectValue placeholder={tStudent("preferredSchedulePlaceholder")} />
                       </SelectTrigger>
                       <SelectContent>
@@ -825,7 +809,7 @@ export function ProfileClient({ locale, user, studentProfile, tutorProfile }: Pr
                     value={motivation}
                     onChange={(e) => setMotivation(e.target.value)}
                     placeholder={tStudent("motivationPlaceholder")}
-                    className="min-h-[140px] rounded-xl border-[#e5e5e5] dark:border-[#262626] bg-white/80 dark:bg-[#0a0a0a]/80 focus:border-primary dark:focus:border-[#ccf381] focus:ring-2 focus:ring-primary/10 dark:focus:ring-[#ccf381]/20 transition-all resize-none"
+                      className="min-h-[140px] rounded-xl border-[#e5e5e5] dark:border-[#262626] bg-white dark:bg-[#0a0a0a] focus:border-primary dark:focus:border-[#ccf381] resize-none"
                     rows={5}
                   />
                 </div>
@@ -873,27 +857,22 @@ export function ProfileClient({ locale, user, studentProfile, tutorProfile }: Pr
 
         {/* Tutor Profile Section */}
         {user.role === "TUTOR" && (
-          <section className="mb-16 sm:mb-20">
-            <div className="bg-white dark:bg-gradient-to-b from-[#1a1a1a] to-[#121212] rounded-2xl sm:rounded-3xl border border-[#e5e5e5] dark:border-[#262626] shadow-sm p-6 sm:p-8 md:p-10">
-              <div className="flex items-center gap-3 mb-10">
-                <div className="p-2.5 bg-green-500/10 dark:bg-green-500/20 rounded-xl">
-                  <BookOpen className="w-5 h-5 text-green-500" />
-                </div>
-                <div>
-                  <h2 className="text-xl sm:text-2xl font-bold text-black dark:text-white">
-                    {t("tutorProfile")}
-                  </h2>
-                  <p className="text-sm text-[#666] dark:text-[#a1a1aa] mt-0.5">
-                    {t("tutorProfileDescription")}
-                  </p>
-                </div>
+          <section className="mt-12">
+            <div className="space-y-8">
+              <div>
+                <h2 className="text-2xl sm:text-3xl font-bold text-black dark:text-white mb-2">
+                  {t("tutorProfile")}
+                </h2>
+                <p className="text-sm text-[#666] dark:text-[#888]">
+                  {t("tutorProfileDescription")}
+                </p>
               </div>
 
-              <div className="space-y-10">
+              <div className="space-y-8">
                 {/* Introduction & About Me */}
                 <div className="space-y-6">
                   <div className="space-y-3">
-                    <Label htmlFor="introduction" className="text-sm font-semibold text-[#444] dark:text-[#a1a1aa] flex items-center gap-2">
+                    <Label htmlFor="introduction" className="text-sm font-medium text-[#444] dark:text-[#a1a1aa] flex items-center gap-2">
                       <User className="w-4 h-4" />
                       {t("tutor.introduction")}
                     </Label>
@@ -902,14 +881,14 @@ export function ProfileClient({ locale, user, studentProfile, tutorProfile }: Pr
                       value={introduction}
                       onChange={(e) => setIntroduction(e.target.value)}
                       placeholder={t("tutor.introductionPlaceholder")}
-                      className="min-h-[100px] rounded-xl border-[#e5e5e5] dark:border-[#262626] bg-white/80 dark:bg-[#0a0a0a]/80 focus:border-primary dark:focus:border-[#ccf381] focus:ring-2 focus:ring-primary/10 dark:focus:ring-[#ccf381]/20 transition-all resize-none"
+                      className="min-h-[100px] rounded-xl border-[#e5e5e5] dark:border-[#262626] bg-white dark:bg-[#0a0a0a] focus:border-primary dark:focus:border-[#ccf381] resize-none"
                       rows={4}
                     />
                     <p className="text-xs text-[#888] dark:text-[#666]">{t("tutor.introductionHint")}</p>
                   </div>
 
                   <div className="space-y-3">
-                    <Label htmlFor="aboutMe" className="text-sm font-semibold text-[#444] dark:text-[#a1a1aa] flex items-center gap-2">
+                    <Label htmlFor="aboutMe" className="text-sm font-medium text-[#444] dark:text-[#a1a1aa] flex items-center gap-2">
                       <BookOpen className="w-4 h-4" />
                       {t("tutor.aboutMe")}
                     </Label>
@@ -918,13 +897,13 @@ export function ProfileClient({ locale, user, studentProfile, tutorProfile }: Pr
                       value={aboutMe}
                       onChange={(e) => setAboutMe(e.target.value)}
                       placeholder={t("tutor.aboutMePlaceholder")}
-                      className="min-h-[140px] rounded-xl border-[#e5e5e5] dark:border-[#262626] bg-white/80 dark:bg-[#0a0a0a]/80 focus:border-primary dark:focus:border-[#ccf381] focus:ring-2 focus:ring-primary/10 dark:focus:ring-[#ccf381]/20 transition-all resize-none"
+                      className="min-h-[140px] rounded-xl border-[#e5e5e5] dark:border-[#262626] bg-white dark:bg-[#0a0a0a] focus:border-primary dark:focus:border-[#ccf381] resize-none"
                       rows={6}
                     />
                   </div>
 
                   <div className="space-y-3">
-                    <Label htmlFor="bio" className="text-sm font-semibold text-[#444] dark:text-[#a1a1aa]">
+                    <Label htmlFor="bio" className="text-sm font-medium text-[#444] dark:text-[#a1a1aa]">
                       {tTutor("bio")} <span className="text-xs font-normal text-muted-foreground">({t("optional")})</span>
                     </Label>
                     <Textarea
@@ -932,7 +911,7 @@ export function ProfileClient({ locale, user, studentProfile, tutorProfile }: Pr
                       value={bio}
                       onChange={(e) => setBio(e.target.value)}
                       placeholder={tTutor("bioPlaceholder")}
-                      className="min-h-[120px] rounded-xl border-[#e5e5e5] dark:border-[#262626] bg-white/80 dark:bg-[#0a0a0a]/80 focus:border-primary dark:focus:border-[#ccf381] focus:ring-2 focus:ring-primary/10 dark:focus:ring-[#ccf381]/20 transition-all resize-none"
+                      className="min-h-[120px] rounded-xl border-[#e5e5e5] dark:border-[#262626] bg-white dark:bg-[#0a0a0a] focus:border-primary dark:focus:border-[#ccf381] resize-none"
                       rows={5}
                     />
                     {bio && (
@@ -956,7 +935,7 @@ export function ProfileClient({ locale, user, studentProfile, tutorProfile }: Pr
                       value={newLanguage}
                       onChange={(e) => setNewLanguage(e.target.value)}
                       placeholder={t("tutor.languagePlaceholder")}
-                      className="h-12 rounded-xl border-[#e5e5e5] dark:border-[#262626] bg-white/80 dark:bg-[#0a0a0a]/80 flex-1"
+                      className="h-12 rounded-xl border-[#e5e5e5] dark:border-[#262626] bg-white dark:bg-[#0a0a0a] flex-1"
                     />
                     <Select value={newLanguageProficiency} onValueChange={setNewLanguageProficiency}>
                       <SelectTrigger className="h-12 rounded-xl border-[#e5e5e5] dark:border-[#262626] bg-white/80 dark:bg-[#0a0a0a]/80 w-full sm:w-[180px]">
@@ -1020,7 +999,7 @@ export function ProfileClient({ locale, user, studentProfile, tutorProfile }: Pr
                         }
                       }}
                       placeholder={t("tutor.languageTaughtPlaceholder")}
-                      className="h-12 rounded-xl border-[#e5e5e5] dark:border-[#262626] bg-white/80 dark:bg-[#0a0a0a]/80 flex-1"
+                      className="h-12 rounded-xl border-[#e5e5e5] dark:border-[#262626] bg-white dark:bg-[#0a0a0a] flex-1"
                     />
                     <Button
                       type="button"
@@ -1071,7 +1050,7 @@ export function ProfileClient({ locale, user, studentProfile, tutorProfile }: Pr
                         }
                       }}
                       placeholder={tTutor("specialtyPlaceholder")}
-                      className="h-12 rounded-xl border-[#e5e5e5] dark:border-[#262626] bg-white/80 dark:bg-[#0a0a0a]/80 flex-1"
+                      className="h-12 rounded-xl border-[#e5e5e5] dark:border-[#262626] bg-white dark:bg-[#0a0a0a] flex-1"
                     />
                     <Button
                       type="button"
@@ -1122,7 +1101,7 @@ export function ProfileClient({ locale, user, studentProfile, tutorProfile }: Pr
                     value={teachingStyle}
                     onChange={(e) => setTeachingStyle(e.target.value)}
                     placeholder={t("tutor.teachingStylePlaceholder")}
-                    className="min-h-[120px] rounded-xl border-[#e5e5e5] dark:border-[#262626] bg-white/80 dark:bg-[#0a0a0a]/80 focus:border-primary dark:focus:border-[#ccf381] focus:ring-2 focus:ring-primary/10 dark:focus:ring-[#ccf381]/20 transition-all resize-none"
+                      className="min-h-[120px] rounded-xl border-[#e5e5e5] dark:border-[#262626] bg-white dark:bg-[#0a0a0a] focus:border-primary dark:focus:border-[#ccf381] resize-none"
                     rows={5}
                   />
                 </div>
@@ -1144,7 +1123,7 @@ export function ProfileClient({ locale, user, studentProfile, tutorProfile }: Pr
                         className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
                           preferredLevels.includes(level)
                             ? "bg-primary text-primary-foreground border-2 border-primary"
-                            : "bg-white/80 dark:bg-[#0a0a0a]/80 border-2 border-[#e5e5e5] dark:border-[#262626] text-black dark:text-white hover:border-primary/50"
+                            : "bg-white dark:bg-[#0a0a0a] border-2 border-[#e5e5e5] dark:border-[#262626] text-black dark:text-white hover:border-primary/50"
                         }`}
                       >
                         {tStudent(`levels.${level === "upper-intermediate" ? "upperIntermediate" : level}`)}
@@ -1172,7 +1151,7 @@ export function ProfileClient({ locale, user, studentProfile, tutorProfile }: Pr
                         }
                       }}
                       placeholder={t("tutor.interestsPlaceholder")}
-                      className="h-12 rounded-xl border-[#e5e5e5] dark:border-[#262626] bg-white/80 dark:bg-[#0a0a0a]/80 flex-1"
+                      className="h-12 rounded-xl border-[#e5e5e5] dark:border-[#262626] bg-white dark:bg-[#0a0a0a] flex-1"
                     />
                     <Button
                       type="button"
@@ -1223,7 +1202,7 @@ export function ProfileClient({ locale, user, studentProfile, tutorProfile }: Pr
                         }
                       }}
                       placeholder={t("tutor.industryPlaceholder")}
-                      className="h-12 rounded-xl border-[#e5e5e5] dark:border-[#262626] bg-white/80 dark:bg-[#0a0a0a]/80 flex-1"
+                      className="h-12 rounded-xl border-[#e5e5e5] dark:border-[#262626] bg-white dark:bg-[#0a0a0a] flex-1"
                     />
                     <Button
                       type="button"
@@ -1268,7 +1247,7 @@ export function ProfileClient({ locale, user, studentProfile, tutorProfile }: Pr
                     value={experience}
                     onChange={(e) => setExperience(e.target.value)}
                     placeholder={t("tutor.experiencePlaceholder")}
-                    className="min-h-[120px] rounded-xl border-[#e5e5e5] dark:border-[#262626] bg-white/80 dark:bg-[#0a0a0a]/80 focus:border-primary dark:focus:border-[#ccf381] focus:ring-2 focus:ring-primary/10 dark:focus:ring-[#ccf381]/20 transition-all resize-none"
+                      className="min-h-[120px] rounded-xl border-[#e5e5e5] dark:border-[#262626] bg-white dark:bg-[#0a0a0a] focus:border-primary dark:focus:border-[#ccf381] resize-none"
                     rows={5}
                   />
                 </div>
@@ -1286,7 +1265,7 @@ export function ProfileClient({ locale, user, studentProfile, tutorProfile }: Pr
                     value={workExperience}
                     onChange={(e) => setWorkExperience(e.target.value)}
                     placeholder={t("tutor.workExperiencePlaceholder")}
-                    className="min-h-[120px] rounded-xl border-[#e5e5e5] dark:border-[#262626] bg-white/80 dark:bg-[#0a0a0a]/80 focus:border-primary dark:focus:border-[#ccf381] focus:ring-2 focus:ring-primary/10 dark:focus:ring-[#ccf381]/20 transition-all resize-none"
+                      className="min-h-[120px] rounded-xl border-[#e5e5e5] dark:border-[#262626] bg-white dark:bg-[#0a0a0a] focus:border-primary dark:focus:border-[#ccf381] resize-none"
                     rows={5}
                   />
                 </div>
@@ -1304,7 +1283,7 @@ export function ProfileClient({ locale, user, studentProfile, tutorProfile }: Pr
                     value={degrees}
                     onChange={(e) => setDegrees(e.target.value)}
                     placeholder={t("tutor.degreesPlaceholder")}
-                    className="min-h-[100px] rounded-xl border-[#e5e5e5] dark:border-[#262626] bg-white/80 dark:bg-[#0a0a0a]/80 focus:border-primary dark:focus:border-[#ccf381] focus:ring-2 focus:ring-primary/10 dark:focus:ring-[#ccf381]/20 transition-all resize-none"
+                      className="min-h-[100px] rounded-xl border-[#e5e5e5] dark:border-[#262626] bg-white dark:bg-[#0a0a0a] focus:border-primary dark:focus:border-[#ccf381] resize-none"
                     rows={4}
                   />
                 </div>
