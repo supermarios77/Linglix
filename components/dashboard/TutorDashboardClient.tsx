@@ -469,22 +469,24 @@ export function TutorDashboardClient({
               {t("browseTutors")}
             </Button>
           </Link>
-          <div className="flex items-center gap-2 px-4 py-2 bg-card/80 backdrop-blur-sm border border-border rounded-full">
-            {user.image ? (
-              <Image
-                src={user.image}
-                alt={user.name || "User"}
-                width={24}
-                height={24}
-                className="rounded-full"
-              />
-            ) : (
-              <User className="w-4 h-4 text-muted-foreground" />
-            )}
-            <span className="text-xs sm:text-sm font-medium text-foreground">
-              {user.name || user.email}
-            </span>
-          </div>
+          <Link href={`/${locale}/profile`}>
+            <div className="flex items-center gap-2 px-4 py-2 bg-card/80 backdrop-blur-sm border border-border rounded-full hover:border-primary/50 hover:bg-card transition-colors cursor-pointer">
+              {user.image ? (
+                <Image
+                  src={user.image}
+                  alt={user.name || "User"}
+                  width={24}
+                  height={24}
+                  className="rounded-full"
+                />
+              ) : (
+                <User className="w-4 h-4 text-muted-foreground" />
+              )}
+              <span className="text-xs sm:text-sm font-medium text-foreground">
+                {user.name || user.email}
+              </span>
+            </div>
+          </Link>
           <Button
             variant="outline"
             onClick={() => setShowSignOutDialog(true)}
@@ -506,30 +508,32 @@ export function TutorDashboardClient({
           <div className="p-5 h-full flex flex-col">
             {/* Sidebar Header */}
             <div className="mb-6 pb-6 border-b border-border">
-              <div className="flex items-center gap-3 mb-3">
-                {user.image ? (
-                  <div className="relative w-12 h-12 rounded-full overflow-hidden border border-border">
-                    <Image
-                      src={user.image}
-                      alt={user.name || "User"}
-                      fill
-                      className="object-cover"
-                    />
+              <Link href={`/${locale}/profile`}>
+                <div className="flex items-center gap-3 mb-3 hover:opacity-80 transition-opacity cursor-pointer">
+                  {user.image ? (
+                    <div className="relative w-12 h-12 rounded-full overflow-hidden border border-border">
+                      <Image
+                        src={user.image}
+                        alt={user.name || "User"}
+                        fill
+                        className="object-cover"
+                      />
+                    </div>
+                  ) : (
+                    <div className="w-12 h-12 rounded-full bg-muted border border-border flex items-center justify-center">
+                      <User className="w-6 h-6 text-muted-foreground" />
+                    </div>
+                  )}
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-semibold text-foreground truncate">
+                      {user.name || tTutor("tutor")}
+                    </p>
+                    <p className="text-xs text-muted-foreground truncate mt-0.5">
+                      {user.email}
+                    </p>
                   </div>
-                ) : (
-                  <div className="w-12 h-12 rounded-full bg-muted border border-border flex items-center justify-center">
-                    <User className="w-6 h-6 text-muted-foreground" />
-                  </div>
-                )}
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-semibold text-foreground truncate">
-                    {user.name || tTutor("tutor")}
-                  </p>
-                  <p className="text-xs text-muted-foreground truncate mt-0.5">
-                    {user.email}
-                  </p>
                 </div>
-              </div>
+              </Link>
               <div className="flex justify-start">
                 {getApprovalStatusBadge(tutorProfile.approvalStatus)}
               </div>

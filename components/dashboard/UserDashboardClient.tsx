@@ -372,22 +372,24 @@ export function UserDashboardClient({
               {t("browseTutors")}
             </Button>
           </Link>
-          <div className="flex items-center gap-2 px-4 py-2 bg-card/80 backdrop-blur-sm border border-border rounded-full">
-            {user.image ? (
-              <Image
-                src={user.image}
-                alt={user.name || "User"}
-                width={24}
-                height={24}
-                className="rounded-full"
-              />
-            ) : (
-              <User className="w-4 h-4 text-muted-foreground" />
-            )}
-            <span className="text-xs sm:text-sm font-medium text-foreground">
-              {user.name || user.email}
-            </span>
-          </div>
+          <Link href={`/${locale}/profile`}>
+            <div className="flex items-center gap-2 px-4 py-2 bg-card/80 backdrop-blur-sm border border-border rounded-full hover:border-primary/50 hover:bg-card transition-colors cursor-pointer">
+              {user.image ? (
+                <Image
+                  src={user.image}
+                  alt={user.name || "User"}
+                  width={24}
+                  height={24}
+                  className="rounded-full"
+                />
+              ) : (
+                <User className="w-4 h-4 text-muted-foreground" />
+              )}
+              <span className="text-xs sm:text-sm font-medium text-foreground">
+                {user.name || user.email}
+              </span>
+            </div>
+          </Link>
           <Button
             variant="outline"
             onClick={() => setShowSignOutDialog(true)}
