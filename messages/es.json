@@ -105,7 +105,42 @@
     "studentProfile": "Perfil de Estudiante",
     "studentProfileDescription": "Actualiza tus preferencias y objetivos de aprendizaje",
     "tutorProfile": "Perfil de Tutor",
-    "tutorProfileDescription": "Actualiza tu perfil de enseñanza y especialidades"
+    "tutorProfileDescription": "Actualiza tu perfil de enseñanza y especialidades",
+    "tutor": {
+      "introduction": "Introducción",
+      "introductionPlaceholder": "Escribe una breve introducción sobre ti...",
+      "introductionHint": "Una breve introducción que aparece en la parte superior de tu perfil",
+      "aboutMe": "Sobre Mí",
+      "aboutMePlaceholder": "Cuéntales a los estudiantes más sobre ti, tu experiencia y filosofía de enseñanza...",
+      "languagesKnown": "Idiomas que Conoces",
+      "languagePlaceholder": "ej., Inglés, Español, Francés",
+      "languagesTaught": "Idiomas que Enseñas",
+      "languageTaughtPlaceholder": "ej., Inglés, Español",
+      "proficiency": {
+        "native": "Nativo",
+        "fluent": "Fluido",
+        "advanced": "Avanzado",
+        "intermediate": "Intermedio",
+        "basic": "Básico"
+      },
+      "teachingStyle": "Estilo de Enseñanza",
+      "teachingStylePlaceholder": "Describe tu enfoque de enseñanza, métodos y qué hace único tu estilo...",
+      "preferredLevels": "Niveles de Estudiantes Preferidos",
+      "interests": "Intereses",
+      "interestsPlaceholder": "ej., Viajes, Música, Tecnología",
+      "industryFamiliarity": "Familiaridad con Industrias",
+      "industryPlaceholder": "ej., Ciencia, Salud, Derecho, Negocios",
+      "experience": "Experiencia y Capacitación",
+      "experiencePlaceholder": "Describe tu experiencia docente, certificaciones y capacitación...",
+      "workExperience": "Experiencia Laboral Anterior",
+      "workExperiencePlaceholder": "Describe tu experiencia laboral previa relevante para la enseñanza...",
+      "degrees": "Títulos y Educación",
+      "degreesPlaceholder": "Enumera tu formación académica, títulos y calificaciones...",
+      "pricing": "Información de Precios",
+      "studentRate": "Tarifa del Estudiante",
+      "tutorEarnings": "Tus Ganancias",
+      "afterCommission": "después de comisión del 50%"
+    }
   },
   "tutor": {
     "title": "Encuentra Tu Tutor Perfecto",
@@ -578,7 +613,9 @@
         "10+": "10+ años"
       },
       "teachingStyle": "Estilo de Enseñanza (Opcional)",
-      "teachingStylePlaceholder": "Describe tu enfoque y métodos de enseñanza..."
+      "teachingStylePlaceholder": "Describe tu enfoque y métodos de enseñanza...",
+      "pricingInfo": "Información de Precios",
+      "pricingDescription": "Todas las sesiones tienen un precio de $30/hora. Recibirás $15/hora (50% de comisión). Esta tarifa es fija y no se puede cambiar."
     },
     "selectTutor": {
       "title": "Seleccionar Tutor",

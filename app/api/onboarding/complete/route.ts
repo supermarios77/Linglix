@@ -21,13 +21,7 @@ const tutorOnboardingSchema = z.object({
   data: z.object({
     bio: z.string().min(50, "Bio must be at least 50 characters"),
     specialties: z.array(z.string()).min(1, "At least one specialty is required"),
-    hourlyRate: z.string().refine(
-      (val) => {
-        const num = parseFloat(val);
-        return !isNaN(num) && num >= 5;
-      },
-      { message: "Hourly rate must be at least $5" }
-    ),
+    // hourlyRate is fixed at $30/hour, tutors receive $15/hour after commission
     experience: z.string().optional(),
     teachingStyle: z.string().optional(),
     availability: z.string().optional(),
@@ -120,7 +114,7 @@ export async function POST(request: Request) {
       );
     } else {
       // For tutors, create tutor profile
-      const hourlyRate = parseFloat(validated.data.hourlyRate);
+      // Hourly rate is fixed at $30/hour (tutors receive $15/hour after commission)
 
       // Check if tutor profile already exists
       const existingProfile = await prisma.tutorProfile.findUnique({
@@ -134,7 +128,7 @@ export async function POST(request: Request) {
           data: {
             bio: validated.data.bio,
             specialties: validated.data.specialties,
-            hourlyRate,
+            hourlyRate: 30, // Fixed rate - tutors receive $15/hour after commission
             // Store additional data in bio or create metadata field
           },
         });
@@ -145,7 +139,7 @@ export async function POST(request: Request) {
             userId: session.user.id,
             bio: validated.data.bio,
             specialties: validated.data.specialties,
-            hourlyRate,
+            hourlyRate: 30, // Fixed rate - tutors receive $15/hour after commission
             approvalStatus: "PENDING", // Tutors need admin approval
           },
         });

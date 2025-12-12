@@ -57,7 +57,6 @@ export function OnboardingClient({ locale, user }: OnboardingClientProps) {
   const [tutorData, setTutorData] = useState({
     bio: "",
     specialties: [] as string[],
-    hourlyRate: "",
     experience: "",
     teachingStyle: "",
   });
@@ -111,11 +110,6 @@ export function OnboardingClient({ locale, user }: OnboardingClientProps) {
 
     if (tutorData.specialties.length === 0) {
       setError(t("tutor.specialtiesRequired"));
-      return;
-    }
-
-    if (!tutorData.hourlyRate || parseFloat(tutorData.hourlyRate) < 5) {
-      setError(t("tutor.hourlyRateMin"));
       return;
     }
 
@@ -449,28 +443,12 @@ export function OnboardingClient({ locale, user }: OnboardingClientProps) {
               )}
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="hourlyRate" className="text-sm font-semibold">
-                {t("tutor.hourlyRate")} <span className="text-red-500">*</span>
-              </Label>
-              <div className="relative">
-                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[#666] dark:text-[#a1a1aa]">
-                  $
-                </span>
-                <Input
-                  id="hourlyRate"
-                  type="number"
-                  min="5"
-                  step="0.01"
-                  value={tutorData.hourlyRate}
-                  onChange={(e) => setTutorData({ ...tutorData, hourlyRate: e.target.value })}
-                  placeholder="25.00"
-                  required
-                  className="pl-8"
-                />
-              </div>
-              <p className="text-xs text-[#666] dark:text-[#a1a1aa]">
-                {t("tutor.hourlyRateHint")}
+            <div className="p-4 rounded-xl bg-[#f5f5f5] dark:bg-[#0a0a0a] border border-[#e5e5e5] dark:border-[#262626]">
+              <p className="text-sm font-semibold text-black dark:text-white mb-1">
+                {t("tutor.pricingInfo")}
+              </p>
+              <p className="text-xs text-[#666] dark:text-[#888]">
+                {t("tutor.pricingDescription")}
               </p>
             </div>
 
@@ -519,7 +497,7 @@ export function OnboardingClient({ locale, user }: OnboardingClientProps) {
               </Button>
               <Button
                 type="submit"
-                disabled={isLoading || !tutorData.bio || tutorData.specialties.length === 0 || !tutorData.hourlyRate}
+                disabled={isLoading || !tutorData.bio || tutorData.specialties.length === 0}
                 className="flex-1 bg-[#111] dark:bg-[#ccf381] text-white dark:text-black hover:bg-[#222] dark:hover:bg-[#d4f89a]"
               >
                 {isLoading ? (

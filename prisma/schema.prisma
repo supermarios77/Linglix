@@ -87,13 +87,38 @@ model StudentProfile {
   @@index([currentLevel])
 }
 
+// Language proficiency levels
+enum LanguageProficiency {
+  NATIVE
+  FLUENT
+  ADVANCED
+  INTERMEDIATE
+  BASIC
+}
+
 // Tutor profile - additional info for tutors
 model TutorProfile {
   id              String              @id @default(cuid())
   userId          String              @unique
-  bio             String?
+  // Basic info
+  introduction    String?             @db.Text // Short introduction
+  aboutMe         String?             @db.Text // Detailed about me
+  bio             String?             @db.Text // Legacy field, can be used for summary
+  // Languages
+  languagesKnown  Json? // Array of { language: string, proficiency: LanguageProficiency }
+  languagesTaught String[] // Languages the tutor teaches
+  // Teaching info
   specialties     String[] // e.g., ["Business English", "IELTS Prep"]
-  hourlyRate      Float
+  teachingStyle   String?             @db.Text
+  preferredLevels String[] // Student levels they prefer to teach: ["beginner", "intermediate", "advanced"]
+  // Background
+  interests       String[] // Tutor's interests
+  industryFamiliarity String[] // e.g., ["science", "healthcare", "law", "business"]
+  experience      String?             @db.Text // Experience and training (optional)
+  workExperience  String?             @db.Text // Past work experience
+  degrees         String?             @db.Text // Educational degrees
+  // Pricing (fixed)
+  hourlyRate      Float               @default(30) // Fixed at $30/hour, tutors get $15/hour after commission
   rating          Float               @default(0)
   totalSessions   Int                 @default(0)
   isActive        Boolean             @default(true)

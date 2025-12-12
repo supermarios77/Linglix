@@ -32,7 +32,12 @@ import {
   Sparkles,
   Save,
   AlertCircle,
-  Info
+  Info,
+  Languages,
+  Briefcase,
+  Award,
+  Heart,
+  Target
 } from "lucide-react";
 
 interface ProfileClientProps {
@@ -51,9 +56,20 @@ interface ProfileClientProps {
     motivation: string | null;
   } | null;
   tutorProfile?: {
-    bio: string | null;
-    specialties: string[];
-    hourlyRate: number;
+    introduction?: string | null;
+    aboutMe?: string | null;
+    bio?: string | null;
+    languagesKnown?: Array<{ language: string; proficiency: string }> | null;
+    languagesTaught?: string[];
+    specialties?: string[];
+    teachingStyle?: string | null;
+    preferredLevels?: string[];
+    interests?: string[];
+    industryFamiliarity?: string[];
+    experience?: string | null;
+    workExperience?: string | null;
+    degrees?: string | null;
+    hourlyRate?: number;
   } | null;
 }
 
@@ -82,10 +98,27 @@ export function ProfileClient({ locale, user, studentProfile, tutorProfile }: Pr
   const [hasStudentChanges, setHasStudentChanges] = useState(false);
 
   // Tutor profile state
+  const [introduction, setIntroduction] = useState(tutorProfile?.introduction || "");
+  const [aboutMe, setAboutMe] = useState(tutorProfile?.aboutMe || "");
   const [bio, setBio] = useState(tutorProfile?.bio || "");
+  const [languagesKnown, setLanguagesKnown] = useState<Array<{ language: string; proficiency: string }>>(
+    (tutorProfile?.languagesKnown as any) || []
+  );
+  const [newLanguage, setNewLanguage] = useState("");
+  const [newLanguageProficiency, setNewLanguageProficiency] = useState("FLUENT");
+  const [languagesTaught, setLanguagesTaught] = useState<string[]>(tutorProfile?.languagesTaught || []);
+  const [newLanguageTaught, setNewLanguageTaught] = useState("");
   const [specialties, setSpecialties] = useState<string[]>(tutorProfile?.specialties || []);
   const [newSpecialty, setNewSpecialty] = useState("");
-  const [hourlyRate, setHourlyRate] = useState(tutorProfile?.hourlyRate?.toString() || "");
+  const [teachingStyle, setTeachingStyle] = useState(tutorProfile?.teachingStyle || "");
+  const [preferredLevels, setPreferredLevels] = useState<string[]>(tutorProfile?.preferredLevels || []);
+  const [interests, setInterests] = useState<string[]>(tutorProfile?.interests || []);
+  const [newInterest, setNewInterest] = useState("");
+  const [industryFamiliarity, setIndustryFamiliarity] = useState<string[]>(tutorProfile?.industryFamiliarity || []);
+  const [newIndustry, setNewIndustry] = useState("");
+  const [experience, setExperience] = useState(tutorProfile?.experience || "");
+  const [workExperience, setWorkExperience] = useState(tutorProfile?.workExperience || "");
+  const [degrees, setDegrees] = useState(tutorProfile?.degrees || "");
   const [savingTutor, setSavingTutor] = useState(false);
   const [tutorSuccess, setTutorSuccess] = useState(false);
   const [tutorError, setTutorError] = useState<string | null>(null);
@@ -106,12 +139,23 @@ export function ProfileClient({ locale, user, studentProfile, tutorProfile }: Pr
   }, [learningGoal, currentLevel, preferredSchedule, motivation, studentProfile]);
 
   useEffect(() => {
+    const currentProfile = tutorProfile || {};
     setHasTutorChanges(
-      bio !== (tutorProfile?.bio || "") ||
-      JSON.stringify(specialties) !== JSON.stringify(tutorProfile?.specialties || []) ||
-      hourlyRate !== (tutorProfile?.hourlyRate?.toString() || "")
+      introduction !== (currentProfile.introduction || "") ||
+      aboutMe !== (currentProfile.aboutMe || "") ||
+      bio !== (currentProfile.bio || "") ||
+      JSON.stringify(languagesKnown) !== JSON.stringify((currentProfile.languagesKnown as any) || []) ||
+      JSON.stringify(languagesTaught) !== JSON.stringify(currentProfile.languagesTaught || []) ||
+      JSON.stringify(specialties) !== JSON.stringify(currentProfile.specialties || []) ||
+      teachingStyle !== (currentProfile.teachingStyle || "") ||
+      JSON.stringify(preferredLevels) !== JSON.stringify(currentProfile.preferredLevels || []) ||
+      JSON.stringify(interests) !== JSON.stringify(currentProfile.interests || []) ||
+      JSON.stringify(industryFamiliarity) !== JSON.stringify(currentProfile.industryFamiliarity || []) ||
+      experience !== (currentProfile.experience || "") ||
+      workExperience !== (currentProfile.workExperience || "") ||
+      degrees !== (currentProfile.degrees || "")
     );
-  }, [bio, specialties, hourlyRate, tutorProfile]);
+  }, [introduction, aboutMe, bio, languagesKnown, languagesTaught, specialties, teachingStyle, preferredLevels, interests, industryFamiliarity, experience, workExperience, degrees, tutorProfile]);
 
   const handleImageUpdate = async (imageUrl: string) => {
     try {
@@ -215,13 +259,6 @@ export function ProfileClient({ locale, user, studentProfile, tutorProfile }: Pr
       return;
     }
 
-    const rate = parseFloat(hourlyRate);
-    if (isNaN(rate) || rate < 5) {
-      setTutorError(tTutor("hourlyRateMin"));
-      setTimeout(() => setTutorError(null), 5000);
-      return;
-    }
-
     setSavingTutor(true);
     setTutorSuccess(false);
     setTutorError(null);
@@ -233,9 +270,19 @@ export function ProfileClient({ locale, user, studentProfile, tutorProfile }: Pr
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
+          introduction: introduction || null,
+          aboutMe: aboutMe || null,
           bio: bio || null,
+          languagesKnown: languagesKnown.length > 0 ? languagesKnown : null,
+          languagesTaught: languagesTaught,
           specialties,
-          hourlyRate: rate,
+          teachingStyle: teachingStyle || null,
+          preferredLevels: preferredLevels,
+          interests: interests,
+          industryFamiliarity: industryFamiliarity,
+          experience: experience || null,
+          workExperience: workExperience || null,
+          degrees: degrees || null,
         }),
       });
 
@@ -265,6 +312,59 @@ export function ProfileClient({ locale, user, studentProfile, tutorProfile }: Pr
 
   const removeSpecialty = (index: number) => {
     setSpecialties(specialties.filter((_, i) => i !== index));
+  };
+
+  const addLanguageKnown = () => {
+    if (newLanguage.trim() && !languagesKnown.some(l => l.language === newLanguage.trim())) {
+      setLanguagesKnown([...languagesKnown, { language: newLanguage.trim(), proficiency: newLanguageProficiency }]);
+      setNewLanguage("");
+      setNewLanguageProficiency("FLUENT");
+    }
+  };
+
+  const removeLanguageKnown = (index: number) => {
+    setLanguagesKnown(languagesKnown.filter((_, i) => i !== index));
+  };
+
+  const addLanguageTaught = () => {
+    if (newLanguageTaught.trim() && !languagesTaught.includes(newLanguageTaught.trim())) {
+      setLanguagesTaught([...languagesTaught, newLanguageTaught.trim()]);
+      setNewLanguageTaught("");
+    }
+  };
+
+  const removeLanguageTaught = (index: number) => {
+    setLanguagesTaught(languagesTaught.filter((_, i) => i !== index));
+  };
+
+  const addInterest = () => {
+    if (newInterest.trim() && !interests.includes(newInterest.trim())) {
+      setInterests([...interests, newInterest.trim()]);
+      setNewInterest("");
+    }
+  };
+
+  const removeInterest = (index: number) => {
+    setInterests(interests.filter((_, i) => i !== index));
+  };
+
+  const addIndustry = () => {
+    if (newIndustry.trim() && !industryFamiliarity.includes(newIndustry.trim())) {
+      setIndustryFamiliarity([...industryFamiliarity, newIndustry.trim()]);
+      setNewIndustry("");
+    }
+  };
+
+  const removeIndustry = (index: number) => {
+    setIndustryFamiliarity(industryFamiliarity.filter((_, i) => i !== index));
+  };
+
+  const togglePreferredLevel = (level: string) => {
+    if (preferredLevels.includes(level)) {
+      setPreferredLevels(preferredLevels.filter(l => l !== level));
+    } else {
+      setPreferredLevels([...preferredLevels, level]);
+    }
   };
 
   return (
@@ -559,7 +659,7 @@ export function ProfileClient({ locale, user, studentProfile, tutorProfile }: Pr
         {user.role === "TUTOR" && (
           <section className="mb-16 sm:mb-20">
             <div className="bg-white dark:bg-gradient-to-b from-[#1a1a1a] to-[#121212] rounded-2xl sm:rounded-3xl border border-[#e5e5e5] dark:border-[#262626] shadow-sm p-6 sm:p-8 md:p-10">
-              <div className="flex items-center gap-3 mb-8">
+              <div className="flex items-center gap-3 mb-10">
                 <div className="p-2.5 bg-green-500/10 dark:bg-green-500/20 rounded-xl">
                   <BookOpen className="w-5 h-5 text-green-500" />
                 </div>
@@ -573,32 +673,172 @@ export function ProfileClient({ locale, user, studentProfile, tutorProfile }: Pr
                 </div>
               </div>
 
-              <div className="space-y-8">
-                <div className="space-y-3">
-                  <Label htmlFor="bio" className="text-sm font-semibold text-[#444] dark:text-[#a1a1aa]">
-                    {tTutor("bio")}
-                  </Label>
-                  <Textarea
-                    id="bio"
-                    value={bio}
-                    onChange={(e) => setBio(e.target.value)}
-                    placeholder={tTutor("bioPlaceholder")}
-                    className="min-h-[160px] rounded-xl border-[#e5e5e5] dark:border-[#262626] bg-white/80 dark:bg-[#0a0a0a]/80 focus:border-primary dark:focus:border-[#ccf381] focus:ring-2 focus:ring-primary/10 dark:focus:ring-[#ccf381]/20 transition-all resize-none"
-                    rows={6}
-                  />
-                  <div className="flex items-center justify-between pt-1">
-                    <p className="text-xs text-[#888] dark:text-[#666] flex items-center gap-1.5">
-                      <Info className="w-3.5 h-3.5" />
-                      {tTutor("bioHint")}
-                    </p>
-                    <p className={`text-xs font-medium ${bio.length < 50 ? "text-red-500" : "text-green-600 dark:text-green-400"}`}>
-                      {bio.length}/50 {bio.length >= 50 ? "✓" : ""}
-                    </p>
+              <div className="space-y-10">
+                {/* Introduction & About Me */}
+                <div className="space-y-6">
+                  <div className="space-y-3">
+                    <Label htmlFor="introduction" className="text-sm font-semibold text-[#444] dark:text-[#a1a1aa] flex items-center gap-2">
+                      <User className="w-4 h-4" />
+                      {t("tutor.introduction")}
+                    </Label>
+                    <Textarea
+                      id="introduction"
+                      value={introduction}
+                      onChange={(e) => setIntroduction(e.target.value)}
+                      placeholder={t("tutor.introductionPlaceholder")}
+                      className="min-h-[100px] rounded-xl border-[#e5e5e5] dark:border-[#262626] bg-white/80 dark:bg-[#0a0a0a]/80 focus:border-primary dark:focus:border-[#ccf381] focus:ring-2 focus:ring-primary/10 dark:focus:ring-[#ccf381]/20 transition-all resize-none"
+                      rows={4}
+                    />
+                    <p className="text-xs text-[#888] dark:text-[#666]">{t("tutor.introductionHint")}</p>
+                  </div>
+
+                  <div className="space-y-3">
+                    <Label htmlFor="aboutMe" className="text-sm font-semibold text-[#444] dark:text-[#a1a1aa] flex items-center gap-2">
+                      <BookOpen className="w-4 h-4" />
+                      {t("tutor.aboutMe")}
+                    </Label>
+                    <Textarea
+                      id="aboutMe"
+                      value={aboutMe}
+                      onChange={(e) => setAboutMe(e.target.value)}
+                      placeholder={t("tutor.aboutMePlaceholder")}
+                      className="min-h-[140px] rounded-xl border-[#e5e5e5] dark:border-[#262626] bg-white/80 dark:bg-[#0a0a0a]/80 focus:border-primary dark:focus:border-[#ccf381] focus:ring-2 focus:ring-primary/10 dark:focus:ring-[#ccf381]/20 transition-all resize-none"
+                      rows={6}
+                    />
+                  </div>
+
+                  <div className="space-y-3">
+                    <Label htmlFor="bio" className="text-sm font-semibold text-[#444] dark:text-[#a1a1aa]">
+                      {tTutor("bio")} <span className="text-xs font-normal text-muted-foreground">({t("optional")})</span>
+                    </Label>
+                    <Textarea
+                      id="bio"
+                      value={bio}
+                      onChange={(e) => setBio(e.target.value)}
+                      placeholder={tTutor("bioPlaceholder")}
+                      className="min-h-[120px] rounded-xl border-[#e5e5e5] dark:border-[#262626] bg-white/80 dark:bg-[#0a0a0a]/80 focus:border-primary dark:focus:border-[#ccf381] focus:ring-2 focus:ring-primary/10 dark:focus:ring-[#ccf381]/20 transition-all resize-none"
+                      rows={5}
+                    />
+                    {bio && (
+                      <p className={`text-xs font-medium ${bio.length < 50 ? "text-red-500" : "text-green-600 dark:text-green-400"}`}>
+                        {bio.length}/50 {bio.length >= 50 ? "✓" : ""}
+                      </p>
+                    )}
                   </div>
                 </div>
 
                 <Separator className="bg-[#e5e5e5] dark:bg-[#262626]" />
 
+                {/* Languages Known */}
+                <div className="space-y-4">
+                  <Label className="text-sm font-semibold text-[#444] dark:text-[#a1a1aa] flex items-center gap-2">
+                    <Languages className="w-4 h-4" />
+                    {t("tutor.languagesKnown")}
+                  </Label>
+                  <div className="flex flex-col sm:flex-row gap-2">
+                    <Input
+                      value={newLanguage}
+                      onChange={(e) => setNewLanguage(e.target.value)}
+                      placeholder={t("tutor.languagePlaceholder")}
+                      className="h-12 rounded-xl border-[#e5e5e5] dark:border-[#262626] bg-white/80 dark:bg-[#0a0a0a]/80 flex-1"
+                    />
+                    <Select value={newLanguageProficiency} onValueChange={setNewLanguageProficiency}>
+                      <SelectTrigger className="h-12 rounded-xl border-[#e5e5e5] dark:border-[#262626] bg-white/80 dark:bg-[#0a0a0a]/80 w-full sm:w-[180px]">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="NATIVE">{t("tutor.proficiency.native")}</SelectItem>
+                        <SelectItem value="FLUENT">{t("tutor.proficiency.fluent")}</SelectItem>
+                        <SelectItem value="ADVANCED">{t("tutor.proficiency.advanced")}</SelectItem>
+                        <SelectItem value="INTERMEDIATE">{t("tutor.proficiency.intermediate")}</SelectItem>
+                        <SelectItem value="BASIC">{t("tutor.proficiency.basic")}</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <Button
+                      type="button"
+                      onClick={addLanguageKnown}
+                      variant="outline"
+                      className="rounded-xl border-[#e5e5e5] dark:border-[#262626] hover:border-primary dark:hover:border-[#ccf381] min-w-[52px] h-12"
+                    >
+                      <Plus className="w-4 h-4" />
+                    </Button>
+                  </div>
+                  {languagesKnown.length > 0 && (
+                    <div className="flex flex-wrap gap-2.5 pt-2">
+                      {languagesKnown.map((lang, index) => (
+                        <div
+                          key={index}
+                          className="group flex items-center gap-2 px-4 py-2 bg-gradient-to-br from-blue-500/10 to-blue-500/5 dark:from-blue-500/20 dark:to-blue-500/10 rounded-full border border-blue-500/20 dark:border-blue-500/30"
+                        >
+                          <span className="text-sm font-medium text-black dark:text-white">{lang.language}</span>
+                          <span className="text-xs text-[#666] dark:text-[#888]">({t(`tutor.proficiency.${lang.proficiency.toLowerCase()}`)})</span>
+                          <button
+                            type="button"
+                            onClick={() => removeLanguageKnown(index)}
+                            className="text-[#888] dark:text-[#666] hover:text-red-500 dark:hover:text-red-400 transition-colors"
+                          >
+                            <X className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
+                <Separator className="bg-[#e5e5e5] dark:bg-[#262626]" />
+
+                {/* Languages Taught */}
+                <div className="space-y-4">
+                  <Label className="text-sm font-semibold text-[#444] dark:text-[#a1a1aa] flex items-center gap-2">
+                    <Languages className="w-4 h-4" />
+                    {t("tutor.languagesTaught")}
+                  </Label>
+                  <div className="flex gap-2">
+                    <Input
+                      value={newLanguageTaught}
+                      onChange={(e) => setNewLanguageTaught(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                          e.preventDefault();
+                          addLanguageTaught();
+                        }
+                      }}
+                      placeholder={t("tutor.languageTaughtPlaceholder")}
+                      className="h-12 rounded-xl border-[#e5e5e5] dark:border-[#262626] bg-white/80 dark:bg-[#0a0a0a]/80 flex-1"
+                    />
+                    <Button
+                      type="button"
+                      onClick={addLanguageTaught}
+                      variant="outline"
+                      className="rounded-xl border-[#e5e5e5] dark:border-[#262626] hover:border-primary dark:hover:border-[#ccf381] min-w-[52px] h-12"
+                    >
+                      <Plus className="w-4 h-4" />
+                    </Button>
+                  </div>
+                  {languagesTaught.length > 0 && (
+                    <div className="flex flex-wrap gap-2.5 pt-2">
+                      {languagesTaught.map((lang, index) => (
+                        <div
+                          key={index}
+                          className="group flex items-center gap-2 px-4 py-2 bg-gradient-to-br from-green-500/10 to-green-500/5 dark:from-green-500/20 dark:to-green-500/10 rounded-full border border-green-500/20 dark:border-green-500/30"
+                        >
+                          <span className="text-sm font-medium text-black dark:text-white">{lang}</span>
+                          <button
+                            type="button"
+                            onClick={() => removeLanguageTaught(index)}
+                            className="text-[#888] dark:text-[#666] hover:text-red-500 dark:hover:text-red-400 transition-colors"
+                          >
+                            <X className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
+                <Separator className="bg-[#e5e5e5] dark:bg-[#262626]" />
+
+                {/* Specialties */}
                 <div className="space-y-4">
                   <Label className="text-sm font-semibold text-[#444] dark:text-[#a1a1aa] flex items-center gap-2">
                     <Sparkles className="w-4 h-4" />
@@ -615,7 +855,7 @@ export function ProfileClient({ locale, user, studentProfile, tutorProfile }: Pr
                         }
                       }}
                       placeholder={tTutor("specialtyPlaceholder")}
-                      className="h-12 rounded-xl border-[#e5e5e5] dark:border-[#262626] bg-white/80 dark:bg-[#0a0a0a]/80 focus:border-primary dark:focus:border-[#ccf381] focus:ring-2 focus:ring-primary/10 dark:focus:ring-[#ccf381]/20 transition-all"
+                      className="h-12 rounded-xl border-[#e5e5e5] dark:border-[#262626] bg-white/80 dark:bg-[#0a0a0a]/80 flex-1"
                     />
                     <Button
                       type="button"
@@ -631,14 +871,13 @@ export function ProfileClient({ locale, user, studentProfile, tutorProfile }: Pr
                       {specialties.map((specialty, index) => (
                         <div
                           key={index}
-                          className="group flex items-center gap-2 px-4 py-2 bg-gradient-to-br from-primary/10 to-primary/5 dark:from-primary/20 dark:to-primary/10 rounded-full border border-primary/20 dark:border-primary/30 hover:border-primary/40 transition-colors"
+                          className="group flex items-center gap-2 px-4 py-2 bg-gradient-to-br from-primary/10 to-primary/5 dark:from-primary/20 dark:to-primary/10 rounded-full border border-primary/20 dark:border-primary/30"
                         >
                           <span className="text-sm font-medium text-black dark:text-white">{specialty}</span>
                           <button
                             type="button"
                             onClick={() => removeSpecialty(index)}
                             className="text-[#888] dark:text-[#666] hover:text-red-500 dark:hover:text-red-400 transition-colors"
-                            aria-label={`Remove ${specialty}`}
                           >
                             <X className="w-3.5 h-3.5" />
                           </button>
@@ -656,28 +895,220 @@ export function ProfileClient({ locale, user, studentProfile, tutorProfile }: Pr
 
                 <Separator className="bg-[#e5e5e5] dark:bg-[#262626]" />
 
+                {/* Teaching Style */}
                 <div className="space-y-3">
-                  <Label htmlFor="hourlyRate" className="text-sm font-semibold text-[#444] dark:text-[#a1a1aa] flex items-center gap-2">
-                    <DollarSign className="w-4 h-4" />
-                    {tTutor("hourlyRate")}
+                  <Label htmlFor="teachingStyle" className="text-sm font-semibold text-[#444] dark:text-[#a1a1aa] flex items-center gap-2">
+                    <BookOpen className="w-4 h-4" />
+                    {t("tutor.teachingStyle")}
                   </Label>
-                  <div className="relative max-w-xs">
-                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-[#666] dark:text-[#888] font-medium text-base">$</span>
-                    <Input
-                      id="hourlyRate"
-                      type="number"
-                      min="5"
-                      step="0.01"
-                      value={hourlyRate}
-                      onChange={(e) => setHourlyRate(e.target.value)}
-                      placeholder="0.00"
-                      className="h-12 pl-8 rounded-xl border-[#e5e5e5] dark:border-[#262626] bg-white/80 dark:bg-[#0a0a0a]/80 focus:border-primary dark:focus:border-[#ccf381] focus:ring-2 focus:ring-primary/10 dark:focus:ring-[#ccf381]/20 transition-all"
-                    />
+                  <Textarea
+                    id="teachingStyle"
+                    value={teachingStyle}
+                    onChange={(e) => setTeachingStyle(e.target.value)}
+                    placeholder={t("tutor.teachingStylePlaceholder")}
+                    className="min-h-[120px] rounded-xl border-[#e5e5e5] dark:border-[#262626] bg-white/80 dark:bg-[#0a0a0a]/80 focus:border-primary dark:focus:border-[#ccf381] focus:ring-2 focus:ring-primary/10 dark:focus:ring-[#ccf381]/20 transition-all resize-none"
+                    rows={5}
+                  />
+                </div>
+
+                <Separator className="bg-[#e5e5e5] dark:bg-[#262626]" />
+
+                {/* Preferred Levels */}
+                <div className="space-y-3">
+                  <Label className="text-sm font-semibold text-[#444] dark:text-[#a1a1aa] flex items-center gap-2">
+                    <Target className="w-4 h-4" />
+                    {t("tutor.preferredLevels")}
+                  </Label>
+                  <div className="flex flex-wrap gap-2.5">
+                    {["beginner", "elementary", "intermediate", "upper-intermediate", "advanced"].map((level) => (
+                      <button
+                        key={level}
+                        type="button"
+                        onClick={() => togglePreferredLevel(level)}
+                        className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                          preferredLevels.includes(level)
+                            ? "bg-primary text-primary-foreground border-2 border-primary"
+                            : "bg-white/80 dark:bg-[#0a0a0a]/80 border-2 border-[#e5e5e5] dark:border-[#262626] text-black dark:text-white hover:border-primary/50"
+                        }`}
+                      >
+                        {tStudent(`levels.${level === "upper-intermediate" ? "upperIntermediate" : level}`)}
+                      </button>
+                    ))}
                   </div>
-                  <p className="text-xs text-[#888] dark:text-[#666] flex items-center gap-1.5 pt-1">
-                    <Info className="w-3.5 h-3.5" />
-                    {tTutor("hourlyRateHint")}
-                  </p>
+                </div>
+
+                <Separator className="bg-[#e5e5e5] dark:bg-[#262626]" />
+
+                {/* Interests */}
+                <div className="space-y-4">
+                  <Label className="text-sm font-semibold text-[#444] dark:text-[#a1a1aa] flex items-center gap-2">
+                    <Heart className="w-4 h-4" />
+                    {t("tutor.interests")}
+                  </Label>
+                  <div className="flex gap-2">
+                    <Input
+                      value={newInterest}
+                      onChange={(e) => setNewInterest(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                          e.preventDefault();
+                          addInterest();
+                        }
+                      }}
+                      placeholder={t("tutor.interestsPlaceholder")}
+                      className="h-12 rounded-xl border-[#e5e5e5] dark:border-[#262626] bg-white/80 dark:bg-[#0a0a0a]/80 flex-1"
+                    />
+                    <Button
+                      type="button"
+                      onClick={addInterest}
+                      variant="outline"
+                      className="rounded-xl border-[#e5e5e5] dark:border-[#262626] hover:border-primary dark:hover:border-[#ccf381] min-w-[52px] h-12"
+                    >
+                      <Plus className="w-4 h-4" />
+                    </Button>
+                  </div>
+                  {interests.length > 0 && (
+                    <div className="flex flex-wrap gap-2.5 pt-2">
+                      {interests.map((interest, index) => (
+                        <div
+                          key={index}
+                          className="group flex items-center gap-2 px-4 py-2 bg-gradient-to-br from-pink-500/10 to-pink-500/5 dark:from-pink-500/20 dark:to-pink-500/10 rounded-full border border-pink-500/20 dark:border-pink-500/30"
+                        >
+                          <span className="text-sm font-medium text-black dark:text-white">{interest}</span>
+                          <button
+                            type="button"
+                            onClick={() => removeInterest(index)}
+                            className="text-[#888] dark:text-[#666] hover:text-red-500 dark:hover:text-red-400 transition-colors"
+                          >
+                            <X className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
+                <Separator className="bg-[#e5e5e5] dark:bg-[#262626]" />
+
+                {/* Industry Familiarity */}
+                <div className="space-y-4">
+                  <Label className="text-sm font-semibold text-[#444] dark:text-[#a1a1aa] flex items-center gap-2">
+                    <Briefcase className="w-4 h-4" />
+                    {t("tutor.industryFamiliarity")}
+                  </Label>
+                  <div className="flex gap-2">
+                    <Input
+                      value={newIndustry}
+                      onChange={(e) => setNewIndustry(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                          e.preventDefault();
+                          addIndustry();
+                        }
+                      }}
+                      placeholder={t("tutor.industryPlaceholder")}
+                      className="h-12 rounded-xl border-[#e5e5e5] dark:border-[#262626] bg-white/80 dark:bg-[#0a0a0a]/80 flex-1"
+                    />
+                    <Button
+                      type="button"
+                      onClick={addIndustry}
+                      variant="outline"
+                      className="rounded-xl border-[#e5e5e5] dark:border-[#262626] hover:border-primary dark:hover:border-[#ccf381] min-w-[52px] h-12"
+                    >
+                      <Plus className="w-4 h-4" />
+                    </Button>
+                  </div>
+                  {industryFamiliarity.length > 0 && (
+                    <div className="flex flex-wrap gap-2.5 pt-2">
+                      {industryFamiliarity.map((industry, index) => (
+                        <div
+                          key={index}
+                          className="group flex items-center gap-2 px-4 py-2 bg-gradient-to-br from-purple-500/10 to-purple-500/5 dark:from-purple-500/20 dark:to-purple-500/10 rounded-full border border-purple-500/20 dark:border-purple-500/30"
+                        >
+                          <span className="text-sm font-medium text-black dark:text-white">{industry}</span>
+                          <button
+                            type="button"
+                            onClick={() => removeIndustry(index)}
+                            className="text-[#888] dark:text-[#666] hover:text-red-500 dark:hover:text-red-400 transition-colors"
+                          >
+                            <X className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
+                <Separator className="bg-[#e5e5e5] dark:bg-[#262626]" />
+
+                {/* Experience & Training */}
+                <div className="space-y-3">
+                  <Label htmlFor="experience" className="text-sm font-semibold text-[#444] dark:text-[#a1a1aa] flex items-center gap-2">
+                    <Award className="w-4 h-4" />
+                    {t("tutor.experience")} <span className="text-xs font-normal text-muted-foreground">({t("optional")})</span>
+                  </Label>
+                  <Textarea
+                    id="experience"
+                    value={experience}
+                    onChange={(e) => setExperience(e.target.value)}
+                    placeholder={t("tutor.experiencePlaceholder")}
+                    className="min-h-[120px] rounded-xl border-[#e5e5e5] dark:border-[#262626] bg-white/80 dark:bg-[#0a0a0a]/80 focus:border-primary dark:focus:border-[#ccf381] focus:ring-2 focus:ring-primary/10 dark:focus:ring-[#ccf381]/20 transition-all resize-none"
+                    rows={5}
+                  />
+                </div>
+
+                <Separator className="bg-[#e5e5e5] dark:bg-[#262626]" />
+
+                {/* Work Experience */}
+                <div className="space-y-3">
+                  <Label htmlFor="workExperience" className="text-sm font-semibold text-[#444] dark:text-[#a1a1aa] flex items-center gap-2">
+                    <Briefcase className="w-4 h-4" />
+                    {t("tutor.workExperience")} <span className="text-xs font-normal text-muted-foreground">({t("optional")})</span>
+                  </Label>
+                  <Textarea
+                    id="workExperience"
+                    value={workExperience}
+                    onChange={(e) => setWorkExperience(e.target.value)}
+                    placeholder={t("tutor.workExperiencePlaceholder")}
+                    className="min-h-[120px] rounded-xl border-[#e5e5e5] dark:border-[#262626] bg-white/80 dark:bg-[#0a0a0a]/80 focus:border-primary dark:focus:border-[#ccf381] focus:ring-2 focus:ring-primary/10 dark:focus:ring-[#ccf381]/20 transition-all resize-none"
+                    rows={5}
+                  />
+                </div>
+
+                <Separator className="bg-[#e5e5e5] dark:bg-[#262626]" />
+
+                {/* Degrees */}
+                <div className="space-y-3">
+                  <Label htmlFor="degrees" className="text-sm font-semibold text-[#444] dark:text-[#a1a1aa] flex items-center gap-2">
+                    <GraduationCap className="w-4 h-4" />
+                    {t("tutor.degrees")} <span className="text-xs font-normal text-muted-foreground">({t("optional")})</span>
+                  </Label>
+                  <Textarea
+                    id="degrees"
+                    value={degrees}
+                    onChange={(e) => setDegrees(e.target.value)}
+                    placeholder={t("tutor.degreesPlaceholder")}
+                    className="min-h-[100px] rounded-xl border-[#e5e5e5] dark:border-[#262626] bg-white/80 dark:bg-[#0a0a0a]/80 focus:border-primary dark:focus:border-[#ccf381] focus:ring-2 focus:ring-primary/10 dark:focus:ring-[#ccf381]/20 transition-all resize-none"
+                    rows={4}
+                  />
+                </div>
+
+                <Separator className="bg-[#e5e5e5] dark:bg-[#262626]" />
+
+                {/* Pricing Info (Read-only) */}
+                <div className="space-y-3">
+                  <Label className="text-sm font-semibold text-[#444] dark:text-[#a1a1aa] flex items-center gap-2">
+                    <DollarSign className="w-4 h-4" />
+                    {t("tutor.pricing")}
+                  </Label>
+                  <div className="p-4 rounded-xl bg-[#f5f5f5] dark:bg-[#0a0a0a] border border-[#e5e5e5] dark:border-[#262626]">
+                    <p className="text-sm text-black dark:text-white mb-2">
+                      <span className="font-semibold">${tutorProfile?.hourlyRate || 30}/hour</span> - {t("tutor.studentRate")}
+                    </p>
+                    <p className="text-xs text-[#666] dark:text-[#888]">
+                      {t("tutor.tutorEarnings")}: <span className="font-medium">$15/hour</span> ({t("tutor.afterCommission")})
+                    </p>
+                  </div>
                 </div>
 
                 {/* Save Button & Feedback */}
