@@ -3,13 +3,15 @@ import { redirect } from "next/navigation";
 import { requireAuth } from "@/lib/auth";
 import { ProfileClient } from "@/components/profile/ProfileClient";
 import { BackgroundBlobs } from "@/components/landing/BackgroundBlobs";
+import { prisma } from "@/lib/db/prisma";
 
 /**
  * Profile Page
  * 
  * Allows users to:
  * - Upload and update their profile picture
- * - View their account information
+ * - Edit their account information
+ * - Edit student or tutor profile information
  * 
  * - Secure: Requires authentication
  * - Localized: Full i18n support
@@ -38,10 +40,34 @@ export default async function ProfilePage({
     // Require authentication
     const user = await requireAuth();
 
+    // Fetch user with profile data
+    const userWithProfile = await prisma.user.findUnique({
+      where: { id: user.id },
+      include: {
+        studentProfile: true,
+        tutorProfile: true,
+      },
+    });
+
+    if (!userWithProfile) {
+      redirect(`/${locale}/auth/signin`);
+    }
+
     return (
       <div className="relative min-h-screen bg-[#fafafa] dark:bg-[#050505] text-[#111] dark:text-white overflow-x-hidden">
         <BackgroundBlobs />
-        <ProfileClient locale={locale} user={user} />
+        <ProfileClient 
+          locale={locale} 
+          user={{
+            id: userWithProfile.id,
+            name: userWithProfile.name,
+            email: userWithProfile.email,
+            image: userWithProfile.image,
+            role: userWithProfile.role,
+          }}
+          studentProfile={userWithProfile.studentProfile}
+          tutorProfile={userWithProfile.tutorProfile}
+        />
       </div>
     );
   } catch (error) {

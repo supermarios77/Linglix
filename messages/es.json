@@ -92,10 +92,18 @@
     "accountInfo": "Información de Cuenta",
     "accountInfoDescription": "Los detalles de tu cuenta",
     "name": "Nombre",
+    "namePlaceholder": "Ingresa tu nombre",
     "email": "Correo Electrónico",
+    "emailCannotChange": "El correo electrónico no se puede cambiar",
     "role": "Rol",
     "notSet": "No establecido",
-    "updateSuccess": "¡Foto de perfil actualizada exitosamente!"
+    "updateSuccess": "¡Perfil actualizado exitosamente!",
+    "saveChanges": "Guardar Cambios",
+    "saving": "Guardando...",
+    "studentProfile": "Perfil de Estudiante",
+    "studentProfileDescription": "Actualiza tus preferencias y objetivos de aprendizaje",
+    "tutorProfile": "Perfil de Tutor",
+    "tutorProfileDescription": "Actualiza tu perfil de enseñanza y especialidades"
   },
   "tutor": {
     "title": "Encuentra Tu Tutor Perfecto",
