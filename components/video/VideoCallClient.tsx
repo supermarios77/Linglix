@@ -391,6 +391,18 @@ function VideoCallUI({
   const participants = useParticipants();
   const call = useCall();
   const t = useTranslations("videoCall");
+  
+  // Check if device is mobile (screen sharing not supported on mobile browsers)
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    // Check if device is mobile
+    const checkMobile = () => {
+      const userAgent = navigator.userAgent || navigator.vendor || (window as any).opera;
+      const isMobileDevice = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(userAgent.toLowerCase());
+      setIsMobile(isMobileDevice);
+    };
+    checkMobile();
+  }, []);
 
   // Get the actual remote participant from Stream SDK
   const remoteParticipant = participants.find((p) => !p.isLocalParticipant);
