@@ -37,8 +37,12 @@ import {
   Briefcase,
   Award,
   Heart,
-  Target
+  Target,
+  ExternalLink,
+  Pencil,
+  Upload
 } from "lucide-react";
+import Image from "next/image";
 
 interface ProfileClientProps {
   locale: string;
@@ -387,141 +391,353 @@ export function ProfileClient({ locale, user, studentProfile, tutorProfile }: Pr
       </header>
 
       {/* Main Content */}
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 md:px-12 pt-32 sm:pt-36 md:pt-40 pb-16 sm:pb-20 md:pb-24">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 pt-32 sm:pt-36 md:pt-40 pb-16 sm:pb-20 md:pb-24">
         {/* Page Header */}
-        <div className="mb-12 sm:mb-16">
-          <div className="inline-flex items-center px-3 sm:px-4 py-1.5 sm:py-2 bg-card/90 dark:bg-card/90 backdrop-blur-md border border-border rounded-full text-xs font-semibold uppercase tracking-wider mb-6 shadow-sm">
-            <Sparkles className="w-3 h-3 mr-2 text-brand-primary" />
-            <span>{t("editProfile")}</span>
+        <div className="mb-8 sm:mb-12 flex items-start justify-between gap-4">
+          <div>
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-2 text-black dark:text-white tracking-tight">
+              {t("title")}
+            </h1>
+            <p className="text-muted-foreground text-base sm:text-lg">
+              {t("description")}
+            </p>
           </div>
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-4 text-black dark:text-white tracking-tight">
-            {t("title")}
-          </h1>
-          <p className="text-muted-foreground text-lg sm:text-xl max-w-2xl leading-relaxed">
-            {t("description")}
-          </p>
+          {user.role === "TUTOR" && (
+            <Link
+              href={`/${locale}/tutors/${user.name?.toLowerCase().replace(/\s+/g, "-") || "profile"}`}
+              className="flex items-center gap-2 text-sm font-medium text-primary hover:text-primary/80 transition-colors"
+            >
+              <span>{t("preview")}</span>
+              <ExternalLink className="w-4 h-4" />
+            </Link>
+          )}
         </div>
 
-        {/* Profile Picture & Basic Info Section */}
-        <section className="mb-16 sm:mb-20">
-          <div className="bg-white dark:bg-gradient-to-b from-[#1a1a1a] to-[#121212] rounded-2xl sm:rounded-3xl border border-[#e5e5e5] dark:border-[#262626] shadow-sm p-6 sm:p-8 md:p-10">
-            <div className="flex items-center gap-3 mb-8">
-              <div className="p-2.5 bg-primary/10 dark:bg-primary/20 rounded-xl">
-                <User className="w-5 h-5 text-primary" />
+        {/* Two-Column Layout */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
+          {/* Left Column - Profile Picture & Personal Info */}
+          <div className="space-y-8">
+            {/* Banner Image with Profile Picture */}
+            <div className="relative rounded-2xl overflow-hidden bg-gradient-to-br from-primary/20 via-primary/10 to-primary/5 dark:from-primary/30 dark:via-primary/20 dark:to-primary/10 border border-[#e5e5e5] dark:border-[#262626]">
+              {/* Banner Background */}
+              <div className="relative h-48 sm:h-56 bg-gradient-to-br from-[#ccf381]/20 via-[#4831d4]/20 to-[#ccf381]/20 dark:from-[#ccf381]/10 dark:via-[#4831d4]/10 dark:to-[#ccf381]/10">
+                <div className="absolute inset-0 bg-[url('/pattern.svg')] opacity-5"></div>
               </div>
-              <div>
-                <h2 className="text-xl sm:text-2xl font-bold text-black dark:text-white">
-                  {t("profilePicture")}
-                </h2>
-                <p className="text-sm text-[#666] dark:text-[#a1a1aa] mt-0.5">
-                  {t("profilePictureDescription")}
+              
+              {/* Profile Picture Overlay */}
+              <div className="absolute bottom-0 left-6 sm:left-8 transform translate-y-1/2">
+                <div className="relative w-24 h-24 sm:w-28 sm:h-28">
+                  <div className="w-full h-full rounded-full overflow-hidden border-4 border-white dark:border-[#1a1a1a] bg-white dark:bg-[#1a1a1a] shadow-lg">
+                    {user.image ? (
+                      <Image
+                        src={user.image}
+                        alt={user.name || "Profile"}
+                        width={112}
+                        height={112}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <div className="w-full h-full bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center">
+                        <User className="w-12 h-12 text-primary" />
+                      </div>
+                    )}
+                  </div>
+                  <button
+                    onClick={() => {
+                      const input = document.createElement("input");
+                      input.type = "file";
+                      input.accept = "image/*";
+                      input.onchange = async (e) => {
+                        const file = (e.target as HTMLInputElement).files?.[0];
+                        if (file) {
+                          const formData = new FormData();
+                          formData.append("file", file);
+                          try {
+                            const response = await fetch("/api/upload/avatar", {
+                              method: "POST",
+                              body: formData,
+                            });
+                            if (response.ok) {
+                              const { url } = await response.json();
+                              await handleImageUpdate(url);
+                            }
+                          } catch (error) {
+                            console.error("Failed to upload image:", error);
+                          }
+                        }
+                      };
+                      input.click();
+                    }}
+                    className="absolute bottom-0 right-0 w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center shadow-lg hover:bg-primary/90 transition-colors border-2 border-white dark:border-[#1a1a1a]"
+                  >
+                    <Pencil className="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
+              
+              {/* Edit Banner Button */}
+              <button className="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/90 dark:bg-[#1a1a1a]/90 backdrop-blur-sm flex items-center justify-center shadow-md hover:bg-white dark:hover:bg-[#1a1a1a] transition-colors border border-[#e5e5e5] dark:border-[#262626]">
+                <Pencil className="w-4 h-4 text-[#666] dark:text-[#888]" />
+              </button>
+            </div>
+
+            {/* Your Photo Section */}
+            <div className="pt-16 sm:pt-20">
+              <div className="mb-4">
+                <h3 className="text-base font-semibold text-black dark:text-white mb-1">
+                  {t("yourPhoto")}
+                </h3>
+                <p className="text-sm text-[#666] dark:text-[#888]">
+                  {t("photoDescription")}
                 </p>
               </div>
-            </div>
-            
-            <div className="mb-10">
-              <AvatarUpload
-                currentImage={user.image}
-                onImageUpdate={handleImageUpdate}
-              />
-            </div>
-
-            <Separator className="my-10 bg-[#e5e5e5] dark:bg-[#262626]" />
-
-            <div className="space-y-6">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="p-2.5 bg-blue-500/10 dark:bg-blue-500/20 rounded-xl">
-                  <Shield className="w-5 h-5 text-blue-500" />
-                </div>
-                <div>
-                  <h2 className="text-xl sm:text-2xl font-bold text-black dark:text-white">
-                    {t("accountInfo")}
-                  </h2>
-                  <p className="text-sm text-[#666] dark:text-[#a1a1aa] mt-0.5">
-                    {t("accountInfoDescription")}
-                  </p>
-                </div>
+              <div className="flex gap-3">
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    const input = document.createElement("input");
+                    input.type = "file";
+                    input.accept = "image/*";
+                    input.onchange = async (e) => {
+                      const file = (e.target as HTMLInputElement).files?.[0];
+                      if (file) {
+                        const formData = new FormData();
+                        formData.append("file", file);
+                        try {
+                          const response = await fetch("/api/upload/avatar", {
+                            method: "POST",
+                            body: formData,
+                          });
+                          if (response.ok) {
+                            const { url } = await response.json();
+                            await handleImageUpdate(url);
+                          }
+                        } catch (error) {
+                          console.error("Failed to upload image:", error);
+                        }
+                      }
+                    };
+                    input.click();
+                  }}
+                  className="flex-1 border-[#e5e5e5] dark:border-[#262626] hover:border-primary dark:hover:border-[#ccf381]"
+                >
+                  {t("uploadNew")}
+                </Button>
+                <Button
+                  onClick={handleSaveUserProfile}
+                  disabled={savingUser || !hasUserChanges}
+                  className="flex-1 bg-[#111] dark:bg-[#ccf381] text-white dark:text-black hover:bg-[#222] dark:hover:bg-[#d4f89a] disabled:opacity-50"
+                >
+                  {savingUser ? (
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                  ) : (
+                    t("save")
+                  )}
+                </Button>
               </div>
+              {(userSuccess || userError) && (
+                <div className="mt-3">
+                  {userSuccess && (
+                    <div className="flex items-center gap-2 text-sm text-green-600 dark:text-green-400">
+                      <CheckCircle2 className="w-4 h-4" />
+                      <span>{t("updateSuccess")}</span>
+                    </div>
+                  )}
+                  {userError && (
+                    <div className="flex items-center gap-2 text-sm text-red-600 dark:text-red-400">
+                      <AlertCircle className="w-4 h-4" />
+                      <span>{userError}</span>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            {/* Personal Information */}
+            <div>
+              <h3 className="text-base font-semibold text-black dark:text-white mb-6">
+                {t("personalInformation")}
+              </h3>
+              <div className="space-y-5">
                 <div className="space-y-2">
-                  <Label htmlFor="name" className="text-sm font-semibold text-[#444] dark:text-[#a1a1aa]">
-                    {t("name")}
+                  <Label htmlFor="name" className="text-sm font-medium text-[#444] dark:text-[#a1a1aa] flex items-center gap-2">
+                    <User className="w-4 h-4" />
+                    {t("fullName")}
                   </Label>
                   <Input
                     id="name"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     placeholder={t("namePlaceholder")}
-                    className="h-12 rounded-xl border-[#e5e5e5] dark:border-[#262626] bg-white/80 dark:bg-[#0a0a0a]/80 backdrop-blur-sm focus:border-primary dark:focus:border-[#ccf381] focus:ring-2 focus:ring-primary/10 dark:focus:ring-[#ccf381]/20 transition-all"
+                    className="h-11 rounded-xl border-[#e5e5e5] dark:border-[#262626] bg-white dark:bg-[#0a0a0a] focus:border-primary dark:focus:border-[#ccf381]"
                   />
                 </div>
+                
                 <div className="space-y-2">
-                  <Label className="text-sm font-semibold text-[#444] dark:text-[#a1a1aa]">
-                    {t("email")}
+                  <Label className="text-sm font-medium text-[#444] dark:text-[#a1a1aa] flex items-center gap-2">
+                    <Mail className="w-4 h-4" />
+                    {t("emailAddress")}
                   </Label>
                   <Input
                     value={user.email}
                     disabled
-                    className="h-12 rounded-xl border-[#e5e5e5] dark:border-[#262626] bg-[#f5f5f5] dark:bg-[#0a0a0a] opacity-60 cursor-not-allowed"
+                    className="h-11 rounded-xl border-[#e5e5e5] dark:border-[#262626] bg-[#f5f5f5] dark:bg-[#0a0a0a] opacity-60 cursor-not-allowed"
                   />
-                  <p className="text-xs text-[#888] dark:text-[#666] flex items-center gap-1.5 mt-1.5">
-                    <Info className="w-3.5 h-3.5" />
+                  <p className="text-xs text-[#888] dark:text-[#666] mt-1">
                     {t("emailCannotChange")}
                   </p>
                 </div>
-              </div>
-              
-              <div className="space-y-2">
-                <Label className="text-sm font-semibold text-[#444] dark:text-[#a1a1aa]">
-                  {t("role")}
-                </Label>
-                <Input
-                  value={user.role.toLowerCase()}
-                  disabled
-                  className="h-12 rounded-xl border-[#e5e5e5] dark:border-[#262626] bg-[#f5f5f5] dark:bg-[#0a0a0a] opacity-60 cursor-not-allowed capitalize"
-                />
-              </div>
 
-              {/* Save Button & Feedback */}
-              <div className="pt-6 mt-6 border-t border-[#e5e5e5] dark:border-[#262626]">
-                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-                  <div className="flex-1 min-w-0">
-                    {userSuccess && (
-                      <div className="flex items-center gap-2 text-sm text-green-600 dark:text-green-400 animate-in fade-in slide-in-from-top-2">
-                        <CheckCircle2 className="w-4 h-4 shrink-0" />
-                        <span>{t("updateSuccess")}</span>
-                      </div>
-                    )}
-                    {userError && (
-                      <div className="flex items-center gap-2 text-sm text-red-600 dark:text-red-400 animate-in fade-in slide-in-from-top-2">
-                        <AlertCircle className="w-4 h-4 shrink-0" />
-                        <span className="truncate">{userError}</span>
-                      </div>
-                    )}
-                  </div>
-                  <Button
-                    onClick={handleSaveUserProfile}
-                    disabled={savingUser || !hasUserChanges}
-                    className="bg-[#111] dark:bg-[#ccf381] text-white dark:text-black hover:bg-[#222] dark:hover:bg-[#d4f89a] rounded-full px-6 h-11 min-w-[140px] disabled:opacity-50 disabled:cursor-not-allowed shrink-0"
-                  >
-                    {savingUser ? (
-                      <>
-                        <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                        {t("saving")}
-                      </>
-                    ) : (
-                      <>
-                        <Save className="w-4 h-4 mr-2" />
-                        {t("saveChanges")}
-                      </>
-                    )}
-                  </Button>
+                <div className="space-y-2">
+                  <Label className="text-sm font-medium text-[#444] dark:text-[#a1a1aa]">
+                    {t("role")}
+                  </Label>
+                  <Input
+                    value={user.role.charAt(0) + user.role.slice(1).toLowerCase()}
+                    disabled
+                    className="h-11 rounded-xl border-[#e5e5e5] dark:border-[#262626] bg-[#f5f5f5] dark:bg-[#0a0a0a] opacity-60 cursor-not-allowed"
+                  />
                 </div>
               </div>
             </div>
           </div>
-        </section>
+
+          {/* Right Column - Bio & Additional Details */}
+          <div className="space-y-8">
+            {/* Bio Section */}
+            <div>
+              <h3 className="text-base font-semibold text-black dark:text-white mb-4">
+                {t("bio")}
+              </h3>
+              <Textarea
+                value={user.role === "TUTOR" ? (aboutMe || introduction || bio || "") : ""}
+                onChange={(e) => {
+                  if (user.role === "TUTOR") {
+                    setAboutMe(e.target.value);
+                  }
+                }}
+                placeholder={user.role === "TUTOR" ? t("tutor.aboutMePlaceholder") : t("bioPlaceholder")}
+                className="min-h-[180px] rounded-xl border-[#e5e5e5] dark:border-[#262626] bg-white dark:bg-[#0a0a0a] focus:border-primary dark:focus:border-[#ccf381] resize-none"
+                rows={8}
+              />
+            </div>
+
+            {/* Interests/Specialties Section - Only for Tutors */}
+            {user.role === "TUTOR" && (
+              <div>
+                <h3 className="text-base font-semibold text-black dark:text-white mb-4">
+                  {t("industryInterests")}
+                </h3>
+                <div className="space-y-4">
+                  {/* Specialties */}
+                  <div>
+                    <Label className="text-sm font-medium text-[#444] dark:text-[#a1a1aa] mb-2 block">
+                      {tTutor("specialties")}
+                    </Label>
+                    <div className="flex gap-2 mb-3">
+                      <Input
+                        value={newSpecialty}
+                        onChange={(e) => setNewSpecialty(e.target.value)}
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter") {
+                            e.preventDefault();
+                            addSpecialty();
+                          }
+                        }}
+                        placeholder={tTutor("specialtyPlaceholder")}
+                        className="h-10 rounded-xl border-[#e5e5e5] dark:border-[#262626] bg-white dark:bg-[#0a0a0a] flex-1"
+                      />
+                      <Button
+                        type="button"
+                        onClick={addSpecialty}
+                        variant="outline"
+                        size="sm"
+                        className="rounded-xl border-[#e5e5e5] dark:border-[#262626]"
+                      >
+                        <Plus className="w-4 h-4" />
+                      </Button>
+                    </div>
+                    {specialties.length > 0 && (
+                      <div className="flex flex-wrap gap-2">
+                        {specialties.map((specialty, index) => (
+                          <div
+                            key={index}
+                            className="inline-flex items-center gap-2 px-3 py-1.5 bg-white dark:bg-[#0a0a0a] border border-[#e5e5e5] dark:border-[#262626] rounded-full text-sm"
+                          >
+                            <span className="text-black dark:text-white">{specialty}</span>
+                            <button
+                              type="button"
+                              onClick={() => removeSpecialty(index)}
+                              className="text-[#666] dark:text-[#888] hover:text-black dark:hover:text-white transition-colors"
+                            >
+                              <X className="w-3.5 h-3.5" />
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Interests */}
+                  <div>
+                    <Label className="text-sm font-medium text-[#444] dark:text-[#a1a1aa] mb-2 block">
+                      {t("tutor.interests")}
+                    </Label>
+                    <div className="flex gap-2 mb-3">
+                      <Input
+                        value={newInterest}
+                        onChange={(e) => setNewInterest(e.target.value)}
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter") {
+                            e.preventDefault();
+                            addInterest();
+                          }
+                        }}
+                        placeholder={t("tutor.interestsPlaceholder")}
+                        className="h-10 rounded-xl border-[#e5e5e5] dark:border-[#262626] bg-white dark:bg-[#0a0a0a] flex-1"
+                      />
+                      <Button
+                        type="button"
+                        onClick={addInterest}
+                        variant="outline"
+                        size="sm"
+                        className="rounded-xl border-[#e5e5e5] dark:border-[#262626]"
+                      >
+                        <Plus className="w-4 h-4" />
+                      </Button>
+                    </div>
+                    {interests.length > 0 && (
+                      <div className="flex flex-wrap gap-2">
+                        {interests.map((interest, index) => (
+                          <div
+                            key={index}
+                            className="inline-flex items-center gap-2 px-3 py-1.5 bg-white dark:bg-[#0a0a0a] border border-[#e5e5e5] dark:border-[#262626] rounded-full text-sm"
+                          >
+                            <span className="text-black dark:text-white">{interest}</span>
+                            <button
+                              type="button"
+                              onClick={() => removeInterest(index)}
+                              className="text-[#666] dark:text-[#888] hover:text-black dark:hover:text-white transition-colors"
+                            >
+                              <X className="w-3.5 h-3.5" />
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                    <button
+                      type="button"
+                      className="mt-2 text-sm text-primary hover:text-primary/80 flex items-center gap-1"
+                    >
+                      <Plus className="w-4 h-4" />
+                      {t("addMore")}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
 
         {/* Student Profile Section */}
         {user.role === "STUDENT" && (
