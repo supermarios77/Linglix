@@ -87,6 +87,7 @@
   "profile": {
     "title": "Perfil",
     "description": "Administra tu foto de perfil e información de cuenta",
+    "editProfile": "Editar Perfil",
     "profilePicture": "Foto de Perfil",
     "profilePictureDescription": "Sube una foto de perfil para personalizar tu cuenta. Formatos soportados: JPEG, PNG, WebP, GIF (máx. 5MB)",
     "accountInfo": "Información de Cuenta",
@@ -100,6 +101,7 @@
     "updateSuccess": "¡Perfil actualizado exitosamente!",
     "saveChanges": "Guardar Cambios",
     "saving": "Guardando...",
+    "optional": "Opcional",
     "studentProfile": "Perfil de Estudiante",
     "studentProfileDescription": "Actualiza tus preferencias y objetivos de aprendizaje",
     "tutorProfile": "Perfil de Tutor",

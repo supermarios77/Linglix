@@ -87,6 +87,7 @@
   "profile": {
     "title": "Profile",
     "description": "Manage your profile picture and account information",
+    "editProfile": "Edit Profile",
     "profilePicture": "Profile Picture",
     "profilePictureDescription": "Upload a profile picture to personalize your account. Supported formats: JPEG, PNG, WebP, GIF (max 5MB)",
     "accountInfo": "Account Information",
@@ -100,6 +101,7 @@
     "updateSuccess": "Profile updated successfully!",
     "saveChanges": "Save Changes",
     "saving": "Saving...",
+    "optional": "Optional",
     "studentProfile": "Student Profile",
     "studentProfileDescription": "Update your learning preferences and goals",
     "tutorProfile": "Tutor Profile",
