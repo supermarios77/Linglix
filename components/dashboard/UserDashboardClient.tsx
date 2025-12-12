@@ -48,6 +48,15 @@ import Image from "next/image";
 import { slugify } from "@/lib/utils/slug";
 import type { Booking, BookingStatus } from "@prisma/client";
 import { PaymentButton } from "@/components/payment/PaymentButton";
+import { isMobilePhone } from "@/lib/utils/mobile-detection";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Monitor } from "lucide-react";
 
 /**
  * User Dashboard Client Component
@@ -113,6 +122,16 @@ export function UserDashboardClient({
   const [cancelling, setCancelling] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [userPenalty, setUserPenalty] = useState<{ penaltyUntil: Date | null } | null>(null);
+  
+  // Mobile phone detection for warning popup
+  const [showMobileWarning, setShowMobileWarning] = useState(false);
+
+  // Check if user is on a mobile phone and show warning
+  useEffect(() => {
+    if (isMobilePhone()) {
+      setShowMobileWarning(true);
+    }
+  }, []);
 
   // Fetch user penalty status on mount
   useEffect(() => {
@@ -303,6 +322,33 @@ export function UserDashboardClient({
 
   return (
     <div className="relative min-h-screen pt-16 sm:pt-20">
+      {/* Mobile Phone Warning Dialog */}
+      <Dialog open={showMobileWarning} onOpenChange={setShowMobileWarning}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <div className="flex items-center gap-3 mb-2">
+              <div className="p-2 bg-brand-primary/20 rounded-lg">
+                <Monitor className="w-6 h-6 text-brand-primary" />
+              </div>
+              <DialogTitle className="text-xl font-bold">
+                Best Experience on Larger Devices
+              </DialogTitle>
+            </div>
+            <DialogDescription className="text-base text-muted-foreground pt-2">
+              Linglix works best on iPads, Laptops and Desktops. Some features may be limited on mobile phones.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="flex justify-end pt-4">
+            <Button
+              onClick={() => setShowMobileWarning(false)}
+              className="bg-primary text-primary-foreground"
+            >
+              Got it
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
       {/* Navigation Bar */}
       <header className="fixed top-0 z-50 w-full h-16 sm:h-20 flex justify-between items-center px-4 sm:px-6 md:px-12 bg-background/85 backdrop-blur-xl border-b border-border/50">
         <Link

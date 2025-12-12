@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -54,6 +54,15 @@ import type { Booking, BookingStatus, TutorProfile, TutorApprovalStatus, Review 
 import { AvailabilityCalendar } from "./AvailabilityCalendar";
 import { AvailabilityManager } from "./AvailabilityManager";
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, AreaChart, Area } from "recharts";
+import { isMobilePhone } from "@/lib/utils/mobile-detection";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Monitor } from "lucide-react";
 
 /**
  * Tutor Dashboard Client Component
@@ -390,6 +399,33 @@ export function TutorDashboardClient({
 
   return (
     <div className="relative min-h-screen pt-16 sm:pt-20">
+      {/* Mobile Phone Warning Dialog */}
+      <Dialog open={showMobileWarning} onOpenChange={setShowMobileWarning}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <div className="flex items-center gap-3 mb-2">
+              <div className="p-2 bg-brand-primary/20 rounded-lg">
+                <Monitor className="w-6 h-6 text-brand-primary" />
+              </div>
+              <DialogTitle className="text-xl font-bold">
+                Best Experience on Larger Devices
+              </DialogTitle>
+            </div>
+            <DialogDescription className="text-base text-muted-foreground pt-2">
+              Linglix works best on iPads, Laptops and Desktops. Some features may be limited on mobile phones.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="flex justify-end pt-4">
+            <Button
+              onClick={() => setShowMobileWarning(false)}
+              className="bg-primary text-primary-foreground"
+            >
+              Got it
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
       {/* Navigation Bar */}
       <header className="fixed top-0 z-[1000] w-full h-16 sm:h-20 flex justify-between items-center px-4 sm:px-6 md:px-12 bg-white dark:bg-[#0a0a0a] border-b border-[#e5e5e5] dark:border-[#1a1a1a]">
         <div className="flex items-center gap-4">
