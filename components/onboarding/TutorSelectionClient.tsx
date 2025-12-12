@@ -105,9 +105,9 @@ export function TutorSelectionClient({
               </div>
             )}
             <CardContent className="p-6">
-              {/* Tutor Image & Basic Info */}
-              <div className="flex items-start gap-4 mb-4">
-                <div className="relative w-16 h-16 rounded-full overflow-hidden shrink-0 border-2 border-primary/20">
+              {/* Circle Avatar & Basic Info */}
+              <div className="flex flex-col items-center text-center mb-4">
+                <div className="relative w-20 h-20 sm:w-24 sm:h-24 rounded-full overflow-hidden shrink-0 border-2 border-primary/20 mb-4 group-hover:border-primary/50 transition-colors">
                   {tutor.image ? (
                     <Image
                       src={tutor.image}
@@ -116,16 +116,16 @@ export function TutorSelectionClient({
                       className="object-cover"
                     />
                   ) : (
-                    <div className="w-full h-full bg-primary/10 flex items-center justify-center text-primary font-bold text-xl">
+                    <div className="w-full h-full bg-primary/10 flex items-center justify-center text-primary font-bold text-2xl sm:text-3xl">
                       {tutor.name.charAt(0).toUpperCase()}
                     </div>
                   )}
                 </div>
-                <div className="flex-1 min-w-0">
-                  <h3 className="font-semibold text-lg mb-1 truncate">
+                <div className="w-full">
+                  <h3 className="font-semibold text-lg mb-2">
                     {tutor.name}
                   </h3>
-                  <div className="flex items-center gap-2 mb-2">
+                  <div className="flex items-center justify-center gap-2 mb-2">
                     <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
                     <span className="text-sm font-medium">
                       {tutor.rating.toFixed(1)}
@@ -134,7 +134,7 @@ export function TutorSelectionClient({
                       ({tutor.totalSessions} {tTutor("sessions")})
                     </span>
                   </div>
-                  <div className="text-sm font-semibold text-primary">
+                  <div className="text-base font-semibold text-primary mb-3">
                     ${tutor.hourlyRate.toFixed(0)}
                     <span className="text-xs font-normal text-muted-foreground">
                       /{tTutor("hourly")}
@@ -145,7 +145,7 @@ export function TutorSelectionClient({
 
               {/* Specialties */}
               <div className="mb-4">
-                <div className="flex flex-wrap gap-2">
+                <div className="flex flex-wrap gap-2 justify-center">
                   {tutor.specialties.slice(0, 3).map((specialty, idx) => (
                     <Badge
                       key={idx}
@@ -165,7 +165,7 @@ export function TutorSelectionClient({
 
               {/* Bio Preview */}
               {tutor.bio && (
-                <p className="text-sm text-muted-foreground line-clamp-2 mb-4">
+                <p className="text-sm text-muted-foreground line-clamp-3 mb-4 text-left">
                   {tutor.bio}
                 </p>
               )}
