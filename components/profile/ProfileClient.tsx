@@ -98,7 +98,7 @@ export function ProfileClient({ locale, user }: ProfileClientProps) {
             <CardTitle>{t("profilePicture")}</CardTitle>
             <CardDescription>{t("profilePictureDescription")}</CardDescription>
           </CardHeader>
-          <CardContent>
+          <CardContent className="flex flex-col items-center">
             <AvatarUpload
               currentImage={user.image}
               onImageUpdate={handleImageUpdate}

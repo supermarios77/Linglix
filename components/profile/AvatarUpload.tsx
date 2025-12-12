@@ -82,23 +82,24 @@ export function AvatarUpload({ currentImage, onImageUpdate }: AvatarUploadProps)
   const displayImage = preview || currentImage;
 
   return (
-    <div className="flex flex-col items-center gap-4">
-      <div className="relative">
-        <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-border bg-muted flex items-center justify-center">
+    <div className="flex flex-col items-center gap-4 w-full">
+      <div className="relative w-32 h-32">
+        <div className="w-full h-full rounded-full overflow-hidden border-4 border-border bg-muted flex items-center justify-center shrink-0">
           {displayImage ? (
             <Image
               src={displayImage}
               alt="Profile picture"
               width={128}
               height={128}
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover object-center"
+              style={{ objectFit: "cover" }}
             />
           ) : (
             <User className="w-16 h-16 text-muted-foreground" />
           )}
         </div>
         {uploading && (
-          <div className="absolute inset-0 bg-black/50 rounded-full flex items-center justify-center">
+          <div className="absolute inset-0 bg-black/50 rounded-full flex items-center justify-center z-10">
             <Loader2 className="w-8 h-8 text-white animate-spin" />
           </div>
         )}
