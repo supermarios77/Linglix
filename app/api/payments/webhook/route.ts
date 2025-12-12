@@ -242,9 +242,11 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
       return;
     }
 
-    // Only update if booking is still CONFIRMED (not already paid/completed)
+    // Update booking status based on current status
+    // If PENDING (immediate payment flow), update to CONFIRMED
+    // If CONFIRMED (old flow), keep as CONFIRMED
     // This provides idempotency - if already processed, skip update
-    if (booking.status === BookingStatus.CONFIRMED) {
+    if (booking.status === BookingStatus.PENDING || booking.status === BookingStatus.CONFIRMED) {
       // Fetch full booking data for email
       const bookingWithRelations = await prisma.booking.findUnique({
         where: { id: bookingId },
@@ -274,7 +276,11 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
         where: { id: bookingId },
         data: {
           paymentId: session.id,
-          // Keep status as CONFIRMED - it will be marked COMPLETED after the session
+          // Update status to CONFIRMED if it was PENDING (immediate payment flow)
+          // If already CONFIRMED, keep it as CONFIRMED
+          status: booking.status === BookingStatus.PENDING 
+            ? BookingStatus.CONFIRMED 
+            : BookingStatus.CONFIRMED,
         },
       });
 

@@ -286,6 +286,93 @@ export async function POST(request: NextRequest) {
       scheduledAt: booking.scheduledAt.toISOString(),
     });
 
+    // Create Stripe checkout session immediately for payment
+    try {
+      const { getStripeClient, isStripeConfigured } = await import("@/lib/stripe/client");
+      
+      if (isStripeConfigured()) {
+        const stripe = getStripeClient();
+        if (stripe) {
+          // Get base URL for redirects
+          const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 
+                         process.env.NEXTAUTH_URL || 
+                         request.headers.get("origin") || 
+                         (process.env.NODE_ENV === "production" 
+                           ? "https://linglix.com"
+                           : "http://localhost:3000");
+
+          // Extract locale from request if available (from headers or body)
+          const locale = request.headers.get("x-locale") || "en";
+          const tutorSlug = tutorProfile.user.name?.toLowerCase().replace(/\s+/g, "-") || "tutor";
+
+          // Create Stripe Checkout Session
+          const session = await stripe.checkout.sessions.create({
+            payment_method_types: ["card"],
+            mode: "payment",
+            line_items: [
+              {
+                price_data: {
+                  currency: "usd",
+                  product_data: {
+                    name: `Tutoring Session with ${booking.tutor.user.name || "Tutor"}`,
+                    description: `${booking.duration}-minute session scheduled for ${new Date(booking.scheduledAt).toLocaleDateString()}`,
+                  },
+                  unit_amount: Math.round(booking.price * 100), // Convert to cents
+                },
+                quantity: 1,
+              },
+            ],
+            customer_email: booking.student.email,
+            metadata: {
+              bookingId: booking.id,
+              studentId: booking.studentId,
+              tutorId: booking.tutorId,
+              duration: booking.duration.toString(),
+              scheduledAt: booking.scheduledAt.toISOString(),
+            },
+            success_url: `${baseUrl}/${locale}/dashboard?payment=success`,
+            cancel_url: `${baseUrl}/${locale}/tutors/${tutorSlug}/book?canceled=true`,
+            expires_at: Math.floor(new Date(booking.scheduledAt).getTime() / 1000), // Expire before session time
+            payment_intent_data: {
+              metadata: {
+                bookingId: booking.id,
+                studentId: booking.studentId,
+                tutorId: booking.tutorId,
+              },
+            },
+          });
+
+          // Update booking with checkout session ID
+          await prisma.booking.update({
+            where: { id: booking.id },
+            data: { paymentId: session.id },
+          });
+
+          logger.info("Checkout session created for booking", {
+            bookingId: booking.id,
+            sessionId: session.id,
+          });
+
+          return NextResponse.json(
+            {
+              message: "Booking created successfully. Please complete payment.",
+              booking,
+              checkoutUrl: session.url,
+              sessionId: session.id,
+            },
+            { status: 201 }
+          );
+        }
+      }
+    } catch (paymentError) {
+      logger.error("Failed to create checkout session for booking", {
+        bookingId: booking.id,
+        error: paymentError instanceof Error ? paymentError.message : String(paymentError),
+      });
+      // Continue and return booking even if payment setup fails
+      // This allows the booking to be created, but payment will need to be handled separately
+    }
+
     return NextResponse.json(
       {
         message: "Booking created successfully",

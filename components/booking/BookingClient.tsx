@@ -191,6 +191,7 @@ export function BookingClient({ tutor, locale }: BookingClientProps) {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "x-locale": locale,
         },
         body: JSON.stringify({
           tutorId: tutor.id,
@@ -206,7 +207,13 @@ export function BookingClient({ tutor, locale }: BookingClientProps) {
         throw new Error(data.error || "Failed to create booking");
       }
 
-      // Redirect to dashboard
+      // If checkout URL is provided, redirect to Stripe checkout for payment
+      if (data.checkoutUrl) {
+        window.location.href = data.checkoutUrl;
+        return;
+      }
+
+      // Fallback: redirect to dashboard if payment setup failed
       router.push(`/${locale}/dashboard`);
       router.refresh();
     } catch (err) {
