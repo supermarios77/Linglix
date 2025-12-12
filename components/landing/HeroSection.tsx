@@ -35,10 +35,10 @@ export function HeroSection({ locale, session }: HeroSectionProps) {
           {t("hero.title")}
           <br />
           <span className="relative inline-block mt-2">
-            <span className="inline-block bg-brand-primary text-black px-4 py-2 -rotate-2 transform origin-center font-bold shadow-lg relative z-10 text-3xl sm:text-4xl md:text-5xl lg:text-7xl xl:text-8xl">
+            <span className="inline-block bg-brand-primary text-black px-4 py-2 -rotate-[-2deg] transform origin-center font-bold shadow-lg relative z-10 text-3xl sm:text-4xl md:text-5xl lg:text-7xl xl:text-8xl">
               {t("hero.titleHighlight")}
             </span>
-            <span className="absolute inset-0 bg-brand-primary/20 blur-xl -rotate-2 transform origin-center" aria-hidden="true" />
+            <span className="absolute inset-0 bg-brand-primary/20 blur-xl -rotate-[-2deg] transform origin-center" aria-hidden="true" />
           </span>
         </h1>
 
