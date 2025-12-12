@@ -588,8 +588,8 @@ function VideoCallUI({
             )}
           </Button>
 
-          {/* Screen Share Toggle - Only for tutors */}
-          {isTutor && (
+          {/* Screen Share Toggle - Only for tutors, hidden on mobile (not supported) */}
+          {isTutor && !isMobile && (
             <Button
               onClick={toggleScreenShare}
               size="lg"
