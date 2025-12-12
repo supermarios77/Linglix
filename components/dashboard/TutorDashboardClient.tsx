@@ -171,18 +171,19 @@ export function TutorDashboardClient({
     if (status !== "CONFIRMED") {
       return false;
     }
-    
+
     // If tutor has ended the call, prevent rejoining
     if (callEndedAt) {
       return false;
     }
-    
+
     const now = new Date();
     const sessionStart = new Date(scheduledAt);
     const sessionEnd = new Date(sessionStart.getTime() + duration * 60 * 1000);
-    
-    // Only allow joining at the exact time or during the session, not before or after
-    return now >= sessionStart && now <= sessionEnd;
+
+    // Allow joining 5 minutes before session starts, during the session, but not after
+    const fiveMinutesBefore = new Date(sessionStart.getTime() - 5 * 60 * 1000);
+    return now >= fiveMinutesBefore && now <= sessionEnd;
   };
 
   const getStatusBadge = (status: BookingStatus, scheduledAt: Date, duration: number) => {
