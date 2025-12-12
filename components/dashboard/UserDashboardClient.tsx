@@ -251,107 +251,160 @@ export function UserDashboardClient({
       </header>
 
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6 md:px-12 py-8 sm:py-12 md:py-16">
-        {/* Welcome Section - Matching Hero Style */}
-        <div className="flex flex-col items-center text-center max-w-4xl mx-auto mb-12 sm:mb-16 md:mb-20">
-          {/* Badge */}
-          <div className="inline-flex items-center px-3 sm:px-4 py-1.5 sm:py-2 bg-white/90 dark:bg-[#121212]/90 backdrop-blur-md border border-[#e5e5e5] dark:border-[#262626] rounded-full text-[10px] sm:text-xs font-semibold uppercase tracking-wider mb-6 sm:mb-8 shadow-[0_4px_12px_rgba(0,0,0,0.05)] group hover:scale-105 transition-transform">
-            <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-[#ccf381] rounded-full mr-2 sm:mr-2.5 animate-pulse" />
-            <span className="mr-1.5 sm:mr-2 text-[10px] sm:text-xs">{t("welcome")}</span>
-            <Sparkles className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-[#ccf381] opacity-70 group-hover:opacity-100 transition-opacity" />
-          </div>
+        {/* Welcome Section - Enhanced Design */}
+        <div className="mb-16 sm:mb-20">
+          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8 mb-12">
+            {/* Left: Welcome Text */}
+            <div className="flex-1">
+              {/* Badge */}
+              <div className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-green-500/10 to-emerald-500/10 dark:from-green-500/5 dark:to-emerald-500/5 backdrop-blur-md border border-green-500/20 dark:border-green-500/10 rounded-full text-xs font-semibold uppercase tracking-wider mb-6 shadow-lg group hover:scale-105 transition-transform">
+                <span className="w-2 h-2 bg-green-500 rounded-full mr-2.5 animate-pulse" />
+                <span className="mr-2">{t("welcome")}</span>
+                <Sparkles className="w-3 h-3 text-green-500 opacity-70 group-hover:opacity-100 transition-opacity" />
+              </div>
 
-          {/* Main Heading with Highlighted Text */}
-          <h1 className="text-[36px] sm:text-[48px] md:text-[64px] lg:text-[88px] xl:text-[100px] leading-[0.92] font-bold tracking-[-0.04em] mb-6 sm:mb-8 text-black dark:text-white px-2">
-            {t("title")}
-            <br />
-            <span className="relative inline-block mt-1 sm:mt-2">
-              <span className="inline-block bg-[#ffeb3b] dark:bg-[#ccf381] text-black dark:text-black px-3 sm:px-4 md:px-5 py-1.5 sm:py-2 -rotate-[-2deg] transform origin-center font-bold shadow-[0_4px_8px_rgba(0,0,0,0.1)] sm:shadow-[0_6px_12px_rgba(0,0,0,0.12)] relative z-10 text-[28px] sm:text-[36px] md:text-[44px] lg:text-[85px] xl:text-[95px]">
-                {user.name?.split(" ")[0] || "there"}!
-              </span>
-              <span className="absolute inset-0 bg-[#ffeb3b]/20 dark:bg-[#ccf381]/20 blur-xl -rotate-[-2deg] transform origin-center" aria-hidden="true" />
-            </span>
-          </h1>
+              {/* Main Heading */}
+              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-[-0.04em] mb-4 text-black dark:text-white">
+                {t("title")}
+                <br />
+                <span className="relative inline-block mt-2">
+                  <span className="inline-block bg-gradient-to-r from-[#ccf381] to-[#d4f89a] text-black px-4 py-2 -rotate-[-2deg] transform origin-center font-bold shadow-[0_8px_16px_rgba(204,243,129,0.3)] relative z-10">
+                    {user.name?.split(" ")[0] || "there"}!
+                  </span>
+                  <span className="absolute inset-0 bg-[#ccf381]/30 blur-xl -rotate-[-2deg] transform origin-center" aria-hidden="true" />
+                </span>
+              </h1>
 
-          {/* Description */}
-          <p className="text-base sm:text-lg md:text-xl lg:text-[22px] leading-relaxed text-[#555] dark:text-[#a1a1aa] max-w-[600px] mb-8 sm:mb-10 md:mb-12 font-light px-4">
-            {t("subtitle")}
-          </p>
+              {/* Description */}
+              <p className="text-lg sm:text-xl md:text-2xl leading-relaxed text-[#666] dark:text-[#a1a1aa] max-w-2xl mb-8 font-light">
+                {t("subtitle")}
+              </p>
 
-          {/* Feature Pills */}
-          <div className="flex flex-wrap items-center justify-center gap-2.5 sm:gap-3 md:gap-4 mb-8 sm:mb-10 md:mb-12 px-4">
-            <div className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 bg-white/80 dark:bg-[#1a1a1a]/80 backdrop-blur-sm border border-[#e5e5e5] dark:border-[#262626] rounded-full text-xs sm:text-sm font-medium text-black dark:text-white">
-              <CheckCircle2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#ccf381]" />
-              <span>{totalBookings} {t("totalBookings")}</span>
+              {/* Quick Stats Pills */}
+              <div className="flex flex-wrap items-center gap-3">
+                <div className="inline-flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-white/90 to-green-50/50 dark:from-[#1a1a1a]/90 dark:to-green-950/20 backdrop-blur-sm border-2 border-green-200/50 dark:border-green-800/50 rounded-2xl text-sm font-bold text-black dark:text-white shadow-lg hover:shadow-xl transition-all hover:-translate-y-0.5">
+                  <div className="p-1.5 bg-green-500/20 dark:bg-green-500/10 rounded-lg">
+                    <BookOpen className="w-4 h-4 text-green-600 dark:text-green-400" />
+                  </div>
+                  <span>{totalBookings}</span>
+                  <span className="text-xs font-medium text-[#666] dark:text-[#aaa] ml-1">{t("totalBookings")}</span>
+                </div>
+                <div className="inline-flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-white/90 to-blue-50/50 dark:from-[#1a1a1a]/90 dark:to-blue-950/20 backdrop-blur-sm border-2 border-blue-200/50 dark:border-blue-800/50 rounded-2xl text-sm font-bold text-black dark:text-white shadow-lg hover:shadow-xl transition-all hover:-translate-y-0.5">
+                  <div className="p-1.5 bg-blue-500/20 dark:bg-blue-500/10 rounded-lg">
+                    <Calendar className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                  </div>
+                  <span>{upcomingBookings.length}</span>
+                  <span className="text-xs font-medium text-[#666] dark:text-[#aaa] ml-1">{t("upcomingSessions")}</span>
+                </div>
+                <div className="inline-flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-white/90 to-purple-50/50 dark:from-[#1a1a1a]/90 dark:to-purple-950/20 backdrop-blur-sm border-2 border-purple-200/50 dark:border-purple-800/50 rounded-2xl text-sm font-bold text-black dark:text-white shadow-lg hover:shadow-xl transition-all hover:-translate-y-0.5">
+                  <div className="p-1.5 bg-purple-500/20 dark:bg-purple-500/10 rounded-lg">
+                    <CheckCircle2 className="w-4 h-4 text-purple-600 dark:text-purple-400" />
+                  </div>
+                  <span>{completedSessions}</span>
+                  <span className="text-xs font-medium text-[#666] dark:text-[#aaa] ml-1">{t("completedSessions")}</span>
+                </div>
+              </div>
             </div>
-            <div className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 bg-white/80 dark:bg-[#1a1a1a]/80 backdrop-blur-sm border border-[#e5e5e5] dark:border-[#262626] rounded-full text-xs sm:text-sm font-medium text-black dark:text-white">
-              <CheckCircle2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#ccf381]" />
-              <span>{upcomingBookings.length} {t("upcomingSessions")}</span>
-            </div>
-            <div className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 bg-white/80 dark:bg-[#1a1a1a]/80 backdrop-blur-sm border border-[#e5e5e5] dark:border-[#262626] rounded-full text-xs sm:text-sm font-medium text-black dark:text-white">
-              <CheckCircle2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#ccf381]" />
-              <span>{completedSessions} {t("completedSessions")}</span>
+
+            {/* Right: User Avatar/Profile Card */}
+            <div className="lg:w-80">
+              <Card className="group relative overflow-hidden bg-gradient-to-br from-white via-white to-green-50/30 dark:from-[#1a1a1a] dark:via-[#1a1a1a] dark:to-green-950/20 border-2 border-[#e5e5e5] dark:border-[#262626] rounded-3xl shadow-[0_8px_32px_rgba(0,0,0,0.1)] hover:shadow-[0_16px_64px_rgba(34,197,94,0.15)] transition-all duration-500 hover:-translate-y-2">
+                <div className="absolute inset-0 bg-gradient-to-br from-green-500/5 via-transparent to-emerald-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                <CardContent className="relative z-10 p-8 text-center">
+                  {user.image ? (
+                    <div className="relative w-24 h-24 mx-auto mb-4 rounded-2xl overflow-hidden border-3 border-green-200/50 dark:border-green-800/50 shadow-xl ring-2 ring-green-100 dark:ring-green-900/50">
+                      <Image
+                        src={user.image}
+                        alt={user.name || "User"}
+                        fill
+                        className="object-cover"
+                      />
+                    </div>
+                  ) : (
+                    <div className="w-24 h-24 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-green-100 to-emerald-100 dark:from-green-900/30 dark:to-emerald-900/30 border-3 border-green-200/50 dark:border-green-800/50 flex items-center justify-center shadow-xl ring-2 ring-green-100 dark:ring-green-900/50">
+                      <User className="w-12 h-12 text-green-600 dark:text-green-400" />
+                    </div>
+                  )}
+                  <h3 className="text-xl font-bold text-black dark:text-white mb-1">
+                    {user.name || "Student"}
+                  </h3>
+                  <p className="text-sm text-[#666] dark:text-[#aaa] mb-4">
+                    {user.email}
+                  </p>
+                  <Link href={`/${locale}/tutors`}>
+                    <Button
+                      size="lg"
+                      className="w-full rounded-2xl bg-gradient-to-r from-[#111] to-[#222] dark:from-[#ccf381] dark:to-[#d4f89a] text-white dark:text-black px-6 py-6 text-base font-bold transition-all duration-300 hover:shadow-[0_12px_32px_rgba(0,0,0,0.25)] hover:-translate-y-1 inline-flex items-center justify-center gap-3 group/btn"
+                    >
+                      <Search className="w-5 h-5 group-hover/btn:scale-110 transition-transform" />
+                      {t("browseTutors")}
+                      <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
+                    </Button>
+                  </Link>
+                </CardContent>
+              </Card>
             </div>
           </div>
         </div>
 
-        {/* Quick Actions - Enhanced Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-12 sm:mb-16">
-          <Link href={`/${locale}/tutors`} className="w-full group">
-            <Card className="bg-gradient-to-br from-white to-[#fafafa] dark:from-[#1a1a1a] dark:to-[#0a0a0a] rounded-[24px] sm:rounded-[32px] overflow-hidden border-2 border-[#e5e5e5] dark:border-[#262626] shadow-[0_20px_40px_rgba(0,0,0,0.08)] sm:shadow-[0_40px_80px_rgba(0,0,0,0.1)] transition-all duration-500 hover:shadow-[0_60px_120px_rgba(0,0,0,0.15)] hover:-translate-y-2 cursor-pointer h-full">
-              <div className="absolute inset-0 bg-gradient-to-br from-[#ccf381]/5 via-transparent to-[#7928ca]/5 opacity-50 group-hover:opacity-70 transition-opacity duration-700" />
-              <CardHeader className="relative z-10">
-                <CardTitle className="flex items-center gap-3 text-black dark:text-white text-xl sm:text-2xl">
-                  <div className="p-3 bg-[#ccf381]/20 dark:bg-[#ccf381]/10 rounded-xl">
-                    <Search className="w-6 h-6 text-[#ccf381]" />
-                  </div>
-                  {t("browseTutors")}
-                </CardTitle>
-                <CardDescription className="text-[#666] dark:text-[#aaa] text-base">
-                  {t("browseTutorsDescription")}
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="relative z-10">
-                <Button
-                  size="lg"
-                  className="bg-[#111] dark:bg-[#ccf381] text-white dark:text-black px-8 sm:px-10 py-5 sm:py-6 rounded-full font-semibold text-sm sm:text-base transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_12px_24px_rgba(0,0,0,0.2)] hover:bg-[#222] dark:hover:bg-[#d4f89a] inline-flex items-center justify-center gap-2.5 sm:gap-3 group/btn"
-                >
-                  <span>{t("getStarted")}</span>
-                  <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 group-hover/btn:translate-x-1 transition-transform" />
-                </Button>
-              </CardContent>
-            </Card>
-          </Link>
+        {/* Stats Overview - Enhanced Design */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+          {/* Total Bookings */}
+          <Card className="group relative overflow-hidden bg-gradient-to-br from-white via-white to-green-50/30 dark:from-[#1a1a1a] dark:via-[#1a1a1a] dark:to-green-950/20 border-2 border-[#e5e5e5] dark:border-[#262626] rounded-3xl shadow-[0_8px_32px_rgba(0,0,0,0.08)] hover:shadow-[0_16px_64px_rgba(34,197,94,0.15)] hover:border-green-400/50 dark:hover:border-green-600/50 transition-all duration-500 hover:-translate-y-2">
+            <div className="absolute inset-0 bg-gradient-to-br from-green-500/5 via-transparent to-emerald-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+            <CardContent className="relative z-10 p-6">
+              <div className="flex items-center justify-between mb-4">
+                <div className="p-3 bg-gradient-to-br from-green-500/20 to-emerald-500/20 dark:from-green-500/10 dark:to-emerald-500/10 rounded-2xl">
+                  <BookOpen className="w-6 h-6 text-green-600 dark:text-green-400" />
+                </div>
+                <Badge className="bg-green-500/20 text-green-700 dark:text-green-300 border-2 border-green-500/30 dark:border-green-500/20 rounded-full px-3 py-1 text-xs font-bold">
+                  Total
+                </Badge>
+              </div>
+              <div className="space-y-2">
+                <p className="text-sm font-medium text-[#666] dark:text-[#aaa]">{t("totalBookings")}</p>
+                <p className="text-4xl font-bold text-black dark:text-white">{totalBookings}</p>
+                <p className="text-xs text-[#666] dark:text-[#aaa]">All time bookings</p>
+              </div>
+            </CardContent>
+          </Card>
 
-          <Card className="bg-gradient-to-br from-white to-[#fafafa] dark:from-[#1a1a1a] dark:to-[#0a0a0a] rounded-[24px] sm:rounded-[32px] overflow-hidden border-2 border-[#e5e5e5] dark:border-[#262626] shadow-[0_20px_40px_rgba(0,0,0,0.08)] sm:shadow-[0_40px_80px_rgba(0,0,0,0.1)] h-full">
-            <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-transparent to-[#ccf381]/5 opacity-50 transition-opacity duration-700" />
-            <CardHeader className="relative z-10">
-              <CardTitle className="flex items-center gap-3 text-black dark:text-white text-xl sm:text-2xl">
-                <div className="p-3 bg-blue-500/20 dark:bg-blue-500/10 rounded-xl">
-                  <TrendingUp className="w-6 h-6 text-blue-500" />
+          {/* Upcoming Sessions */}
+          <Card className="group relative overflow-hidden bg-gradient-to-br from-white via-white to-blue-50/30 dark:from-[#1a1a1a] dark:via-[#1a1a1a] dark:to-blue-950/20 border-2 border-[#e5e5e5] dark:border-[#262626] rounded-3xl shadow-[0_8px_32px_rgba(0,0,0,0.08)] hover:shadow-[0_16px_64px_rgba(59,130,246,0.15)] hover:border-blue-400/50 dark:hover:border-blue-600/50 transition-all duration-500 hover:-translate-y-2">
+            <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-transparent to-indigo-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+            <CardContent className="relative z-10 p-6">
+              <div className="flex items-center justify-between mb-4">
+                <div className="p-3 bg-gradient-to-br from-blue-500/20 to-indigo-500/20 dark:from-blue-500/10 dark:to-indigo-500/10 rounded-2xl">
+                  <Calendar className="w-6 h-6 text-blue-600 dark:text-blue-400" />
                 </div>
-                {t("stats")}
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="relative z-10">
-              <div className="space-y-4">
-                <div className="flex justify-between items-center p-4 bg-white/60 dark:bg-[#0a0a0a]/60 backdrop-blur-sm border border-[#e5e5e5] dark:border-[#262626] rounded-xl">
-                  <span className="text-[#666] dark:text-[#aaa]">{t("totalBookings")}</span>
-                  <span className="text-2xl sm:text-3xl font-bold text-black dark:text-white">
-                    {totalBookings}
-                  </span>
+                <Badge className="bg-blue-500/20 text-blue-700 dark:text-blue-300 border-2 border-blue-500/30 dark:border-blue-500/20 rounded-full px-3 py-1 text-xs font-bold">
+                  Active
+                </Badge>
+              </div>
+              <div className="space-y-2">
+                <p className="text-sm font-medium text-[#666] dark:text-[#aaa]">{t("upcomingSessions")}</p>
+                <p className="text-4xl font-bold text-blue-600 dark:text-blue-400">{upcomingBookings.length}</p>
+                <p className="text-xs text-[#666] dark:text-[#aaa]">Scheduled sessions</p>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Completed Sessions */}
+          <Card className="group relative overflow-hidden bg-gradient-to-br from-white via-white to-purple-50/30 dark:from-[#1a1a1a] dark:via-[#1a1a1a] dark:to-purple-950/20 border-2 border-[#e5e5e5] dark:border-[#262626] rounded-3xl shadow-[0_8px_32px_rgba(0,0,0,0.08)] hover:shadow-[0_16px_64px_rgba(168,85,247,0.15)] hover:border-purple-400/50 dark:hover:border-purple-600/50 transition-all duration-500 hover:-translate-y-2">
+            <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 via-transparent to-pink-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+            <CardContent className="relative z-10 p-6">
+              <div className="flex items-center justify-between mb-4">
+                <div className="p-3 bg-gradient-to-br from-purple-500/20 to-pink-500/20 dark:from-purple-500/10 dark:to-pink-500/10 rounded-2xl">
+                  <CheckCircle2 className="w-6 h-6 text-purple-600 dark:text-purple-400" />
                 </div>
-                <div className="flex justify-between items-center p-4 bg-white/60 dark:bg-[#0a0a0a]/60 backdrop-blur-sm border border-[#e5e5e5] dark:border-[#262626] rounded-xl">
-                  <span className="text-[#666] dark:text-[#aaa]">{t("upcomingSessions")}</span>
-                  <span className="text-2xl sm:text-3xl font-bold text-green-600 dark:text-green-400">
-                    {upcomingBookings.length}
-                  </span>
-                </div>
-                <div className="flex justify-between items-center p-4 bg-white/60 dark:bg-[#0a0a0a]/60 backdrop-blur-sm border border-[#e5e5e5] dark:border-[#262626] rounded-xl">
-                  <span className="text-[#666] dark:text-[#aaa]">{t("completedSessions")}</span>
-                  <span className="text-2xl sm:text-3xl font-bold text-blue-600 dark:text-blue-400">
-                    {completedSessions}
-                  </span>
-                </div>
+                <Badge className="bg-purple-500/20 text-purple-700 dark:text-purple-300 border-2 border-purple-500/30 dark:border-purple-500/20 rounded-full px-3 py-1 text-xs font-bold">
+                  Done
+                </Badge>
+              </div>
+              <div className="space-y-2">
+                <p className="text-sm font-medium text-[#666] dark:text-[#aaa]">{t("completedSessions")}</p>
+                <p className="text-4xl font-bold text-purple-600 dark:text-purple-400">{completedSessions}</p>
+                <p className="text-xs text-[#666] dark:text-[#aaa]">Finished sessions</p>
               </div>
             </CardContent>
           </Card>
