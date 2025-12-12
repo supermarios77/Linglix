@@ -287,14 +287,13 @@ export function ProfileClient({ locale, user, studentProfile, tutorProfile }: Pr
         <Link href={`/${locale}/dashboard`}>
           <Button variant="outline" className="flex items-center gap-2 bg-card/80 backdrop-blur-sm border-border rounded-full hover:border-primary/50 transition-colors">
             <ArrowLeft className="w-4 h-4" />
-            <span className="hidden sm:inline">{tCommon("backToDashboard")}</span>
-            <span className="sm:hidden">{tCommon("back")}</span>
+            <span>{tCommon("backToDashboard")}</span>
           </Button>
         </Link>
       </header>
 
       {/* Main Content */}
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 md:px-12 py-8 sm:py-12 md:py-16 pt-24 sm:pt-28">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 md:px-12 py-8 sm:py-12 md:py-16 pt-32 sm:pt-36 md:pt-40">
         {/* Page Header */}
         <div className="mb-8 sm:mb-12">
           <div className="inline-flex items-center px-3 sm:px-4 py-1.5 sm:py-2 bg-card/90 dark:bg-card/90 backdrop-blur-md border border-border rounded-full text-xs font-semibold uppercase tracking-wider mb-4 sm:mb-6 shadow-md">
