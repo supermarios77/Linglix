@@ -90,13 +90,14 @@ export default async function VideoCallPage({ params }: VideoCallPageProps) {
       redirect(`/${locale}/dashboard`);
     }
 
-    // Check if session time is valid - only allow joining at exact time or during session
+    // Check if session time is valid - allow joining 5 minutes before, during, but not after
     const now = new Date();
     const sessionStart = new Date(booking.scheduledAt);
     const sessionEnd = new Date(sessionStart.getTime() + booking.duration * 60 * 1000);
+    const fiveMinutesBefore = new Date(sessionStart.getTime() - 5 * 60 * 1000);
     
-    // Only allow joining at the exact time or during the session, not before or after
-    if (now < sessionStart || now > sessionEnd) {
+    // Allow joining 5 minutes before session starts, during the session, but not after
+    if (now < fiveMinutesBefore || now > sessionEnd) {
       redirect(`/${locale}/dashboard`);
     }
 
