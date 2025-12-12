@@ -91,7 +91,7 @@ export function AvatarUpload({ currentImage, onImageUpdate }: AvatarUploadProps)
               alt="Profile picture"
               width={128}
               height={128}
-              className="w-full h-full object-contain object-center"
+              className="w-full h-full object-cover object-center"
             />
           ) : (
             <User className="w-16 h-16 text-muted-foreground" />

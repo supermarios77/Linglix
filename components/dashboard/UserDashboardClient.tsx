@@ -489,12 +489,12 @@ export function UserDashboardClient({
                 <div className="absolute inset-0 bg-success/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                 <CardContent className="relative z-10 p-8 text-center">
                   {user.image ? (
-                    <div className="relative w-24 h-24 mx-auto mb-4 rounded-xl overflow-hidden border-2 border-success/20 shadow-xl ring-2 ring-success/10 bg-muted">
+                    <div className="relative w-24 h-24 mx-auto mb-4 rounded-xl overflow-hidden border-2 border-success/20 shadow-xl ring-2 ring-success/10">
                       <Image
                         src={user.image}
                         alt={user.name || "User"}
                         fill
-                        className="object-contain"
+                        className="object-cover"
                       />
                     </div>
                   ) : (
@@ -828,12 +828,12 @@ export function UserDashboardClient({
                   <CardContent className="relative z-10 p-5">
                     <div className="flex items-start gap-4 mb-4">
                       {booking.tutor.user.image ? (
-                        <div className="relative w-12 h-12 rounded-xl overflow-hidden border-2 border-info/20 shadow-md ring-1 ring-info/10 shrink-0 bg-muted">
+                        <div className="relative w-12 h-12 rounded-xl overflow-hidden border-2 border-info/20 shadow-md ring-1 ring-info/10 shrink-0">
                           <Image
                             src={booking.tutor.user.image}
                             alt={booking.tutor.user.name || t("tutorFallback")}
                             fill
-                            className="object-contain"
+                            className="object-cover"
                           />
                         </div>
                       ) : (

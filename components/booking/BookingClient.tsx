@@ -289,12 +289,12 @@ export function BookingClient({ tutor, locale }: BookingClientProps) {
               <CardHeader>
                 <div className="flex items-center gap-4">
                   {tutor.image ? (
-                    <div className="relative w-16 h-16 rounded-full overflow-hidden border-2 border-[#e5e5e5] dark:border-[#262626] bg-muted">
+                    <div className="relative w-16 h-16 rounded-full overflow-hidden border-2 border-[#e5e5e5] dark:border-[#262626]">
                       <Image
                         src={tutor.image}
                         alt={tutor.name}
                         fill
-                        className="object-contain"
+                        className="object-cover"
                       />
                     </div>
                   ) : (

@@ -503,12 +503,12 @@ export function TutorDashboardClient({
             <div className="mb-6 pb-6 border-b border-border">
               <div className="flex items-center gap-3 mb-3">
                 {user.image ? (
-                  <div className="relative w-12 h-12 rounded-full overflow-hidden border border-border bg-muted">
+                  <div className="relative w-12 h-12 rounded-full overflow-hidden border border-border">
                     <Image
                       src={user.image}
                       alt={user.name || "User"}
                       fill
-                      className="object-contain"
+                      className="object-cover"
                     />
                   </div>
                 ) : (
@@ -824,12 +824,12 @@ export function TutorDashboardClient({
                           >
                           <div className="flex items-start gap-3">
                             {booking.student.image ? (
-                              <div className="relative w-12 h-12 rounded-full overflow-hidden border-2 border-blue-200 dark:border-blue-800 shrink-0 bg-muted">
+                              <div className="relative w-12 h-12 rounded-full overflow-hidden border-2 border-blue-200 dark:border-blue-800 shrink-0">
                                 <Image
                                   src={booking.student.image}
                                   alt={booking.student.name || "Student"}
                                   fill
-                                  className="object-contain"
+                                  className="object-cover"
                                 />
                               </div>
                             ) : (
@@ -1177,12 +1177,12 @@ export function TutorDashboardClient({
                           <CardContent className="relative z-10 p-5">
                             <div className="flex items-start gap-4 mb-4">
                               {booking.student.image ? (
-                                <div className="relative w-12 h-12 rounded-xl overflow-hidden border-2 border-info/20 shadow-md ring-1 ring-info/10 shrink-0 bg-muted">
+                                <div className="relative w-12 h-12 rounded-xl overflow-hidden border-2 border-info/20 shadow-md ring-1 ring-info/10 shrink-0">
                                   <Image
                                     src={booking.student.image}
                                     alt={booking.student.name || tTutor("student")}
                                     fill
-                                    className="object-contain"
+                                    className="object-cover"
                                   />
                                 </div>
                               ) : (
@@ -1339,12 +1339,12 @@ export function TutorDashboardClient({
                           <CardContent className="p-6 sm:p-8">
                             <div className="flex items-start gap-4 mb-5">
                               {review.student.image ? (
-                                <div className="relative w-14 h-14 rounded-full overflow-hidden border-2 border-[#e5e5e5] dark:border-[#262626] shrink-0 bg-muted">
+                                <div className="relative w-14 h-14 rounded-full overflow-hidden border-2 border-[#e5e5e5] dark:border-[#262626] shrink-0">
                                   <Image
                                     src={review.student.image}
                                     alt={review.student.name || tTutor("student")}
                                     fill
-                                    className="object-contain"
+                                    className="object-cover"
                                   />
                                 </div>
                               ) : (
