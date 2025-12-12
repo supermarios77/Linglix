@@ -279,10 +279,11 @@ export function AdminDashboardClient({ locale }: AdminDashboardClientProps) {
     const abortController = new AbortController();
     fetchStats(abortController.signal);
     fetchTutors(abortController.signal);
+    fetchAppeals(abortController.signal, appealStatusFilter);
     return () => {
       abortController.abort();
     };
-  }, [fetchTutors]);
+  }, [fetchTutors, fetchAppeals, appealStatusFilter]);
 
   // Refetch when filters change
   useEffect(() => {
@@ -302,6 +303,15 @@ export function AdminDashboardClient({ locale }: AdminDashboardClientProps) {
       abortController.abort();
     };
   }, [page, statusFilter, searchQuery, fetchTutors]);
+
+  // Refetch appeals when status filter changes
+  useEffect(() => {
+    const abortController = new AbortController();
+    fetchAppeals(abortController.signal, appealStatusFilter);
+    return () => {
+      abortController.abort();
+    };
+  }, [appealStatusFilter, fetchAppeals]);
 
   // Handle approve
   const handleApprove = async () => {
