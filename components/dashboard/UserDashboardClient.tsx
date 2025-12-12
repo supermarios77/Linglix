@@ -220,8 +220,12 @@ export function UserDashboardClient({
 
   const handleSignOut = async () => {
     try {
-      // NextAuth v5 signout - redirect to signout endpoint which handles everything
-      window.location.href = `/api/auth/signout?callbackUrl=/${locale}`;
+      // Close dialog first
+      setShowSignOutDialog(false);
+      // Small delay to ensure dialog closes smoothly before navigation
+      setTimeout(() => {
+        window.location.href = `/api/auth/signout?callbackUrl=/${locale}`;
+      }, 150);
     } catch (error) {
       // Error handling - user will be redirected anyway
       if (process.env.NODE_ENV === "development") {

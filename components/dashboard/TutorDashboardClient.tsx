@@ -162,7 +162,12 @@ export function TutorDashboardClient({
 
   const handleSignOut = async () => {
     try {
-      window.location.href = `/api/auth/signout?callbackUrl=/${locale}`;
+      // Close dialog first
+      setShowSignOutDialog(false);
+      // Small delay to ensure dialog closes smoothly before navigation
+      setTimeout(() => {
+        window.location.href = `/api/auth/signout?callbackUrl=/${locale}`;
+      }, 150);
     } catch (error) {
       if (process.env.NODE_ENV === "development") {
         console.error("Failed to sign out:", error);
