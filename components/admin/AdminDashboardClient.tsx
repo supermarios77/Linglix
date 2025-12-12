@@ -44,8 +44,10 @@ import {
   ArrowLeft,
   Shield,
   LogOut,
+  AlertTriangle,
+  FileText,
 } from "lucide-react";
-import type { TutorApprovalStatus } from "@prisma/client";
+import type { TutorApprovalStatus, AppealStatus } from "@prisma/client";
 
 /**
  * Admin Dashboard Client Component
@@ -144,6 +146,69 @@ export function AdminDashboardClient({ locale }: AdminDashboardClientProps) {
     reason: string;
   }>({ open: false, tutorId: null, tutorName: null, reason: "" });
   const [processing, setProcessing] = useState(false);
+  const [appeals, setAppeals] = useState<any[]>([]);
+  const [appealsLoading, setAppealsLoading] = useState(false);
+  const [appealStatusFilter, setAppealStatusFilter] = useState<string>("PENDING");
+  const [reviewingAppeal, setReviewingAppeal] = useState<string | null>(null);
+  const [appealAdminNotes, setAppealAdminNotes] = useState("");
+  const [processingAppeal, setProcessingAppeal] = useState(false);
+
+  // Fetch appeals
+  const fetchAppeals = useCallback(async (signal?: AbortSignal, statusFilter?: string) => {
+    try {
+      setAppealsLoading(true);
+      const status = statusFilter ?? appealStatusFilter;
+      const response = await fetch(`/api/appeals?status=${status}`, { signal });
+      if (!response.ok) throw new Error("Failed to fetch appeals");
+      const data = await response.json();
+      if (!signal?.aborted) {
+        setAppeals(data.appeals || []);
+      }
+    } catch (error) {
+      if (error instanceof Error && error.name === "AbortError") {
+        return;
+      }
+      if (process.env.NODE_ENV === "development") {
+        console.error("Failed to fetch appeals:", error);
+      }
+    } finally {
+      if (!signal?.aborted) {
+        setAppealsLoading(false);
+      }
+    }
+  }, [appealStatusFilter]);
+
+  // Handle appeal review
+  const handleReviewAppeal = async (appealId: string, status: "APPROVED" | "REJECTED") => {
+    setProcessingAppeal(true);
+    try {
+      const response = await fetch(`/api/appeals/${appealId}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          status,
+          adminNotes: appealAdminNotes || undefined,
+        }),
+      });
+
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.error || "Failed to review appeal");
+      }
+
+      // Refresh appeals list
+      await fetchAppeals();
+      setReviewingAppeal(null);
+      setAppealAdminNotes("");
+    } catch (error) {
+      if (process.env.NODE_ENV === "development") {
+        console.error("Failed to review appeal:", error);
+      }
+      alert(error instanceof Error ? error.message : "Failed to review appeal");
+    } finally {
+      setProcessingAppeal(false);
+    }
+  };
 
   // Fetch statistics
   const fetchStats = async (signal?: AbortSignal) => {
@@ -509,13 +574,130 @@ export function AdminDashboardClient({ locale }: AdminDashboardClientProps) {
           </Card>
         </div>
 
-        {/* Tutors Management */}
-        <Card className="bg-white/90 dark:bg-[#1a1a1a]/90 backdrop-blur-md border border-[#e5e5e5] dark:border-[#262626] shadow-[0_4px_12px_rgba(0,0,0,0.05)]">
+        {/* Appeals Management */}
+        <Card className="bg-card backdrop-blur-md border border-border shadow-xl mb-8">
           <CardHeader>
-            <CardTitle className="text-xl sm:text-2xl font-bold text-black dark:text-white">
+            <CardTitle className="text-xl sm:text-2xl font-bold text-foreground flex items-center gap-3">
+              <FileText className="w-6 h-6" />
+              Cancellation Appeals
+            </CardTitle>
+            <CardDescription className="text-muted-foreground">
+              Review and manage student appeals for cancellation penalties
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            {/* Appeal Status Filter */}
+            <div className="mb-6">
+              <Select value={appealStatusFilter} onValueChange={setAppealStatusFilter}>
+                <SelectTrigger className="w-full sm:w-[200px]">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="PENDING">Pending</SelectItem>
+                  <SelectItem value="APPROVED">Approved</SelectItem>
+                  <SelectItem value="REJECTED">Rejected</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            {/* Appeals List */}
+            {appealsLoading ? (
+              <div className="flex items-center justify-center py-12">
+                <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+              </div>
+            ) : appeals.length === 0 ? (
+              <div className="text-center py-12 text-muted-foreground">
+                No {appealStatusFilter.toLowerCase()} appeals found
+              </div>
+            ) : (
+              <div className="space-y-4">
+                {appeals.map((appeal) => (
+                  <Card key={appeal.id} className="border-border">
+                    <CardContent className="p-6">
+                      <div className="flex items-start justify-between mb-4">
+                        <div className="flex-1">
+                          <div className="flex items-center gap-3 mb-2">
+                            <h3 className="font-semibold text-foreground">
+                              {appeal.user.name || appeal.user.email}
+                            </h3>
+                            <Badge
+                              variant="outline"
+                              className={
+                                appeal.status === "PENDING"
+                                  ? "bg-warning/10 text-warning border-warning/30"
+                                  : appeal.status === "APPROVED"
+                                  ? "bg-success/10 text-success border-success/30"
+                                  : "bg-error/10 text-error border-error/30"
+                              }
+                            >
+                              {appeal.status}
+                            </Badge>
+                          </div>
+                          <p className="text-sm text-muted-foreground mb-3">
+                            Submitted: {new Date(appeal.createdAt).toLocaleDateString()}
+                          </p>
+                          <div className="bg-muted/50 rounded-lg p-4 mb-4">
+                            <p className="text-sm font-medium text-foreground mb-2">Appeal Reason:</p>
+                            <p className="text-sm text-muted-foreground whitespace-pre-wrap">
+                              {appeal.reason}
+                            </p>
+                          </div>
+                          {appeal.adminNotes && (
+                            <div className="bg-info/10 rounded-lg p-4 mb-4">
+                              <p className="text-sm font-medium text-info mb-2">Admin Notes:</p>
+                              <p className="text-sm text-muted-foreground whitespace-pre-wrap">
+                                {appeal.adminNotes}
+                              </p>
+                            </div>
+                          )}
+                          {appeal.reviewedAt && (
+                            <p className="text-xs text-muted-foreground">
+                              Reviewed: {new Date(appeal.reviewedAt).toLocaleDateString()}
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                      {appeal.status === "PENDING" && (
+                        <div className="flex gap-3 pt-4 border-t border-border">
+                          <Button
+                            size="sm"
+                            onClick={() => {
+                              setReviewingAppeal(appeal.id);
+                              setAppealAdminNotes("");
+                            }}
+                            className="bg-success hover:bg-success/90 text-white"
+                          >
+                            <CheckCircle2 className="w-4 h-4 mr-2" />
+                            Approve
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant="destructive"
+                            onClick={() => {
+                              setReviewingAppeal(appeal.id);
+                              setAppealAdminNotes("");
+                            }}
+                          >
+                            <XCircle className="w-4 h-4 mr-2" />
+                            Reject
+                          </Button>
+                        </div>
+                      )}
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            )}
+          </CardContent>
+        </Card>
+
+        {/* Tutors Management */}
+        <Card className="bg-card backdrop-blur-md border border-border shadow-xl">
+          <CardHeader>
+            <CardTitle className="text-xl sm:text-2xl font-bold text-foreground">
               {t("tutors.title")}
             </CardTitle>
-            <CardDescription className="text-[#666] dark:text-[#aaa]">
+            <CardDescription className="text-muted-foreground">
               {t("tutors.title")}
             </CardDescription>
           </CardHeader>
@@ -805,6 +987,87 @@ export function AdminDashboardClient({ locale }: AdminDashboardClientProps) {
               ) : null}
               {t("tutors.reject")}
             </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      {/* Appeal Review Dialog */}
+      <AlertDialog
+        open={reviewingAppeal !== null}
+        onOpenChange={(open) => {
+          if (!open) {
+            setReviewingAppeal(null);
+            setAppealAdminNotes("");
+          }
+        }}
+      >
+        <AlertDialogContent className="bg-card/95 backdrop-blur-md border-2 border-border rounded-3xl shadow-2xl max-w-2xl">
+          <AlertDialogHeader>
+            <AlertDialogTitle className="text-xl font-bold text-foreground">
+              Review Appeal
+            </AlertDialogTitle>
+            <AlertDialogDescription className="text-muted-foreground">
+              {reviewingAppeal && (() => {
+                const appeal = appeals.find(a => a.id === reviewingAppeal);
+                return appeal ? (
+                  <div className="mt-4">
+                    <p className="font-medium text-foreground mb-2">Student: {appeal.user.name || appeal.user.email}</p>
+                    <div className="bg-muted/50 rounded-lg p-4 mb-4">
+                      <p className="text-sm font-medium text-foreground mb-2">Appeal Reason:</p>
+                      <p className="text-sm text-muted-foreground whitespace-pre-wrap">{appeal.reason}</p>
+                    </div>
+                  </div>
+                ) : null;
+              })()}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <div className="space-y-4 py-4">
+            <div>
+              <Label className="text-sm font-medium mb-2 block">
+                Admin Notes (Optional)
+              </Label>
+              <Textarea
+                value={appealAdminNotes}
+                onChange={(e) => setAppealAdminNotes(e.target.value)}
+                placeholder="Add notes about your decision..."
+                className="w-full min-h-[100px] resize-none"
+                maxLength={500}
+              />
+              <p className="text-xs text-muted-foreground mt-1">
+                {appealAdminNotes.length}/500 characters
+              </p>
+            </div>
+          </div>
+          <AlertDialogFooter>
+            <AlertDialogCancel disabled={processingAppeal}>
+              Cancel
+            </AlertDialogCancel>
+            <div className="flex gap-2">
+              <AlertDialogAction
+                onClick={() => reviewingAppeal && handleReviewAppeal(reviewingAppeal, "APPROVED")}
+                disabled={processingAppeal}
+                className="bg-success hover:bg-success/90 text-white"
+              >
+                {processingAppeal ? (
+                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                ) : (
+                  <CheckCircle2 className="w-4 h-4 mr-2" />
+                )}
+                Approve
+              </AlertDialogAction>
+              <AlertDialogAction
+                onClick={() => reviewingAppeal && handleReviewAppeal(reviewingAppeal, "REJECTED")}
+                disabled={processingAppeal}
+                className="bg-error hover:bg-error/90 text-white"
+              >
+                {processingAppeal ? (
+                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                ) : (
+                  <XCircle className="w-4 h-4 mr-2" />
+                )}
+                Reject
+              </AlertDialogAction>
+            </div>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>

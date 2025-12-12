@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useTranslations } from "next-intl";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import {
@@ -12,6 +13,8 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -38,6 +41,8 @@ import {
   CheckCircle2,
   XCircle,
   TrendingUp,
+  X,
+  AlertTriangle,
 } from "lucide-react";
 import Image from "next/image";
 import { slugify } from "@/lib/utils/slug";
@@ -100,6 +105,99 @@ export function UserDashboardClient({
   const tPayment = useTranslations("payment");
 
   const [showSignOutDialog, setShowSignOutDialog] = useState(false);
+  const [cancellingBookingId, setCancellingBookingId] = useState<string | null>(null);
+  const [showCancelDialog, setShowCancelDialog] = useState(false);
+  const [showAppealDialog, setShowAppealDialog] = useState(false);
+  const [appealReason, setAppealReason] = useState("");
+  const [submittingAppeal, setSubmittingAppeal] = useState(false);
+  const [cancelling, setCancelling] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [userPenalty, setUserPenalty] = useState<{ penaltyUntil: Date | null } | null>(null);
+
+  // Fetch user penalty status on mount
+  useEffect(() => {
+    const fetchPenaltyStatus = async () => {
+      try {
+        const response = await fetch("/api/user/penalty-status");
+        if (response.ok) {
+          const data = await response.json();
+          setUserPenalty(data);
+        }
+      } catch (err) {
+        // Silently fail - penalty status is optional
+      }
+    };
+    fetchPenaltyStatus();
+  }, []);
+
+  const handleCancelBooking = async () => {
+    if (!cancellingBookingId) return;
+
+    setCancelling(true);
+    setError(null);
+
+    try {
+      const response = await fetch(`/api/bookings/${cancellingBookingId}`, {
+        method: "DELETE",
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Failed to cancel booking");
+      }
+
+      // Refresh the page to show updated bookings
+      window.location.reload();
+    } catch (err) {
+      setError(
+        err instanceof Error
+          ? err.message
+          : "Failed to cancel booking. Please try again."
+      );
+      setCancelling(false);
+    }
+  };
+
+  const handleSubmitAppeal = async () => {
+    if (!appealReason.trim() || appealReason.length < 10) {
+      setError("Please provide a reason (at least 10 characters)");
+      return;
+    }
+
+    setSubmittingAppeal(true);
+    setError(null);
+
+    try {
+      const response = await fetch("/api/appeals", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          reason: appealReason,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Failed to submit appeal");
+      }
+
+      setShowAppealDialog(false);
+      setAppealReason("");
+      // Refresh to update penalty status
+      window.location.reload();
+    } catch (err) {
+      setError(
+        err instanceof Error
+          ? err.message
+          : "Failed to submit appeal. Please try again."
+      );
+      setSubmittingAppeal(false);
+    }
+  };
 
   const handleSignOut = async () => {
     try {
@@ -251,6 +349,38 @@ export function UserDashboardClient({
       </header>
 
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6 md:px-12 py-8 sm:py-12 md:py-16">
+        {/* Penalty Warning Banner */}
+        {userPenalty?.penaltyUntil && new Date(userPenalty.penaltyUntil) > new Date() && (
+          <Card className="mb-6 border-2 border-warning/50 bg-warning/10">
+            <CardContent className="p-6">
+              <div className="flex items-start gap-4">
+                <AlertTriangle className="w-6 h-6 text-warning shrink-0 mt-0.5" />
+                <div className="flex-1">
+                  <h3 className="font-bold text-lg text-foreground mb-2">
+                    Account Penalty Active
+                  </h3>
+                  <p className="text-sm text-muted-foreground mb-4">
+                    You are currently penalized and cannot create or cancel bookings until{" "}
+                    {new Date(userPenalty.penaltyUntil).toLocaleDateString(locale === "es" ? "es-ES" : "en-US", {
+                      month: "long",
+                      day: "numeric",
+                      year: "numeric",
+                    })}
+                    . This penalty was applied due to multiple late cancellations.
+                  </p>
+                  <Button
+                    onClick={() => setShowAppealDialog(true)}
+                    variant="outline"
+                    className="border-warning text-warning hover:bg-warning/10"
+                  >
+                    Submit Appeal
+                  </Button>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
         {/* Welcome Section - Enhanced Design */}
         <div className="mb-16 sm:mb-20">
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8 mb-12">
@@ -577,6 +707,20 @@ export function UserDashboardClient({
                             </Button>
                           </Link>
                         )}
+                        {booking.status !== "CANCELLED" && booking.status !== "COMPLETED" && (
+                          <Button
+                            size="lg"
+                            variant="outline"
+                            onClick={() => {
+                              setCancellingBookingId(booking.id);
+                              setShowCancelDialog(true);
+                            }}
+                            className="rounded-xl bg-card/80 backdrop-blur-sm border-2 border-error/50 hover:border-error hover:text-error transition-all font-semibold"
+                          >
+                            <X className="w-4 h-4 mr-2" />
+                            Cancel
+                          </Button>
+                        )}
                         <Link href={`/${locale}/tutors/${slugify(booking.tutor.user.name || "")}`} className="flex-1">
                           <Button
                             size="lg"
@@ -702,32 +846,128 @@ export function UserDashboardClient({
 
       {/* Sign Out Confirmation Dialog */}
       <AlertDialog open={showSignOutDialog} onOpenChange={setShowSignOutDialog}>
-        <AlertDialogContent className="bg-white/95 dark:bg-[#1a1a1a]/95 backdrop-blur-md border-2 border-[#e5e5e5] dark:border-[#262626] rounded-[24px] shadow-[0_20px_40px_rgba(0,0,0,0.1)]">
+        <AlertDialogContent className="bg-card/95 backdrop-blur-md border-2 border-border rounded-3xl shadow-2xl">
           <AlertDialogHeader>
             <div className="flex items-center gap-3 mb-2">
-              <div className="p-2 bg-red-500/20 dark:bg-red-500/10 rounded-xl">
-                <LogOut className="w-6 h-6 text-red-600 dark:text-red-400" />
+              <div className="p-2 bg-error/20 rounded-xl">
+                <LogOut className="w-6 h-6 text-error" />
               </div>
-              <AlertDialogTitle className="text-xl sm:text-2xl font-bold text-black dark:text-white">
+              <AlertDialogTitle className="text-xl sm:text-2xl font-bold text-foreground">
                 {t("signOutConfirmTitle")}
               </AlertDialogTitle>
             </div>
-            <AlertDialogDescription className="text-base text-[#666] dark:text-[#aaa] pt-2">
+            <AlertDialogDescription className="text-base text-muted-foreground pt-2">
               {t("signOutConfirmDescription")}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter className="flex-col sm:flex-row gap-3 sm:gap-0">
-            <AlertDialogCancel
-              className="w-full sm:w-auto bg-white/80 dark:bg-[#0a0a0a]/80 backdrop-blur-sm border-[#e5e5e5] dark:border-[#262626] rounded-full hover:bg-white dark:hover:bg-[#0a0a0a] transition-colors"
-            >
+            <AlertDialogCancel className="w-full sm:w-auto">
               {tCommon("cancel")}
             </AlertDialogCancel>
             <AlertDialogAction
               onClick={handleSignOut}
-              className="w-full sm:w-auto bg-red-600 hover:bg-red-700 text-white rounded-full transition-all duration-300 hover:shadow-[0_12px_24px_rgba(239,68,68,0.3)] inline-flex items-center justify-center gap-2"
+              className="w-full sm:w-auto bg-error hover:bg-error/90 text-white rounded-full"
             >
-              <LogOut className="w-4 h-4" />
+              <LogOut className="w-4 h-4 mr-2" />
               {tCommon("signOut")}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      {/* Cancel Booking Dialog */}
+      <AlertDialog open={showCancelDialog} onOpenChange={setShowCancelDialog}>
+        <AlertDialogContent className="bg-card/95 backdrop-blur-md border-2 border-border rounded-3xl shadow-2xl">
+          <AlertDialogHeader>
+            <div className="flex items-center gap-3 mb-2">
+              <div className="p-2 bg-error/20 rounded-xl">
+                <X className="w-6 h-6 text-error" />
+              </div>
+              <AlertDialogTitle className="text-xl sm:text-2xl font-bold text-foreground">
+                Cancel Booking
+              </AlertDialogTitle>
+            </div>
+            <AlertDialogDescription className="text-base text-muted-foreground pt-2">
+              Are you sure you want to cancel this booking?
+              {cancellingBookingId && (() => {
+                const booking = upcomingBookings.find(b => b.id === cancellingBookingId);
+                if (booking) {
+                  const hoursUntil = Math.floor((new Date(booking.scheduledAt).getTime() - new Date().getTime()) / (1000 * 60 * 60));
+                  if (hoursUntil < 12) {
+                    return " This is a late cancellation (less than 12 hours before the session). Multiple late cancellations may result in a penalty.";
+                  }
+                }
+                return "";
+              })()}
+            </AlertDialogDescription>
+            {error && (
+              <div className="mt-4 p-3 bg-error/10 border border-error/20 rounded-lg">
+                <p className="text-sm text-error">{error}</p>
+              </div>
+            )}
+          </AlertDialogHeader>
+          <AlertDialogFooter className="flex-col sm:flex-row gap-3 sm:gap-0">
+            <AlertDialogCancel disabled={cancelling}>
+              {tCommon("cancel")}
+            </AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleCancelBooking}
+              disabled={cancelling}
+              className="bg-error hover:bg-error/90 text-white"
+            >
+              {cancelling ? "Cancelling..." : "Yes, Cancel Booking"}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      {/* Appeal Submission Dialog */}
+      <AlertDialog open={showAppealDialog} onOpenChange={setShowAppealDialog}>
+        <AlertDialogContent className="bg-card/95 backdrop-blur-md border-2 border-border rounded-3xl shadow-2xl max-w-2xl">
+          <AlertDialogHeader>
+            <div className="flex items-center gap-3 mb-2">
+              <div className="p-2 bg-warning/20 rounded-xl">
+                <AlertTriangle className="w-6 h-6 text-warning" />
+              </div>
+              <AlertDialogTitle className="text-xl sm:text-2xl font-bold text-foreground">
+                Submit Appeal
+              </AlertDialogTitle>
+            </div>
+            <AlertDialogDescription className="text-base text-muted-foreground pt-2">
+              Please explain why you believe this penalty should be removed. An admin will review your appeal.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <div className="space-y-4 py-4">
+            <div>
+              <Label className="text-sm font-medium mb-2 block">
+                Reason for Appeal
+              </Label>
+              <Textarea
+                value={appealReason}
+                onChange={(e) => setAppealReason(e.target.value)}
+                placeholder="Please provide a detailed explanation (minimum 10 characters)..."
+                className="w-full min-h-[120px] resize-none"
+                maxLength={1000}
+              />
+              <p className="text-xs text-muted-foreground mt-1">
+                {appealReason.length}/1000 characters
+              </p>
+            </div>
+            {error && (
+              <div className="p-3 bg-error/10 border border-error/20 rounded-lg">
+                <p className="text-sm text-error">{error}</p>
+              </div>
+            )}
+          </div>
+          <AlertDialogFooter className="flex-col sm:flex-row gap-3 sm:gap-0">
+            <AlertDialogCancel disabled={submittingAppeal}>
+              {tCommon("cancel")}
+            </AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleSubmitAppeal}
+              disabled={submittingAppeal || appealReason.length < 10}
+            >
+              {submittingAppeal ? "Submitting..." : "Submit Appeal"}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
