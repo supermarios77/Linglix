@@ -719,12 +719,12 @@ export function TutorDashboardClient({
                           <div className="flex items-start justify-between gap-4">
                             <div className="flex items-start gap-3 flex-1">
                               {booking.student.image ? (
-                                <div className="relative w-12 h-12 rounded-full overflow-hidden border-2 border-yellow-200 dark:border-yellow-800 flex-shrink-0 bg-muted">
+                                <div className="relative w-12 h-12 rounded-full overflow-hidden border-2 border-yellow-200 dark:border-yellow-800 flex-shrink-0">
                                   <Image
                                     src={booking.student.image}
                                     alt={booking.student.name || "Student"}
                                     fill
-                                    className="object-contain"
+                                    className="object-cover"
                                   />
                                 </div>
                               ) : (
