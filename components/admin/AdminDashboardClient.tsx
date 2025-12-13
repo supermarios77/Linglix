@@ -115,7 +115,7 @@ export function AdminDashboardClient({ locale }: AdminDashboardClientProps) {
       setShowSignOutDialog(false);
       // Small delay to ensure dialog closes smoothly before navigation
       setTimeout(() => {
-        window.location.href = `/api/auth/signout?callbackUrl=/${locale}`;
+      window.location.href = `/api/auth/signout?callbackUrl=/${locale}`;
       }, 150);
     } catch (error) {
       // Error handling - user will be redirected anyway

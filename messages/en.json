@@ -116,6 +116,8 @@
     "personalInformation": "Personal information.",
     "addMore": "Add more",
     "industryInterests": "Industry/Interests",
+    "bio": "Bio",
+    "bioPlaceholder": "Tell us about yourself...",
     "tutor": {
       "introduction": "Introduction",
       "introductionPlaceholder": "Write a brief introduction about yourself...",

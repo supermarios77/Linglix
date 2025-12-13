@@ -396,12 +396,12 @@ export function ProfileClient({ locale, user, studentProfile, tutorProfile }: Pr
         <div className="mb-8 sm:mb-12 flex items-start justify-between gap-4">
           <div>
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-2 text-black dark:text-white tracking-tight">
-              {t("title")}
-            </h1>
-            <p className="text-muted-foreground text-base sm:text-lg">
-              {t("description")}
-            </p>
-          </div>
+            {t("title")}
+          </h1>
+          <p className="text-muted-foreground text-base sm:text-lg">
+            {t("description")}
+          </p>
+        </div>
           {user.role === "TUTOR" && (
             <Link
               href={`/${locale}/tutors/${user.name?.toLowerCase().replace(/\s+/g, "-") || "profile"}`}
@@ -524,7 +524,7 @@ export function ProfileClient({ locale, user, studentProfile, tutorProfile }: Pr
                     <div className="mt-3">
                       {userSuccess && (
                         <div className="flex items-center gap-2 text-sm text-green-600 dark:text-green-400">
-                          <CheckCircle2 className="w-4 h-4" />
+                <CheckCircle2 className="w-4 h-4" />
                           <span>{t("updateSuccess")}</span>
                         </div>
                       )}
@@ -859,7 +859,7 @@ export function ProfileClient({ locale, user, studentProfile, tutorProfile }: Pr
         {user.role === "TUTOR" && (
           <section className="mt-12">
             <div className="space-y-8">
-              <div>
+            <div>
                 <h2 className="text-2xl sm:text-3xl font-bold text-black dark:text-white mb-2">
                   {t("tutorProfile")}
                 </h2>

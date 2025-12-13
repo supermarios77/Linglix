@@ -287,28 +287,28 @@ export function TutorsListingClient({
                   <div className="flex flex-col items-center text-center space-y-4">
                     {/* Circle Avatar */}
                     <div className="relative w-24 h-24 sm:w-28 sm:h-28 rounded-full overflow-hidden shrink-0 border-2 border-[#e5e5e5] dark:border-[#404040] group-hover:border-[#ccf381] transition-colors">
-                      {tutor.image ? (
-                        <Image
-                          src={tutor.image}
-                          alt={tutor.name}
-                          fill
-                          className="object-cover"
-                        />
-                      ) : (
+                    {tutor.image ? (
+                      <Image
+                        src={tutor.image}
+                        alt={tutor.name}
+                        fill
+                        className="object-cover"
+                      />
+                    ) : (
                         <div className="w-full h-full bg-gradient-to-br from-[#f5f5f5] to-[#e5e5e5] dark:from-[#1a1a1a] dark:to-[#0a0a0a] flex items-center justify-center">
                           <span className="text-3xl sm:text-4xl font-bold text-[#111] dark:text-[#ccf381]">
                             {tutor.name.charAt(0).toUpperCase()}
                           </span>
                         </div>
-                      )}
-                    </div>
+                    )}
+                  </div>
 
                     {/* Tutor Info */}
                     <div className="w-full space-y-3">
-                      <div>
-                        <h3 className="text-xl font-bold mb-1 text-black dark:text-white group-hover:text-[#ccf381] transition-colors">
-                          {tutor.name}
-                        </h3>
+                    <div>
+                      <h3 className="text-xl font-bold mb-1 text-black dark:text-white group-hover:text-[#ccf381] transition-colors">
+                        {tutor.name}
+                      </h3>
                         {tutor.specialties && tutor.specialties.length > 0 && (
                           <div className="flex flex-wrap items-center justify-center gap-1.5 mb-2">
                             {tutor.specialties.slice(0, 3).map((specialty, idx) => (
@@ -332,29 +332,29 @@ export function TutorsListingClient({
                       {tutor.bio && (
                         <p className="text-sm text-[#666] dark:text-[#a1a1aa] line-clamp-2 text-left">
                           {tutor.bio}
-                        </p>
+                      </p>
                       )}
 
                       {/* Rating and Price */}
                       <div className="flex items-center justify-between pt-2 border-t border-[#e5e5e5] dark:border-[#262626]">
-                        <div className="flex items-center gap-1.5">
-                          <Star className="w-4 h-4 fill-[#ffb800] text-[#ffb800]" />
-                          <span className="font-bold text-sm text-black dark:text-white">
-                            {tutor.rating.toFixed(1)}
-                          </span>
-                        </div>
-                        <span className="text-sm font-semibold text-black dark:text-white">
-                          ${tutor.hourlyRate}
-                          <span className="text-xs text-[#888] dark:text-[#a1a1aa]">
-                            {t("hourly")}
-                          </span>
+                      <div className="flex items-center gap-1.5">
+                        <Star className="w-4 h-4 fill-[#ffb800] text-[#ffb800]" />
+                        <span className="font-bold text-sm text-black dark:text-white">
+                          {tutor.rating.toFixed(1)}
                         </span>
                       </div>
+                      <span className="text-sm font-semibold text-black dark:text-white">
+                        ${tutor.hourlyRate}
+                        <span className="text-xs text-[#888] dark:text-[#a1a1aa]">
+                          {t("hourly")}
+                        </span>
+                      </span>
+                    </div>
 
                       {/* Sessions */}
                       <div className="flex items-center justify-center gap-2 text-xs text-[#888] dark:text-[#a1a1aa]">
-                        <Users className="w-3.5 h-3.5" />
-                        <span>{tutor.totalSessions}+ {t("sessions")}</span>
+                      <Users className="w-3.5 h-3.5" />
+                      <span>{tutor.totalSessions}+ {t("sessions")}</span>
                       </div>
                     </div>
                   </div>
