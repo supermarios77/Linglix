@@ -67,12 +67,20 @@ export async function GET(request: NextRequest) {
     }
 
     // Fetch existing bookings
+    // Only fetch necessary fields to reduce data transfer
     const existingBookings = await prisma.booking.findMany({
       where: {
         tutorId: validatedQuery.tutorId,
         status: {
           notIn: ["CANCELLED", "REFUNDED"],
         },
+      },
+      select: {
+        id: true,
+        scheduledAt: true,
+        duration: true,
+        tutorId: true,
+        status: true,
       },
     });
 

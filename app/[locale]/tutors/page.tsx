@@ -150,30 +150,10 @@ export default async function TutorsPage({
       bio: tutor.tutorProfile!.bio,
     }));
 
-  // Get all unique languages/specialties for filter
-  const allTutors = await prisma.user.findMany({
-    where: {
-      role: "TUTOR",
-      tutorProfile: {
-        isActive: true,
-      },
-    },
-    include: {
-      tutorProfile: {
-        select: {
-          specialties: true,
-        },
-      },
-    },
-  });
-
-  const allLanguages = Array.from(
-    new Set(
-      allTutors
-        .filter((t) => t.tutorProfile)
-        .flatMap((t) => t.tutorProfile!.specialties)
-    )
-  ).sort();
+  // Get all unique languages/specialties for filter (optimized query)
+  // Use optimized query to avoid fetching all tutor data
+  const { getAllTutorSpecialties } = await import("@/lib/db/query-optimization");
+  const allLanguages = await getAllTutorSpecialties();
 
   const totalPages = Math.ceil(totalCount / perPage);
   const session = await auth();
