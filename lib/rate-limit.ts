@@ -161,9 +161,9 @@ function createRateLimiter(type: RateLimitType): Ratelimit | null {
   if (process.env.NODE_ENV === "production") {
     // In production, we should log this properly, but logger might cause circular dependency
     // This is a configuration warning, so it's acceptable to use console.warn here
-    console.warn(
+  console.warn(
       `[RATE_LIMIT] Rate limiting disabled for ${type}. Set UPSTASH_REDIS_REST_URL and UPSTASH_REDIS_REST_TOKEN to enable.`
-    );
+  );
   }
   
   return null;

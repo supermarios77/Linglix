@@ -104,7 +104,7 @@ export default async function HomePage({
     },
     {
       question: "How much do language lessons cost?",
-      answer: "Lesson prices vary by tutor and range from $15 to $50 per hour. Most tutors offer 30-minute and 60-minute sessions. You can filter tutors by price range on our tutors page.",
+      answer: "Lesson prices are a fixed 30$ per hour.",
     },
     {
       question: "How do I book a language lesson?",

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Star, Sparkles, CheckCircle2, ArrowRight } from "lucide-react";
+import { Star, Sparkles, CheckCircle2, ArrowRight, Users } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import { prisma } from "@/lib/db/prisma";
 import { slugify } from "@/lib/utils/slug";

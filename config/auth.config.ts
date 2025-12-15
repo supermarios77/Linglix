@@ -45,7 +45,7 @@ export const authConfig = {
             );
           } else {
             // Development logging
-            console.error("Failed to auto-verify OAuth user email:", error);
+          console.error("Failed to auto-verify OAuth user email:", error);
           }
         }
       }
