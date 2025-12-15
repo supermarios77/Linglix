@@ -1,6 +1,5 @@
 import Link from "next/link";
-import Image from "next/image";
-import { Star, Users, Sparkles, CheckCircle2, ArrowRight } from "lucide-react";
+import { Star, Sparkles, CheckCircle2, ArrowRight } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import { prisma } from "@/lib/db/prisma";
 import { slugify } from "@/lib/utils/slug";
@@ -162,29 +161,16 @@ export async function FeaturedTutors({ locale }: FeaturedTutorsProps) {
         
         <Link href={`/${locale}/tutors/${tutor.slug}`}>
           <div className="group bg-white dark:bg-[#0a0a0a] rounded-2xl border border-[#e5e5e5] dark:border-[#1a1a1a] overflow-hidden hover:shadow-lg transition-all duration-300 hover:-translate-y-0.5">
-            <div className="flex flex-col md:flex-row">
-              {/* Image Section */}
-              <div className="relative w-full md:w-80 h-64 md:h-auto bg-[#f5f5f5] dark:bg-[#121212] flex-shrink-0">
-                {tutor.image ? (
-                  <Image
-                    src={tutor.image}
-                    alt={tutor.name || t("trending.tutorFallback")}
-                    fill
-                    className="object-cover"
-                  />
-                ) : (
-                  <div className="w-full h-full flex items-center justify-center">
-                    <Users className="w-16 h-16 text-[#ccc] dark:text-[#404040]" />
-                  </div>
-                )}
-                {/* Featured Badge */}
-                <div className="absolute top-4 left-4 px-3 py-1 bg-accent text-accent-foreground text-xs font-semibold rounded-full">
+            <div className="p-6 sm:p-8 flex flex-col justify-between">
+              {/* Featured Badge */}
+              <div className="mb-4">
+                <div className="inline-block px-3 py-1 bg-accent text-accent-foreground text-xs font-semibold rounded-full">
                   {t("trending.featuredTutor")}
                 </div>
               </div>
               
               {/* Content Section */}
-              <div className="flex-1 p-6 sm:p-8 flex flex-col justify-between">
+              <div className="flex-1 flex flex-col justify-between">
                 <div>
                   <h2 className="text-2xl sm:text-3xl font-bold text-black dark:text-white mb-2">
                     {tutor.name}
@@ -251,13 +237,6 @@ export async function FeaturedTutors({ locale }: FeaturedTutorsProps) {
           {tutorData.map((tutor) => (
             <Link key={tutor.id} href={`/${locale}/tutors/${tutor.slug}`}>
               <div className="group bg-white dark:bg-gradient-to-b from-[#1a1a1a] to-[#121212] rounded-[24px] sm:rounded-[32px] p-6 sm:p-8 transition-all duration-300 cursor-pointer border border-[#e5e5e5] dark:border-[#262626] hover:-translate-y-2 hover:border-[#d4d4d4] dark:hover:border-[#404040] hover:shadow-[0_30px_60px_rgba(0,0,0,0.12)]">
-                <div className="relative w-full h-64 sm:h-72 md:h-80 rounded-[20px] sm:rounded-[24px] overflow-hidden mb-4 sm:mb-6 bg-gradient-to-br from-[#f5f5f5] to-[#e5e5e5] dark:from-[#1a1a1a] dark:to-[#0a0a0a] flex items-center justify-center border border-[#e5e5e5] dark:border-[#262626]">
-                  {tutor.image ? (
-                    <Image src={tutor.image} alt={tutor.name || t("trending.tutorFallback")} fill className="object-cover" />
-                  ) : (
-                    <Users className="w-20 h-20 sm:w-24 sm:h-24 text-[#ccc] dark:text-[#404040]" />
-                  )}
-                </div>
                 <div className="space-y-2 sm:space-y-3">
                   <div>
                     <h4 className="text-xl sm:text-2xl font-bold mb-1 text-black dark:text-white">{tutor.name}</h4>
@@ -296,13 +275,6 @@ export async function FeaturedTutors({ locale }: FeaturedTutorsProps) {
           {/* Large Card */}
           <Link href={`/${locale}/tutors/${tutorData[0].slug}`} className="md:col-span-2">
             <div className="group bg-white dark:bg-gradient-to-b from-[#1a1a1a] to-[#121212] rounded-[24px] sm:rounded-[32px] p-6 sm:p-8 transition-all duration-300 cursor-pointer border border-[#e5e5e5] dark:border-[#262626] hover:-translate-y-2 hover:border-[#d4d4d4] dark:hover:border-[#404040] hover:shadow-[0_30px_60px_rgba(0,0,0,0.12)] h-full">
-              <div className="relative w-full h-56 sm:h-64 rounded-[20px] sm:rounded-[24px] overflow-hidden mb-4 sm:mb-6 bg-gradient-to-br from-[#f5f5f5] to-[#e5e5e5] dark:from-[#1a1a1a] dark:to-[#0a0a0a] flex items-center justify-center border border-[#e5e5e5] dark:border-[#262626]">
-                {tutorData[0].image ? (
-                  <Image src={tutorData[0].image} alt={tutorData[0].name || t("trending.tutorFallback")} fill className="object-cover" />
-                ) : (
-                  <Users className="w-20 h-20 sm:w-24 sm:h-24 text-[#ccc] dark:text-[#404040]" />
-                )}
-              </div>
               <div className="space-y-2 sm:space-y-3">
                 <div>
                   <h4 className="text-xl sm:text-2xl font-bold mb-1 text-black dark:text-white">{tutorData[0].name}</h4>
@@ -324,13 +296,6 @@ export async function FeaturedTutors({ locale }: FeaturedTutorsProps) {
             {tutorData.slice(1, 3).map((tutor) => (
               <Link key={tutor.id} href={`/${locale}/tutors/${tutor.slug}`}>
                 <div className="group bg-white dark:bg-gradient-to-b from-[#1a1a1a] to-[#121212] rounded-[20px] sm:rounded-[32px] p-4 sm:p-6 transition-all duration-300 cursor-pointer border border-[#e5e5e5] dark:border-[#262626] hover:-translate-y-1 hover:border-[#d4d4d4] dark:hover:border-[#404040] hover:shadow-[0_20px_40px_rgba(0,0,0,0.08)]">
-                  <div className="relative w-full h-32 sm:h-40 rounded-[16px] sm:rounded-[20px] overflow-hidden mb-3 sm:mb-4 bg-gradient-to-br from-[#f5f5f5] to-[#e5e5e5] dark:from-[#1a1a1a] dark:to-[#0a0a0a] flex items-center justify-center border border-[#e5e5e5] dark:border-[#262626]">
-                    {tutor.image ? (
-                      <Image src={tutor.image} alt={tutor.name || t("trending.tutorFallback")} fill className="object-cover" />
-                    ) : (
-                      <Users className="w-12 h-12 sm:w-16 sm:h-16 text-[#ccc] dark:text-[#404040]" />
-                    )}
-                  </div>
                   <div className="space-y-1.5 sm:space-y-2">
                     <div>
                       <h4 className="text-base sm:text-lg font-bold mb-0.5 text-black dark:text-white">{tutor.name}</h4>
@@ -369,13 +334,6 @@ export async function FeaturedTutors({ locale }: FeaturedTutorsProps) {
         {tutorData.map((tutor) => (
           <Link key={tutor.id} href={`/${locale}/tutors/${tutor.id}`}>
             <div className="group bg-white dark:bg-gradient-to-b from-[#1a1a1a] to-[#121212] rounded-[24px] sm:rounded-[32px] p-5 sm:p-6 transition-all duration-300 cursor-pointer border border-[#e5e5e5] dark:border-[#262626] hover:-translate-y-0.5 hover:border-[#d4d4d4] dark:hover:border-[#404040] hover:shadow-[0_20px_40px_rgba(0,0,0,0.08)]">
-              <div className="relative w-full h-48 sm:h-56 md:h-60 rounded-[20px] sm:rounded-[24px] overflow-hidden mb-4 sm:mb-5 bg-gradient-to-br from-[#f5f5f5] to-[#e5e5e5] dark:from-[#1a1a1a] dark:to-[#0a0a0a] flex items-center justify-center border border-[#e5e5e5] dark:border-[#262626]">
-                {tutor.image ? (
-                  <Image src={tutor.image} alt={tutor.name || t("trending.tutorFallback")} fill className="object-cover" />
-                ) : (
-                  <Users className="w-14 h-14 sm:w-16 sm:h-16 text-[#ccc] dark:text-[#404040]" />
-                )}
-              </div>
               <div className="flex justify-between items-start">
                 <div>
                   <span className="font-semibold text-sm sm:text-base block mb-1 text-black dark:text-white">{tutor.name}</span>
