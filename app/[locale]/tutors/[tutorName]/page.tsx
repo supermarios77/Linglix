@@ -29,23 +29,27 @@ export async function generateMetadata({
   const t = await getTranslations("tutor");
   const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://linglix.com";
 
-  // Find tutor by slug
-  const tutorProfiles = await prisma.tutorProfile.findMany({
+  // Find tutor by slug - query from User to avoid relation filtering issues
+  const users = await prisma.user.findMany({
     where: {
-      isActive: true,
-      approvalStatus: "APPROVED",
-      user: {
-        role: "TUTOR",
+      role: "TUTOR",
+      tutorProfile: {
+        isActive: true,
+        approvalStatus: "APPROVED",
       },
     },
     include: {
-      user: true,
+      tutorProfile: true,
     },
   });
 
-  const tutorProfile = tutorProfiles.find(
-    (tp) => tp.user.name && slugify(tp.user.name) === tutorName
-  );
+  const tutorProfile = users
+    .filter((u) => u.tutorProfile && u.name)
+    .map((u) => ({
+      user: u,
+      tutorProfile: u.tutorProfile!,
+    }))
+    .find((tp) => slugify(tp.user.name!) === tutorName);
 
   if (!tutorProfile) {
     return {
@@ -114,32 +118,37 @@ export default async function TutorDetailPage({
   const { locale, tutorName } = await params;
   const t = await getTranslations("tutor");
 
-  // Find tutor by slug - only show approved and active tutors
-  const tutorProfiles = await prisma.tutorProfile.findMany({
+  // Find tutor by slug - query from User to avoid relation filtering issues
+  const users = await prisma.user.findMany({
     where: {
-      isActive: true,
-      approvalStatus: "APPROVED", // Only show approved tutors
-      user: {
-        role: "TUTOR",
+      role: "TUTOR",
+      tutorProfile: {
+        isActive: true,
+        approvalStatus: "APPROVED",
       },
     },
     include: {
-      user: true,
-      availability: {
-        where: {
-          isActive: true,
-        },
-        orderBy: {
-          dayOfWeek: "asc",
+      tutorProfile: {
+        include: {
+          availability: {
+            where: {
+              isActive: true,
+            },
+            orderBy: {
+              dayOfWeek: "asc",
+            },
+          },
         },
       },
     },
   });
 
-  const tutors = tutorProfiles.map((tp) => ({
-    ...tp.user,
-    tutorProfile: tp,
-  }));
+  const tutors = users
+    .filter((u) => u.tutorProfile && u.name)
+    .map((u) => ({
+      ...u,
+      tutorProfile: u.tutorProfile!,
+    }));
 
   const tutor = tutors.find(
     (t) => t.name && slugify(t.name) === tutorName
