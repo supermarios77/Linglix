@@ -275,7 +275,7 @@ export function AvailabilityManager({ locale }: AvailabilityManagerProps) {
               <DialogTrigger asChild>
                 <Button
                   onClick={handleAdd}
-                  className="rounded-full bg-[#111] dark:bg-[#ccf381] text-white dark:text-black hover:bg-[#222] dark:hover:bg-[#d4f89a] transition-all"
+                  className="rounded-full bg-[#111] dark:bg-accent text-white dark:text-black hover:bg-[#222] dark:hover:bg-brand-primary-light transition-all"
                 >
                   <Plus className="w-4 h-4 mr-2" />
                   {t("add")}
@@ -372,7 +372,7 @@ export function AvailabilityManager({ locale }: AvailabilityManagerProps) {
                     <Button
                       type="submit"
                       disabled={isSubmitting}
-                      className="rounded-full bg-[#111] dark:bg-[#ccf381] text-white dark:text-black hover:bg-[#222] dark:hover:bg-[#d4f89a]"
+                      className="rounded-full bg-[#111] dark:bg-accent text-white dark:text-black hover:bg-[#222] dark:hover:bg-brand-primary-light"
                     >
                       {isSubmitting ? (
                         <>
@@ -438,7 +438,7 @@ export function AvailabilityManager({ locale }: AvailabilityManagerProps) {
                               variant={item.isActive ? "default" : "outline"}
                               className={`rounded-full ${
                                 item.isActive
-                                  ? "bg-green-500/20 text-green-700 dark:text-green-300 border-green-500/50"
+                                  ? "bg-yellow-500/20 text-yellow-700 dark:text-yellow-300 border-yellow-500/50"
                                   : "bg-gray-500/20 text-gray-700 dark:text-gray-300 border-gray-500/50"
                               }`}
                             >

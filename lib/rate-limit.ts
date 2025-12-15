@@ -156,9 +156,15 @@ function createRateLimiter(type: RateLimitType): Ratelimit | null {
   
   // Production without Upstash: return null (rate limiting disabled)
   // This allows the app to work but logs a warning
-  console.warn(
-    `Rate limiting disabled for ${type}. Set UPSTASH_REDIS_REST_URL and UPSTASH_REDIS_REST_TOKEN to enable.`
-  );
+  // Note: logger is not imported here to avoid circular dependencies
+  // This warning is acceptable as it's a configuration issue, not a runtime error
+  if (process.env.NODE_ENV === "production") {
+    // In production, we should log this properly, but logger might cause circular dependency
+    // This is a configuration warning, so it's acceptable to use console.warn here
+    console.warn(
+      `[RATE_LIMIT] Rate limiting disabled for ${type}. Set UPSTASH_REDIS_REST_URL and UPSTASH_REDIS_REST_TOKEN to enable.`
+    );
+  }
   
   return null;
 }

@@ -233,7 +233,7 @@ export function tutorApprovalTemplate({
   
   const content = approved
     ? `
-      <h2 style="margin-top: 0; color: #10b981;">Your Tutor Profile Has Been Approved!</h2>
+      <h2 style="margin-top: 0; color: #FFE600;">Your Tutor Profile Has Been Approved!</h2>
       <p>${greeting}</p>
       <p>Great news! Your tutor profile has been reviewed and approved. You can now start accepting bookings from students.</p>
       <div style="text-align: center;">
@@ -310,7 +310,7 @@ export function bookingConfirmationTemplate({
   // For students: "Your session with [Tutor]"
   // For tutors: "Your session with [Student]" (tutorName is actually student name in this case)
   const content = `
-    <h2 style="margin-top: 0; color: #10b981;">Booking Confirmed!</h2>
+    <h2 style="margin-top: 0; color: #FFE600;">Booking Confirmed!</h2>
     <p>${greeting}</p>
     <p>Your session with <strong>${tutorName}</strong> has been confirmed.</p>
     <div style="background-color: #f5f5f5; padding: 20px; border-radius: 8px; margin: 24px 0;">

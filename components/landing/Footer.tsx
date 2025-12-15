@@ -28,7 +28,7 @@ export function Footer({ locale, session }: FooterProps) {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 sm:gap-10 md:gap-12 mb-10 sm:mb-12 md:mb-16">
           <div className="sm:col-span-2 md:col-span-1">
             <div className="font-bold text-2xl sm:text-3xl tracking-[-0.03em] mb-3 sm:mb-4">
-              Linglix<span className="text-[#ccf381]">.</span>
+              Linglix<span className="text-accent">.</span>
             </div>
             <p className="text-xs sm:text-sm text-[#a1a1aa] leading-relaxed mb-4 sm:mb-6">
               {t("description")}

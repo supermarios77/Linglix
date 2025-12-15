@@ -272,7 +272,7 @@ export function VideoCallClient({
       <div className="flex items-center justify-center min-h-screen">
         <Card className="p-8 bg-white/90 dark:bg-[#1a1a1a]/90 backdrop-blur-md border border-[#e5e5e5] dark:border-[#262626] rounded-2xl">
           <div className="flex flex-col items-center gap-4">
-            <Loader2 className="w-8 h-8 animate-spin text-[#ccf381]" />
+            <Loader2 className="w-8 h-8 animate-spin text-accent" />
             <p className="text-lg font-medium text-black dark:text-white">
               {t("connecting")}
             </p>
@@ -291,7 +291,7 @@ export function VideoCallClient({
       <div className="flex items-center justify-center min-h-screen">
         <Card className="p-8 bg-white/90 dark:bg-[#1a1a1a]/90 backdrop-blur-md border border-[#e5e5e5] dark:border-[#262626] rounded-2xl">
           <div className="flex flex-col items-center gap-4">
-            <Loader2 className="w-8 h-8 animate-spin text-[#ccf381]" />
+            <Loader2 className="w-8 h-8 animate-spin text-accent" />
             <p className="text-lg font-medium text-black dark:text-white">
               {t("joining")}
             </p>
@@ -476,14 +476,14 @@ function VideoCallUI({
                   height={52}
                   className="rounded-full border-2 border-[#e5e5e5] dark:border-[#262626] shadow-md"
                 />
-                <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white dark:border-[#1a1a1a] animate-pulse"></div>
+                <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-yellow-500 rounded-full border-2 border-white dark:border-[#1a1a1a] animate-pulse"></div>
               </div>
             ) : (
               <div className="relative">
-                <div className="w-[52px] h-[52px] rounded-full bg-gradient-to-br from-[#ccf381] to-[#a8d46f] flex items-center justify-center border-2 border-[#e5e5e5] dark:border-[#262626] shadow-md">
+                <div className="w-[52px] h-[52px] rounded-full bg-gradient-to-br from-[#FFE600] to-[#FFD700] flex items-center justify-center border-2 border-[#e5e5e5] dark:border-[#262626] shadow-md">
                   <User className="w-6 h-6 text-black" />
                 </div>
-                <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white dark:border-[#1a1a1a] animate-pulse"></div>
+                <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-yellow-500 rounded-full border-2 border-white dark:border-[#1a1a1a] animate-pulse"></div>
               </div>
             )}
             <div>
@@ -491,7 +491,7 @@ function VideoCallUI({
                 {displayParticipant.name}
               </h1>
               <p className="text-xs text-[#666] dark:text-[#aaa] flex items-center gap-1.5">
-                <span className="w-1.5 h-1.5 rounded-full bg-green-500"></span>
+                <span className="w-1.5 h-1.5 rounded-full bg-yellow-500"></span>
                 {isTutor ? "Student" : "Tutor"}
               </p>
             </div>
@@ -512,11 +512,11 @@ function VideoCallUI({
             variant="outline"
             className={
               callingState === "joined"
-                ? "bg-green-500/10 text-green-700 dark:text-green-300 border-green-500/30 shadow-md px-3 py-1.5"
+                ? "bg-yellow-500/10 text-yellow-700 dark:text-yellow-300 border-yellow-500/30 shadow-md px-3 py-1.5"
                 : "bg-yellow-500/10 text-yellow-700 dark:text-yellow-300 border-yellow-500/30 shadow-md px-3 py-1.5"
             }
           >
-            <div className={`w-2 h-2 rounded-full mr-2 ${callingState === "joined" ? "bg-green-500 animate-pulse" : "bg-yellow-500 animate-pulse"}`} />
+            <div className={`w-2 h-2 rounded-full mr-2 ${callingState === "joined" ? "bg-yellow-500 animate-pulse" : "bg-yellow-500 animate-pulse"}`} />
             {callingState === "joined" ? t("connected") : t("connecting")}
           </Badge>
         </div>
@@ -530,8 +530,8 @@ function VideoCallUI({
           <div className="flex items-center justify-center h-full">
             <div className="text-center">
               <div className="relative mb-6">
-                <Loader2 className="w-12 h-12 animate-spin text-[#ccf381] mx-auto" />
-                <div className="absolute inset-0 w-12 h-12 border-4 border-[#ccf381]/20 rounded-full mx-auto" />
+                <Loader2 className="w-12 h-12 animate-spin text-accent mx-auto" />
+                <div className="absolute inset-0 w-12 h-12 border-4 border-accent/20 rounded-full mx-auto" />
               </div>
               <p className="text-white text-lg font-medium">
                 {callingState === "joining" 
@@ -597,7 +597,7 @@ function VideoCallUI({
               disabled={!screenShare}
               className={`h-14 w-14 sm:h-16 sm:w-16 rounded-full transition-all duration-200 shadow-xl hover:scale-110 active:scale-95 ${
                 isScreenSharing
-                  ? "bg-[#ccf381] hover:bg-[#d4f89a] text-black border-2 border-[#ccf381] hover:shadow-[0_0_20px_rgba(204,243,129,0.5)]"
+                  ? "bg-accent hover:bg-brand-primary-light text-accent-foreground border-2 border-accent hover:shadow-[0_0_20px_rgba(255,230,0,0.5)]"
                   : "bg-white dark:bg-[#1a1a1a] text-black dark:text-white border-2 border-[#e5e5e5] dark:border-[#262626] hover:bg-[#f5f5f5] dark:hover:bg-[#262626] hover:shadow-2xl"
               }`}
               aria-label={isScreenSharing ? "Stop sharing screen" : "Share screen"}
@@ -664,7 +664,7 @@ function CustomVideoLayout({ otherParticipant }: CustomVideoLayoutProps) {
             />
           ) : (
             <div className="h-full w-full flex items-center justify-center bg-gradient-to-br from-[#1a1a1a] to-[#0a0a0a]">
-              <div className="w-40 h-40 rounded-full bg-gradient-to-br from-[#ccf381] to-[#a8d46f] flex items-center justify-center border-4 border-[#ccf381]/30 shadow-2xl">
+              <div className="w-40 h-40 rounded-full bg-gradient-to-br from-[#FFE600] to-[#FFD700] flex items-center justify-center border-4 border-accent/30 shadow-2xl">
                 <User className="w-20 h-20 text-black" />
               </div>
             </div>
@@ -673,13 +673,13 @@ function CustomVideoLayout({ otherParticipant }: CustomVideoLayoutProps) {
           <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/60 to-transparent p-6 backdrop-blur-sm">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#ccf381] to-[#a8d46f] flex items-center justify-center border-2 border-white/30 shadow-lg">
+                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#FFE600] to-[#FFD700] flex items-center justify-center border-2 border-white/30 shadow-lg">
                   <User className="w-6 h-6 text-black" />
                 </div>
                 <div>
                   <p className="text-white font-semibold text-lg">You</p>
                   <p className="text-white/70 text-sm flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-green-500"></span>
+                    <span className="w-2 h-2 rounded-full bg-yellow-500"></span>
                     Waiting for others to join...
                   </p>
                 </div>
@@ -713,7 +713,7 @@ function CustomVideoLayout({ otherParticipant }: CustomVideoLayoutProps) {
           {/* Participant Info Overlay */}
           <div className="absolute top-4 left-4 bg-black/70 backdrop-blur-sm rounded-lg px-4 py-2">
             <div className="flex items-center gap-2">
-              <Monitor className="w-4 h-4 text-[#ccf381]" />
+              <Monitor className="w-4 h-4 text-accent" />
               <p className="text-white font-semibold text-sm">
                 {sharingParticipantName} is sharing screen
               </p>
@@ -741,7 +741,7 @@ function CustomVideoLayout({ otherParticipant }: CustomVideoLayoutProps) {
     return (
       <div className="h-full w-full grid grid-cols-1 lg:grid-cols-2 gap-4 p-4">
         {/* Remote Participant (Main View) */}
-        <div className="relative rounded-3xl overflow-hidden bg-gradient-to-br from-[#1a1a1a] to-[#0a0a0a] shadow-2xl border-2 border-[#262626]/50 group hover:border-[#ccf381]/40 hover:shadow-[0_0_30px_rgba(204,243,129,0.2)] transition-all duration-300">
+        <div className="relative rounded-3xl overflow-hidden bg-gradient-to-br from-[#1a1a1a] to-[#0a0a0a] shadow-2xl border-2 border-[#262626]/50 group hover:border-accent/40 hover:shadow-[0_0_30px_rgba(255,230,0,0.2)] transition-all duration-300">
           {remoteHasVideo ? (
             <ParticipantView 
               participant={remoteParticipant} 
@@ -755,10 +755,10 @@ function CustomVideoLayout({ otherParticipant }: CustomVideoLayoutProps) {
                   alt={remoteDisplayName}
                   width={120}
                   height={120}
-                  className="rounded-full border-4 border-[#ccf381]/30"
+                  className="rounded-full border-4 border-accent/30"
                 />
               ) : (
-                <div className="w-32 h-32 rounded-full bg-gradient-to-br from-[#ccf381] to-[#a8d46f] flex items-center justify-center border-4 border-[#ccf381]/30 shadow-2xl">
+                <div className="w-32 h-32 rounded-full bg-gradient-to-br from-[#FFE600] to-[#FFD700] flex items-center justify-center border-4 border-accent/30 shadow-2xl">
                   <User className="w-16 h-16 text-black" />
                 </div>
               )}
@@ -777,14 +777,14 @@ function CustomVideoLayout({ otherParticipant }: CustomVideoLayoutProps) {
                     className="rounded-full border-2 border-white/30 shadow-lg"
                   />
                 ) : (
-                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#ccf381] to-[#a8d46f] flex items-center justify-center border-2 border-white/30 shadow-lg">
+                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#FFE600] to-[#FFD700] flex items-center justify-center border-2 border-white/30 shadow-lg">
                     <User className="w-5 h-5 text-black" />
                   </div>
                 )}
                 <div>
                   <p className="text-white font-semibold text-base">{remoteDisplayName}</p>
                   <p className="text-white/70 text-xs flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                    <span className="w-2 h-2 rounded-full bg-yellow-500 animate-pulse"></span>
                     Connected
                   </p>
                 </div>
@@ -800,7 +800,7 @@ function CustomVideoLayout({ otherParticipant }: CustomVideoLayoutProps) {
         </div>
 
         {/* Local Participant (Self View) */}
-        <div className="relative rounded-3xl overflow-hidden bg-gradient-to-br from-[#1a1a1a] to-[#0a0a0a] shadow-2xl border-2 border-[#262626]/50 group hover:border-[#ccf381]/40 hover:shadow-[0_0_30px_rgba(204,243,129,0.2)] transition-all duration-300">
+        <div className="relative rounded-3xl overflow-hidden bg-gradient-to-br from-[#1a1a1a] to-[#0a0a0a] shadow-2xl border-2 border-[#262626]/50 group hover:border-accent/40 hover:shadow-[0_0_30px_rgba(255,230,0,0.2)] transition-all duration-300">
           {localParticipant && localHasVideo ? (
             <ParticipantView 
               participant={localParticipant} 
@@ -808,7 +808,7 @@ function CustomVideoLayout({ otherParticipant }: CustomVideoLayoutProps) {
             />
           ) : (
             <div className="h-full w-full flex items-center justify-center bg-gradient-to-br from-[#1a1a1a] to-[#0a0a0a]">
-              <div className="w-32 h-32 rounded-full bg-gradient-to-br from-[#ccf381] to-[#a8d46f] flex items-center justify-center border-4 border-[#ccf381]/30 shadow-2xl">
+              <div className="w-32 h-32 rounded-full bg-gradient-to-br from-[#FFE600] to-[#FFD700] flex items-center justify-center border-4 border-accent/30 shadow-2xl">
                 <User className="w-16 h-16 text-black" />
               </div>
             </div>
@@ -817,13 +817,13 @@ function CustomVideoLayout({ otherParticipant }: CustomVideoLayoutProps) {
           <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/60 to-transparent p-4 backdrop-blur-sm">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#ccf381] to-[#a8d46f] flex items-center justify-center border-2 border-white/30 shadow-lg">
+                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#FFE600] to-[#FFD700] flex items-center justify-center border-2 border-white/30 shadow-lg">
                   <User className="w-5 h-5 text-black" />
                 </div>
                 <div>
                   <p className="text-white font-semibold text-base">You</p>
                   <p className="text-white/70 text-xs flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-green-500"></span>
+                    <span className="w-2 h-2 rounded-full bg-yellow-500"></span>
                     Local
                   </p>
                 </div>
@@ -850,7 +850,7 @@ function CustomVideoLayout({ otherParticipant }: CustomVideoLayoutProps) {
           return (
             <div
               key={participant.sessionId}
-              className="relative rounded-3xl overflow-hidden bg-gradient-to-br from-[#1a1a1a] to-[#0a0a0a] shadow-2xl border-2 border-[#262626]/50 group hover:border-[#ccf381]/40 hover:shadow-[0_0_30px_rgba(204,243,129,0.2)] transition-all duration-300"
+              className="relative rounded-3xl overflow-hidden bg-gradient-to-br from-[#1a1a1a] to-[#0a0a0a] shadow-2xl border-2 border-[#262626]/50 group hover:border-accent/40 hover:shadow-[0_0_30px_rgba(255,230,0,0.2)] transition-all duration-300"
             >
               {participantHasVideo ? (
                 <ParticipantView 
@@ -859,7 +859,7 @@ function CustomVideoLayout({ otherParticipant }: CustomVideoLayoutProps) {
                 />
               ) : (
                 <div className="h-full w-full flex items-center justify-center bg-gradient-to-br from-[#1a1a1a] to-[#0a0a0a]">
-                  <div className="w-24 h-24 rounded-full bg-gradient-to-br from-[#ccf381] to-[#a8d46f] flex items-center justify-center border-4 border-[#ccf381]/30 shadow-xl">
+                  <div className="w-24 h-24 rounded-full bg-gradient-to-br from-[#FFE600] to-[#FFD700] flex items-center justify-center border-4 border-accent/30 shadow-xl">
                     <User className="w-12 h-12 text-black" />
                   </div>
                 </div>
@@ -879,7 +879,7 @@ function CustomVideoLayout({ otherParticipant }: CustomVideoLayoutProps) {
           );
         })}
         {localParticipant && (
-          <div className="relative rounded-3xl overflow-hidden bg-gradient-to-br from-[#1a1a1a] to-[#0a0a0a] shadow-2xl border-2 border-[#262626]/50 group hover:border-[#ccf381]/40 hover:shadow-[0_0_30px_rgba(204,243,129,0.2)] transition-all duration-300">
+          <div className="relative rounded-3xl overflow-hidden bg-gradient-to-br from-[#1a1a1a] to-[#0a0a0a] shadow-2xl border-2 border-[#262626]/50 group hover:border-accent/40 hover:shadow-[0_0_30px_rgba(255,230,0,0.2)] transition-all duration-300">
             {hasVideo(localParticipant) ? (
               <ParticipantView 
                 participant={localParticipant} 
@@ -887,7 +887,7 @@ function CustomVideoLayout({ otherParticipant }: CustomVideoLayoutProps) {
               />
             ) : (
               <div className="h-full w-full flex items-center justify-center bg-gradient-to-br from-[#1a1a1a] to-[#0a0a0a]">
-                <div className="w-24 h-24 rounded-full bg-gradient-to-br from-[#ccf381] to-[#a8d46f] flex items-center justify-center border-4 border-[#ccf381]/30 shadow-xl">
+                <div className="w-24 h-24 rounded-full bg-gradient-to-br from-[#FFE600] to-[#FFD700] flex items-center justify-center border-4 border-accent/30 shadow-xl">
                   <User className="w-12 h-12 text-black" />
                 </div>
               </div>

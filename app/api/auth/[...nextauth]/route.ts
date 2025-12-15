@@ -132,10 +132,9 @@ const { handlers } = NextAuth({
               },
             });
           } else {
-            // In development, log to console; in production, Sentry handles it
-            if (process.env.NODE_ENV === "development") {
-              console.error("Auth error:", error);
-            }
+            // In development, log using logger; in production, Sentry handles it
+            const { logger } = await import("@/lib/logger");
+            logger.error("Auth error", error instanceof Error ? error : new Error(String(error)));
           }
           // Return null to indicate authentication failure
           // Don't leak error details to prevent information disclosure

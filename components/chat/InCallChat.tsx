@@ -152,7 +152,7 @@ export function InCallChat({
     return (
       <Button
         onClick={onToggle}
-        className="fixed bottom-24 right-6 z-50 h-14 w-14 rounded-full bg-[#ccf381] hover:bg-[#d4f89a] text-black shadow-xl hover:shadow-2xl transition-all"
+        className="fixed bottom-24 right-6 z-50 h-14 w-14 rounded-full bg-accent hover:bg-brand-primary-light text-accent-foreground shadow-xl hover:shadow-2xl transition-all"
         aria-label="Open chat"
       >
         <MessageSquare className="w-6 h-6" />

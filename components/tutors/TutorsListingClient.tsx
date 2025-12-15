@@ -130,7 +130,7 @@ export function TutorsListingClient({
                 placeholder={t("searchPlaceholder")}
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="pl-12 pr-4 py-6 text-base bg-white dark:bg-[#1a1a1a] border-2 border-[#e5e5e5] dark:border-[#262626] rounded-full focus:border-[#111] dark:focus:border-[#ccf381]"
+                className="pl-12 pr-4 py-6 text-base bg-white dark:bg-[#1a1a1a] border-2 border-[#e5e5e5] dark:border-[#262626] rounded-full focus:border-[#111] dark:focus:border-accent"
               />
             </div>
           </form>
@@ -141,12 +141,12 @@ export function TutorsListingClient({
               type="button"
               variant="outline"
               onClick={() => setShowFilters(!showFilters)}
-              className="inline-flex items-center gap-2 border-2 border-[#e5e5e5] dark:border-[#262626] hover:border-[#111] dark:hover:border-[#ccf381]"
+              className="inline-flex items-center gap-2 border-2 border-[#e5e5e5] dark:border-[#262626] hover:border-[#111] dark:hover:border-accent"
             >
               <Filter className="w-4 h-4" />
               {t("filterBy")}
               {hasActiveFilters && (
-                <span className="ml-1 px-2 py-0.5 bg-[#ccf381] text-black rounded-full text-xs font-semibold">
+                <span className="ml-1 px-2 py-0.5 bg-accent text-black rounded-full text-xs font-semibold">
                   {[
                     search && "1",
                     language && "1",
@@ -246,7 +246,7 @@ export function TutorsListingClient({
               <Button
                 type="button"
                 onClick={applyFilters}
-                className="w-full sm:w-auto bg-[#111] dark:bg-[#ccf381] text-white dark:text-black hover:bg-[#222] dark:hover:bg-[#d4f89a]"
+                className="w-full sm:w-auto bg-[#111] dark:bg-accent text-white dark:text-black hover:bg-[#222] dark:hover:bg-brand-primary-light"
               >
                 {t("applyFilters")}
               </Button>
@@ -286,7 +286,7 @@ export function TutorsListingClient({
                 >
                   <div className="flex flex-col items-center text-center space-y-4">
                     {/* Circle Avatar */}
-                    <div className="relative w-24 h-24 sm:w-28 sm:h-28 rounded-full overflow-hidden shrink-0 border-2 border-[#e5e5e5] dark:border-[#404040] group-hover:border-[#ccf381] transition-colors">
+                    <div className="relative w-24 h-24 sm:w-28 sm:h-28 rounded-full overflow-hidden shrink-0 border-2 border-[#e5e5e5] dark:border-[#404040] group-hover:border-accent transition-colors">
                     {tutor.image ? (
                       <Image
                         src={tutor.image}
@@ -296,7 +296,7 @@ export function TutorsListingClient({
                       />
                     ) : (
                         <div className="w-full h-full bg-gradient-to-br from-[#f5f5f5] to-[#e5e5e5] dark:from-[#1a1a1a] dark:to-[#0a0a0a] flex items-center justify-center">
-                          <span className="text-3xl sm:text-4xl font-bold text-[#111] dark:text-[#ccf381]">
+                          <span className="text-3xl sm:text-4xl font-bold text-[#111] dark:text-accent">
                             {tutor.name.charAt(0).toUpperCase()}
                           </span>
                         </div>
@@ -306,7 +306,7 @@ export function TutorsListingClient({
                     {/* Tutor Info */}
                     <div className="w-full space-y-3">
                     <div>
-                      <h3 className="text-xl font-bold mb-1 text-black dark:text-white group-hover:text-[#ccf381] transition-colors">
+                      <h3 className="text-xl font-bold mb-1 text-black dark:text-white group-hover:text-accent transition-colors">
                         {tutor.name}
                       </h3>
                         {tutor.specialties && tutor.specialties.length > 0 && (
@@ -393,7 +393,7 @@ export function TutorsListingClient({
                           onClick={() => goToPage(page)}
                           className={
                             currentPage === page
-                              ? "bg-[#111] dark:bg-[#ccf381] text-white dark:text-black"
+                              ? "bg-[#111] dark:bg-accent text-white dark:text-black"
                               : "border-2 border-[#e5e5e5] dark:border-[#262626]"
                           }
                         >

@@ -164,17 +164,17 @@ export function AvailabilityCalendar({ bookings }: AvailabilityCalendarProps) {
                 key={date.toISOString()}
                 className={`aspect-square p-1.5 rounded-md border transition-colors ${
                   isTodayDate
-                    ? "bg-[#ccf381]/10 dark:bg-[#ccf381]/10 border-[#ccf381] dark:border-[#ccf381]/50"
+                    ? "bg-accent/10 dark:bg-accent/10 border-accent dark:border-accent/50"
                     : isPastDate
                     ? "border-[#e5e5e5]/50 dark:border-[#262626]/50 bg-[#fafafa] dark:bg-[#0a0a0a]"
-                    : "border-[#e5e5e5] dark:border-[#262626] bg-white dark:bg-[#1a1a1a] hover:border-[#ccf381] dark:hover:border-[#ccf381]/50"
+                    : "border-[#e5e5e5] dark:border-[#262626] bg-white dark:bg-[#1a1a1a] hover:border-accent dark:hover:border-accent/50"
                 }`}
               >
                 <div className="flex flex-col h-full">
                   <div
                     className={`text-xs font-medium mb-1 ${
                       isTodayDate
-                        ? "text-[#ccf381] dark:text-[#ccf381]"
+                        ? "text-accent dark:text-accent"
                         : isPastDate
                         ? "text-[#999] dark:text-[#666]"
                         : "text-black dark:text-white"
@@ -187,7 +187,7 @@ export function AvailabilityCalendar({ bookings }: AvailabilityCalendarProps) {
                       {dateBookings.slice(0, 2).map((booking) => (
                         <div
                           key={booking.id}
-                          className="text-[9px] px-1.5 py-0.5 rounded bg-[#ccf381]/20 dark:bg-[#ccf381]/15 text-[#111] dark:text-[#ccf381] font-medium truncate"
+                          className="text-[9px] px-1.5 py-0.5 rounded bg-accent/20 dark:bg-accent/15 text-[#111] dark:text-accent font-medium truncate"
                           title={`${new Date(booking.scheduledAt).toLocaleTimeString([], {
                             hour: "2-digit",
                             minute: "2-digit",
@@ -215,11 +215,11 @@ export function AvailabilityCalendar({ bookings }: AvailabilityCalendarProps) {
         {/* Legend */}
         <div className="mt-4 pt-4 border-t border-[#e5e5e5] dark:border-[#262626] flex flex-wrap items-center gap-4 text-xs">
           <div className="flex items-center gap-2">
-            <div className="w-2 h-2 rounded bg-[#ccf381]/20 dark:bg-[#ccf381]/10 border border-[#ccf381] dark:border-[#ccf381]/50" />
+            <div className="w-2 h-2 rounded bg-accent/20 dark:bg-accent/10 border border-accent dark:border-accent/50" />
             <span className="text-[#666] dark:text-[#a1a1aa]">{t("today")}</span>
           </div>
           <div className="flex items-center gap-2">
-            <div className="w-2 h-2 rounded bg-[#ccf381]/20 dark:bg-[#ccf381]/10" />
+            <div className="w-2 h-2 rounded bg-accent/20 dark:bg-accent/10" />
             <span className="text-[#666] dark:text-[#a1a1aa]">{t("hasBookings")}</span>
           </div>
         </div>

@@ -352,7 +352,7 @@ export async function PATCH(
       // Send confirmation email when tutor confirms booking
       if (newStatus === BookingStatus.CONFIRMED && booking.status === BookingStatus.PENDING) {
         const baseUrl = getBaseUrl(request.headers.get("origin"));
-        const bookingUrl = getBookingUrl(id, "en", baseUrl); // TODO: Get locale from user
+        const bookingUrl = getBookingUrl(id, "en", baseUrl);
         
         // Send to student
         if (updatedBooking.student.email) {

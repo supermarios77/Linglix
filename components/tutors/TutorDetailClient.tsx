@@ -154,7 +154,7 @@ export function TutorDetailClient({
                     key={index}
                     className="inline-flex items-center gap-2 px-4 py-2 bg-white/80 dark:bg-[#1a1a1a]/80 backdrop-blur-sm border border-[#e5e5e5] dark:border-[#262626] rounded-full text-sm font-medium text-black dark:text-white"
                   >
-                    <CheckCircle2 className="w-4 h-4 text-[#ccf381]" />
+                    <CheckCircle2 className="w-4 h-4 text-accent" />
                     <span>{specialty}</span>
                   </div>
                 ))}
@@ -164,7 +164,7 @@ export function TutorDetailClient({
               <Link href={`/${locale}/tutors/${tutor.slug}/book`}>
                 <Button
                   size="lg"
-                  className="w-full md:w-auto bg-[#111] dark:bg-[#ccf381] text-white dark:text-black px-10 py-6 rounded-full font-semibold text-base transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_12px_24px_rgba(0,0,0,0.2)] hover:bg-[#222] dark:hover:bg-[#d4f89a]"
+                  className="w-full md:w-auto bg-[#111] dark:bg-accent text-white dark:text-black px-10 py-6 rounded-full font-semibold text-base transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_12px_24px_rgba(0,0,0,0.2)] hover:bg-[#222] dark:hover:bg-brand-primary-light"
                 >
                   {t("bookSession")}
                 </Button>
@@ -198,7 +198,7 @@ export function TutorDetailClient({
                   key={index}
                   className="flex items-center gap-3 p-4 bg-white/50 dark:bg-[#0a0a0a]/50 rounded-[16px] border border-[#e5e5e5] dark:border-[#262626]"
                 >
-                  <Clock className="w-5 h-5 text-[#ccf381]" />
+                  <Clock className="w-5 h-5 text-accent" />
                   <div>
                     <div className="font-semibold text-black dark:text-white">
                       {dayNames[avail.dayOfWeek]}
@@ -240,7 +240,7 @@ export function TutorDetailClient({
                           className="rounded-full"
                         />
                       ) : (
-                        <div className="w-10 h-10 rounded-full bg-[#ccf381] flex items-center justify-center text-black font-semibold">
+                        <div className="w-10 h-10 rounded-full bg-accent flex items-center justify-center text-black font-semibold">
                           {(review.studentName || "S")[0].toUpperCase()}
                         </div>
                       )}
@@ -266,7 +266,7 @@ export function TutorDetailClient({
                           key={i}
                           className={`w-5 h-5 ${
                             i < review.rating
-                              ? "fill-[#ccf381] text-[#ccf381]"
+                              ? "fill-accent text-accent"
                               : "fill-none text-[#e5e5e5] dark:text-[#262626]"
                           }`}
                         />
@@ -283,7 +283,7 @@ export function TutorDetailClient({
                       {review.tags.map((tag, idx) => (
                         <span
                           key={idx}
-                          className="px-3 py-1 bg-[#ccf381]/20 text-[#ccf381] rounded-full text-xs font-medium"
+                          className="px-3 py-1 bg-accent/20 text-accent rounded-full text-xs font-medium"
                         >
                           {tag}
                         </span>

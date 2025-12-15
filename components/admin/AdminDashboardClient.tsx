@@ -406,7 +406,7 @@ export function AdminDashboardClient({ locale }: AdminDashboardClientProps) {
         return (
           <Badge
             variant="outline"
-            className="bg-green-50/80 dark:bg-green-950/80 backdrop-blur-sm text-green-700 dark:text-green-300 border-green-300 dark:border-green-700 rounded-full px-3 py-1"
+            className="bg-yellow-50/80 dark:bg-yellow-950/80 backdrop-blur-sm text-yellow-700 dark:text-yellow-300 border-yellow-300 dark:border-yellow-700 rounded-full px-3 py-1"
           >
             <CheckCircle2 className="w-3 h-3 mr-1.5" />
             {t("tutors.approved")}
@@ -441,12 +441,12 @@ export function AdminDashboardClient({ locale }: AdminDashboardClientProps) {
           href={`/${locale}`}
           className="font-bold text-lg sm:text-xl md:text-2xl tracking-[-0.03em] text-black dark:text-white hover:opacity-80 transition-opacity"
         >
-          Linglix<span className="text-[#111] dark:text-[#ccf381]">.</span>
+          Linglix<span className="text-[#111] dark:text-accent">.</span>
         </Link>
 
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 bg-white/80 dark:bg-[#1a1a1a]/80 backdrop-blur-sm border border-[#e5e5e5] dark:border-[#262626] rounded-full">
-            <Shield className="w-4 h-4 text-[#ccf381]" />
+            <Shield className="w-4 h-4 text-accent" />
             <span className="text-xs sm:text-sm font-semibold text-black dark:text-white">
               Admin
             </span>
@@ -466,7 +466,7 @@ export function AdminDashboardClient({ locale }: AdminDashboardClientProps) {
         {/* Header */}
         <div className="mb-8 sm:mb-12 text-center">
           <div className="inline-flex items-center px-3 sm:px-4 py-1.5 sm:py-2 bg-white/90 dark:bg-[#121212]/90 backdrop-blur-md border border-[#e5e5e5] dark:border-[#262626] rounded-full text-[10px] sm:text-xs font-semibold uppercase tracking-wider mb-6 sm:mb-8 shadow-[0_4px_12px_rgba(0,0,0,0.05)]">
-            <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-[#ccf381] rounded-full mr-2 sm:mr-2.5 animate-pulse" />
+            <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-accent rounded-full mr-2 sm:mr-2.5 animate-pulse" />
             <span>Admin Dashboard</span>
           </div>
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-[-0.04em] mb-4 text-black dark:text-white">
@@ -520,10 +520,10 @@ export function AdminDashboardClient({ locale }: AdminDashboardClientProps) {
               <CardTitle className="text-sm font-medium text-[#666] dark:text-[#aaa]">
                 {t("stats.approvedTutors")}
               </CardTitle>
-              <UserCheck className="h-4 w-4 text-green-600 dark:text-green-400" />
+              <UserCheck className="h-4 w-4 text-yellow-600 dark:text-yellow-400" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl sm:text-3xl font-bold text-green-600 dark:text-green-400">
+              <div className="text-2xl sm:text-3xl font-bold text-yellow-600 dark:text-yellow-400">
                 {statsLoading ? (
                   <Loader2 className="h-6 w-6 animate-spin" />
                 ) : (
@@ -833,7 +833,7 @@ export function AdminDashboardClient({ locale }: AdminDashboardClientProps) {
                                         tutorName: tutor.name,
                                       })
                                     }
-                                    className="bg-green-600 hover:bg-green-700 text-white rounded-full"
+                                    className="bg-yellow-500 hover:bg-yellow-600 text-white rounded-full"
                                   >
                                     <CheckCircle2 className="h-3 w-3 mr-1" />
                                     {t("tutors.approve")}
@@ -935,7 +935,7 @@ export function AdminDashboardClient({ locale }: AdminDashboardClientProps) {
             <AlertDialogAction
               onClick={handleApprove}
               disabled={processing}
-              className="bg-green-600 hover:bg-green-700 text-white rounded-full"
+              className="bg-yellow-500 hover:bg-yellow-600 text-white rounded-full"
             >
               {processing ? (
                 <Loader2 className="h-4 w-4 animate-spin mr-2" />

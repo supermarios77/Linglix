@@ -178,7 +178,7 @@ export async function FeaturedTutors({ locale }: FeaturedTutorsProps) {
                   </div>
                 )}
                 {/* Featured Badge */}
-                <div className="absolute top-4 left-4 px-3 py-1 bg-[#ccf381] text-black text-xs font-semibold rounded-full">
+                <div className="absolute top-4 left-4 px-3 py-1 bg-accent text-accent-foreground text-xs font-semibold rounded-full">
                   {t("trending.featuredTutor")}
                 </div>
               </div>

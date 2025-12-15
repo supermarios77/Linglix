@@ -504,14 +504,14 @@ export function ProfileClient({ locale, user, studentProfile, tutorProfile }: Pr
                         };
                         input.click();
                       }}
-                      className="flex-1 border-[#e5e5e5] dark:border-[#262626] hover:border-primary dark:hover:border-[#ccf381] rounded-xl h-10"
+                      className="flex-1 border-[#e5e5e5] dark:border-[#262626] hover:border-primary dark:hover:border-accent rounded-xl h-10"
                     >
                       {t("uploadNew")}
                     </Button>
                     <Button
                       onClick={handleSaveUserProfile}
                       disabled={savingUser || !hasUserChanges}
-                      className="flex-1 bg-[#111] dark:bg-[#ccf381] text-white dark:text-black hover:bg-[#222] dark:hover:bg-[#d4f89a] disabled:opacity-50 rounded-xl h-10"
+                      className="flex-1 bg-[#111] dark:bg-accent text-white dark:text-black hover:bg-[#222] dark:hover:bg-brand-primary-light disabled:opacity-50 rounded-xl h-10"
                     >
                       {savingUser ? (
                         <Loader2 className="w-4 h-4 animate-spin" />
@@ -523,7 +523,7 @@ export function ProfileClient({ locale, user, studentProfile, tutorProfile }: Pr
                   {(userSuccess || userError) && (
                     <div className="mt-3">
                       {userSuccess && (
-                        <div className="flex items-center gap-2 text-sm text-green-600 dark:text-green-400">
+                        <div className="flex items-center gap-2 text-sm text-yellow-600 dark:text-yellow-400">
                 <CheckCircle2 className="w-4 h-4" />
                           <span>{t("updateSuccess")}</span>
                         </div>
@@ -558,7 +558,7 @@ export function ProfileClient({ locale, user, studentProfile, tutorProfile }: Pr
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     placeholder={t("namePlaceholder")}
-                    className="h-11 rounded-xl border-[#e5e5e5] dark:border-[#262626] bg-white dark:bg-[#0a0a0a] focus:border-primary dark:focus:border-[#ccf381]"
+                    className="h-11 rounded-xl border-[#e5e5e5] dark:border-[#262626] bg-white dark:bg-[#0a0a0a] focus:border-primary dark:focus:border-accent"
                   />
                 </div>
                 
@@ -606,7 +606,7 @@ export function ProfileClient({ locale, user, studentProfile, tutorProfile }: Pr
                   }
                 }}
                 placeholder={user.role === "TUTOR" ? t("tutor.aboutMePlaceholder") : t("bioPlaceholder")}
-                className="min-h-[200px] rounded-xl border-[#e5e5e5] dark:border-[#262626] bg-white dark:bg-[#0a0a0a] focus:border-primary dark:focus:border-[#ccf381] resize-none"
+                className="min-h-[200px] rounded-xl border-[#e5e5e5] dark:border-[#262626] bg-white dark:bg-[#0a0a0a] focus:border-primary dark:focus:border-accent resize-none"
                 rows={8}
               />
             </div>
@@ -809,7 +809,7 @@ export function ProfileClient({ locale, user, studentProfile, tutorProfile }: Pr
                     value={motivation}
                     onChange={(e) => setMotivation(e.target.value)}
                     placeholder={tStudent("motivationPlaceholder")}
-                      className="min-h-[140px] rounded-xl border-[#e5e5e5] dark:border-[#262626] bg-white dark:bg-[#0a0a0a] focus:border-primary dark:focus:border-[#ccf381] resize-none"
+                      className="min-h-[140px] rounded-xl border-[#e5e5e5] dark:border-[#262626] bg-white dark:bg-[#0a0a0a] focus:border-primary dark:focus:border-accent resize-none"
                     rows={5}
                   />
                 </div>
@@ -819,7 +819,7 @@ export function ProfileClient({ locale, user, studentProfile, tutorProfile }: Pr
                   <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                     <div className="flex-1 min-w-0">
                       {studentSuccess && (
-                        <div className="flex items-center gap-2 text-sm text-green-600 dark:text-green-400 animate-in fade-in slide-in-from-top-2">
+                        <div className="flex items-center gap-2 text-sm text-yellow-600 dark:text-yellow-400 animate-in fade-in slide-in-from-top-2">
                           <CheckCircle2 className="w-4 h-4 shrink-0" />
                           <span>{t("updateSuccess")}</span>
                         </div>
@@ -834,7 +834,7 @@ export function ProfileClient({ locale, user, studentProfile, tutorProfile }: Pr
                     <Button
                       onClick={handleSaveStudentProfile}
                       disabled={savingStudent || !hasStudentChanges}
-                      className="bg-[#111] dark:bg-[#ccf381] text-white dark:text-black hover:bg-[#222] dark:hover:bg-[#d4f89a] rounded-full px-6 h-11 min-w-[140px] disabled:opacity-50 disabled:cursor-not-allowed shrink-0"
+                      className="bg-[#111] dark:bg-accent text-white dark:text-black hover:bg-[#222] dark:hover:bg-brand-primary-light rounded-full px-6 h-11 min-w-[140px] disabled:opacity-50 disabled:cursor-not-allowed shrink-0"
                     >
                       {savingStudent ? (
                         <>
@@ -881,7 +881,7 @@ export function ProfileClient({ locale, user, studentProfile, tutorProfile }: Pr
                       value={introduction}
                       onChange={(e) => setIntroduction(e.target.value)}
                       placeholder={t("tutor.introductionPlaceholder")}
-                      className="min-h-[100px] rounded-xl border-[#e5e5e5] dark:border-[#262626] bg-white dark:bg-[#0a0a0a] focus:border-primary dark:focus:border-[#ccf381] resize-none"
+                      className="min-h-[100px] rounded-xl border-[#e5e5e5] dark:border-[#262626] bg-white dark:bg-[#0a0a0a] focus:border-primary dark:focus:border-accent resize-none"
                       rows={4}
                     />
                     <p className="text-xs text-[#888] dark:text-[#666]">{t("tutor.introductionHint")}</p>
@@ -897,7 +897,7 @@ export function ProfileClient({ locale, user, studentProfile, tutorProfile }: Pr
                       value={aboutMe}
                       onChange={(e) => setAboutMe(e.target.value)}
                       placeholder={t("tutor.aboutMePlaceholder")}
-                      className="min-h-[140px] rounded-xl border-[#e5e5e5] dark:border-[#262626] bg-white dark:bg-[#0a0a0a] focus:border-primary dark:focus:border-[#ccf381] resize-none"
+                      className="min-h-[140px] rounded-xl border-[#e5e5e5] dark:border-[#262626] bg-white dark:bg-[#0a0a0a] focus:border-primary dark:focus:border-accent resize-none"
                       rows={6}
                     />
                   </div>
@@ -911,11 +911,11 @@ export function ProfileClient({ locale, user, studentProfile, tutorProfile }: Pr
                       value={bio}
                       onChange={(e) => setBio(e.target.value)}
                       placeholder={tTutor("bioPlaceholder")}
-                      className="min-h-[120px] rounded-xl border-[#e5e5e5] dark:border-[#262626] bg-white dark:bg-[#0a0a0a] focus:border-primary dark:focus:border-[#ccf381] resize-none"
+                      className="min-h-[120px] rounded-xl border-[#e5e5e5] dark:border-[#262626] bg-white dark:bg-[#0a0a0a] focus:border-primary dark:focus:border-accent resize-none"
                       rows={5}
                     />
                     {bio && (
-                      <p className={`text-xs font-medium ${bio.length < 50 ? "text-red-500" : "text-green-600 dark:text-green-400"}`}>
+                      <p className={`text-xs font-medium ${bio.length < 50 ? "text-red-500" : "text-yellow-600 dark:text-yellow-400"}`}>
                         {bio.length}/50 {bio.length >= 50 ? "✓" : ""}
                       </p>
                     )}
@@ -953,7 +953,7 @@ export function ProfileClient({ locale, user, studentProfile, tutorProfile }: Pr
                       type="button"
                       onClick={addLanguageKnown}
                       variant="outline"
-                      className="rounded-xl border-[#e5e5e5] dark:border-[#262626] hover:border-primary dark:hover:border-[#ccf381] min-w-[52px] h-12"
+                      className="rounded-xl border-[#e5e5e5] dark:border-[#262626] hover:border-primary dark:hover:border-accent min-w-[52px] h-12"
                     >
                       <Plus className="w-4 h-4" />
                     </Button>
@@ -1005,7 +1005,7 @@ export function ProfileClient({ locale, user, studentProfile, tutorProfile }: Pr
                       type="button"
                       onClick={addLanguageTaught}
                       variant="outline"
-                      className="rounded-xl border-[#e5e5e5] dark:border-[#262626] hover:border-primary dark:hover:border-[#ccf381] min-w-[52px] h-12"
+                      className="rounded-xl border-[#e5e5e5] dark:border-[#262626] hover:border-primary dark:hover:border-accent min-w-[52px] h-12"
                     >
                       <Plus className="w-4 h-4" />
                     </Button>
@@ -1015,7 +1015,7 @@ export function ProfileClient({ locale, user, studentProfile, tutorProfile }: Pr
                       {languagesTaught.map((lang, index) => (
                         <div
                           key={index}
-                          className="group flex items-center gap-2 px-4 py-2 bg-gradient-to-br from-green-500/10 to-green-500/5 dark:from-green-500/20 dark:to-green-500/10 rounded-full border border-green-500/20 dark:border-green-500/30"
+                          className="group flex items-center gap-2 px-4 py-2 bg-gradient-to-br from-yellow-500/10 to-yellow-500/5 dark:from-yellow-500/20 dark:to-yellow-500/10 rounded-full border border-yellow-500/20 dark:border-yellow-500/30"
                         >
                           <span className="text-sm font-medium text-black dark:text-white">{lang}</span>
                           <button
@@ -1056,7 +1056,7 @@ export function ProfileClient({ locale, user, studentProfile, tutorProfile }: Pr
                       type="button"
                       onClick={addSpecialty}
                       variant="outline"
-                      className="rounded-xl border-[#e5e5e5] dark:border-[#262626] hover:border-primary dark:hover:border-[#ccf381] min-w-[52px] h-12"
+                      className="rounded-xl border-[#e5e5e5] dark:border-[#262626] hover:border-primary dark:hover:border-accent min-w-[52px] h-12"
                     >
                       <Plus className="w-4 h-4" />
                     </Button>
@@ -1101,7 +1101,7 @@ export function ProfileClient({ locale, user, studentProfile, tutorProfile }: Pr
                     value={teachingStyle}
                     onChange={(e) => setTeachingStyle(e.target.value)}
                     placeholder={t("tutor.teachingStylePlaceholder")}
-                      className="min-h-[120px] rounded-xl border-[#e5e5e5] dark:border-[#262626] bg-white dark:bg-[#0a0a0a] focus:border-primary dark:focus:border-[#ccf381] resize-none"
+                      className="min-h-[120px] rounded-xl border-[#e5e5e5] dark:border-[#262626] bg-white dark:bg-[#0a0a0a] focus:border-primary dark:focus:border-accent resize-none"
                     rows={5}
                   />
                 </div>
@@ -1157,7 +1157,7 @@ export function ProfileClient({ locale, user, studentProfile, tutorProfile }: Pr
                       type="button"
                       onClick={addInterest}
                       variant="outline"
-                      className="rounded-xl border-[#e5e5e5] dark:border-[#262626] hover:border-primary dark:hover:border-[#ccf381] min-w-[52px] h-12"
+                      className="rounded-xl border-[#e5e5e5] dark:border-[#262626] hover:border-primary dark:hover:border-accent min-w-[52px] h-12"
                     >
                       <Plus className="w-4 h-4" />
                     </Button>
@@ -1208,7 +1208,7 @@ export function ProfileClient({ locale, user, studentProfile, tutorProfile }: Pr
                       type="button"
                       onClick={addIndustry}
                       variant="outline"
-                      className="rounded-xl border-[#e5e5e5] dark:border-[#262626] hover:border-primary dark:hover:border-[#ccf381] min-w-[52px] h-12"
+                      className="rounded-xl border-[#e5e5e5] dark:border-[#262626] hover:border-primary dark:hover:border-accent min-w-[52px] h-12"
                     >
                       <Plus className="w-4 h-4" />
                     </Button>
@@ -1247,7 +1247,7 @@ export function ProfileClient({ locale, user, studentProfile, tutorProfile }: Pr
                     value={experience}
                     onChange={(e) => setExperience(e.target.value)}
                     placeholder={t("tutor.experiencePlaceholder")}
-                      className="min-h-[120px] rounded-xl border-[#e5e5e5] dark:border-[#262626] bg-white dark:bg-[#0a0a0a] focus:border-primary dark:focus:border-[#ccf381] resize-none"
+                      className="min-h-[120px] rounded-xl border-[#e5e5e5] dark:border-[#262626] bg-white dark:bg-[#0a0a0a] focus:border-primary dark:focus:border-accent resize-none"
                     rows={5}
                   />
                 </div>
@@ -1265,7 +1265,7 @@ export function ProfileClient({ locale, user, studentProfile, tutorProfile }: Pr
                     value={workExperience}
                     onChange={(e) => setWorkExperience(e.target.value)}
                     placeholder={t("tutor.workExperiencePlaceholder")}
-                      className="min-h-[120px] rounded-xl border-[#e5e5e5] dark:border-[#262626] bg-white dark:bg-[#0a0a0a] focus:border-primary dark:focus:border-[#ccf381] resize-none"
+                      className="min-h-[120px] rounded-xl border-[#e5e5e5] dark:border-[#262626] bg-white dark:bg-[#0a0a0a] focus:border-primary dark:focus:border-accent resize-none"
                     rows={5}
                   />
                 </div>
@@ -1283,7 +1283,7 @@ export function ProfileClient({ locale, user, studentProfile, tutorProfile }: Pr
                     value={degrees}
                     onChange={(e) => setDegrees(e.target.value)}
                     placeholder={t("tutor.degreesPlaceholder")}
-                      className="min-h-[100px] rounded-xl border-[#e5e5e5] dark:border-[#262626] bg-white dark:bg-[#0a0a0a] focus:border-primary dark:focus:border-[#ccf381] resize-none"
+                      className="min-h-[100px] rounded-xl border-[#e5e5e5] dark:border-[#262626] bg-white dark:bg-[#0a0a0a] focus:border-primary dark:focus:border-accent resize-none"
                     rows={4}
                   />
                 </div>
@@ -1311,7 +1311,7 @@ export function ProfileClient({ locale, user, studentProfile, tutorProfile }: Pr
                   <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                     <div className="flex-1 min-w-0">
                       {tutorSuccess && (
-                        <div className="flex items-center gap-2 text-sm text-green-600 dark:text-green-400 animate-in fade-in slide-in-from-top-2">
+                        <div className="flex items-center gap-2 text-sm text-yellow-600 dark:text-yellow-400 animate-in fade-in slide-in-from-top-2">
                           <CheckCircle2 className="w-4 h-4 shrink-0" />
                           <span>{t("updateSuccess")}</span>
                         </div>
@@ -1326,7 +1326,7 @@ export function ProfileClient({ locale, user, studentProfile, tutorProfile }: Pr
                     <Button
                       onClick={handleSaveTutorProfile}
                       disabled={savingTutor || !hasTutorChanges}
-                      className="bg-[#111] dark:bg-[#ccf381] text-white dark:text-black hover:bg-[#222] dark:hover:bg-[#d4f89a] rounded-full px-6 h-11 min-w-[140px] disabled:opacity-50 disabled:cursor-not-allowed shrink-0"
+                      className="bg-[#111] dark:bg-accent text-white dark:text-black hover:bg-[#222] dark:hover:bg-brand-primary-light rounded-full px-6 h-11 min-w-[140px] disabled:opacity-50 disabled:cursor-not-allowed shrink-0"
                     >
                       {savingTutor ? (
                         <>

@@ -455,7 +455,7 @@ export function TutorDashboardClient({
             href={`/${locale}`}
             className="font-bold text-lg sm:text-xl md:text-2xl tracking-[-0.03em] text-black dark:text-white hover:opacity-80 transition-opacity"
           >
-            Linglix<span className="text-[#111] dark:text-[#ccf381]">.</span>
+            Linglix<span className="text-[#111] dark:text-accent">.</span>
           </Link>
         </div>
 
@@ -639,17 +639,17 @@ export function TutorDashboardClient({
 
                 {/* Key Stats Grid */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                  <Card className="group relative bg-gradient-to-br from-green-50 via-green-50/80 to-white dark:from-green-950/20 dark:via-green-900/10 dark:to-[#1a1a1a] border-2 border-green-200 dark:border-green-800 rounded-[24px] p-6 shadow-[0_4px_12px_rgba(0,0,0,0.05)] hover:shadow-[0_20px_40px_rgba(16,185,129,0.15)] hover:-translate-y-1 transition-all duration-300 overflow-hidden">
-                    <div className="absolute inset-0 bg-gradient-to-br from-green-500/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  <Card className="group relative bg-gradient-to-br from-yellow-50 via-yellow-50/80 to-white dark:from-yellow-950/20 dark:via-yellow-900/10 dark:to-[#1a1a1a] border-2 border-yellow-200 dark:border-yellow-800 rounded-[24px] p-6 shadow-[0_4px_12px_rgba(0,0,0,0.05)] hover:shadow-[0_20px_40px_rgba(255,230,0,0.15)] hover:-translate-y-1 transition-all duration-300 overflow-hidden">
+                    <div className="absolute inset-0 bg-gradient-to-br from-yellow-500/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                     <div className="relative z-10">
                       <div className="flex items-center justify-between mb-4">
-                        <div className="p-3 bg-green-500/20 dark:bg-green-500/10 rounded-xl">
-                          <TrendingUp className="w-6 h-6 text-green-600 dark:text-green-400" />
+                        <div className="p-3 bg-yellow-500/20 dark:bg-yellow-500/10 rounded-xl">
+                          <TrendingUp className="w-6 h-6 text-yellow-600 dark:text-yellow-400" />
                         </div>
-                        <span className="text-xs text-green-700 dark:text-green-300 font-semibold uppercase tracking-wide">This Week</span>
+                        <span className="text-xs text-yellow-700 dark:text-yellow-300 font-semibold uppercase tracking-wide">This Week</span>
                       </div>
-                      <div className="text-3xl font-bold text-green-900 dark:text-green-100 mb-1">${thisWeekEarnings.toFixed(2)}</div>
-                      <div className="text-sm text-green-700/70 dark:text-green-300/70">Earnings</div>
+                      <div className="text-3xl font-bold text-yellow-900 dark:text-yellow-100 mb-1">${thisWeekEarnings.toFixed(2)}</div>
+                      <div className="text-sm text-yellow-700/70 dark:text-yellow-300/70">Earnings</div>
                     </div>
                   </Card>
 
@@ -772,7 +772,7 @@ export function TutorDashboardClient({
                               <Button
                                 size="sm"
                                 onClick={() => handleBookingAction(booking.id, "confirm")}
-                                className="rounded-full bg-green-600 hover:bg-green-700 text-white px-5 py-2.5 text-sm font-semibold transition-all duration-300 hover:shadow-[0_8px_16px_rgba(22,163,74,0.3)] hover:-translate-y-0.5"
+                                className="rounded-full bg-yellow-500 hover:bg-yellow-600 text-black px-5 py-2.5 text-sm font-semibold transition-all duration-300 hover:shadow-[0_8px_16px_rgba(255,230,0,0.3)] hover:-translate-y-0.5"
                               >
                                 <CheckCircle2 className="w-4 h-4 mr-2" />
                                 {tTutor("approve") || "Approve"}
@@ -860,7 +860,7 @@ export function TutorDashboardClient({
                                 <Link href={`/${locale}/sessions/${booking.id}`}>
                                   <Button
                                     size="sm"
-                                    className="rounded-full bg-[#111] dark:bg-[#ccf381] text-white dark:text-black px-5 py-2.5 text-sm font-semibold transition-all duration-300 hover:bg-[#222] dark:hover:bg-[#d4f89a] hover:shadow-[0_8px_16px_rgba(0,0,0,0.2)] hover:-translate-y-0.5 inline-flex items-center gap-2"
+                                    className="rounded-full bg-[#111] dark:bg-accent text-white dark:text-black px-5 py-2.5 text-sm font-semibold transition-all duration-300 hover:bg-[#222] dark:hover:bg-brand-primary-light hover:shadow-[0_8px_16px_rgba(0,0,0,0.2)] hover:-translate-y-0.5 inline-flex items-center gap-2"
                                   >
                                     <Video className="w-4 h-4" />
                                     {tVideoCall("joinSession")}
@@ -880,13 +880,13 @@ export function TutorDashboardClient({
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                   {/* Earnings Chart */}
                   <Card className="group relative bg-white/90 dark:bg-[#1a1a1a]/90 backdrop-blur-md border-2 border-[#e5e5e5] dark:border-[#262626] rounded-[32px] p-6 sm:p-8 shadow-[0_4px_12px_rgba(0,0,0,0.05)] hover:shadow-[0_20px_40px_rgba(0,0,0,0.1)] transition-all duration-300 overflow-hidden">
-                    <div className="absolute inset-0 bg-gradient-to-br from-green-500/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    <div className="absolute inset-0 bg-gradient-to-br from-yellow-500/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                     <div className="relative z-10">
                       <CardHeader className="pb-6">
                         <div className="flex items-center justify-between">
                           <CardTitle className="text-xl font-bold tracking-[-0.02em] text-black dark:text-white flex items-center gap-3">
-                            <div className="p-2 bg-green-500/20 dark:bg-green-500/10 rounded-xl">
-                              <TrendingUp className="w-6 h-6 text-green-600 dark:text-green-400" />
+                            <div className="p-2 bg-yellow-500/20 dark:bg-yellow-500/10 rounded-xl">
+                              <TrendingUp className="w-6 h-6 text-yellow-600 dark:text-yellow-400" />
                             </div>
                             Earnings (Last 7 Days)
                           </CardTitle>
@@ -897,8 +897,8 @@ export function TutorDashboardClient({
                         <AreaChart data={earningsChartData}>
                           <defs>
                             <linearGradient id="earningsGradient" x1="0" y1="0" x2="0" y2="1">
-                              <stop offset="5%" stopColor="#10b981" stopOpacity={0.3} />
-                              <stop offset="95%" stopColor="#10b981" stopOpacity={0} />
+                              <stop offset="5%" stopColor="#FFE600" stopOpacity={0.3} />
+                              <stop offset="95%" stopColor="#FFE600" stopOpacity={0} />
                             </linearGradient>
                           </defs>
                           <CartesianGrid strokeDasharray="3 3" stroke="#e5e5e5" className="dark:stroke-[#262626]" />
@@ -925,7 +925,7 @@ export function TutorDashboardClient({
                           <Area
                             type="monotone"
                             dataKey="earnings"
-                            stroke="#10b981"
+                            stroke="#FFE600"
                             fillOpacity={1}
                             fill="url(#earningsGradient)"
                             strokeWidth={2}
@@ -1070,7 +1070,7 @@ export function TutorDashboardClient({
                                         {booking.student.name || tTutor("student")}
                                       </h3>
                                       {isToday && hoursUntil <= 2 && (
-                                        <p className="text-xs font-medium text-green-600 dark:text-green-400">
+                                        <p className="text-xs font-medium text-yellow-600 dark:text-yellow-400">
                                           Starts in {hoursUntil === 0 ? "less than an hour" : `${hoursUntil} ${hoursUntil === 1 ? "hour" : "hours"}`}
                                         </p>
                                       )}
@@ -1238,9 +1238,9 @@ export function TutorDashboardClient({
                 {/* Section Header */}
                 <div className="mb-8">
                   <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/90 dark:bg-[#121212]/90 backdrop-blur-md border border-[#e5e5e5] dark:border-[#262626] rounded-full text-xs font-semibold uppercase tracking-wider mb-4 shadow-[0_4px_12px_rgba(0,0,0,0.05)]">
-                    <span className="w-2 h-2 bg-[#ccf381] rounded-full animate-pulse" />
+                    <span className="w-2 h-2 bg-accent rounded-full animate-pulse" />
                     <span>Calendar</span>
-                    <Sparkles className="w-3 h-3 text-[#ccf381] opacity-70" />
+                    <Sparkles className="w-3 h-3 text-accent opacity-70" />
                   </div>
                   <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-[-0.04em] text-black dark:text-white mb-3">
                     {tTutor("sections.calendar")}
@@ -1268,9 +1268,9 @@ export function TutorDashboardClient({
                 {/* Section Header */}
                 <div className="mb-8">
                   <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/90 dark:bg-[#121212]/90 backdrop-blur-md border border-[#e5e5e5] dark:border-[#262626] rounded-full text-xs font-semibold uppercase tracking-wider mb-4 shadow-[0_4px_12px_rgba(0,0,0,0.05)]">
-                    <span className="w-2 h-2 bg-[#ccf381] rounded-full animate-pulse" />
+                    <span className="w-2 h-2 bg-accent rounded-full animate-pulse" />
                     <span>Availability</span>
-                    <Sparkles className="w-3 h-3 text-[#ccf381] opacity-70" />
+                    <Sparkles className="w-3 h-3 text-accent opacity-70" />
                   </div>
                   <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-[-0.04em] text-black dark:text-white mb-3">
                     {tTutor("sections.availability")}
@@ -1296,9 +1296,9 @@ export function TutorDashboardClient({
                 {/* Section Header */}
                 <div className="mb-8">
                   <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/90 dark:bg-[#121212]/90 backdrop-blur-md border border-[#e5e5e5] dark:border-[#262626] rounded-full text-xs font-semibold uppercase tracking-wider mb-4 shadow-[0_4px_12px_rgba(0,0,0,0.05)]">
-                    <span className="w-2 h-2 bg-[#ccf381] rounded-full animate-pulse" />
+                    <span className="w-2 h-2 bg-accent rounded-full animate-pulse" />
                     <span>Reviews</span>
-                    <Sparkles className="w-3 h-3 text-[#ccf381] opacity-70" />
+                    <Sparkles className="w-3 h-3 text-accent opacity-70" />
                   </div>
                   <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
                     <div>
@@ -1395,7 +1395,7 @@ export function TutorDashboardClient({
                                 {review.tags.map((tag, idx) => (
                                   <span
                                     key={idx}
-                                    className="px-4 py-1.5 bg-[#ccf381]/20 text-[#ccf381] rounded-full text-sm font-medium border border-[#ccf381]/30"
+                                    className="px-4 py-1.5 bg-accent/20 text-accent rounded-full text-sm font-medium border border-accent/30"
                                   >
                                     {tag}
                                   </span>

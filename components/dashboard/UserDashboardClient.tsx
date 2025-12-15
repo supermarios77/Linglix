@@ -83,7 +83,6 @@ interface TutorUser {
   email: string;
 }
 
-
 interface BookingWithTutor extends Booking {
   tutor: {
     id: string;
@@ -884,8 +883,8 @@ export function UserDashboardClient({
           <Card className="bg-gradient-to-br from-white/90 to-[#fafafa]/90 dark:from-[#1a1a1a]/90 dark:to-[#0a0a0a]/90 backdrop-blur-md border-2 border-[#e5e5e5] dark:border-[#262626] shadow-[0_20px_40px_rgba(0,0,0,0.08)] rounded-[24px] sm:rounded-[32px] overflow-hidden">
             <CardContent className="py-16 sm:py-20 text-center">
               <div className="relative inline-block mb-6">
-                <BookOpen className="w-16 h-16 sm:w-20 sm:h-20 mx-auto text-[#ccf381] mb-4" />
-                <div className="absolute inset-0 bg-[#ccf381]/20 blur-3xl rounded-full" aria-hidden="true" />
+                <BookOpen className="w-16 h-16 sm:w-20 sm:h-20 mx-auto text-accent mb-4" />
+                <div className="absolute inset-0 bg-accent/20 blur-3xl rounded-full" aria-hidden="true" />
               </div>
               <h3 className="text-2xl sm:text-3xl font-bold text-black dark:text-white mb-3">
                 {t("noBookings")}
@@ -896,7 +895,7 @@ export function UserDashboardClient({
               <Link href={`/${locale}/tutors`}>
                 <Button
                   size="lg"
-                  className="bg-[#111] dark:bg-[#ccf381] text-white dark:text-black px-8 sm:px-10 py-5 sm:py-6 rounded-full font-semibold text-sm sm:text-base transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_12px_24px_rgba(0,0,0,0.2)] hover:bg-[#222] dark:hover:bg-[#d4f89a] inline-flex items-center justify-center gap-2.5 sm:gap-3 group"
+                  className="bg-[#111] dark:bg-accent text-white dark:text-black px-8 sm:px-10 py-5 sm:py-6 rounded-full font-semibold text-sm sm:text-base transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_12px_24px_rgba(0,0,0,0.2)] hover:bg-[#222] dark:hover:bg-brand-primary-light inline-flex items-center justify-center gap-2.5 sm:gap-3 group"
                 >
                   <span>{t("browseTutors")}</span>
                   <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform" />

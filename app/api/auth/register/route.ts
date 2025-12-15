@@ -127,10 +127,8 @@ export async function POST(request: NextRequest) {
         },
       });
     } else {
-      // In development, log to console; in production, Sentry handles it
-      if (process.env.NODE_ENV === "development") {
-        console.error("Registration error:", error);
-      }
+      // In development, log using logger; in production, Sentry handles it
+      logger.error("Registration error", error instanceof Error ? error : new Error(String(error)));
     }
 
     // Generic error message - don't leak internal details

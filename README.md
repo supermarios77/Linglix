@@ -63,7 +63,7 @@ bun run validate:env
 - `UPSTASH_REDIS_REST_URL` - Upstash Redis URL (for rate limiting)
 - `UPSTASH_REDIS_REST_TOKEN` - Upstash Redis token
 
-See [Environment Variables Guide](./docs/ENVIRONMENT_VARIABLES.md) for complete reference.
+See `.env.example` for complete reference of all required environment variables.
 
 6. Set up the database:
 ```bash
@@ -80,16 +80,6 @@ Open [http://localhost:3000](http://localhost:3000) to see the application.
 
 ## Documentation
 
-See the [docs](./docs/) directory for detailed guides:
-
-- [Database Setup](./docs/DATABASE_SETUP.md)
-- [Authentication Setup](./docs/AUTH_SETUP.md)
-- [Email Setup](./docs/EMAIL_SETUP.md)
-- [Stripe Setup](./docs/STRIPE_SETUP.md)
-- [Stream Video Setup](./docs/STREAM_VIDEO_SETUP.md)
-- [Cron Jobs Setup](./docs/CRON_SETUP.md)
-- [Environment Variables](./docs/ENVIRONMENT_VARIABLES.md)
-- [Production Checklist](./docs/PRODUCTION_CHECKLIST.md)
 - [Security Guidelines](./SECURITY.md)
 
 ## Scripts
@@ -113,7 +103,6 @@ linglix/
 ├── lib/             # Utility functions
 ├── prisma/          # Database schema
 ├── messages/        # i18n translations
-├── docs/            # Documentation
 └── public/          # Static assets
 ```
 

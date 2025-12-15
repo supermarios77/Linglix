@@ -168,13 +168,13 @@ export function OnboardingClient({ locale, user }: OnboardingClientProps) {
             <span className="text-sm font-medium text-[#666] dark:text-[#a1a1aa]">
               {step === "role" ? t("step1") : t("step2")}
             </span>
-            <span className="text-sm font-medium text-[#111] dark:text-[#ccf381]">
+            <span className="text-sm font-medium text-[#111] dark:text-accent">
               {step === "role" ? "1/2" : "2/2"}
             </span>
           </div>
           <div className="h-2 bg-[#e5e5e5] dark:bg-[#262626] rounded-full overflow-hidden">
             <div
-              className="h-full bg-[#111] dark:bg-[#ccf381] rounded-full transition-all duration-500"
+              className="h-full bg-[#111] dark:bg-accent rounded-full transition-all duration-500"
               style={{
                 width: step === "role" ? "50%" : "100%",
               }}
@@ -207,9 +207,9 @@ export function OnboardingClient({ locale, user }: OnboardingClientProps) {
                 type="button"
                 onClick={() => handleRoleSelect("STUDENT")}
                 disabled={isLoading}
-                className="group relative p-6 sm:p-8 rounded-2xl border-2 border-[#e5e5e5] dark:border-[#262626] bg-white dark:bg-[#0a0a0a] hover:border-[#111] dark:hover:border-[#ccf381] transition-all duration-200 text-left"
+                className="group relative p-6 sm:p-8 rounded-2xl border-2 border-[#e5e5e5] dark:border-[#262626] bg-white dark:bg-[#0a0a0a] hover:border-[#111] dark:hover:border-accent transition-all duration-200 text-left"
               >
-                <GraduationCap className="w-10 h-10 mb-4 text-[#111] dark:text-[#ccf381]" />
+                <GraduationCap className="w-10 h-10 mb-4 text-[#111] dark:text-accent" />
                 <h3 className="text-xl sm:text-2xl font-bold mb-2 text-black dark:text-white">
                   {t("role.student")}
                 </h3>
@@ -222,9 +222,9 @@ export function OnboardingClient({ locale, user }: OnboardingClientProps) {
                 type="button"
                 onClick={() => handleRoleSelect("TUTOR")}
                 disabled={isLoading}
-                className="group relative p-6 sm:p-8 rounded-2xl border-2 border-[#e5e5e5] dark:border-[#262626] bg-white dark:bg-[#0a0a0a] hover:border-[#111] dark:hover:border-[#ccf381] transition-all duration-200 text-left"
+                className="group relative p-6 sm:p-8 rounded-2xl border-2 border-[#e5e5e5] dark:border-[#262626] bg-white dark:bg-[#0a0a0a] hover:border-[#111] dark:hover:border-accent transition-all duration-200 text-left"
               >
-                <UserCheck className="w-10 h-10 mb-4 text-[#111] dark:text-[#ccf381]" />
+                <UserCheck className="w-10 h-10 mb-4 text-[#111] dark:text-accent" />
                 <h3 className="text-xl sm:text-2xl font-bold mb-2 text-black dark:text-white">
                   {t("role.tutor")}
                 </h3>
@@ -236,7 +236,7 @@ export function OnboardingClient({ locale, user }: OnboardingClientProps) {
 
             {isLoading && (
               <div className="flex items-center justify-center py-4">
-                <Loader2 className="w-6 h-6 animate-spin text-[#111] dark:text-[#ccf381]" />
+                <Loader2 className="w-6 h-6 animate-spin text-[#111] dark:text-accent" />
               </div>
             )}
           </div>
@@ -352,7 +352,7 @@ export function OnboardingClient({ locale, user }: OnboardingClientProps) {
               <Button
                 type="submit"
                 disabled={isLoading || !studentData.learningGoal || !studentData.currentLevel || !studentData.preferredSchedule}
-                className="flex-1 bg-[#111] dark:bg-[#ccf381] text-white dark:text-black hover:bg-[#222] dark:hover:bg-[#d4f89a]"
+                className="flex-1 bg-[#111] dark:bg-accent text-white dark:text-black hover:bg-[#222] dark:hover:bg-brand-primary-light"
               >
                 {isLoading ? (
                   <Loader2 className="w-4 h-4 animate-spin" />
@@ -498,7 +498,7 @@ export function OnboardingClient({ locale, user }: OnboardingClientProps) {
               <Button
                 type="submit"
                 disabled={isLoading || !tutorData.bio || tutorData.specialties.length === 0}
-                className="flex-1 bg-[#111] dark:bg-[#ccf381] text-white dark:text-black hover:bg-[#222] dark:hover:bg-[#d4f89a]"
+                className="flex-1 bg-[#111] dark:bg-accent text-white dark:text-black hover:bg-[#222] dark:hover:bg-brand-primary-light"
               >
                 {isLoading ? (
                   <Loader2 className="w-4 h-4 animate-spin" />

@@ -45,9 +45,9 @@ export function PricingSection({ locale }: PricingSectionProps) {
       {/* Section Header */}
       <div className="text-center mb-16">
         <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/90 dark:bg-[#121212]/90 backdrop-blur-md border border-[#e5e5e5] dark:border-[#262626] rounded-full text-xs font-semibold uppercase tracking-wider mb-6">
-          <span className="w-2 h-2 bg-[#ccf381] rounded-full animate-pulse" />
+          <span className="w-2 h-2 bg-accent rounded-full animate-pulse" />
           <span>{t("badge")}</span>
-          <Sparkles className="w-3 h-3 text-[#ccf381] opacity-70" />
+          <Sparkles className="w-3 h-3 text-accent opacity-70" />
         </div>
         <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-[-0.04em] text-black dark:text-white mb-4">
           {t("title")}
@@ -66,7 +66,7 @@ export function PricingSection({ locale }: PricingSectionProps) {
           </h3>
           
           {/* 30 Minute Session */}
-          <div className="bg-white dark:bg-[#1a1a1a] rounded-2xl p-6 border border-[#e5e5e5] dark:border-[#262626] hover:border-[#ccf381] dark:hover:border-[#ccf381] transition-colors">
+          <div className="bg-white dark:bg-[#1a1a1a] rounded-2xl p-6 border border-[#e5e5e5] dark:border-[#262626] hover:border-accent dark:hover:border-accent transition-colors">
             <div className="flex items-center justify-between">
               <div>
                 <div className="text-3xl font-bold text-black dark:text-white mb-1">
@@ -83,14 +83,14 @@ export function PricingSection({ locale }: PricingSectionProps) {
           </div>
 
           {/* 1 Hour Session */}
-          <div className="bg-[#ccf381]/10 dark:bg-[#ccf381]/20 rounded-2xl p-6 border-2 border-[#ccf381] dark:border-[#ccf381]">
+          <div className="bg-accent/10 dark:bg-accent/20 rounded-2xl p-6 border-2 border-accent dark:border-accent">
             <div className="flex items-center justify-between">
               <div>
                 <div className="flex items-center gap-2 mb-1">
                   <div className="text-3xl font-bold text-black dark:text-white">
                     ${pricePerHour}
                   </div>
-                  <span className="px-2 py-0.5 bg-[#ccf381] text-black text-xs font-bold rounded-full">
+                  <span className="px-2 py-0.5 bg-accent text-black text-xs font-bold rounded-full">
                     {t("popular")}
                   </span>
                 </div>
@@ -119,7 +119,7 @@ export function PricingSection({ locale }: PricingSectionProps) {
           <div className="flex items-center justify-center gap-4 mb-8">
             <button
               onClick={handleDecrement}
-              className="w-12 h-12 rounded-full border-2 border-[#e5e5e5] dark:border-[#262626] flex items-center justify-center hover:border-[#ccf381] dark:hover:border-[#ccf381] hover:bg-[#ccf381]/10 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+              className="w-12 h-12 rounded-full border-2 border-[#e5e5e5] dark:border-[#262626] flex items-center justify-center hover:border-accent dark:hover:border-accent hover:bg-accent/10 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
               disabled={monthlyHours <= 1}
             >
               <Minus className="w-5 h-5 text-black dark:text-white" />
@@ -141,7 +141,7 @@ export function PricingSection({ locale }: PricingSectionProps) {
             
             <button
               onClick={handleIncrement}
-              className="w-12 h-12 rounded-full border-2 border-[#e5e5e5] dark:border-[#262626] flex items-center justify-center hover:border-[#ccf381] dark:hover:border-[#ccf381] hover:bg-[#ccf381]/10 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+              className="w-12 h-12 rounded-full border-2 border-[#e5e5e5] dark:border-[#262626] flex items-center justify-center hover:border-accent dark:hover:border-accent hover:bg-accent/10 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
               disabled={monthlyHours >= 100}
             >
               <Plus className="w-5 h-5 text-black dark:text-white" />
@@ -149,7 +149,7 @@ export function PricingSection({ locale }: PricingSectionProps) {
           </div>
 
           {/* Monthly Total */}
-          <div className="bg-[#ccf381]/10 dark:bg-[#ccf381]/20 rounded-xl p-6 border border-[#ccf381]/30">
+          <div className="bg-accent/10 dark:bg-accent/20 rounded-xl p-6 border border-accent/30">
             <div className="text-sm text-[#666] dark:text-[#a1a1aa] mb-2">
               {t("estimatedMonthly")}
             </div>
@@ -167,7 +167,7 @@ export function PricingSection({ locale }: PricingSectionProps) {
       <div className="text-center">
         <Link href={`/${locale}/tutors`}>
           <Button
-            className="bg-[#111] dark:bg-[#ccf381] text-white dark:text-black px-10 py-6 rounded-full font-semibold text-lg hover:bg-[#222] dark:hover:bg-[#d4f89a] hover:shadow-lg transition-all inline-flex items-center gap-3"
+            className="bg-[#111] dark:bg-accent text-white dark:text-black px-10 py-6 rounded-full font-semibold text-lg hover:bg-[#222] dark:hover:bg-brand-primary-light hover:shadow-lg transition-all inline-flex items-center gap-3"
           >
             <span>{t("cta")}</span>
             <ArrowRight className="w-5 h-5" />
@@ -177,8 +177,8 @@ export function PricingSection({ locale }: PricingSectionProps) {
 
       {/* Additional Info */}
       <div className="text-center mt-12">
-        <div className="inline-flex items-center gap-2 px-4 py-2 bg-[#ccf381]/10 dark:bg-[#ccf381]/20 border border-[#ccf381]/30 rounded-full mb-4">
-          <CheckCircle2 className="w-4 h-4 text-[#ccf381]" />
+        <div className="inline-flex items-center gap-2 px-4 py-2 bg-accent/10 dark:bg-accent/20 border border-accent/30 rounded-full mb-4">
+          <CheckCircle2 className="w-4 h-4 text-accent" />
           <span className="text-sm font-medium text-black dark:text-white">
             {t("guarantee")}
           </span>

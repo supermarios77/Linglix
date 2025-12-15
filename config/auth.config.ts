@@ -35,7 +35,18 @@ export const authConfig = {
           });
         } catch (error) {
           // Log error but don't block sign in
-          console.error("Failed to auto-verify OAuth user email:", error);
+          // Use dynamic import to avoid circular dependencies
+          if (process.env.NODE_ENV === "production") {
+            const { logger } = await import("@/lib/logger");
+            logger.error(
+              "Failed to auto-verify OAuth user email",
+              error instanceof Error ? error : new Error(String(error)),
+              { email: user.email ? "***" : undefined }
+            );
+          } else {
+            // Development logging
+            console.error("Failed to auto-verify OAuth user email:", error);
+          }
         }
       }
       return true;

@@ -69,7 +69,7 @@ export function ForgotPasswordForm() {
         <div className="relative z-10">
           {/* Badge */}
           <div className="inline-flex items-center px-3 py-1.5 sm:px-4 sm:py-2 bg-white/80 dark:bg-[#0a0a0a]/80 border border-[#e5e5e5] dark:border-[#262626] rounded-full text-[10px] sm:text-xs font-semibold uppercase tracking-wider mb-6 sm:mb-8 shadow-[0_2px_10px_rgba(0,0,0,0.03)] dark:shadow-[0_2px_10px_rgba(0,0,0,0.3)] text-black dark:text-white">
-            <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-[#10b981] dark:bg-[#ccf381] rounded-full mr-2" />
+            <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-accent dark:bg-accent rounded-full mr-2" />
             Password Reset
           </div>
 
@@ -85,7 +85,7 @@ export function ForgotPasswordForm() {
 
           {/* Success Message */}
           {success && (
-            <Alert className="mb-5 sm:mb-6 rounded-xl sm:rounded-2xl border-green-200 dark:border-green-900/50 bg-green-50/80 dark:bg-green-950/50 backdrop-blur-sm">
+            <Alert className="mb-5 sm:mb-6 rounded-xl sm:rounded-2xl border-yellow-200 dark:border-yellow-900/50 bg-yellow-50/80 dark:bg-yellow-950/50 backdrop-blur-sm">
               <CheckCircle2 className="h-4 w-4" />
               <AlertTitle className="text-sm">{t("resetLinkSent")}</AlertTitle>
               <AlertDescription className="text-sm">{t("resetLinkSent")}</AlertDescription>
@@ -120,13 +120,13 @@ export function ForgotPasswordForm() {
                   disabled={isLoading}
                   placeholder="you@example.com"
                   autoComplete="email"
-                  className="h-11 sm:h-12 rounded-full border-[#e5e5e5] dark:border-[#262626] bg-white/80 dark:bg-[#0a0a0a]/80 backdrop-blur-sm focus:border-[#999] dark:focus:border-[#ccf381] focus:ring-2 focus:ring-[#999]/10 dark:focus:ring-[#ccf381]/20 transition-all text-sm sm:text-base text-black dark:text-white placeholder:text-[#999] dark:placeholder:text-[#555]"
+                  className="h-11 sm:h-12 rounded-full border-[#e5e5e5] dark:border-[#262626] bg-white/80 dark:bg-[#0a0a0a]/80 backdrop-blur-sm focus:border-[#999] dark:focus:border-accent focus:ring-2 focus:ring-[#999]/10 dark:focus:ring-accent/20 transition-all text-sm sm:text-base text-black dark:text-white placeholder:text-[#999] dark:placeholder:text-[#555]"
                 />
               </div>
 
               <Button
                 type="submit"
-                className="w-full h-11 sm:h-12 rounded-full bg-[#111] dark:bg-[#ccf381] text-white dark:text-black font-semibold text-sm sm:text-base transition-all duration-300 hover:translate-y-[-2px] hover:shadow-[0_10px_20px_rgba(0,0,0,0.15)] dark:hover:shadow-[0_10px_20px_rgba(204,243,129,0.3)] hover:bg-[#222] dark:hover:bg-[#d4f89a] active:scale-[0.98] inline-flex items-center justify-center gap-2.5"
+                className="w-full h-11 sm:h-12 rounded-full bg-[#111] dark:bg-accent text-white dark:text-black font-semibold text-sm sm:text-base transition-all duration-300 hover:translate-y-[-2px] hover:shadow-[0_10px_20px_rgba(0,0,0,0.15)] dark:hover:shadow-[0_10px_20px_rgba(255,230,0,0.3)] hover:bg-[#222] dark:hover:bg-brand-primary-light active:scale-[0.98] inline-flex items-center justify-center gap-2.5"
                 disabled={isLoading}
               >
                 {isLoading ? (

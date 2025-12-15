@@ -72,7 +72,7 @@ export default async function PaymentSuccessPage({
       <div className="relative z-10 flex items-center justify-center min-h-screen p-4">
         <Card className="p-8 sm:p-12 bg-white/90 dark:bg-[#1a1a1a]/90 backdrop-blur-md border border-[#e5e5e5] dark:border-[#262626] rounded-2xl max-w-md w-full shadow-2xl">
           <div className="flex flex-col items-center gap-6 text-center">
-            <div className="w-20 h-20 rounded-full bg-green-500 flex items-center justify-center shadow-lg">
+            <div className="w-20 h-20 rounded-full bg-yellow-500 flex items-center justify-center shadow-lg">
               <CheckCircle2 className="w-12 h-12 text-white" />
             </div>
             <div>

@@ -375,7 +375,7 @@ export function BookingClient({ tutor, locale }: BookingClientProps) {
                     </Label>
                     {loadingDates ? (
                       <div className="flex items-center justify-center py-8">
-                        <Loader2 className="w-6 h-6 animate-spin text-[#ccf381]" />
+                        <Loader2 className="w-6 h-6 animate-spin text-accent" />
                       </div>
                     ) : availableDates.length === 0 ? (
                       <div className="p-4 bg-[#f5f5f5] dark:bg-[#262626] rounded-lg text-center text-sm text-[#666] dark:text-[#aaa]">
@@ -395,8 +395,8 @@ export function BookingClient({ tutor, locale }: BookingClientProps) {
                               }}
                               className={`p-3 rounded-xl border-2 transition-all text-center ${
                                 isSelected
-                                  ? "border-[#ccf381] bg-[#ccf381]/20 text-[#ccf381] shadow-md"
-                                  : "border-[#e5e5e5] dark:border-[#262626] bg-white dark:bg-[#0a0a0a] text-black dark:text-white hover:border-[#ccf381]/50 hover:bg-[#ccf381]/5"
+                                  ? "border-accent bg-accent/20 text-accent shadow-md"
+                                  : "border-[#e5e5e5] dark:border-[#262626] bg-white dark:bg-[#0a0a0a] text-black dark:text-white hover:border-accent/50 hover:bg-accent/5"
                               }`}
                             >
                               <div className="text-xs font-medium mb-1">
@@ -428,7 +428,7 @@ export function BookingClient({ tutor, locale }: BookingClientProps) {
                       </Label>
                       {loadingSlots ? (
                         <div className="flex items-center justify-center py-8">
-                          <Loader2 className="w-6 h-6 animate-spin text-[#ccf381]" />
+                          <Loader2 className="w-6 h-6 animate-spin text-accent" />
                         </div>
                       ) : availableSlots.length === 0 ? (
                         <div className="p-4 bg-[#f5f5f5] dark:bg-[#262626] rounded-lg text-center text-sm text-[#666] dark:text-[#aaa]">
@@ -455,8 +455,8 @@ export function BookingClient({ tutor, locale }: BookingClientProps) {
                                 onClick={() => setSelectedTime(timeValue)}
                                 className={`p-3 rounded-xl border-2 transition-all text-sm font-semibold ${
                                   isSelected
-                                    ? "border-[#ccf381] bg-[#ccf381]/20 text-[#ccf381] shadow-md scale-105"
-                                    : "border-[#e5e5e5] dark:border-[#262626] bg-white dark:bg-[#0a0a0a] text-black dark:text-white hover:border-[#ccf381]/50 hover:bg-[#ccf381]/5 hover:scale-102"
+                                    ? "border-accent bg-accent/20 text-accent shadow-md scale-105"
+                                    : "border-[#e5e5e5] dark:border-[#262626] bg-white dark:bg-[#0a0a0a] text-black dark:text-white hover:border-accent/50 hover:bg-accent/5 hover:scale-102"
                                 }`}
                               >
                                 {timeString}
@@ -494,7 +494,7 @@ export function BookingClient({ tutor, locale }: BookingClientProps) {
                   <div className="p-4 bg-[#f5f5f5] dark:bg-[#262626] rounded-lg">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
-                        <DollarSign className="w-5 h-5 text-[#ccf381]" />
+                        <DollarSign className="w-5 h-5 text-accent" />
                         <span className="text-sm font-medium text-black dark:text-white">
                           {t("totalPrice")}
                         </span>
@@ -521,7 +521,7 @@ export function BookingClient({ tutor, locale }: BookingClientProps) {
                     <Button
                       type="submit"
                       disabled={submitting || !selectedDate || !selectedTime || availableSlots.length === 0}
-                      className="flex-1 bg-[#111] dark:bg-[#ccf381] text-white dark:text-black hover:bg-[#222] dark:hover:bg-[#d4f89a] rounded-full py-6 text-base font-semibold"
+                      className="flex-1 bg-[#111] dark:bg-accent text-white dark:text-black hover:bg-[#222] dark:hover:bg-brand-primary-light rounded-full py-6 text-base font-semibold"
                     >
                       {submitting ? (
                         <>

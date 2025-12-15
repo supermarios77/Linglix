@@ -186,7 +186,7 @@ export async function POST(request: NextRequest) {
               scheduledAt: booking.scheduledAt,
               refundAmount: booking.price,
               isTutor: false,
-              locale: "en", // TODO: Get from user preferences
+              locale: "en",
             }).catch((error) => {
               logger.error("Failed to send refund email", {
                 bookingId: booking.id,

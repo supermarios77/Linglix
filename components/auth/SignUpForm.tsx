@@ -113,7 +113,7 @@ export function SignUpForm() {
         <div className="relative z-10">
           {/* Badge */}
           <div className="inline-flex items-center px-3 py-1.5 sm:px-4 sm:py-2 bg-white/80 dark:bg-[#0a0a0a]/80 border border-[#e5e5e5] dark:border-[#262626] rounded-full text-[10px] sm:text-xs font-semibold uppercase tracking-wider mb-6 sm:mb-8 shadow-[0_2px_10px_rgba(0,0,0,0.03)] dark:shadow-[0_2px_10px_rgba(0,0,0,0.3)] text-black dark:text-white">
-            <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-[#10b981] dark:bg-[#ccf381] rounded-full mr-2 animate-pulse" />
+            <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-accent dark:bg-accent rounded-full mr-2 animate-pulse" />
             Join Us
           </div>
 
@@ -156,7 +156,7 @@ export function SignUpForm() {
                 disabled={isLoading}
                 placeholder="John Doe"
                 autoComplete="name"
-                className="h-11 sm:h-12 rounded-full border-[#e5e5e5] dark:border-[#262626] bg-white/80 dark:bg-[#0a0a0a]/80 backdrop-blur-sm focus:border-[#999] dark:focus:border-[#ccf381] focus:ring-2 focus:ring-[#999]/10 dark:focus:ring-[#ccf381]/20 transition-all text-sm sm:text-base text-black dark:text-white placeholder:text-[#999] dark:placeholder:text-[#555]"
+                className="h-11 sm:h-12 rounded-full border-[#e5e5e5] dark:border-[#262626] bg-white/80 dark:bg-[#0a0a0a]/80 backdrop-blur-sm focus:border-[#999] dark:focus:border-accent focus:ring-2 focus:ring-[#999]/10 dark:focus:ring-accent/20 transition-all text-sm sm:text-base text-black dark:text-white placeholder:text-[#999] dark:placeholder:text-[#555]"
               />
             </div>
 
@@ -174,7 +174,7 @@ export function SignUpForm() {
                 disabled={isLoading}
                 placeholder="you@example.com"
                 autoComplete="email"
-                className="h-11 sm:h-12 rounded-full border-[#e5e5e5] dark:border-[#262626] bg-white/80 dark:bg-[#0a0a0a]/80 backdrop-blur-sm focus:border-[#999] dark:focus:border-[#ccf381] focus:ring-2 focus:ring-[#999]/10 dark:focus:ring-[#ccf381]/20 transition-all text-sm sm:text-base text-black dark:text-white placeholder:text-[#999] dark:placeholder:text-[#555]"
+                className="h-11 sm:h-12 rounded-full border-[#e5e5e5] dark:border-[#262626] bg-white/80 dark:bg-[#0a0a0a]/80 backdrop-blur-sm focus:border-[#999] dark:focus:border-accent focus:ring-2 focus:ring-[#999]/10 dark:focus:ring-accent/20 transition-all text-sm sm:text-base text-black dark:text-white placeholder:text-[#999] dark:placeholder:text-[#555]"
               />
             </div>
 
@@ -194,7 +194,7 @@ export function SignUpForm() {
                   disabled={isLoading}
                   placeholder="••••••••"
                   autoComplete="new-password"
-                  className={`h-11 sm:h-12 rounded-full border-[#e5e5e5] dark:border-[#262626] bg-white/80 dark:bg-[#0a0a0a]/80 backdrop-blur-sm focus:border-[#999] dark:focus:border-[#ccf381] focus:ring-2 focus:ring-[#999]/10 dark:focus:ring-[#ccf381]/20 transition-all text-sm sm:text-base text-black dark:text-white placeholder:text-[#999] dark:placeholder:text-[#555] pr-12 ${
+                  className={`h-11 sm:h-12 rounded-full border-[#e5e5e5] dark:border-[#262626] bg-white/80 dark:bg-[#0a0a0a]/80 backdrop-blur-sm focus:border-[#999] dark:focus:border-accent focus:ring-2 focus:ring-[#999]/10 dark:focus:ring-accent/20 transition-all text-sm sm:text-base text-black dark:text-white placeholder:text-[#999] dark:placeholder:text-[#555] pr-12 ${
                     isPasswordInvalid ? "border-red-300 dark:border-red-800 focus:border-red-400 dark:focus:border-red-700" : ""
                   }`}
                 />
@@ -202,7 +202,7 @@ export function SignUpForm() {
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
                   disabled={isLoading}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 text-[#666] dark:text-[#a1a1aa] hover:text-black dark:hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-[#999]/20 dark:focus:ring-[#ccf381]/20 rounded-full"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 text-[#666] dark:text-[#a1a1aa] hover:text-black dark:hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-[#999]/20 dark:focus:ring-accent/20 rounded-full"
                   aria-label={showPassword ? "Hide password" : "Show password"}
                 >
                   {showPassword ? (
@@ -240,7 +240,7 @@ export function SignUpForm() {
                   disabled={isLoading}
                   placeholder="••••••••"
                   autoComplete="new-password"
-                  className={`h-11 sm:h-12 rounded-full border-[#e5e5e5] dark:border-[#262626] bg-white/80 dark:bg-[#0a0a0a]/80 backdrop-blur-sm focus:border-[#999] dark:focus:border-[#ccf381] focus:ring-2 focus:ring-[#999]/10 dark:focus:ring-[#ccf381]/20 transition-all text-sm sm:text-base text-black dark:text-white placeholder:text-[#999] dark:placeholder:text-[#555] pr-12 ${
+                  className={`h-11 sm:h-12 rounded-full border-[#e5e5e5] dark:border-[#262626] bg-white/80 dark:bg-[#0a0a0a]/80 backdrop-blur-sm focus:border-[#999] dark:focus:border-accent focus:ring-2 focus:ring-[#999]/10 dark:focus:ring-accent/20 transition-all text-sm sm:text-base text-black dark:text-white placeholder:text-[#999] dark:placeholder:text-[#555] pr-12 ${
                     isConfirmPasswordInvalid ? "border-red-300 dark:border-red-800 focus:border-red-400 dark:focus:border-red-700" : ""
                   }`}
                 />
@@ -248,7 +248,7 @@ export function SignUpForm() {
                   type="button"
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                   disabled={isLoading}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 text-[#666] dark:text-[#a1a1aa] hover:text-black dark:hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-[#999]/20 dark:focus:ring-[#ccf381]/20 rounded-full"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 text-[#666] dark:text-[#a1a1aa] hover:text-black dark:hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-[#999]/20 dark:focus:ring-accent/20 rounded-full"
                   aria-label={showConfirmPassword ? "Hide password" : "Show password"}
                 >
                   {showConfirmPassword ? (
@@ -267,7 +267,7 @@ export function SignUpForm() {
 
             <Button
               type="submit"
-              className="w-full h-11 sm:h-12 rounded-full bg-[#111] dark:bg-[#ccf381] text-white dark:text-black font-semibold text-sm sm:text-base transition-all duration-300 hover:translate-y-[-2px] hover:shadow-[0_10px_20px_rgba(0,0,0,0.15)] dark:hover:shadow-[0_10px_20px_rgba(204,243,129,0.3)] hover:bg-[#222] dark:hover:bg-[#d4f89a] active:scale-[0.98] inline-flex items-center justify-center gap-2.5"
+              className="w-full h-11 sm:h-12 rounded-full bg-[#111] dark:bg-accent text-white dark:text-black font-semibold text-sm sm:text-base transition-all duration-300 hover:translate-y-[-2px] hover:shadow-[0_10px_20px_rgba(0,0,0,0.15)] dark:hover:shadow-[0_10px_20px_rgba(255,230,0,0.3)] hover:bg-[#222] dark:hover:bg-brand-primary-light active:scale-[0.98] inline-flex items-center justify-center gap-2.5"
               disabled={isLoading}
             >
               {isLoading ? (

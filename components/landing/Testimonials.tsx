@@ -39,7 +39,7 @@ export function Testimonials({ locale }: TestimonialsProps) {
       quote: t("quotes.3"),
       author: "Min-jun Park",
       role: t("verifiedStudent"),
-      gradient: "from-[#ccf381] to-[#a8e063]",
+      gradient: "from-accent to-brand-primary-light",
     },
   ];
 
@@ -48,7 +48,7 @@ export function Testimonials({ locale }: TestimonialsProps) {
       <div className="text-center mb-10 sm:mb-12 md:mb-16">
         <h3 className="text-[28px] sm:text-[36px] md:text-[42px] font-semibold mb-3 sm:mb-4 text-black dark:text-white px-2">
           {t("title")}{" "}
-          <span className="inline-block bg-[#ffeb3b] dark:bg-[#ccf381] text-black dark:text-black px-2 sm:px-3 py-0.5 sm:py-1 -rotate-[-2deg] transform origin-center font-semibold shadow-[0_4px_8px_rgba(0,0,0,0.1)] text-[24px] sm:text-[32px] md:text-[36px]">
+          <span className="inline-block bg-accent text-accent-foreground px-2 sm:px-3 py-0.5 sm:py-1 -rotate-[-2deg] transform origin-center font-semibold shadow-[0_4px_8px_rgba(0,0,0,0.1)] text-[24px] sm:text-[32px] md:text-[36px]">
             {t("titleHighlight")}
           </span>
         </h3>
