@@ -6,6 +6,7 @@ import { createErrorResponse, Errors } from "@/lib/errors";
 import * as Sentry from "@sentry/nextjs";
 import { z } from "zod";
 import { sendTutorApprovalEmail } from "@/lib/email";
+import { invalidateCache } from "@/lib/cache";
 
 /**
  * API Route: Reject Tutor
@@ -82,6 +83,14 @@ export async function POST(
         isActive: false,
         rejectionReason: reason || null,
       },
+    });
+
+    // Invalidate cache for tutors (non-blocking)
+    invalidateCache("FEATURED_TUTORS").catch(() => {
+      // Ignore cache invalidation errors
+    });
+    invalidateCache("TUTOR_SPECIALTIES").catch(() => {
+      // Ignore cache invalidation errors
     });
 
     // Send rejection email (non-blocking)

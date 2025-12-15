@@ -27,7 +27,11 @@ interface TutorsPageProps {
  * - Search and filter functionality
  * - Pagination
  * - Full internationalization
+ * - Caching (5 minutes TTL)
  */
+
+// Enable static generation for better performance
+export const revalidate = 300; // Revalidate every 5 minutes
 export async function generateMetadata() {
   const t = await getTranslations("tutor");
 
@@ -109,30 +113,63 @@ export default async function TutorsPage({
     ];
   }
 
-  // Fetch tutors with pagination
-  const [tutors, totalCount] = await Promise.all([
-    prisma.user.findMany({
-      where,
-      include: {
-        tutorProfile: {
-          select: {
-            specialties: true,
-            rating: true,
-            hourlyRate: true,
-            totalSessions: true,
-            bio: true,
+  // Use cache for tutors listing
+  const { getOrSetCache, CacheConfig, generateCacheKey } = await import("@/lib/cache");
+  const cacheKey = generateCacheKey(
+    CacheConfig.TUTORS_LIST.keyPrefix,
+    locale,
+    page,
+    search || "",
+    language || "",
+    minPrice || "",
+    maxPrice || "",
+    minRating || ""
+  );
+
+  // Fetch tutors with pagination (cached)
+  const [tutors, totalCount, allLanguages] = await Promise.all([
+    getOrSetCache(
+      generateCacheKey(cacheKey, "tutors"),
+      async () => {
+        const result = await prisma.user.findMany({
+          where,
+          include: {
+            tutorProfile: {
+              select: {
+                specialties: true,
+                rating: true,
+                hourlyRate: true,
+                totalSessions: true,
+                bio: true,
+              },
+            },
           },
-        },
+          orderBy: {
+            tutorProfile: {
+              rating: "desc",
+            },
+          },
+          skip: (page - 1) * perPage,
+          take: perPage,
+        });
+        return result;
       },
-      orderBy: {
-        tutorProfile: {
-          rating: "desc",
-        },
+      CacheConfig.TUTORS_LIST.ttl
+    ),
+    getOrSetCache(
+      generateCacheKey(cacheKey, "count"),
+      async () => prisma.user.count({ where }),
+      CacheConfig.TUTORS_LIST.ttl
+    ),
+    // Get all unique languages/specialties for filter (cached)
+    getOrSetCache(
+      generateCacheKey(CacheConfig.TUTOR_SPECIALTIES.keyPrefix),
+      async () => {
+        const { getAllTutorSpecialties } = await import("@/lib/db/query-optimization");
+        return await getAllTutorSpecialties();
       },
-      skip: (page - 1) * perPage,
-      take: perPage,
-    }),
-    prisma.user.count({ where }),
+      CacheConfig.TUTOR_SPECIALTIES.ttl
+    ),
   ]);
 
   // Transform tutors data with slugs
@@ -149,11 +186,6 @@ export default async function TutorsPage({
       totalSessions: tutor.tutorProfile!.totalSessions,
       bio: tutor.tutorProfile!.bio,
     }));
-
-  // Get all unique languages/specialties for filter (optimized query)
-  // Use optimized query to avoid fetching all tutor data
-  const { getAllTutorSpecialties } = await import("@/lib/db/query-optimization");
-  const allLanguages = await getAllTutorSpecialties();
 
   const totalPages = Math.ceil(totalCount / perPage);
   const session = await auth();

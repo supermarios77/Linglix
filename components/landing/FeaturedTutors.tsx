@@ -30,13 +30,20 @@ interface TutorData {
  * - 3 tutors: 1 large + 2 small cards
  * - 4+ tutors: Grid layout
  * 
- * Production-ready with proper TypeScript types
+ * Production-ready with:
+ * - Proper TypeScript types
+ * - Caching (10 minutes TTL)
+ * - Error handling
  */
 export async function FeaturedTutors({ locale }: FeaturedTutorsProps) {
   const t = await getTranslations("landing");
 
   // Fetch active and approved tutors with their profiles
-  // Gracefully handle database connection errors
+  // Use cache to reduce database load
+  const { getOrSetCache, CacheConfig, generateCacheKey } = await import("@/lib/cache");
+  
+  const cacheKey = generateCacheKey(CacheConfig.FEATURED_TUTORS.keyPrefix, locale);
+  
   let tutors: Awaited<ReturnType<typeof prisma.user.findMany<{
     where: {
       role: "TUTOR";
@@ -56,32 +63,39 @@ export async function FeaturedTutors({ locale }: FeaturedTutorsProps) {
       };
     };
   }>>> = [];
+  
   try {
-    tutors = await prisma.user.findMany({
-      where: {
-        role: "TUTOR",
-        tutorProfile: {
-          isActive: true,
-          approvalStatus: "APPROVED", // Only show approved tutors
-        },
-      },
-      include: {
-        tutorProfile: {
-          select: {
-            specialties: true,
-            rating: true,
-            hourlyRate: true,
-            totalSessions: true,
+    tutors = await getOrSetCache(
+      cacheKey,
+      async () => {
+        return await prisma.user.findMany({
+          where: {
+            role: "TUTOR",
+            tutorProfile: {
+              isActive: true,
+              approvalStatus: "APPROVED", // Only show approved tutors
+            },
           },
-        },
+          include: {
+            tutorProfile: {
+              select: {
+                specialties: true,
+                rating: true,
+                hourlyRate: true,
+                totalSessions: true,
+              },
+            },
+          },
+          take: 8, // Limit to 8 for display
+          orderBy: {
+            tutorProfile: {
+              rating: "desc",
+            },
+          },
+        });
       },
-      take: 8, // Limit to 8 for display
-      orderBy: {
-        tutorProfile: {
-          rating: "desc",
-        },
-      },
-    });
+      CacheConfig.FEATURED_TUTORS.ttl
+    );
   } catch (error) {
     // Log error but don't crash the page
     if (process.env.NODE_ENV === "development") {

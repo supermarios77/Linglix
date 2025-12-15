@@ -11,10 +11,12 @@ export const dynamic = "force-dynamic";
  * 
  * Returns tutors recommended based on student's onboarding preferences.
  * If no relevant tutors found, returns top-rated tutors.
+ * Results are cached for 5 minutes per user.
  */
 export async function GET(request: NextRequest) {
   try {
     const user = await requireAuth();
+    const { getOrSetCache, CacheConfig, generateCacheKey } = await import("@/lib/cache");
 
     // Get student profile with preferences
     const studentProfile = await prisma.studentProfile.findUnique({
@@ -68,78 +70,93 @@ export async function GET(request: NextRequest) {
       tutorProfile: tutorProfileConditions,
     };
 
-    // Try to find relevant tutors first
-    let tutors = await prisma.user.findMany({
-      where,
-      include: {
-        tutorProfile: {
-          select: {
-            specialties: true,
-            rating: true,
-            hourlyRate: true,
-            totalSessions: true,
-            bio: true,
-          },
-        },
-      },
-      orderBy: {
-        tutorProfile: {
-          rating: "desc",
-        },
-      },
-      take: 12,
-    });
+    // Generate cache key based on user preferences
+    const cacheKey = generateCacheKey(
+      CacheConfig.RECOMMENDED_TUTORS.keyPrefix,
+      user.id,
+      studentProfile.learningGoal || "",
+      studentProfile.currentLevel || ""
+    );
 
-    // If no relevant tutors found, get top-rated tutors
-    if (tutors.length === 0) {
-      tutors = await prisma.user.findMany({
-        where: {
-          role: "TUTOR",
-          tutorProfile: {
-            isActive: true,
-            approvalStatus: "APPROVED",
-          },
-        },
-        include: {
-          tutorProfile: {
-            select: {
-              specialties: true,
-              rating: true,
-              hourlyRate: true,
-              totalSessions: true,
-              bio: true,
+    // Fetch tutors with caching
+    const tutorsData = await getOrSetCache(
+      cacheKey,
+      async () => {
+        // Try to find relevant tutors first
+        let tutors = await prisma.user.findMany({
+          where,
+          include: {
+            tutorProfile: {
+              select: {
+                specialties: true,
+                rating: true,
+                hourlyRate: true,
+                totalSessions: true,
+                bio: true,
+              },
             },
           },
-        },
-        orderBy: {
-          tutorProfile: {
-            rating: "desc",
+          orderBy: {
+            tutorProfile: {
+              rating: "desc",
+            },
           },
-        },
-        take: 12,
-      });
-    }
+          take: 12,
+        });
 
-    // Transform tutors data
-    const tutorsData = tutors
-      .filter((tutor) => tutor.tutorProfile && tutor.name)
-      .map((tutor) => ({
-        id: tutor.id,
-        name: tutor.name!,
-        image: tutor.image,
-        specialties: tutor.tutorProfile!.specialties,
-        rating: tutor.tutorProfile!.rating,
-        hourlyRate: tutor.tutorProfile!.hourlyRate,
-        totalSessions: tutor.tutorProfile!.totalSessions,
-        bio: tutor.tutorProfile!.bio,
-        isRecommended: specialtyMatches.length > 0 && 
-          tutor.tutorProfile!.specialties.some(spec => 
-            specialtyMatches.some(match => 
-              spec.toLowerCase().includes(match.toLowerCase()) || 
-              match.toLowerCase().includes(spec.toLowerCase())
-            )
-          ),
-      }));
+        // If no relevant tutors found, get top-rated tutors
+        if (tutors.length === 0) {
+          tutors = await prisma.user.findMany({
+            where: {
+              role: "TUTOR",
+              tutorProfile: {
+                isActive: true,
+                approvalStatus: "APPROVED",
+              },
+            },
+            include: {
+              tutorProfile: {
+                select: {
+                  specialties: true,
+                  rating: true,
+                  hourlyRate: true,
+                  totalSessions: true,
+                  bio: true,
+                },
+              },
+            },
+            orderBy: {
+              tutorProfile: {
+                rating: "desc",
+              },
+            },
+            take: 12,
+          });
+        }
+
+        // Transform tutors data
+        return tutors
+          .filter((tutor) => tutor.tutorProfile && tutor.name)
+          .map((tutor) => ({
+            id: tutor.id,
+            name: tutor.name!,
+            image: tutor.image,
+            specialties: tutor.tutorProfile!.specialties,
+            rating: tutor.tutorProfile!.rating,
+            hourlyRate: tutor.tutorProfile!.hourlyRate,
+            totalSessions: tutor.tutorProfile!.totalSessions,
+            bio: tutor.tutorProfile!.bio,
+            isRecommended: specialtyMatches.length > 0 && 
+              tutor.tutorProfile!.specialties.some(spec => 
+                specialtyMatches.some(match => 
+                  spec.toLowerCase().includes(match.toLowerCase()) || 
+                  match.toLowerCase().includes(spec.toLowerCase())
+                )
+              ),
+          }));
+      },
+      CacheConfig.RECOMMENDED_TUTORS.ttl
+    );
 
     return NextResponse.json({
       tutors: tutorsData,

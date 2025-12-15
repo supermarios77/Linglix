@@ -5,6 +5,7 @@ import { Role } from "@prisma/client";
 import { createErrorResponse } from "@/lib/errors";
 import * as Sentry from "@sentry/nextjs";
 import { sendTutorApprovalEmail } from "@/lib/email";
+import { invalidateCache } from "@/lib/cache";
 
 /**
  * API Route: Approve Tutor
@@ -66,6 +67,14 @@ export async function POST(
         isActive: true,
         rejectionReason: null, // Clear any previous rejection reason
       },
+    });
+
+    // Invalidate cache for tutors (non-blocking)
+    invalidateCache("FEATURED_TUTORS").catch(() => {
+      // Ignore cache invalidation errors
+    });
+    invalidateCache("TUTOR_SPECIALTIES").catch(() => {
+      // Ignore cache invalidation errors
     });
 
     // Send approval email (non-blocking)

@@ -5,6 +5,7 @@ import { Role, TutorApprovalStatus } from "@prisma/client";
 import { createErrorResponse } from "@/lib/errors";
 import * as Sentry from "@sentry/nextjs";
 import { checkRateLimit, createRateLimitResponse } from "@/lib/rate-limit";
+import { getOrSetCache, CacheConfig, generateCacheKey } from "@/lib/cache";
 
 /**
  * API Route: Get Admin Statistics
@@ -32,47 +33,58 @@ export async function GET(request: NextRequest) {
     // Require admin role
     await requireRole(Role.ADMIN);
 
-    // Fetch statistics in parallel
-    const [
-      totalTutors,
-      pendingTutors,
-      approvedTutors,
-      rejectedTutors,
-      totalStudents,
-      totalBookings,
-    ] = await Promise.all([
-      // Total tutors
-      prisma.user.count({
-        where: { role: Role.TUTOR },
-      }),
-      // Pending tutors
-      prisma.tutorProfile.count({
-        where: { approvalStatus: TutorApprovalStatus.PENDING },
-      }),
-      // Approved tutors
-      prisma.tutorProfile.count({
-        where: { approvalStatus: TutorApprovalStatus.APPROVED },
-      }),
-      // Rejected tutors
-      prisma.tutorProfile.count({
-        where: { approvalStatus: TutorApprovalStatus.REJECTED },
-      }),
-      // Total students
-      prisma.user.count({
-        where: { role: Role.STUDENT },
-      }),
-      // Total bookings
-      prisma.booking.count(),
-    ]);
+    // Use cache for admin stats (5 minute TTL)
+    const cacheKey = generateCacheKey(CacheConfig.ADMIN_STATS.keyPrefix);
+    
+    const stats = await getOrSetCache(
+      cacheKey,
+      async () => {
+        // Fetch statistics in parallel
+        const [
+          totalTutors,
+          pendingTutors,
+          approvedTutors,
+          rejectedTutors,
+          totalStudents,
+          totalBookings,
+        ] = await Promise.all([
+          // Total tutors
+          prisma.user.count({
+            where: { role: Role.TUTOR },
+          }),
+          // Pending tutors
+          prisma.tutorProfile.count({
+            where: { approvalStatus: TutorApprovalStatus.PENDING },
+          }),
+          // Approved tutors
+          prisma.tutorProfile.count({
+            where: { approvalStatus: TutorApprovalStatus.APPROVED },
+          }),
+          // Rejected tutors
+          prisma.tutorProfile.count({
+            where: { approvalStatus: TutorApprovalStatus.REJECTED },
+          }),
+          // Total students
+          prisma.user.count({
+            where: { role: Role.STUDENT },
+          }),
+          // Total bookings
+          prisma.booking.count(),
+        ]);
 
-    return NextResponse.json({
-      totalTutors,
-      pendingTutors,
-      approvedTutors,
-      rejectedTutors,
-      totalStudents,
-      totalBookings,
-    });
+        return {
+          totalTutors,
+          pendingTutors,
+          approvedTutors,
+          rejectedTutors,
+          totalStudents,
+          totalBookings,
+        };
+      },
+      CacheConfig.ADMIN_STATS.ttl
+    );
+
+    return NextResponse.json(stats);
   } catch (error) {
     // Log to Sentry in production
     if (process.env.NODE_ENV === "production") {
