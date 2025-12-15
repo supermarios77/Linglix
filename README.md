@@ -41,27 +41,37 @@ bun install
 cp .env.example .env
 ```
 
-4. Configure your `.env` file with:
-   - `DATABASE_URL` - PostgreSQL connection string
-   - `DIRECT_URL` - Direct database connection (for migrations)
-   - `NEXTAUTH_URL` - Your application URL
-   - `NEXTAUTH_SECRET` - Generate with: `openssl rand -base64 32`
-   - `STRIPE_SECRET_KEY` - Stripe secret key (for payments)
-   - `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` - Stripe publishable key
-   - `STRIPE_WEBHOOK_SECRET` - Stripe webhook signing secret
-   - `NEXT_PUBLIC_APP_URL` - Your application URL (for payment redirects)
-   - `RESEND_API_KEY` - Resend email API key (for email notifications)
-   - `FROM_EMAIL` - Email address to send from (default: onboarding@resend.dev)
-   - `FROM_NAME` - Sender name (default: Linglix)
-   - `CRON_SECRET` - Secret token for cron job authentication (optional, for manual testing)
+4. Configure your `.env` file with all required variables (see `.env.example` for complete list)
 
-5. Set up the database:
+5. Validate your environment configuration:
+```bash
+bun run validate:env
+```
+
+**Required Variables:**
+- `DATABASE_URL` - PostgreSQL connection string (Neon)
+- `DIRECT_URL` - Direct database connection (for migrations)
+- `NEXTAUTH_URL` - Your application URL
+- `NEXTAUTH_SECRET` - Generate with: `openssl rand -base64 32`
+- `STRIPE_SECRET_KEY` - Stripe secret key (for payments)
+- `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` - Stripe publishable key
+- `STRIPE_WEBHOOK_SECRET` - Stripe webhook signing secret
+- `NEXT_PUBLIC_APP_URL` - Your application URL
+- `RESEND_API_KEY` - Resend email API key
+- `NEXT_PUBLIC_STREAM_API_KEY` - Stream Video/Chat API key
+- `STREAM_SECRET_KEY` - Stream Video/Chat secret key
+- `UPSTASH_REDIS_REST_URL` - Upstash Redis URL (for rate limiting)
+- `UPSTASH_REDIS_REST_TOKEN` - Upstash Redis token
+
+See [Environment Variables Guide](./docs/ENVIRONMENT_VARIABLES.md) for complete reference.
+
+6. Set up the database:
 ```bash
 bun run db:push
 bun run db:generate
 ```
 
-6. Run the development server:
+7. Run the development server:
 ```bash
 bun dev
 ```
@@ -78,6 +88,7 @@ See the [docs](./docs/) directory for detailed guides:
 - [Stripe Setup](./docs/STRIPE_SETUP.md)
 - [Stream Video Setup](./docs/STREAM_VIDEO_SETUP.md)
 - [Cron Jobs Setup](./docs/CRON_SETUP.md)
+- [Environment Variables](./docs/ENVIRONMENT_VARIABLES.md)
 - [Production Checklist](./docs/PRODUCTION_CHECKLIST.md)
 - [Security Guidelines](./SECURITY.md)
 
@@ -91,6 +102,7 @@ See the [docs](./docs/) directory for detailed guides:
 - `bun run db:migrate` - Create and apply migrations
 - `bun run db:studio` - Open Prisma Studio
 - `bun run db:seed` - Seed database with test data
+- `bun run validate:env` - Validate environment variables
 
 ## Project Structure
 
