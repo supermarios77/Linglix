@@ -21,9 +21,29 @@ export const authConfig = {
   },
   callbacks: {
     /**
+     * Sign in callback - runs when user signs in
+     * Used to auto-verify email for OAuth users
+     */
+    async signIn({ user, account }) {
+      // For OAuth providers, automatically verify email
+      if (account?.provider && account.provider !== "credentials" && user.email) {
+        try {
+          const { prisma } = await import("@/lib/db/prisma");
+          await prisma.user.update({
+            where: { email: user.email.toLowerCase() },
+            data: { emailVerified: new Date() },
+          });
+        } catch (error) {
+          // Log error but don't block sign in
+          console.error("Failed to auto-verify OAuth user email:", error);
+        }
+      }
+      return true;
+    },
+    /**
      * JWT callback - runs whenever a JWT is created or updated
      */
-    async jwt({ token, user }) {
+    async jwt({ token, user, account }) {
       // Initial sign in
       if (user) {
         token.id = user.id;
@@ -31,6 +51,16 @@ export const authConfig = {
         // The authorize function in route.ts always returns a user with role
         token.role = (user as { role: Role }).role;
         token.email = user.email;
+        
+        // For OAuth users, email is automatically verified
+        // For credentials users, check emailVerified from user object
+        if (account?.provider !== "credentials") {
+          // OAuth provider - email is verified by the provider
+          token.emailVerified = true;
+        } else {
+          // Credentials provider - use emailVerified from user object
+          token.emailVerified = (user as { emailVerified?: Date | null }).emailVerified || false;
+        }
       }
 
       return token;
@@ -43,6 +73,7 @@ export const authConfig = {
         session.user.id = token.id as string;
         session.user.role = token.role as Role;
         session.user.email = token.email as string;
+        session.user.emailVerified = token.emailVerified as boolean;
       }
 
       return session;

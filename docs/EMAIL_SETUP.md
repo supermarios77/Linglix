@@ -50,9 +50,9 @@ For production, you should verify your domain:
 
 7. **Password Reset** - Sent when user requests password reset
 
-### 🔄 Ready to Use (Not Yet Integrated)
+### ✅ Implemented
 
-- **Email Verification** - Template ready, needs integration
+7. **Email Verification** - Sent after registration and can be resent
 
 ## Email Templates
 

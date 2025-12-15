@@ -48,7 +48,7 @@
 
 ### Authentication
 - [ ] NextAuth properly configured
-- [ ] Email verification enabled
+- [x] Email verification enabled ✅
 - [x] Password reset flow implemented ✅
 - [ ] OAuth providers configured (if using)
 

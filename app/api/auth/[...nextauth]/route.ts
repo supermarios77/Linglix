@@ -109,12 +109,14 @@ const { handlers } = NextAuth({
           }
 
           // Return user object (will be available in JWT callback)
+          // Note: emailVerified status is checked in the JWT callback
           return {
             id: user.id,
             email: user.email,
             name: user.name,
             role: user.role,
             image: user.image,
+            emailVerified: user.emailVerified,
           };
         } catch (error) {
           // Log error to Sentry in production
