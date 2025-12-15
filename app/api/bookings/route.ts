@@ -13,6 +13,7 @@ import { Role, BookingStatus } from "@prisma/client";
 import { createErrorResponse, Errors } from "@/lib/errors";
 import { logger } from "@/lib/logger";
 import { checkRateLimit, createRateLimitResponse } from "@/lib/rate-limit";
+import { captureBookingError } from "@/lib/monitoring/sentry-alerts";
 import {
   createBookingSchema,
   calculatePrice,

@@ -7,6 +7,7 @@ import { createEmailVerificationToken } from "@/lib/auth/email-verification";
 import { sendVerificationEmail } from "@/lib/email";
 import { getBaseUrl } from "@/lib/utils/url";
 import { logger } from "@/lib/logger";
+import { captureAuthError } from "@/lib/monitoring/sentry-alerts";
 
 /**
  * User Registration API Route

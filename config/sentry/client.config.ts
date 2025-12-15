@@ -31,6 +31,9 @@ Sentry.init({
   // Environment
   environment: process.env.NODE_ENV || "development",
 
+  // Release tracking for better alerting
+  release: process.env.NEXT_PUBLIC_APP_VERSION || process.env.VERCEL_GIT_COMMIT_SHA || undefined,
+
   // Replay session sample rate
   // 10% of sessions will be recorded in production
   replaysSessionSampleRate: process.env.NODE_ENV === "production" ? 0.1 : 1.0,
@@ -62,6 +65,18 @@ Sentry.init({
     if (process.env.NODE_ENV === "development" && !process.env.SENTRY_DEBUG) {
       return null;
     }
+
+    // Add default tags for alerting
+    if (event.tags) {
+      event.tags.environment = process.env.NODE_ENV || "development";
+      event.tags.release = process.env.NEXT_PUBLIC_APP_VERSION || process.env.VERCEL_GIT_COMMIT_SHA || "unknown";
+    } else {
+      event.tags = {
+        environment: process.env.NODE_ENV || "development",
+        release: process.env.NEXT_PUBLIC_APP_VERSION || process.env.VERCEL_GIT_COMMIT_SHA || "unknown",
+      };
+    }
+
     return event;
   },
 });

@@ -22,6 +22,9 @@ Sentry.init({
   // Environment
   environment: process.env.NODE_ENV || "development",
 
+  // Release tracking for better alerting
+  release: process.env.NEXT_PUBLIC_APP_VERSION || process.env.VERCEL_GIT_COMMIT_SHA || undefined,
+
   // Enable sending user PII (Personally Identifiable Information)
   // Only enable if you're comfortable with sending user data
   sendDefaultPii: false, // Security: disabled by default
@@ -41,6 +44,35 @@ Sentry.init({
     // Don't send events in development unless explicitly testing
     if (process.env.NODE_ENV === "development" && !process.env.SENTRY_DEBUG) {
       return null;
+    }
+
+    // Add default tags for alerting
+    if (event.tags) {
+      event.tags.environment = process.env.NODE_ENV || "development";
+      event.tags.release = process.env.NEXT_PUBLIC_APP_VERSION || process.env.VERCEL_GIT_COMMIT_SHA || "unknown";
+    } else {
+      event.tags = {
+        environment: process.env.NODE_ENV || "development",
+        release: process.env.NEXT_PUBLIC_APP_VERSION || process.env.VERCEL_GIT_COMMIT_SHA || "unknown",
+      };
+    }
+
+    return event;
+  },
+
+  // Performance monitoring for alerting
+  beforeSendTransaction(event) {
+    // Track slow transactions for performance alerts
+    if (event.transaction && event.contexts?.trace?.duration) {
+      const duration = event.contexts.trace.duration as number;
+      if (duration > 5000) {
+        // Transactions over 5 seconds
+        event.level = "warning";
+        if (event.tags) {
+          event.tags.performance_issue = "true";
+          event.tags.slow_transaction = "true";
+        }
+      }
     }
     return event;
   },

@@ -1,6 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import { Pool } from "pg";
 import { PrismaPg } from "@prisma/adapter-pg";
+import { captureDatabaseError } from "@/lib/monitoring/sentry-alerts";
 
 const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined;
@@ -44,10 +45,27 @@ export const prisma =
   globalForPrisma.prisma ??
   new PrismaClient({
     adapter,
-    log: process.env.NODE_ENV === "development" ? ["query", "error", "warn"] : ["error"],
+    log: process.env.NODE_ENV === "development" 
+      ? ["query", "error", "warn"] 
+      : [
+          {
+            emit: "event",
+            level: "error",
+          },
+        ],
     // Connection pooling is handled by Neon's built-in pooler
     // No need to configure connection_limit for serverless
+    errorFormat: "pretty",
   });
+
+// Enhanced error handling for database errors
+if (process.env.NODE_ENV === "production") {
+  prisma.$on("error" as never, (e: any) => {
+    captureDatabaseError(e, {
+      operation: "query",
+    });
+  });
+}
 
 if (process.env.NODE_ENV !== "production") {
   globalForPrisma.prisma = prisma;

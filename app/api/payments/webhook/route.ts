@@ -22,6 +22,7 @@ import { logger } from "@/lib/logger";
 import { BookingStatus } from "@prisma/client";
 import { sendPaymentReceiptEmail } from "@/lib/email";
 import { getBaseUrl } from "@/lib/utils/url";
+import { capturePaymentError } from "@/lib/monitoring/sentry-alerts";
 
 export const dynamic = "force-dynamic";
 
@@ -148,6 +149,16 @@ export async function POST(request: NextRequest) {
         error: error instanceof Error ? error.message : String(error),
         stack: error instanceof Error ? error.stack : undefined,
       });
+
+      // Capture payment error with alert context
+      if (error instanceof Error) {
+        const session = event.data.object as Stripe.Checkout.Session;
+        capturePaymentError(error, {
+          bookingId: session.metadata?.bookingId,
+          amount: session.amount_total ? session.amount_total / 100 : undefined,
+          stripeError: event.type,
+        });
+      }
 
       // Return 500 to allow Stripe to retry the webhook
       // Stripe will retry failed webhooks with exponential backoff
