@@ -29,27 +29,26 @@ export async function generateMetadata({
   const t = await getTranslations("tutor");
   const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://linglix.com";
 
-  // Find tutor by slug - query from User to avoid relation filtering issues
-  const users = await prisma.user.findMany({
+  // Find tutor by slug - query TutorProfile directly
+  // Filter by isActive and approvalStatus first, then filter user role in memory
+  const tutorProfiles = await prisma.tutorProfile.findMany({
     where: {
-      role: "TUTOR",
-      tutorProfile: {
-        isActive: true,
-        approvalStatus: "APPROVED",
-      },
+      isActive: true,
+      approvalStatus: "APPROVED",
     },
     include: {
-      tutorProfile: true,
+      user: true,
     },
   });
 
-  const tutorProfile = users
-    .filter((u) => u.tutorProfile && u.name)
-    .map((u) => ({
-      user: u,
-      tutorProfile: u.tutorProfile!,
-    }))
-    .find((tp) => slugify(tp.user.name!) === tutorName);
+  // Filter by user role and name in memory to avoid relation filtering issues
+  const validTutorProfiles = tutorProfiles.filter(
+    (tp) => tp.user.role === "TUTOR" && tp.user.name !== null
+  );
+
+  const tutorProfile = tutorProfiles.find(
+    (tp) => tp.user.name && slugify(tp.user.name) === tutorName
+  );
 
   if (!tutorProfile) {
     return {
@@ -118,41 +117,43 @@ export default async function TutorDetailPage({
   const { locale, tutorName } = await params;
   const t = await getTranslations("tutor");
 
-  // Find tutor by slug - query from User to avoid relation filtering issues
-  const users = await prisma.user.findMany({
+  // Find tutor by slug - query TutorProfile directly
+  // Filter by isActive and approvalStatus first, then filter user role in memory
+  const tutorProfiles = await prisma.tutorProfile.findMany({
     where: {
-      role: "TUTOR",
-      tutorProfile: {
-        isActive: true,
-        approvalStatus: "APPROVED",
-      },
+      isActive: true,
+      approvalStatus: "APPROVED",
     },
     include: {
-      tutorProfile: {
-        include: {
-          availability: {
-            where: {
-              isActive: true,
-            },
-            orderBy: {
-              dayOfWeek: "asc",
-            },
-          },
+      user: true,
+      availability: {
+        where: {
+          isActive: true,
+        },
+        orderBy: {
+          dayOfWeek: "asc",
         },
       },
     },
   });
 
-  const tutors = users
-    .filter((u) => u.tutorProfile && u.name)
-    .map((u) => ({
-      ...u,
-      tutorProfile: u.tutorProfile!,
-    }));
-
-  const tutor = tutors.find(
-    (t) => t.name && slugify(t.name) === tutorName
+  // Filter by user role and name in memory to avoid relation filtering issues
+  const validTutorProfiles = tutorProfiles.filter(
+    (tp) => tp.user.role === "TUTOR" && tp.user.name !== null
   );
+
+  const tutorProfile = validTutorProfiles.find(
+    (tp) => tp.user.name && slugify(tp.user.name) === tutorName
+  );
+
+  if (!tutorProfile) {
+    notFound();
+  }
+
+  const tutor = {
+    ...tutorProfile.user,
+    tutorProfile: tutorProfile,
+  };
 
   if (!tutor) {
     notFound();
