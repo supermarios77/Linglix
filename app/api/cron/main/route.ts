@@ -1,17 +1,21 @@
 /**
  * Main Cron Job - Consolidated
  * 
- * Handles all scheduled tasks in a single cron job to stay within Vercel Hobby plan limits (2 cron jobs max).
+ * Handles all scheduled tasks in a single cron job to stay within Vercel Hobby plan limits.
+ * Hobby plan allows only 1 cron job that runs once per day.
  * 
  * Tasks:
  * 1. Session Reminders - Sends email reminders for upcoming sessions (24h and 1h before)
  * 2. Refund Expired Bookings - Refunds bookings that are PENDING and past their scheduled time
  * 
+ * Note: Since this runs once per day, 1-hour reminders are sent for bookings in the next 2 hours
+ * to maximize coverage. 24-hour reminders work as normal.
+ * 
  * Vercel Cron Configuration (vercel.json):
  * {
  *   "crons": [{
  *     "path": "/api/cron/main",
- *     "schedule": "0 * * * *"  // Every hour
+ *     "schedule": "0 9 * * *"  // Daily at 9 AM UTC
  *   }]
  * }
  */
@@ -57,16 +61,21 @@ function verifyCronRequest(request: NextRequest): boolean {
 /**
  * Task 1: Send Session Reminders
  * Sends email reminders for upcoming sessions (24h and 1h before)
+ * 
+ * Note: Since this runs once per day, we use a wider window for 1-hour reminders
+ * to maximize coverage (0.5-2.5 hours) since we can't run hourly.
  */
 async function handleSessionReminders(now: Date) {
   const startTime = Date.now();
   
   try {
     // Calculate time windows for reminders
+    // 24-hour reminders: bookings scheduled 23.5-24.5 hours from now
     const twentyFourHourStart = new Date(now.getTime() + 23.5 * 60 * 60 * 1000);
     const twentyFourHourEnd = new Date(now.getTime() + 24.5 * 60 * 60 * 1000);
+    // 1-hour reminders: wider window (0.5-2.5 hours) since we only run once per day
     const oneHourStart = new Date(now.getTime() + 0.5 * 60 * 60 * 1000);
-    const oneHourEnd = new Date(now.getTime() + 1.5 * 60 * 60 * 1000);
+    const oneHourEnd = new Date(now.getTime() + 2.5 * 60 * 60 * 1000);
 
     // Fetch bookings needing 24-hour reminders
     const bookings24h = await prisma.booking.findMany({
