@@ -54,9 +54,9 @@ export async function POST(request: NextRequest) {
     const filename = `avatars/${session.user.id}-${Date.now()}-${file.name}`;
 
     // Upload to Vercel Blob
+    // Note: @vercel/blob v2 automatically uses BLOB_READ_WRITE_TOKEN from environment
     const blob = await put(filename, file, {
       access: "public",
-      token: blobToken,
     });
 
     return NextResponse.json(

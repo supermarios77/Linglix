@@ -189,9 +189,14 @@ async function handleSessionReminders(now: Date) {
       }
     }
 
-    // Send 1-hour reminders
+    // Send 1-hour reminders (actually 0.5-2.5 hours due to daily cron limitation)
     for (const booking of bookings1h) {
       try {
+        // Calculate actual hours until session (rounded to nearest hour)
+        const hoursUntil = Math.round(
+          (booking.scheduledAt.getTime() - now.getTime()) / (60 * 60 * 1000)
+        );
+
         if (booking.student.email) {
           await sendSessionReminderEmail({
             email: booking.student.email,
@@ -200,7 +205,7 @@ async function handleSessionReminders(now: Date) {
             scheduledAt: booking.scheduledAt,
             duration: booking.duration,
             sessionUrl: getSessionUrl(booking.id, "en", baseUrl),
-            hoursUntil: 1,
+            hoursUntil: hoursUntil || 1, // Default to 1 if calculation fails
             locale: "en",
           });
         }
@@ -213,7 +218,7 @@ async function handleSessionReminders(now: Date) {
             scheduledAt: booking.scheduledAt,
             duration: booking.duration,
             sessionUrl: getSessionUrl(booking.id, "en", baseUrl),
-            hoursUntil: 1,
+            hoursUntil: hoursUntil || 1, // Default to 1 if calculation fails
             locale: "en",
           });
         }
