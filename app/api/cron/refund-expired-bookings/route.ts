@@ -1,6 +1,9 @@
 /**
  * Cron Job: Refund Expired Unconfirmed Bookings
  * 
+ * @deprecated This route is deprecated. Use /api/cron/main instead.
+ * This route is kept for backward compatibility but will be removed in a future version.
+ * 
  * Production-ready cron job that:
  * - Finds bookings that are PENDING and past their scheduled time
  * - Processes refunds for these bookings with idempotency

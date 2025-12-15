@@ -1,6 +1,9 @@
 /**
  * Session Reminders Cron Job
  * 
+ * @deprecated This route is deprecated. Use /api/cron/main instead.
+ * This route is kept for backward compatibility but will be removed in a future version.
+ * 
  * Sends email reminders for upcoming sessions:
  * - 24 hours before session
  * - 1 hour before session
