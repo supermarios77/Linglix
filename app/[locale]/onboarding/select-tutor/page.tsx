@@ -51,6 +51,7 @@ export default async function SelectTutorPage({
   let tutorsData: Array<{
     id: string;
     name: string;
+    slug: string;
     image: string | null;
     specialties: string[];
     rating: number;
