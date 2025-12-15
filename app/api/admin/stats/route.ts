@@ -4,6 +4,7 @@ import { requireRole } from "@/lib/auth";
 import { Role, TutorApprovalStatus } from "@prisma/client";
 import { createErrorResponse } from "@/lib/errors";
 import * as Sentry from "@sentry/nextjs";
+import { checkRateLimit, createRateLimitResponse } from "@/lib/rate-limit";
 
 /**
  * API Route: Get Admin Statistics
@@ -13,13 +14,20 @@ import * as Sentry from "@sentry/nextjs";
  * Security:
  * - Requires ADMIN role
  * - Returns platform-wide statistics
+ * Rate limited: 20 requests per minute
  * 
  * Production considerations:
  * - Proper error handling with Sentry
  * - Efficient aggregation queries
  * - Cached results (can be added later)
  */
-export async function GET() {
+export async function GET(request: NextRequest) {
+  // Check rate limit
+  const rateLimit = await checkRateLimit(request, "ADMIN");
+  if (!rateLimit.success) {
+    return createRateLimitResponse(rateLimit.limit!, rateLimit.reset!);
+  }
+
   try {
     // Require admin role
     await requireRole(Role.ADMIN);

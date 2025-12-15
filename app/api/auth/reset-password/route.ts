@@ -13,6 +13,7 @@ import { prisma } from "@/lib/db/prisma";
 import { verifyPasswordResetToken } from "@/lib/auth/password-reset";
 import { createErrorResponse, Errors } from "@/lib/errors";
 import { logger } from "@/lib/logger";
+import { checkRateLimit, createRateLimitResponse } from "@/lib/rate-limit";
 
 export const dynamic = "force-dynamic";
 
@@ -26,8 +27,15 @@ const resetPasswordSchema = z.object({
  * POST /api/auth/reset-password
  * 
  * Reset password with token
+ * Rate limited: 5 requests per 15 minutes
  */
 export async function POST(request: NextRequest) {
+  // Check rate limit
+  const rateLimit = await checkRateLimit(request, "AUTH");
+  if (!rateLimit.success) {
+    return createRateLimitResponse(rateLimit.limit!, rateLimit.reset!);
+  }
+
   try {
     const body = await request.json();
     const validatedData = resetPasswordSchema.safeParse(body);

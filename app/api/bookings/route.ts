@@ -12,6 +12,7 @@ import { prisma } from "@/lib/db/prisma";
 import { Role, BookingStatus } from "@prisma/client";
 import { createErrorResponse, Errors } from "@/lib/errors";
 import { logger } from "@/lib/logger";
+import { checkRateLimit, createRateLimitResponse } from "@/lib/rate-limit";
 import {
   createBookingSchema,
   calculatePrice,
@@ -29,8 +30,15 @@ import { checkTimeSlotAvailability } from "@/lib/booking/availability";
  * - Students see their own bookings
  * - Tutors see bookings for their profile
  * - Admins see all bookings
+ * Rate limited: 30 requests per minute
  */
 export async function GET(request: NextRequest) {
+  // Check rate limit
+  const rateLimit = await checkRateLimit(request, "GENERAL");
+  if (!rateLimit.success) {
+    return createRateLimitResponse(rateLimit.limit!, rateLimit.reset!);
+  }
+
   try {
     const user = await requireAuth();
     const { searchParams } = new URL(request.url);
@@ -127,8 +135,15 @@ export async function GET(request: NextRequest) {
  * - Only students can create bookings
  * - Validates availability, conflicts, and business rules
  * - Calculates price automatically
+ * Rate limited: 10 requests per minute
  */
 export async function POST(request: NextRequest) {
+  // Check rate limit
+  const rateLimit = await checkRateLimit(request, "BOOKING");
+  if (!rateLimit.success) {
+    return createRateLimitResponse(rateLimit.limit!, rateLimit.reset!);
+  }
+
   try {
     // Only students can create bookings
     const user = await requireRole(Role.STUDENT);

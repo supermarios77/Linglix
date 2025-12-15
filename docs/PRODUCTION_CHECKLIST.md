@@ -41,6 +41,8 @@
 - [ ] `CRON_SECRET` - Secret token for cron job authentication (optional)
 - [ ] `SENTRY_DSN` - Sentry error tracking DSN
 - [ ] `VERCEL_BLOB_READ_WRITE_TOKEN` - Vercel Blob storage token
+- [ ] `UPSTASH_REDIS_REST_URL` - Upstash Redis REST URL (for rate limiting)
+- [ ] `UPSTASH_REDIS_REST_TOKEN` - Upstash Redis REST token (for rate limiting)
 
 ## Security
 
@@ -55,7 +57,7 @@
 - [ ] SQL injection prevention (Prisma handles this)
 - [ ] XSS prevention (React escaping)
 - [ ] CSRF protection (NextAuth handles this)
-- [ ] Rate limiting on API routes
+- [x] Rate limiting on API routes ✅
 - [ ] Environment variables secured (not in code)
 
 ### Payments

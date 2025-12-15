@@ -1,7 +1,8 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { registerUser, registerSchema } from "@/lib/auth/utils";
 import { prisma } from "@/lib/db/prisma";
 import { createErrorResponse, Errors } from "@/lib/errors";
+import { checkRateLimit, createRateLimitResponse } from "@/lib/rate-limit";
 
 /**
  * User Registration API Route
@@ -15,9 +16,14 @@ import { createErrorResponse, Errors } from "@/lib/errors";
  * - Password hashing with bcrypt
  * - Email uniqueness check
  * - Error handling
- * - Rate limiting should be added at edge level
+ * - Rate limiting (5 requests per 15 minutes)
  */
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
+  // Check rate limit
+  const rateLimit = await checkRateLimit(request, "AUTH");
+  if (!rateLimit.success) {
+    return createRateLimitResponse(rateLimit.limit!, rateLimit.reset!);
+  }
   let body: unknown = null;
   
   try {

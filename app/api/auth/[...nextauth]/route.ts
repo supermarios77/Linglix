@@ -5,6 +5,7 @@ import { authConfig } from "@/config/auth.config";
 import { prisma } from "@/lib/db/prisma";
 import bcrypt from "bcryptjs";
 import { z } from "zod";
+import { checkRateLimit } from "@/lib/rate-limit";
 
 /**
  * NextAuth API route handler (Node.js Runtime)
@@ -58,6 +59,30 @@ const { handlers } = NextAuth({
           }
 
           const { email, password } = validatedFields.data;
+
+          // Rate limiting: Use email as identifier (protects against brute force on specific accounts)
+          // Note: This doesn't protect against distributed attacks, but prevents brute force on individual accounts
+          // For full protection, rate limiting should be added at the edge/middleware level
+          const mockRequest = {
+            headers: {
+              get: (name: string) => {
+                // Try to get IP from headers if available (for better rate limiting)
+                if (name === "x-forwarded-for" || name === "x-real-ip") {
+                  return null; // Not available in authorize function
+                }
+                return null;
+              },
+            },
+          } as any;
+
+          // Check rate limit using email as identifier
+          // This protects against brute force attacks on specific email addresses
+          const rateLimit = await checkRateLimit(mockRequest, "AUTH", email.toLowerCase());
+          if (!rateLimit.success) {
+            // Return null to indicate authentication failure (don't reveal rate limit status)
+            // This prevents attackers from knowing if rate limiting is active
+            return null;
+          }
 
           // Find user by email
           const user = await prisma.user.findUnique({

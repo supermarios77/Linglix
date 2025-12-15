@@ -18,6 +18,7 @@ import { getStripeClient, isStripeConfigured } from "@/lib/stripe/client";
 import { createErrorResponse, Errors } from "@/lib/errors";
 import { logger } from "@/lib/logger";
 import { BookingStatus } from "@prisma/client";
+import { checkRateLimit, createRateLimitResponse } from "@/lib/rate-limit";
 
 export const dynamic = "force-dynamic";
 
@@ -25,6 +26,7 @@ export const dynamic = "force-dynamic";
  * POST /api/payments/checkout
  * 
  * Creates a Stripe Checkout Session for a booking
+ * Rate limited: 10 requests per minute
  * 
  * Request body:
  * {
@@ -32,6 +34,12 @@ export const dynamic = "force-dynamic";
  * }
  */
 export async function POST(request: NextRequest) {
+  // Check rate limit
+  const rateLimit = await checkRateLimit(request, "PAYMENT");
+  if (!rateLimit.success) {
+    return createRateLimitResponse(rateLimit.limit!, rateLimit.reset!);
+  }
+
   try {
     // Check if Stripe is configured
     if (!isStripeConfigured()) {

@@ -14,6 +14,7 @@ import { sendPasswordResetEmail } from "@/lib/email";
 import { getBaseUrl } from "@/lib/utils/url";
 import { createErrorResponse, Errors } from "@/lib/errors";
 import { logger } from "@/lib/logger";
+import { checkRateLimit, createRateLimitResponse } from "@/lib/rate-limit";
 
 export const dynamic = "force-dynamic";
 
@@ -25,8 +26,15 @@ const forgotPasswordSchema = z.object({
  * POST /api/auth/forgot-password
  * 
  * Request a password reset email
+ * Rate limited: 5 requests per 15 minutes
  */
 export async function POST(request: NextRequest) {
+  // Check rate limit
+  const rateLimit = await checkRateLimit(request, "AUTH");
+  if (!rateLimit.success) {
+    return createRateLimitResponse(rateLimit.limit!, rateLimit.reset!);
+  }
+
   try {
     const body = await request.json();
     const validatedData = forgotPasswordSchema.safeParse(body);
