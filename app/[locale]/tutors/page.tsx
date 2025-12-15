@@ -32,12 +32,65 @@ interface TutorsPageProps {
 
 // Enable static generation for better performance
 export const revalidate = 300; // Revalidate every 5 minutes
-export async function generateMetadata() {
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
   const t = await getTranslations("tutor");
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://linglix.com";
+
+  // Generate alternate language URLs
+  const { locales } = await import("@/i18n/config");
+  const alternates: Record<string, string> = {};
+  locales.forEach((loc) => {
+    alternates[loc] = `${baseUrl}/${loc}/tutors`;
+  });
 
   return {
-    title: `${t("title")} - Linglix`,
-    description: t("subtitle"),
+    title: `Find Language Tutors Online | ${t("title")} - Linglix`,
+    description: t("subtitle") || "Browse certified native language tutors. Filter by language, price, and rating. Book your first 1-on-1 lesson today!",
+    keywords: [
+      "language tutors",
+      "online tutors",
+      "native speakers",
+      "Spanish tutors",
+      "English tutors",
+      "French tutors",
+      "find tutor",
+      "language lessons",
+    ],
+    alternates: {
+      canonical: `${baseUrl}/${locale}/tutors`,
+      languages: {
+        ...alternates,
+        "x-default": `${baseUrl}/en/tutors`,
+      },
+    },
+    openGraph: {
+      title: `Find Language Tutors Online | ${t("title")} - Linglix`,
+      description: t("subtitle") || "Browse certified native language tutors and book personalized lessons",
+      url: `${baseUrl}/${locale}/tutors`,
+      siteName: "Linglix",
+      locale: locale,
+      type: "website",
+      images: [
+        {
+          url: `${baseUrl}/og-tutors.jpg`,
+          width: 1200,
+          height: 630,
+          alt: "Linglix - Find Language Tutors",
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `Find Language Tutors Online | ${t("title")}`,
+      description: t("subtitle") || "Browse certified native language tutors",
+      images: [`${baseUrl}/twitter-tutors.jpg`],
+    },
   };
 }
 

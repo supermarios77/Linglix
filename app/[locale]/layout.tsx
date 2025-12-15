@@ -25,10 +25,88 @@ const inter = Inter({
   style: ["normal"],
 });
 
-export const metadata: Metadata = {
-  title: "Linglix - Learn Languages with Tutors",
-  description: "Online language learning platform connecting students with native tutors",
-};
+/**
+ * Generate metadata for locale-specific layout
+ * Includes hreflang tags for multi-language SEO
+ */
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://linglix.com";
+
+  // Generate alternate language URLs
+  const alternates: Record<string, string> = {};
+  locales.forEach((loc) => {
+    alternates[loc] = `${baseUrl}/${loc}`;
+  });
+
+  return {
+    title: {
+      default: "Linglix - Learn Languages with Native Tutors",
+      template: "%s | Linglix",
+    },
+    description: "Connect with certified native language tutors for personalized 1-on-1 video lessons. Learn Spanish, English, French, and more. Book your first session today!",
+    keywords: [
+      "language learning",
+      "online tutors",
+      "native speakers",
+      "Spanish tutor",
+      "English tutor",
+      "French tutor",
+      "language lessons",
+      "online language classes",
+      "1-on-1 tutoring",
+    ],
+    authors: [{ name: "Linglix" }],
+    creator: "Linglix",
+    publisher: "Linglix",
+    metadataBase: new URL(baseUrl),
+    alternates: {
+      canonical: `${baseUrl}/${locale}`,
+      languages: {
+        ...alternates,
+        "x-default": `${baseUrl}/en`,
+      },
+    },
+    openGraph: {
+      type: "website",
+      locale: locale,
+      url: `${baseUrl}/${locale}`,
+      siteName: "Linglix",
+      title: "Linglix - Learn Languages with Native Tutors",
+      description: "Connect with certified native language tutors for personalized 1-on-1 video lessons. Learn Spanish, English, French, and more.",
+      images: [
+        {
+          url: `${baseUrl}/og-image.jpg`,
+          width: 1200,
+          height: 630,
+          alt: "Linglix - Language Learning Platform",
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: "Linglix - Learn Languages with Native Tutors",
+      description: "Connect with certified native language tutors for personalized lessons",
+      images: [`${baseUrl}/twitter-image.jpg`],
+      creator: "@linglix",
+    },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        "max-video-preview": -1,
+        "max-image-preview": "large",
+        "max-snippet": -1,
+      },
+    },
+  };
+}
 
 /**
  * Locale-specific layout
