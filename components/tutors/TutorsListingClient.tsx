@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import { Search, Filter, Star, Users, X, ChevronLeft, ChevronRight } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
@@ -284,6 +285,24 @@ export function TutorsListingClient({
                   className="group bg-white dark:bg-gradient-to-b from-[#1a1a1a] to-[#121212] rounded-[24px] sm:rounded-[32px] p-6 transition-all duration-300 cursor-pointer border border-[#e5e5e5] dark:border-[#262626] hover:-translate-y-1 hover:border-[#d4d4d4] dark:hover:border-[#404040] hover:shadow-[0_20px_40px_rgba(0,0,0,0.08)]"
                 >
                   <div className="flex flex-col items-center text-center space-y-4">
+                    {/* Circle Avatar */}
+                    <div className="relative w-24 h-24 sm:w-28 sm:h-28 rounded-full overflow-hidden shrink-0 border-2 border-[#e5e5e5] dark:border-[#404040] group-hover:border-accent transition-colors">
+                    {tutor.image ? (
+                      <Image
+                        src={tutor.image}
+                        alt={tutor.name}
+                        fill
+                        className="object-cover"
+                      />
+                    ) : (
+                        <div className="w-full h-full bg-gradient-to-br from-[#f5f5f5] to-[#e5e5e5] dark:from-[#1a1a1a] dark:to-[#0a0a0a] flex items-center justify-center">
+                          <span className="text-3xl sm:text-4xl font-bold text-[#111] dark:text-accent">
+                            {tutor.name.charAt(0).toUpperCase()}
+                          </span>
+                        </div>
+                    )}
+                  </div>
+
                     {/* Tutor Info */}
                     <div className="w-full space-y-3">
                     <div>
