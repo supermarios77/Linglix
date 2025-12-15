@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 import { notFound } from "next/navigation";
+import { Analytics } from "@vercel/analytics/next";
 import "../globals.css";
 import { locales, isValidLocale } from "@/i18n/config";
 
@@ -158,8 +159,9 @@ export default async function LocaleLayout({
         className={`${inter.variable} font-sans antialiased`}
       >
         <NextIntlClientProvider messages={messages}>
-        {children}
+          {children}
         </NextIntlClientProvider>
+        <Analytics />
       </body>
     </html>
   );
