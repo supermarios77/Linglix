@@ -48,7 +48,7 @@ export function Testimonials({ locale }: TestimonialsProps) {
       <div className="text-center mb-16">
         <h3 className="font-space-grotesk text-[42px] font-semibold mb-4 text-black dark:text-white">
           {t("title")}{" "}
-          <span className="italic font-normal bg-gradient-to-r from-accent to-brand-primary-light bg-clip-text text-transparent">
+          <span className="font-normal bg-gradient-to-r from-accent to-brand-primary-light bg-clip-text text-transparent">
             {t("titleHighlight")}
           </span>
         </h3>
