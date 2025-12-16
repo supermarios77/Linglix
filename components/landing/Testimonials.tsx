@@ -48,7 +48,7 @@ export function Testimonials({ locale }: TestimonialsProps) {
       <div className="text-center mb-16">
         <h3 className="font-space-grotesk text-[42px] font-semibold mb-4 text-black dark:text-white">
           {t("title")}{" "}
-          <span className="font-normal bg-accent text-black px-2 py-1 -rotate-[-2deg] transform origin-center inline-block">
+          <span className="font-bold bg-accent text-black px-2 py-1 -rotate-[-2deg] transform origin-center inline-block">
             {t("titleHighlight")}
           </span>
         </h3>
