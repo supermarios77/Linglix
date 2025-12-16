@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Star, Sparkles, CheckCircle2, ArrowRight, Users } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import { prisma } from "@/lib/db/prisma";
@@ -161,15 +162,43 @@ export async function FeaturedTutors({ locale }: FeaturedTutorsProps) {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
           <Link href={`/${locale}/tutors/${tutor.slug}`}>
             <div className="group bg-white dark:bg-gradient-to-b from-[#1a1a1a] to-[#121212] rounded-[20px] p-6 transition-all duration-300 cursor-pointer border border-transparent hover:translate-y-[-10px] hover:border-[#eee] dark:hover:border-[#404040] hover:shadow-[0_20px_40px_rgba(0,0,0,0.04)]">
-              <div className="w-full h-60 rounded-xl overflow-hidden mb-5 bg-[#f5f5f5] dark:bg-[#1a1a1a] flex items-center justify-center">
-                <div className="text-6xl">👨‍🏫</div>
+              {/* Tutor Image */}
+              <div className="w-full h-60 rounded-xl overflow-hidden mb-5 bg-[#f5f5f5] dark:bg-[#1a1a1a] relative group-hover:scale-105 transition-transform duration-300">
+                {tutor.image ? (
+                  <Image
+                    src={tutor.image}
+                    alt={tutor.name}
+                    fill
+                    className="object-cover"
+                  />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center">
+                    <div className="text-6xl">👨‍🏫</div>
+                  </div>
+                )}
               </div>
-              <div className="flex justify-between items-start">
+              {/* Tutor Info */}
+              <div className="space-y-3">
                 <div>
-                  <span className="font-semibold text-base block mb-1 text-black dark:text-white">{tutor.name}</span>
-                  <span className="text-xs text-[#888] dark:text-[#a1a1aa]">{getPrimarySpecialty(tutor.specialties)}</span>
+                  <h3 className="font-semibold text-base block mb-1 text-black dark:text-white group-hover:text-accent transition-colors">{tutor.name}</h3>
+                  <p className="text-xs text-[#888] dark:text-[#a1a1aa]">{getPrimarySpecialty(tutor.specialties)}</p>
                 </div>
-                <span className="font-bold text-black dark:text-white">${tutor.hourlyRate}</span>
+                {/* Rating and Sessions */}
+                <div className="flex items-center gap-3 text-sm">
+                  <div className="flex items-center gap-1">
+                    <Star className="w-4 h-4 fill-[#ffb800] text-[#ffb800]" />
+                    <span className="font-semibold text-black dark:text-white">{tutor.rating.toFixed(1)}</span>
+                  </div>
+                  <div className="flex items-center gap-1 text-[#888] dark:text-[#a1a1aa]">
+                    <Users className="w-4 h-4" />
+                    <span>{tutor.totalSessions}+</span>
+                  </div>
+                </div>
+                {/* Price */}
+                <div className="flex justify-between items-center pt-2 border-t border-[#e5e5e5] dark:border-[#262626]">
+                  <span className="text-xs text-[#888] dark:text-[#a1a1aa]">{t("trending.hourly")}</span>
+                  <span className="font-bold text-lg text-black dark:text-white">${tutor.hourlyRate}</span>
+                </div>
               </div>
             </div>
           </Link>
@@ -195,15 +224,43 @@ export async function FeaturedTutors({ locale }: FeaturedTutorsProps) {
           {tutorData.map((tutor) => (
             <Link key={tutor.id} href={`/${locale}/tutors/${tutor.slug}`}>
               <div className="group bg-white dark:bg-gradient-to-b from-[#1a1a1a] to-[#121212] rounded-[20px] p-6 transition-all duration-300 cursor-pointer border border-transparent hover:translate-y-[-10px] hover:border-[#eee] dark:hover:border-[#404040] hover:shadow-[0_20px_40px_rgba(0,0,0,0.04)]">
-                <div className="w-full h-60 rounded-xl overflow-hidden mb-5 bg-[#f5f5f5] dark:bg-[#1a1a1a] flex items-center justify-center">
-                  <div className="text-6xl">👨‍🏫</div>
+                {/* Tutor Image */}
+                <div className="w-full h-60 rounded-xl overflow-hidden mb-5 bg-[#f5f5f5] dark:bg-[#1a1a1a] relative group-hover:scale-105 transition-transform duration-300">
+                  {tutor.image ? (
+                    <Image
+                      src={tutor.image}
+                      alt={tutor.name}
+                      fill
+                      className="object-cover"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center">
+                      <div className="text-6xl">👨‍🏫</div>
+                    </div>
+                  )}
                 </div>
-                <div className="flex justify-between items-start">
+                {/* Tutor Info */}
+                <div className="space-y-3">
                   <div>
-                    <span className="font-semibold text-base block mb-1 text-black dark:text-white">{tutor.name}</span>
-                    <span className="text-xs text-[#888] dark:text-[#a1a1aa]">{getPrimarySpecialty(tutor.specialties)}</span>
+                    <h3 className="font-semibold text-base block mb-1 text-black dark:text-white group-hover:text-accent transition-colors">{tutor.name}</h3>
+                    <p className="text-xs text-[#888] dark:text-[#a1a1aa]">{getPrimarySpecialty(tutor.specialties)}</p>
                   </div>
-                  <span className="font-bold text-black dark:text-white">${tutor.hourlyRate}</span>
+                  {/* Rating and Sessions */}
+                  <div className="flex items-center gap-3 text-sm">
+                    <div className="flex items-center gap-1">
+                      <Star className="w-4 h-4 fill-[#ffb800] text-[#ffb800]" />
+                      <span className="font-semibold text-black dark:text-white">{tutor.rating.toFixed(1)}</span>
+                    </div>
+                    <div className="flex items-center gap-1 text-[#888] dark:text-[#a1a1aa]">
+                      <Users className="w-4 h-4" />
+                      <span>{tutor.totalSessions}+</span>
+                    </div>
+                  </div>
+                  {/* Price */}
+                  <div className="flex justify-between items-center pt-2 border-t border-[#e5e5e5] dark:border-[#262626]">
+                    <span className="text-xs text-[#888] dark:text-[#a1a1aa]">{t("trending.hourly")}</span>
+                    <span className="font-bold text-lg text-black dark:text-white">${tutor.hourlyRate}</span>
+                  </div>
                 </div>
               </div>
             </Link>
@@ -230,15 +287,43 @@ export async function FeaturedTutors({ locale }: FeaturedTutorsProps) {
           {tutorData.map((tutor) => (
             <Link key={tutor.id} href={`/${locale}/tutors/${tutor.slug}`}>
               <div className="group bg-white dark:bg-gradient-to-b from-[#1a1a1a] to-[#121212] rounded-[20px] p-6 transition-all duration-300 cursor-pointer border border-transparent hover:translate-y-[-10px] hover:border-[#eee] dark:hover:border-[#404040] hover:shadow-[0_20px_40px_rgba(0,0,0,0.04)]">
-                <div className="w-full h-60 rounded-xl overflow-hidden mb-5 bg-[#f5f5f5] dark:bg-[#1a1a1a] flex items-center justify-center">
-                  <div className="text-6xl">👨‍🏫</div>
+                {/* Tutor Image */}
+                <div className="w-full h-60 rounded-xl overflow-hidden mb-5 bg-[#f5f5f5] dark:bg-[#1a1a1a] relative group-hover:scale-105 transition-transform duration-300">
+                  {tutor.image ? (
+                    <Image
+                      src={tutor.image}
+                      alt={tutor.name}
+                      fill
+                      className="object-cover"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center">
+                      <div className="text-6xl">👨‍🏫</div>
+                    </div>
+                  )}
                 </div>
-                <div className="flex justify-between items-start">
+                {/* Tutor Info */}
+                <div className="space-y-3">
                   <div>
-                    <span className="font-semibold text-base block mb-1 text-black dark:text-white">{tutor.name}</span>
-                    <span className="text-xs text-[#888] dark:text-[#a1a1aa]">{getPrimarySpecialty(tutor.specialties)}</span>
+                    <h3 className="font-semibold text-base block mb-1 text-black dark:text-white group-hover:text-accent transition-colors">{tutor.name}</h3>
+                    <p className="text-xs text-[#888] dark:text-[#a1a1aa]">{getPrimarySpecialty(tutor.specialties)}</p>
                   </div>
-                  <span className="font-bold text-black dark:text-white">${tutor.hourlyRate}</span>
+                  {/* Rating and Sessions */}
+                  <div className="flex items-center gap-3 text-sm">
+                    <div className="flex items-center gap-1">
+                      <Star className="w-4 h-4 fill-[#ffb800] text-[#ffb800]" />
+                      <span className="font-semibold text-black dark:text-white">{tutor.rating.toFixed(1)}</span>
+                    </div>
+                    <div className="flex items-center gap-1 text-[#888] dark:text-[#a1a1aa]">
+                      <Users className="w-4 h-4" />
+                      <span>{tutor.totalSessions}+</span>
+                    </div>
+                  </div>
+                  {/* Price */}
+                  <div className="flex justify-between items-center pt-2 border-t border-[#e5e5e5] dark:border-[#262626]">
+                    <span className="text-xs text-[#888] dark:text-[#a1a1aa]">{t("trending.hourly")}</span>
+                    <span className="font-bold text-lg text-black dark:text-white">${tutor.hourlyRate}</span>
+                  </div>
                 </div>
               </div>
             </Link>
