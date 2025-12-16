@@ -78,7 +78,7 @@ export async function POST(
     logger.info("Call ended by tutor", {
       bookingId: id,
       tutorId: user.id,
-      endedAt: updatedBooking.callEndedAt,
+      endedAt: updatedBooking.callEndedAt?.toISOString() ?? null,
     });
 
     return NextResponse.json({
