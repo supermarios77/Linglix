@@ -15,6 +15,7 @@ import { getBaseUrl } from "@/lib/utils/url";
 import { createErrorResponse, Errors } from "@/lib/errors";
 import { logger } from "@/lib/logger";
 import { checkRateLimit, createRateLimitResponse } from "@/lib/rate-limit";
+import { createValidationErrorResponse } from "@/lib/errors/validation";
 
 export const dynamic = "force-dynamic";
 
@@ -41,7 +42,7 @@ export async function POST(request: NextRequest) {
 
     if (!validatedData.success) {
       return createErrorResponse(
-        Errors.BadRequest(validatedData.error.errors[0]?.message || "Invalid email address")
+        createValidationErrorResponse(validatedData.error)
       );
     }
 

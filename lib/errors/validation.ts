@@ -11,7 +11,7 @@ import { Errors } from "../errors";
  * Format Zod validation errors into user-friendly messages
  */
 export function formatValidationError(error: z.ZodError): string {
-  const firstError = error.errors[0];
+  const firstError = error.issues[0];
   if (!firstError) {
     return "Invalid input. Please check your data.";
   }
