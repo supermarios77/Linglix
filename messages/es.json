@@ -407,7 +407,8 @@
       "viewProfile": "Ver Perfil",
       "topTutor": "MEJOR TUTOR",
       "tutorFallback": "Tutor",
-      "languageTutor": "Tutor de Idiomas"
+      "languageTutor": "Tutor de Idiomas",
+      "noTutorsAvailable": "No hay tutores disponibles en este momento. Por favor, vuelva más tarde."
     },
     "pricing": {
       "badge": "Precios",

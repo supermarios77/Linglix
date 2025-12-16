@@ -129,7 +129,7 @@ export async function FeaturedTutors({ locale }: FeaturedTutorsProps) {
         </div>
         <div className="text-center py-12 sm:py-16">
           <p className="text-[#888] dark:text-[#a1a1aa] text-base sm:text-lg">
-            {t("trending.noTutorsAvailable") || "No tutors available at the moment. Please check back later."}
+            {t("trending.noTutorsAvailable")}
           </p>
         </div>
       </section>

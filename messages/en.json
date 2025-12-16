@@ -451,7 +451,8 @@
       "viewProfile": "View Profile",
       "topTutor": "TOP TUTOR",
       "tutorFallback": "Tutor",
-      "languageTutor": "Language Tutor"
+      "languageTutor": "Language Tutor",
+      "noTutorsAvailable": "No tutors available at the moment. Please check back later."
     },
     "waitlist": {
       "badge": "Coming Soon",
