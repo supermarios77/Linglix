@@ -5,6 +5,7 @@ import { BackgroundBlobs } from "@/components/landing/BackgroundBlobs";
 import { HeroSection } from "@/components/landing/HeroSection";
 import { MarqueeTicker } from "@/components/landing/MarqueeTicker";
 import { FeaturedTutors } from "@/components/landing/FeaturedTutors";
+import { EmailSignup } from "@/components/landing/EmailSignup";
 import { Testimonials } from "@/components/landing/Testimonials";
 import { Footer } from "@/components/landing/Footer";
 import { OrganizationSchema, FAQSchema } from "@/lib/seo/structured-data";
@@ -135,6 +136,7 @@ export default async function HomePage({
           <HeroSection locale={locale} session={session} />
           <MarqueeTicker items={marqueeItems} />
           <FeaturedTutors locale={locale} />
+          <EmailSignup locale={locale} />
           <Testimonials locale={locale} />
           <Footer locale={locale} session={session} />
         </div>

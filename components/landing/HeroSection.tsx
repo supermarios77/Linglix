@@ -1,8 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { ArrowRight, Sparkles, CheckCircle2 } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { useTranslations } from "next-intl";
 
 interface HeroSectionProps {
@@ -13,79 +12,95 @@ interface HeroSectionProps {
 /**
  * Hero Section Component
  * 
- * Enhanced hero section with improved layout and visual hierarchy
+ * Modern hero section matching the provided design
  * Production-ready with proper TypeScript types
  */
 export function HeroSection({ locale, session }: HeroSectionProps) {
   const t = useTranslations("landing");
 
   return (
-    <main className="relative max-w-[1400px] w-full mx-auto min-h-screen pt-24 sm:pt-28 md:pt-32 pb-12 sm:pb-16 md:pb-20 px-4 sm:px-6 md:px-12">
-      {/* Centered Content Layout */}
-      <div className="flex flex-col items-center text-center max-w-4xl mx-auto pt-4 sm:pt-6 md:pt-8 pb-8 sm:pb-12 md:pb-16">
+    <main className="relative max-w-[1400px] w-full mx-auto min-h-screen pt-36 pb-16 px-4 md:px-12 grid md:grid-cols-2 items-center gap-16">
+      <div className="z-[2]">
         {/* Badge */}
-        <div className="inline-flex items-center px-3 sm:px-4 py-1.5 sm:py-2 bg-card/90 dark:bg-card/90 backdrop-blur-md border border-border rounded-full text-xs font-semibold uppercase tracking-wider mb-6 sm:mb-8 shadow-md group hover:scale-105 transition-transform">
-          <span className="w-2 h-2 bg-brand-primary rounded-full mr-2 animate-pulse" />
-          <span className="mr-2 text-xs">{t("hero.badge")}</span>
-          <Sparkles className="w-3 h-3 text-brand-primary opacity-70 group-hover:opacity-100 transition-opacity" />
+        <div className="inline-flex items-center px-3 py-1.5 bg-white border border-[#e5e5e5] rounded-full text-xs font-semibold uppercase tracking-wider mb-6 shadow-[0_2px_10px_rgba(0,0,0,0.03)]">
+          <span className="w-2 h-2 bg-[#10b981] rounded-full mr-2" />
+          {t("hero.badge")}
         </div>
 
         {/* Main Heading */}
-        <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl leading-tight font-bold tracking-tight mb-6 sm:mb-8 text-foreground px-2">
-          {t("hero.title")}
-          <br />
-          <span className="relative inline-block mt-2">
-            <span className="inline-block bg-brand-primary text-black px-4 py-2 -rotate-[-2deg] transform origin-center font-bold shadow-lg relative z-10 text-3xl sm:text-4xl md:text-5xl lg:text-7xl xl:text-8xl">
-              {t("hero.titleHighlight")}
-            </span>
-            <span className="absolute inset-0 bg-brand-primary/20 blur-xl -rotate-[-2deg] transform origin-center" aria-hidden="true" />
+        <h1 className="font-['Space_Grotesk'] text-[76px] leading-[0.95] font-semibold tracking-[-0.03em] mb-6 text-black dark:text-white">
+          {t("hero.title")} <br />
+          <span className="italic font-normal bg-gradient-to-r from-accent to-brand-primary-light bg-clip-text text-transparent">
+            {t("hero.titleHighlight")}
           </span>
         </h1>
 
         {/* Description */}
-        <p className="text-base sm:text-lg md:text-xl leading-relaxed text-muted-foreground max-w-2xl mb-8 sm:mb-10 md:mb-12 font-light px-4">
+        <p className="text-lg leading-relaxed text-[#555] dark:text-[#a1a1aa] max-w-[460px] mb-10">
           {t("hero.description")}
         </p>
 
         {/* CTA Buttons */}
-        <div className="flex flex-col sm:flex-row gap-4 items-center justify-center mb-12 sm:mb-14 md:mb-16 w-full sm:w-auto px-4">
-          <Link href={session ? `/${locale}/dashboard` : `/${locale}/auth/signup`} className="w-full sm:w-auto">
-            <Button
-              size="lg"
-              className="w-full sm:w-auto bg-primary text-primary-foreground px-8 sm:px-10 py-6 rounded-full font-semibold text-base transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:bg-primary/90 inline-flex items-center justify-center gap-3 group min-h-[56px]"
-            >
-              <span>{t("hero.ctaPrimary")}</span>
-              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-            </Button>
+        <div className="flex gap-4 items-center">
+          <Link
+            href={session ? `/${locale}/dashboard` : `/${locale}/auth/signup`}
+            className="bg-[#111] dark:bg-accent text-white dark:text-black px-9 py-[18px] rounded-full font-semibold text-base transition-all duration-300 hover:translate-y-[-2px] hover:shadow-[0_10px_20px_rgba(0,0,0,0.15)] hover:bg-[#222] dark:hover:bg-brand-primary-light inline-flex items-center gap-2.5"
+          >
+            {t("hero.ctaPrimary")}
+            <ArrowRight className="w-5 h-5" />
           </Link>
-          <Link href={`/${locale}/tutors`} className="w-full sm:w-auto">
-            <Button
-              size="lg"
-              variant="outline"
-              className="w-full sm:w-auto px-8 sm:px-10 py-6 rounded-full font-semibold text-base bg-card/60 backdrop-blur-sm border-2 border-border transition-all hover:bg-card hover:border-primary hover:shadow-lg min-h-[56px]"
-            >
-              {t("hero.ctaSecondary")}
-            </Button>
+          <Link
+            href={`/${locale}/tutors`}
+            className="px-9 py-[18px] rounded-full font-semibold text-base bg-[rgba(255,255,255,0.5)] dark:bg-[rgba(26,26,26,0.5)] border border-[#e5e5e5] dark:border-[#262626] transition-all hover:bg-white dark:hover:bg-[#1a1a1a] hover:border-black dark:hover:border-accent"
+          >
+            {t("hero.ctaSecondary")}
           </Link>
-        </div>
-
-        {/* Feature Pills */}
-        <div className="flex flex-wrap items-center justify-center gap-3 mb-8 sm:mb-10 md:mb-12 px-4">
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-card/80 backdrop-blur-sm border border-border rounded-full text-sm font-medium text-foreground">
-            <CheckCircle2 className="w-4 h-4 text-brand-primary" />
-            <span>{t("hero.featureNative")}</span>
-          </div>
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-card/80 backdrop-blur-sm border border-border rounded-full text-sm font-medium text-foreground">
-            <CheckCircle2 className="w-4 h-4 text-brand-primary" />
-            <span>{t("hero.featureFlexible")}</span>
-          </div>
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-card/80 backdrop-blur-sm border border-border rounded-full text-sm font-medium text-foreground">
-            <CheckCircle2 className="w-4 h-4 text-brand-primary" />
-            <span>{t("hero.featureAffordable")}</span>
-          </div>
         </div>
       </div>
 
+      {/* Image Section */}
+      <div className="relative h-[700px] w-full">
+        <div className="group w-full h-full rounded-[40px] overflow-hidden relative -rotate-2 transition-transform duration-500 shadow-[0_30px_60px_rgba(0,0,0,0.1)] hover:rotate-0">
+          <div className="w-full h-full bg-gradient-to-br from-accent/20 to-brand-primary-light/20 flex items-center justify-center">
+            <div className="text-center p-8">
+              <div className="text-6xl mb-4">🌍</div>
+              <p className="text-xl font-semibold text-black dark:text-white">Language Learning</p>
+              <p className="text-sm text-[#666] dark:text-[#a1a1aa] mt-2">Connect with native tutors</p>
+            </div>
+          </div>
+
+          {/* Featured Badge */}
+          <div className="absolute top-5 left-5 z-[4] w-[100px] h-[100px] flex items-center justify-center bg-accent rounded-full text-black font-extrabold font-['Space_Grotesk'] text-center rotate-[15deg] shadow-[0_10px_20px_rgba(0,0,0,0.1)] text-sm leading-tight">
+            TOP
+            <br />
+            RATED
+          </div>
+        </div>
+
+        {/* Floating Glassmorphism Card 1 */}
+        <div className="floating-card absolute bottom-[60px] left-[-40px] bg-[rgba(255,255,255,0.7)] dark:bg-[rgba(26,26,26,0.7)] backdrop-blur-2xl p-4 rounded-[20px] border border-[rgba(255,255,255,0.6)] dark:border-[rgba(255,255,255,0.1)] shadow-[0_20px_40px_rgba(0,0,0,0.05)] flex items-center gap-3 z-[3]">
+          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-accent to-brand-primary-light flex items-center justify-center">
+            <span className="text-2xl">⭐</span>
+          </div>
+          <div>
+            <h4 className="text-sm font-semibold mb-0.5 text-black dark:text-white">Native Speakers</h4>
+            <p className="text-xs text-[#666] dark:text-[#a1a1aa]">Certified Tutors</p>
+            <div className="flex text-[#ffb800] text-xs mt-0.5">★★★★★</div>
+          </div>
+        </div>
+
+        {/* Floating Glassmorphism Card 2 */}
+        <div className="floating-card absolute top-20 right-[-20px] bg-[rgba(255,255,255,0.7)] dark:bg-[rgba(26,26,26,0.7)] backdrop-blur-2xl p-4 rounded-[20px] border border-[rgba(255,255,255,0.6)] dark:border-[rgba(255,255,255,0.1)] shadow-[0_20px_40px_rgba(0,0,0,0.05)] flex items-center gap-3 z-[3] animate-[float_6s_ease-in-out_1.5s_infinite]">
+          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-brand-primary-light to-accent flex items-center justify-center">
+            <span className="text-2xl">💬</span>
+          </div>
+          <div>
+            <h4 className="text-sm font-semibold mb-0.5 text-black dark:text-white">1-on-1 Lessons</h4>
+            <p className="text-xs text-[#666] dark:text-[#a1a1aa]">Personalized</p>
+            <div className="flex text-[#ffb800] text-xs mt-0.5">★★★★☆</div>
+          </div>
+        </div>
+      </div>
     </main>
   );
 }

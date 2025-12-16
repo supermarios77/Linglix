@@ -31,12 +31,12 @@ export function LandingPageClient({ session, locale }: LandingPageClientProps) {
       {/* Scroll to Top Button */}
       <button
         onClick={scrollToTop}
-        className={`fixed bottom-8 right-8 z-50 w-12 h-12 rounded-full bg-card backdrop-blur-xl border border-border shadow-lg flex items-center justify-center transition-all duration-300 hover:scale-110 hover:shadow-xl hover:bg-brand-primary hover:border-brand-primary active:scale-95 ${
+        className={`fixed bottom-8 right-8 z-[999] w-12 h-12 rounded-full bg-white/80 dark:bg-[#1a1a1a]/80 backdrop-blur-xl border border-[rgba(0,0,0,0.06)] dark:border-[rgba(255,255,255,0.1)] shadow-[0_8px_30px_rgba(0,0,0,0.08)] flex items-center justify-center transition-all duration-300 hover:scale-110 hover:shadow-[0_12px_40px_rgba(0,0,0,0.12)] active:scale-95 ${
           showScrollTop ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4 pointer-events-none"
         }`}
         aria-label="Scroll to top"
       >
-        <ArrowUp className="w-5 h-5 text-foreground hover:text-black" />
+        <ArrowUp className="w-5 h-5 text-accent" />
       </button>
     </>
   );

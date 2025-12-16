@@ -44,33 +44,33 @@ export function Testimonials({ locale }: TestimonialsProps) {
   ];
 
   return (
-    <section className="py-12 sm:py-16 md:py-20 px-4 sm:px-6 md:px-12 max-w-[1400px] mx-auto">
-      <div className="text-center mb-10 sm:mb-12 md:mb-16">
-        <h3 className="text-[28px] sm:text-[36px] md:text-[42px] font-semibold mb-3 sm:mb-4 text-black dark:text-white px-2">
+    <section className="py-20 px-4 md:px-12 max-w-[1400px] mx-auto">
+      <div className="text-center mb-16">
+        <h3 className="text-[42px] font-semibold mb-4 text-black dark:text-white">
           {t("title")}{" "}
-          <span className="inline-block bg-accent text-accent-foreground px-2 sm:px-3 py-0.5 sm:py-1 -rotate-[-2deg] transform origin-center font-semibold shadow-[0_4px_8px_rgba(0,0,0,0.1)] text-[24px] sm:text-[32px] md:text-[36px]">
+          <span className="italic font-normal bg-gradient-to-r from-accent to-brand-primary-light bg-clip-text text-transparent">
             {t("titleHighlight")}
           </span>
         </h3>
-        <p className="text-base sm:text-lg text-[#666] dark:text-[#a1a1aa] px-4">{t("subtitle")}</p>
+        <p className="text-lg text-[#666] dark:text-[#a1a1aa]">{t("subtitle")}</p>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         {testimonials.map((testimonial, index) => (
           <div
             key={index}
-            className="group bg-white dark:bg-gradient-to-b from-[#1a1a1a] to-[#121212] rounded-[24px] sm:rounded-[32px] p-6 sm:p-8 border border-[#e5e5e5] dark:border-[#262626] transition-all duration-300 hover:-translate-y-0.5 hover:border-[#d4d4d4] dark:hover:border-[#404040] hover:shadow-[0_30px_60px_rgba(0,0,0,0.08)]"
+            className="group bg-white dark:bg-gradient-to-b from-[#1a1a1a] to-[#121212] rounded-[24px] p-8 border border-[#eee] dark:border-[#262626] transition-all duration-300 hover:translate-y-[-8px] hover:shadow-[0_30px_60px_rgba(0,0,0,0.06)]"
           >
-            <div className="flex text-[#ffb800] text-base sm:text-lg mb-3 sm:mb-4" aria-label="5 stars">
+            <div className="flex text-[#ffb800] text-lg mb-4" aria-label="5 stars">
               ★★★★★
             </div>
-            <p className="text-sm sm:text-base leading-relaxed text-[#444] dark:text-[#a1a1aa] mb-4 sm:mb-6">
+            <p className="text-base leading-relaxed text-[#444] dark:text-[#a1a1aa] mb-6">
               &ldquo;{testimonial.quote}&rdquo;
             </p>
-            <div className="flex items-center gap-2.5 sm:gap-3">
-              <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gradient-to-br ${testimonial.gradient}`} aria-hidden="true" />
+            <div className="flex items-center gap-3">
+              <div className={`w-12 h-12 rounded-full bg-gradient-to-br ${testimonial.gradient}`} aria-hidden="true" />
               <div>
-                <h4 className="font-semibold text-xs sm:text-sm text-black dark:text-white">{testimonial.author}</h4>
-                <p className="text-[10px] sm:text-xs text-[#888] dark:text-[#a1a1aa]">{testimonial.role}</p>
+                <h4 className="font-semibold text-sm text-black dark:text-white">{testimonial.author}</h4>
+                <p className="text-xs text-[#888] dark:text-[#a1a1aa]">{testimonial.role}</p>
               </div>
             </div>
           </div>
