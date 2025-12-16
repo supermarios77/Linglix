@@ -17,7 +17,7 @@ export {
   createErrorResponse,
   Errors,
   handleApiError,
-} from "./errors";
+} from "../errors";
 
 // API wrapper
 export { withErrorHandling, withErrorHandlingAndValidation } from "./api-wrapper";

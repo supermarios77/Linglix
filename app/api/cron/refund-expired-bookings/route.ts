@@ -243,13 +243,11 @@ export async function POST(request: NextRequest) {
     
     logger.info("Expired bookings refund cron job completed", {
       duration: `${duration}ms`,
-      results: {
-        processed: results.processed,
-        succeeded: results.succeeded,
-        failed: results.failed,
-        alreadyRefunded: results.alreadyRefunded,
-        skipped: results.skipped,
-      },
+      processed: results.processed,
+      succeeded: results.succeeded,
+      failed: results.failed,
+      alreadyRefunded: results.alreadyRefunded,
+      skipped: results.skipped,
       totalFound: expiredBookings.length,
     });
 

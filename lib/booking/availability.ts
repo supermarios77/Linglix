@@ -10,6 +10,14 @@
 
 import type { Availability, Booking } from "@prisma/client";
 
+/**
+ * Minimal booking type for availability checking
+ */
+type BookingAvailabilityCheck = Pick<
+  Booking,
+  "id" | "scheduledAt" | "duration" | "tutorId" | "status"
+>;
+
 export interface TimeSlot {
   start: Date;
   end: Date;
@@ -20,7 +28,7 @@ export interface TimeSlot {
 export interface AvailabilityCheckResult {
   available: boolean;
   reason?: string;
-  conflictingBooking?: Booking;
+  conflictingBooking?: BookingAvailabilityCheck;
 }
 
 /**
@@ -30,7 +38,7 @@ export function checkTimeSlotAvailability(
   scheduledAt: Date,
   duration: number,
   tutorAvailability: Availability[],
-  existingBookings: Booking[],
+  existingBookings: BookingAvailabilityCheck[],
   tutorId: string
 ): AvailabilityCheckResult {
   // Check if tutor has availability for this day
@@ -110,7 +118,7 @@ export function getAvailableTimeSlots(
   date: Date,
   duration: number,
   tutorAvailability: Availability[],
-  existingBookings: Booking[],
+  existingBookings: BookingAvailabilityCheck[],
   tutorId: string
 ): TimeSlot[] {
   const dayOfWeek = date.getUTCDay();
@@ -189,7 +197,7 @@ export function getAvailableDates(
   startDate: Date,
   endDate: Date,
   tutorAvailability: Availability[],
-  existingBookings: Booking[],
+  existingBookings: BookingAvailabilityCheck[],
   tutorId: string,
   duration: number
 ): Date[] {

@@ -1,6 +1,7 @@
 import { auth } from "@/config/auth";
 import { prisma } from "@/lib/db/prisma";
 import { createErrorResponse, Errors } from "@/lib/errors";
+import { createValidationErrorResponse } from "@/lib/errors/validation";
 import { z } from "zod";
 import { NextResponse } from "next/server";
 
@@ -66,7 +67,7 @@ export async function PATCH(request: Request) {
     );
   } catch (error) {
     if (error instanceof z.ZodError) {
-      return createErrorResponse(Errors.BadRequest(error.errors[0]?.message || "Invalid input"));
+      return createErrorResponse(createValidationErrorResponse(error));
     }
 
     if (error instanceof Error && error.name === "HttpError") {

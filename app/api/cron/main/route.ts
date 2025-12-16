@@ -407,13 +407,11 @@ async function handleRefundExpiredBookings(now: Date) {
     
     logger.info("Refund expired bookings task completed", {
       duration: `${duration}ms`,
-      results: {
-        processed: results.processed,
-        succeeded: results.succeeded,
-        failed: results.failed,
-        alreadyRefunded: results.alreadyRefunded,
-        skipped: results.skipped,
-      },
+      processed: results.processed,
+      succeeded: results.succeeded,
+      failed: results.failed,
+      alreadyRefunded: results.alreadyRefunded,
+      skipped: results.skipped,
       totalFound: expiredBookings.length,
     });
 
@@ -473,8 +471,14 @@ export async function POST(request: NextRequest) {
     
     logger.info("Main cron job completed", {
       overallDuration: `${overallDuration}ms`,
-      sessionReminders: sessionRemindersResult,
-      refundExpiredBookings: refundResult,
+      sessionRemindersSuccess: sessionRemindersResult.success,
+      sessionRemindersSent24h: sessionRemindersResult.sent24h ?? 0,
+      sessionRemindersSent1h: sessionRemindersResult.sent1h ?? 0,
+      sessionRemindersErrors: sessionRemindersResult.errors ?? 0,
+      refundSuccess: refundResult.success,
+      refundProcessed: refundResult.results?.processed ?? 0,
+      refundSucceeded: refundResult.results?.succeeded ?? 0,
+      refundFailed: refundResult.results?.failed ?? 0,
     });
 
     return NextResponse.json({

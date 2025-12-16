@@ -144,17 +144,25 @@ export function validateAvailability(
 }
 
 /**
+ * Minimal booking type for conflict checking
+ */
+type BookingConflictCheck = Pick<
+  Booking,
+  "id" | "scheduledAt" | "duration" | "tutorId" | "status"
+>;
+
+/**
  * Check for booking conflicts (overlapping bookings)
  */
 export function checkConflicts(
   scheduledAt: Date,
   duration: number,
   tutorId: string,
-  existingBookings: Booking[],
+  existingBookings: BookingConflictCheck[],
   excludeBookingId?: string
 ): {
   hasConflict: boolean;
-  conflictingBooking?: Booking;
+  conflictingBooking?: BookingConflictCheck;
 } {
   const bookingStart = scheduledAt;
   const bookingEnd = new Date(scheduledAt.getTime() + duration * 60 * 1000);
