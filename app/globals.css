@@ -32,13 +32,13 @@
        ======================================================================== */
     
     /* Brand Colors - Primary Accent */
-    --brand-primary: 54 100% 50%; /* #FFE600 - Yellow accent */
-    --brand-primary-dark: 54 100% 40%; /* Darker yellow for hover states */
-    --brand-primary-light: 54 100% 60%; /* Lighter yellow for highlights */
+    --brand-primary: 142 70% 50%; /* Green accent */
+    --brand-primary-dark: 142 70% 40%; /* Darker green for hover states */
+    --brand-primary-light: 142 70% 60%; /* Lighter green for highlights */
     
     /* Semantic Colors */
-    --color-success: 54 100% 50%; /* #FFE600 - Yellow accent */
-    --color-success-foreground: 0 0% 9%; /* Dark text on yellow */
+    --color-success: 142 70% 50%; /* Green accent */
+    --color-success-foreground: 0 0% 9%; /* Dark text on green */
     --color-error: 0 84% 60%; /* #ef4444 */
     --color-error-foreground: 0 0% 98%;
     --color-warning: 38 92% 50%; /* #f59e0b */
@@ -83,8 +83,8 @@
     --muted-foreground: 0 0% 45.1%;
 
     /* Accent Colors */
-    --accent: 54 100% 50%; /* #FFE600 - Yellow accent */
-    --accent-foreground: 0 0% 9%; /* Dark text on yellow */
+    --accent: 142 70% 50%; /* Green accent */
+    --accent-foreground: 0 0% 9%; /* Dark text on green */
 
     /* Destructive Colors */
     --destructive: 0 84.2% 60.2%;
@@ -198,8 +198,8 @@
     --muted-foreground: 0 0% 63.9%;
 
     /* Accent Colors */
-    --accent: 54 100% 50%; /* #FFE600 - Yellow accent */
-    --accent-foreground: 0 0% 9%; /* Dark text on yellow for contrast */
+    --accent: 142 70% 50%; /* Green accent */
+    --accent-foreground: 0 0% 9%; /* Dark text on green for contrast */
 
     /* Destructive Colors */
     --destructive: 0 62.8% 30.6%;
