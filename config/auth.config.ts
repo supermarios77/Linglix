@@ -70,7 +70,8 @@ export const authConfig = {
           token.emailVerified = true;
         } else {
           // Credentials provider - use emailVerified from user object
-          token.emailVerified = (user as { emailVerified?: Date | null }).emailVerified || false;
+          const emailVerified = (user as { emailVerified?: Date | null }).emailVerified;
+          token.emailVerified = emailVerified ? true : false;
         }
       }
 
@@ -84,7 +85,7 @@ export const authConfig = {
         session.user.id = token.id as string;
         session.user.role = token.role as Role;
         session.user.email = token.email as string;
-        session.user.emailVerified = token.emailVerified as boolean;
+        (session.user as { emailVerified?: boolean }).emailVerified = Boolean(token.emailVerified);
       }
 
       return session;

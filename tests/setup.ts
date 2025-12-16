@@ -7,7 +7,7 @@
 import { afterEach, vi } from "vitest";
 
 // Mock environment variables
-process.env.NODE_ENV = "test";
+(process.env as { NODE_ENV?: string }).NODE_ENV = "test";
 process.env.NEXTAUTH_SECRET = "test-secret-key-for-testing-only";
 process.env.NEXTAUTH_URL = "http://localhost:3000";
 process.env.DATABASE_URL = process.env.TEST_DATABASE_URL || "postgresql://test:test@localhost:5432/test";

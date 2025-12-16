@@ -205,7 +205,11 @@ export async function setCache(
 export async function deleteCache(key: string): Promise<void> {
   try {
     const cache = getCacheInstance();
-    await cache.delete(key);
+    if (cache instanceof Redis) {
+      await cache.del(key);
+    } else {
+      await (cache as MemoryCache).delete(key);
+    }
   } catch (error) {
     if (process.env.NODE_ENV === "development") {
       console.error("[Cache] Delete error:", error);

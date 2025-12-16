@@ -856,7 +856,7 @@ export function TutorDashboardClient({
                                 <span>•</span>
                                 <span>{booking.duration} {tBooking("min")}</span>
                               </div>
-                              {canJoinSession(booking.scheduledAt, booking.status) && (
+                              {canJoinSession(booking.scheduledAt, booking.status, booking.duration, booking.callEndedAt) && (
                                 <Link href={`/${locale}/sessions/${booking.id}`}>
                                   <Button
                                     size="sm"

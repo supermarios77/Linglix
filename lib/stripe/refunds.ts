@@ -114,7 +114,7 @@ export async function processRefund(
         }
 
         // Validate booking status allows refund
-        const refundableStatuses = [
+        const refundableStatuses: BookingStatus[] = [
           BookingStatus.PENDING,
           BookingStatus.CONFIRMED,
           BookingStatus.CANCELLED,
@@ -151,11 +151,12 @@ export async function processRefund(
             session.payment_intent as string
           );
           
-          if (paymentIntent.status === "canceled" || paymentIntent.amount_refunded > 0) {
+          const amountRefunded = (paymentIntent as any).amount_refunded || 0;
+          if (paymentIntent.status === "canceled" || amountRefunded > 0) {
             logger.info("Payment intent already refunded or canceled", {
               bookingId,
               paymentIntentId: paymentIntent.id,
-              amountRefunded: paymentIntent.amount_refunded,
+              amountRefunded,
               status: paymentIntent.status,
             });
             
@@ -188,11 +189,16 @@ export async function processRefund(
           }
 
           // Create refund with idempotency key
+          const refundReason: Stripe.RefundCreateParams.Reason | undefined = 
+            reason === "duplicate" || reason === "fraudulent" || reason === "requested_by_customer"
+              ? (reason as Stripe.RefundCreateParams.Reason)
+              : "requested_by_customer";
+          
           const refund = await stripe.refunds.create(
             {
               payment_intent: session.payment_intent as string,
               amount: refundAmountCents,
-              reason: reason || "requested_by_customer",
+              reason: refundReason,
               metadata: {
                 bookingId: booking.id,
                 reason: reason || "booking_cancelled",
