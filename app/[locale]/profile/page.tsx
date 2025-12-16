@@ -53,6 +53,22 @@ export default async function ProfilePage({
       redirect(`/${locale}/auth/signin`);
     }
 
+    // Transform tutorProfile to match expected type
+    // languagesKnown is stored as JsonValue in Prisma but needs to be typed array
+    const transformedTutorProfile = userWithProfile.tutorProfile
+      ? {
+          ...userWithProfile.tutorProfile,
+          languagesKnown:
+            userWithProfile.tutorProfile.languagesKnown &&
+            Array.isArray(userWithProfile.tutorProfile.languagesKnown)
+              ? (userWithProfile.tutorProfile.languagesKnown as Array<{
+                  language: string;
+                  proficiency: string;
+                }>)
+              : null,
+        }
+      : null;
+
     return (
       <div className="relative min-h-screen bg-[#fafafa] dark:bg-[#050505] text-[#111] dark:text-white overflow-x-hidden">
         <BackgroundBlobs />
@@ -66,7 +82,7 @@ export default async function ProfilePage({
             role: userWithProfile.role,
           }}
           studentProfile={userWithProfile.studentProfile}
-          tutorProfile={userWithProfile.tutorProfile}
+          tutorProfile={transformedTutorProfile}
         />
       </div>
     );
