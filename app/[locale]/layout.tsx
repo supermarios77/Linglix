@@ -6,6 +6,8 @@ import { notFound } from "next/navigation";
 import "../globals.css";
 import { locales, isValidLocale } from "@/i18n/config";
 
+import { Analytics } from "@vercel/analytics/next"
+
 /**
  * Inter - Modern, highly legible sans-serif font
  * 
@@ -160,6 +162,7 @@ export default async function LocaleLayout({
         <NextIntlClientProvider messages={messages}>
         {children}
         </NextIntlClientProvider>
+        <Analytics />
       </body>
     </html>
   );

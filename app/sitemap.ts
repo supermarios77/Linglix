@@ -19,26 +19,40 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://linglix.com";
 
   // Get all approved and active tutors
-  const tutors = await prisma.user.findMany({
-    where: {
-      role: "TUTOR",
-      tutorProfile: {
-        isActive: true,
-        approvalStatus: "APPROVED",
+  // Wrap in try-catch to handle database errors during build
+  let tutors: Array<{ id: string; name: string; updatedAt: Date }> = [];
+  try {
+    const tutorResults = await prisma.user.findMany({
+      where: {
+        role: "TUTOR",
+        tutorProfile: {
+          isActive: true,
+          approvalStatus: "APPROVED",
+        },
+        name: {
+          not: null,
+        },
       },
-      name: {
-        not: null,
+      select: {
+        id: true,
+        name: true,
+        updatedAt: true,
       },
-    },
-    select: {
-      id: true,
-      name: true,
-      updatedAt: true,
-    },
-    orderBy: {
-      updatedAt: "desc",
-    },
-  });
+      orderBy: {
+        updatedAt: "desc",
+      },
+    });
+    
+    // Filter out any null names (defensive programming)
+    tutors = tutorResults.filter((tutor): tutor is { id: string; name: string; updatedAt: Date } => 
+      tutor.name !== null
+    );
+  } catch (error) {
+    // If database query fails during build, log error and continue with static pages only
+    // This prevents build failures when database is unavailable or schema is out of sync
+    console.error("Failed to fetch tutors for sitemap:", error);
+    // Continue with empty tutors array - static pages will still be included
+  }
 
   // Generate static page URLs for all locales
   const staticPages: MetadataRoute.Sitemap = locales.flatMap((locale) => [
