@@ -51,7 +51,7 @@ export function EmailSignup({ locale }: EmailSignupProps) {
             {t("waitlist.badge")}
           </div>
 
-          <h2 className="text-[56px] leading-[1.1] font-semibold tracking-[-0.03em] mb-6 text-black dark:text-white">
+          <h2 className="font-space-grotesk text-[56px] leading-[1.1] font-semibold tracking-[-0.03em] mb-6 text-black dark:text-white">
             {t("waitlist.title")}
             <br />
             <span className="italic font-normal bg-gradient-to-r from-accent to-brand-primary-light bg-clip-text text-transparent">

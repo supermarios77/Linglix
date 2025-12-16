@@ -125,7 +125,7 @@ export async function FeaturedTutors({ locale }: FeaturedTutorsProps) {
     return (
       <section className="py-12 sm:py-16 md:py-20 px-4 sm:px-6 md:px-12 max-w-[1400px] mx-auto">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-3 sm:gap-0 mb-6 sm:mb-8 md:mb-10">
-          <h3 className="text-[24px] sm:text-[28px] md:text-[32px] font-semibold text-black dark:text-white">{t("trending.title")}</h3>
+          <h3 className="font-space-grotesk text-[24px] sm:text-[28px] md:text-[32px] font-semibold text-black dark:text-white">{t("trending.title")}</h3>
         </div>
         <div className="text-center py-12 sm:py-16">
           <p className="text-[#888] dark:text-[#a1a1aa] text-base sm:text-lg">
@@ -150,7 +150,7 @@ export async function FeaturedTutors({ locale }: FeaturedTutorsProps) {
     return (
       <section className="py-20 px-4 md:px-12 max-w-[1400px] mx-auto">
         <div className="flex justify-between items-end mb-10">
-          <h3 className="text-[32px] font-semibold text-black dark:text-white">{t("trending.title")}</h3>
+          <h3 className="font-space-grotesk text-[32px] font-semibold text-black dark:text-white">{t("trending.title")}</h3>
           <Link 
             href={`/${locale}/tutors`} 
             className="underline font-medium text-[#444] dark:text-[#a1a1aa] hover:text-black dark:hover:text-white transition-colors"
@@ -183,7 +183,7 @@ export async function FeaturedTutors({ locale }: FeaturedTutorsProps) {
     return (
       <section className="py-20 px-4 md:px-12 max-w-[1400px] mx-auto">
         <div className="flex justify-between items-end mb-10">
-          <h3 className="text-[32px] font-semibold text-black dark:text-white">{t("trending.title")}</h3>
+          <h3 className="font-space-grotesk text-[32px] font-semibold text-black dark:text-white">{t("trending.title")}</h3>
           <Link 
             href={`/${locale}/tutors`} 
             className="underline font-medium text-[#444] dark:text-[#a1a1aa] hover:text-black dark:hover:text-white transition-colors"
@@ -218,7 +218,7 @@ export async function FeaturedTutors({ locale }: FeaturedTutorsProps) {
     return (
       <section className="py-20 px-4 md:px-12 max-w-[1400px] mx-auto">
         <div className="flex justify-between items-end mb-10">
-          <h3 className="text-[32px] font-semibold text-black dark:text-white">{t("trending.title")}</h3>
+          <h3 className="font-space-grotesk text-[32px] font-semibold text-black dark:text-white">{t("trending.title")}</h3>
           <Link 
             href={`/${locale}/tutors`} 
             className="underline font-medium text-[#444] dark:text-[#a1a1aa] hover:text-black dark:hover:text-white transition-colors"

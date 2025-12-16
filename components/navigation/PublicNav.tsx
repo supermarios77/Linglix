@@ -97,7 +97,7 @@ export function PublicNav({ locale, session }: PublicNavProps) {
       {/* Logo - Centered on mobile, left on desktop */}
       <Link
         href={`/${locale}`}
-        className="font-bold text-xl md:text-2xl tracking-[-0.03em] absolute left-1/2 -translate-x-1/2 md:relative md:left-auto md:translate-x-0 text-black dark:text-white hover:opacity-80 transition-opacity"
+        className="font-space-grotesk font-bold text-xl md:text-2xl tracking-[-0.03em] absolute left-1/2 -translate-x-1/2 md:relative md:left-auto md:translate-x-0 text-black dark:text-white hover:opacity-80 transition-opacity"
       >
         Linglix<span className="text-accent">.</span>
       </Link>

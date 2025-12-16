@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Space_Grotesk } from "next/font/google";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 import { notFound } from "next/navigation";
@@ -24,6 +24,23 @@ const inter = Inter({
   display: "swap", // Optimize font loading
   preload: true,
   weight: ["300", "400", "500", "600", "700"], // Modern weight range
+  style: ["normal"],
+});
+
+/**
+ * Space Grotesk - Modern geometric sans-serif font
+ * 
+ * Used for headings and display text to match the design aesthetic
+ * - Clean, modern geometric shapes
+ * - Excellent for large display text
+ * - Tight letter spacing for contemporary look
+ */
+const spaceGrotesk = Space_Grotesk({
+  subsets: ["latin"],
+  variable: "--font-space-grotesk",
+  display: "swap",
+  preload: true,
+  weight: ["300", "400", "500", "600", "700"],
   style: ["normal"],
 });
 
@@ -157,7 +174,7 @@ export default async function LocaleLayout({
         />
       </head>
       <body
-        className={`${inter.variable} font-sans antialiased`}
+        className={`${inter.variable} ${spaceGrotesk.variable} font-sans antialiased`}
       >
         <NextIntlClientProvider messages={messages}>
         {children}

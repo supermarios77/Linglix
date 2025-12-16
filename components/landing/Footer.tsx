@@ -31,7 +31,7 @@ export function Footer({ locale, session }: FooterProps) {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
           {/* Brand Column */}
           <div>
-            <div className="font-bold text-3xl tracking-[-0.03em] mb-4">
+            <div className="font-space-grotesk font-bold text-3xl tracking-[-0.03em] mb-4">
               Linglix<span className="text-accent">.</span>
             </div>
             <p className="text-sm text-[#999] leading-relaxed mb-6">

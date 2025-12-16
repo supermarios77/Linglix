@@ -17,6 +17,7 @@ export default {
     extend: {
       fontFamily: {
         sans: ["var(--font-sans)", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "Roboto", "Helvetica Neue", "Arial", "sans-serif"],
+        "space-grotesk": ["var(--font-space-grotesk)", "sans-serif"],
       },
       fontWeight: {
         light: "300",

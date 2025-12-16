@@ -28,7 +28,7 @@ export function HeroSection({ locale, session }: HeroSectionProps) {
         </div>
 
         {/* Main Heading */}
-        <h1 className="font-['Space_Grotesk'] text-[76px] leading-[0.95] font-semibold tracking-[-0.03em] mb-6 text-black dark:text-white">
+        <h1 className="font-space-grotesk text-[76px] leading-[0.95] font-semibold tracking-[-0.03em] mb-6 text-black dark:text-white">
           {t("hero.title")} <br />
           <span className="italic font-normal bg-gradient-to-r from-accent to-brand-primary-light bg-clip-text text-transparent">
             {t("hero.titleHighlight")}
@@ -70,7 +70,7 @@ export function HeroSection({ locale, session }: HeroSectionProps) {
           </div>
 
           {/* Featured Badge */}
-          <div className="absolute top-5 left-5 z-[4] w-[100px] h-[100px] flex items-center justify-center bg-accent rounded-full text-black font-extrabold font-['Space_Grotesk'] text-center rotate-[15deg] shadow-[0_10px_20px_rgba(0,0,0,0.1)] text-sm leading-tight">
+          <div className="absolute top-5 left-5 z-[4] w-[100px] h-[100px] flex items-center justify-center bg-accent rounded-full text-black font-extrabold font-space-grotesk text-center rotate-[15deg] shadow-[0_10px_20px_rgba(0,0,0,0.1)] text-sm leading-tight">
             TOP
             <br />
             RATED
