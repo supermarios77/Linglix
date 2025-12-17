@@ -29,14 +29,22 @@ if (!process.env.DATABASE_URL) {
 
 // Configure connection pool with proper timeout settings
 // Prevents ETIMEDOUT errors in serverless environments
+// Use connection pooler URL if available (better for serverless), otherwise use direct URL
+const connectionString = process.env.DATABASE_URL || "";
+
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  // Connection timeout settings
-  connectionTimeoutMillis: 10000, // 10 seconds to establish connection
-  idleTimeoutMillis: 30000, // 30 seconds before closing idle connections
+  connectionString,
+  // Connection timeout settings - increased for serverless environments
+  connectionTimeoutMillis: 20000, // 20 seconds to establish connection (increased from 10s)
+  idleTimeoutMillis: 60000, // 60 seconds before closing idle connections (increased from 30s)
   max: 10, // Maximum number of clients in the pool
-  // Query timeout (handled by Prisma)
-  statement_timeout: 30000, // 30 seconds for queries
+  // Query timeout - increased for complex queries
+  statement_timeout: 60000, // 60 seconds for queries (increased from 30s)
+  // Keep connections alive longer in serverless
+  keepAlive: true,
+  keepAliveInitialDelayMillis: 10000,
+  // Retry configuration
+  allowExitOnIdle: true,
 });
 
 const adapter = new PrismaPg(pool);

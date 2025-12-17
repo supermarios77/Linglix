@@ -22,7 +22,7 @@ export function HeroSection({ locale, session }: HeroSectionProps) {
     <main className="relative max-w-[1400px] w-full mx-auto min-h-screen pt-36 pb-16 px-4 md:px-12 grid md:grid-cols-2 items-center gap-16">
       <div className="z-[2]">
         {/* Badge */}
-        <div className="inline-flex items-center px-3 py-1.5 bg-white border border-[#e5e5e5] rounded-full text-xs font-semibold uppercase tracking-wider mb-6 shadow-[0_2px_10px_rgba(0,0,0,0.03)]">
+        <div className="inline-flex items-center px-3 py-1.5 bg-white dark:bg-[#1a1a1a] border border-[#e5e5e5] dark:border-[#262626] rounded-full text-xs font-semibold uppercase tracking-wider mb-6 shadow-[0_2px_10px_rgba(0,0,0,0.03)] text-black dark:text-white">
           <span className="w-2 h-2 bg-[#10b981] rounded-full mr-2" />
           {t("hero.badge")}
         </div>
