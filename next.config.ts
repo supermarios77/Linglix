@@ -67,12 +67,14 @@ const nextConfig: NextConfig = {
             key: "Content-Security-Policy",
             value: [
               "default-src 'self'",
-              "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://fonts.googleapis.com",
+              // Next.js requires 'unsafe-inline' and 'unsafe-eval' for its scripts and HMR
+              "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://fonts.googleapis.com https://*.vercel-insights.com https://*.sentry.io https://*.stream-io-api.com",
               "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
               "img-src 'self' data: https: blob:",
               "font-src 'self' https://fonts.gstatic.com data:",
-              "connect-src 'self' https://*.upstash.io https://*.stream-io-api.com https://api.stripe.com https://*.sentry.io",
+              "connect-src 'self' https://*.upstash.io https://*.stream-io-api.com https://api.stripe.com https://*.sentry.io https://*.vercel-insights.com wss://*.stream-io-api.com",
               "frame-src 'self' https://js.stripe.com",
+              "media-src 'self' blob:",
               "object-src 'none'",
               "base-uri 'self'",
               "form-action 'self'",
