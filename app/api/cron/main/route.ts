@@ -50,8 +50,9 @@ function verifyCronRequest(request: NextRequest): boolean {
     return true;
   }
   
-  // Allow in development for testing
-  if (process.env.NODE_ENV === "development") {
+  // In development, still require secret token for security
+  // This prevents accidental exposure in staging environments
+  if (process.env.NODE_ENV === "development" && cronSecret && authHeader === `Bearer ${cronSecret}`) {
     return true;
   }
   

@@ -2,8 +2,9 @@ import { auth } from "@/config/auth";
 import { prisma } from "@/lib/db/prisma";
 import { createErrorResponse, Errors } from "@/lib/errors";
 import { createValidationErrorResponse } from "@/lib/errors/validation";
+import { checkRateLimit, createRateLimitResponse } from "@/lib/rate-limit";
 import { z } from "zod";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 // Language proficiency enum
 const LanguageProficiencyEnum = z.enum(["NATIVE", "FLUENT", "ADVANCED", "INTERMEDIATE", "BASIC"]);
@@ -39,8 +40,14 @@ const updateTutorProfileSchema = z.object({
  * Updates the tutor's profile information
  * Note: hourlyRate is fixed at $30/hour (tutors receive $15/hour after commission)
  */
-export async function PATCH(request: Request) {
+export async function PATCH(request: NextRequest) {
   try {
+    // Rate limiting
+    const rateLimit = await checkRateLimit(request, "GENERAL");
+    if (!rateLimit.success) {
+      return createRateLimitResponse(rateLimit.limit!, rateLimit.reset!);
+    }
+
     const session = await auth();
 
     if (!session?.user?.id) {

@@ -1,7 +1,8 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/config/auth";
 import { prisma } from "@/lib/db/prisma";
 import { createErrorResponse, Errors } from "@/lib/errors";
+import { checkRateLimit, createRateLimitResponse } from "@/lib/rate-limit";
 import { Role } from "@prisma/client";
 import { z } from "zod";
 
@@ -16,8 +17,14 @@ const updateRoleSchema = z.object({
  * 
  * Updates the user's role during onboarding
  */
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
   try {
+    // Rate limiting
+    const rateLimit = await checkRateLimit(request, "AUTH");
+    if (!rateLimit.success) {
+      return createRateLimitResponse(rateLimit.limit!, rateLimit.reset!);
+    }
+
     const session = await auth();
 
     if (!session?.user?.id) {
