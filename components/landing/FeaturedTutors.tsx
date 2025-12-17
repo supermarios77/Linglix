@@ -215,7 +215,7 @@ export async function FeaturedTutors({ locale }: FeaturedTutorsProps) {
           {/* Price */}
           <div className="flex justify-between items-center pt-3 border-t border-[#e5e5e5] dark:border-[#262626]">
             <span className="text-xs text-[#888] dark:text-[#a1a1aa] uppercase tracking-wide font-medium">{t("trending.hourly")}</span>
-            <span className="font-bold text-xl text-black dark:text-white">${tutor.hourlyRate}<span className="text-sm font-normal text-[#888] dark:text-[#a1a1aa]">/hr</span></span>
+            <span className="font-bold text-xl text-black dark:text-white">${tutor.hourlyRate}</span>
           </div>
         </div>
       </div>
