@@ -294,7 +294,9 @@ export function BookingClient({ tutor, locale }: BookingClientProps) {
                         src={tutor.image}
                         alt={tutor.name}
                         fill
+                        sizes="64px"
                         className="object-cover"
+                        loading="lazy"
                       />
                     </div>
                   ) : (

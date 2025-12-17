@@ -292,7 +292,9 @@ export function TutorsListingClient({
                         src={tutor.image}
                         alt={tutor.name}
                         fill
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                         className="object-cover"
+                        loading="lazy"
                       />
                     ) : (
                         <div className="w-full h-full bg-gradient-to-br from-[#f5f5f5] to-[#e5e5e5] dark:from-[#1a1a1a] dark:to-[#0a0a0a] flex items-center justify-center">

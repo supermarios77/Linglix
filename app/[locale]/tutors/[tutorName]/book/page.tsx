@@ -5,6 +5,9 @@
  * Production-ready with availability checking, validation, and error handling.
  */
 
+// Revalidate every 5 minutes for booking availability
+export const revalidate = 300;
+
 import { notFound, redirect } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import { requireRole } from "@/lib/auth";

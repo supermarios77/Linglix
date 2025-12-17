@@ -22,6 +22,9 @@ interface TutorDetailPageProps {
  * - 404 handling for invalid slugs
  * - Full internationalization
  */
+
+// Revalidate every 5 minutes for tutor details
+export const revalidate = 300;
 export async function generateMetadata({
   params,
 }: TutorDetailPageProps) {

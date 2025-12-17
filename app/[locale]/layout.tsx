@@ -23,8 +23,9 @@ const inter = Inter({
   variable: "--font-sans",
   display: "swap", // Optimize font loading
   preload: true,
-  weight: ["300", "400", "500", "600", "700"], // Modern weight range
+  weight: ["400", "500", "600", "700"], // Reduced weights for better performance
   style: ["normal"],
+  fallback: ["system-ui", "arial"], // Fallback fonts
 });
 
 /**
@@ -39,9 +40,10 @@ const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
   variable: "--font-space-grotesk",
   display: "swap",
-  preload: true,
-  weight: ["300", "400", "500", "600", "700"],
+  preload: false, // Don't preload secondary font
+  weight: ["400", "500", "600", "700"], // Reduced weights
   style: ["normal"],
+  fallback: ["system-ui", "arial"], // Fallback fonts
 });
 
 /**
@@ -153,6 +155,13 @@ export default async function LocaleLayout({
   return (
     <html lang={locale} suppressHydrationWarning>
       <head>
+        {/* Resource hints for performance */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://lh3.googleusercontent.com" />
+        <link rel="dns-prefetch" href="https://*.public.blob.vercel-storage.com" />
+        <link rel="dns-prefetch" href="https://*.upstash.io" />
+        
         {/* Theme script - prevents flash of wrong theme */}
         <script
           dangerouslySetInnerHTML={{

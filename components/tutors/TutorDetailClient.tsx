@@ -87,7 +87,9 @@ export function TutorDetailClient({
                     src={tutor.image}
                     alt={tutor.name}
                     fill
+                    sizes="(max-width: 768px) 100vw, 33vw"
                     className="object-cover"
+                    priority
                   />
                 ) : (
                   <Users className="w-32 h-32 text-[#ccc] dark:text-[#404040]" />

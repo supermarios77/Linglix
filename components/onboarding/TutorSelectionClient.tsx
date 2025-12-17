@@ -113,7 +113,9 @@ export function TutorSelectionClient({
                       src={tutor.image}
                       alt={tutor.name}
                       fill
+                      sizes="(max-width: 640px) 80px, 96px"
                       className="object-cover"
+                      loading="lazy"
                     />
                   ) : (
                     <div className="w-full h-full bg-primary/10 flex items-center justify-center text-primary font-bold text-2xl sm:text-3xl">

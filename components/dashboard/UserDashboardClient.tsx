@@ -642,7 +642,9 @@ export function UserDashboardClient({
                                 src={booking.tutor.user.image}
                                 alt={booking.tutor.user.name || t("tutorFallback")}
                                 fill
+                                sizes="80px"
                                 className="object-cover"
+                                loading="lazy"
                               />
                             </div>
                           ) : (

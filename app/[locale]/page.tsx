@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { getTranslations } from "next-intl/server";
 import { auth } from "@/config/auth";
 import { LandingPageClient } from "@/components/landing/LandingPageClient";
@@ -9,6 +10,9 @@ import { EmailSignup } from "@/components/landing/EmailSignup";
 import { Testimonials } from "@/components/landing/Testimonials";
 import { Footer } from "@/components/landing/Footer";
 import { OrganizationSchema, FAQSchema } from "@/lib/seo/structured-data";
+
+// Revalidate landing page every 5 minutes
+export const revalidate = 300;
 
 /**
  * Landing Page
@@ -135,7 +139,9 @@ export default async function HomePage({
         <div className="pt-16 sm:pt-20">
           <HeroSection locale={locale} session={session} />
           <MarqueeTicker items={marqueeItems} />
-          <FeaturedTutors locale={locale} />
+          <Suspense fallback={<div className="py-20 px-4 md:px-12 max-w-[1400px] mx-auto"><div className="animate-pulse bg-white dark:bg-[#1a1a1a] rounded-[20px] h-96" /></div>}>
+            <FeaturedTutors locale={locale} />
+          </Suspense>
           <EmailSignup locale={locale} />
           <Testimonials locale={locale} />
           <Footer locale={locale} session={session} />

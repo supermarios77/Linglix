@@ -13,6 +13,9 @@ import { Prisma } from "@prisma/client";
  * Shows recommended tutors based on student preferences.
  * If no relevant tutors found, shows top-rated tutors.
  */
+
+// Mark as dynamic since it uses user-specific data
+export const dynamic = "force-dynamic";
 export async function generateMetadata() {
   const t = await getTranslations("onboarding.selectTutor");
 
