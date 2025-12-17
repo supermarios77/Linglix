@@ -24,7 +24,7 @@ export function Footer({ locale, session }: FooterProps) {
   return (
     <footer className="relative mt-20 bg-gradient-to-br from-[#111] to-[#1a1a1a] text-white pt-20 pb-8 px-4 md:px-12 overflow-hidden">
       {/* Decorative blur */}
-      <div className="absolute top-0 right-[20%] w-[400px] h-[400px] rounded-full opacity-10 blur-[80px] bg-[radial-gradient(circle,rgb(255,77,140)_0%,rgba(255,255,255,0)_70%)]" />
+      <div className="absolute top-0 right-[20%] w-[400px] h-[400px] rounded-full opacity-10 blur-[80px] bg-[radial-gradient(circle,hsl(var(--accent))_0%,rgba(255,255,255,0)_70%)]" />
 
       <div className="relative max-w-[1400px] mx-auto">
         {/* Main Footer Content */}

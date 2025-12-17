@@ -37,16 +37,16 @@ export function EmailSignup({ locale }: EmailSignupProps) {
   return (
     <section className="relative py-32 px-4 md:px-12 max-w-[1400px] mx-auto">
       {/* Decorative background blur */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] rounded-full opacity-40 blur-[100px] bg-[radial-gradient(circle,rgb(255,200,220)_0%,rgba(255,255,255,0)_70%)] dark:bg-[radial-gradient(circle,rgba(255,77,140,0.2)_0%,rgba(0,0,0,0)_70%)]" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] rounded-full opacity-40 blur-[100px] bg-[radial-gradient(circle,hsl(var(--accent)/0.3)_0%,rgba(255,255,255,0)_70%)] dark:bg-[radial-gradient(circle,hsl(var(--accent)/0.2)_0%,rgba(0,0,0,0)_70%)]" />
 
-      <div className="relative bg-gradient-to-br from-white dark:from-[#1a1a1a] to-[#fef9fb] dark:to-[#121212] rounded-[40px] p-16 border border-[rgba(255,77,140,0.1)] dark:border-[rgba(255,77,140,0.2)] shadow-[0_40px_80px_rgba(0,0,0,0.03)] overflow-hidden">
+      <div className="relative bg-gradient-to-br from-white dark:from-[#1a1a1a] to-[#fef9fb] dark:to-[#121212] rounded-[40px] p-16 border border-accent/10 dark:border-accent/20 shadow-[0_40px_80px_rgba(0,0,0,0.03)] overflow-hidden">
         {/* Decorative elements */}
-        <div className="absolute top-0 right-0 w-[300px] h-[300px] rounded-full opacity-20 blur-[60px] bg-[radial-gradient(circle,rgb(255,143,112)_0%,rgba(255,255,255,0)_70%)] dark:bg-[radial-gradient(circle,rgba(255,143,112,0.2)_0%,rgba(0,0,0,0)_70%)]" />
-        <div className="absolute bottom-0 left-0 w-[250px] h-[250px] rounded-full opacity-20 blur-[60px] bg-[radial-gradient(circle,rgb(224,231,255)_0%,rgba(255,255,255,0)_70%)] dark:bg-[radial-gradient(circle,rgba(224,231,255,0.2)_0%,rgba(0,0,0,0)_70%)]" />
+        <div className="absolute top-0 right-0 w-[300px] h-[300px] rounded-full opacity-20 blur-[60px] bg-[radial-gradient(circle,hsl(var(--accent)/0.3)_0%,rgba(255,255,255,0)_70%)] dark:bg-[radial-gradient(circle,hsl(var(--accent)/0.2)_0%,rgba(0,0,0,0)_70%)]" />
+        <div className="absolute bottom-0 left-0 w-[250px] h-[250px] rounded-full opacity-20 blur-[60px] bg-[radial-gradient(circle,hsl(var(--accent)/0.2)_0%,rgba(255,255,255,0)_70%)] dark:bg-[radial-gradient(circle,hsl(var(--accent)/0.15)_0%,rgba(0,0,0,0)_70%)]" />
 
         <div className="relative max-w-[700px] mx-auto text-center">
           {/* Badge */}
-          <div className="inline-flex items-center px-4 py-2 bg-white dark:bg-[#1a1a1a] border border-[#ffe0eb] dark:border-[rgba(255,77,140,0.2)] rounded-full text-xs font-semibold uppercase tracking-wider mb-8 shadow-[0_4px_12px_rgba(255,77,140,0.08)]">
+          <div className="inline-flex items-center px-4 py-2 bg-white dark:bg-[#1a1a1a] border border-accent/20 dark:border-accent/30 rounded-full text-xs font-semibold uppercase tracking-wider mb-8 shadow-[0_4px_12px_rgba(0,0,0,0.05)]">
             <span className="w-2 h-2 bg-accent rounded-full mr-2 animate-pulse" />
             {t("waitlist.badge")}
           </div>
@@ -70,7 +70,7 @@ export function EmailSignup({ locale }: EmailSignupProps) {
               placeholder="Enter your email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="flex-1 px-6 py-4 rounded-full border border-[#e5e5e5] dark:border-[#262626] bg-white dark:bg-[#1a1a1a] text-base text-black dark:text-white focus:outline-none focus:border-accent focus:ring-2 focus:ring-[rgba(255,77,140,0.1)] transition-all"
+              className="flex-1 px-6 py-4 rounded-full border border-[#e5e5e5] dark:border-[#262626] bg-white dark:bg-[#1a1a1a] text-base text-black dark:text-white focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/20 transition-all"
               required
             />
             <button

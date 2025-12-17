@@ -88,5 +88,5 @@ SENTRY_DSN=...
 
 ## Reporting Security Issues
 
-If you discover a security vulnerability, please email security@linglix.com instead of using the issue tracker.
+If you discover a security vulnerability, please email info@linglix.com instead of using the issue tracker.
 
