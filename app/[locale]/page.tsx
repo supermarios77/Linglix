@@ -142,8 +142,12 @@ export default async function HomePage({
           <Suspense fallback={<div className="py-20 px-4 md:px-12 max-w-[1400px] mx-auto"><div className="animate-pulse bg-white dark:bg-[#1a1a1a] rounded-[20px] h-96" /></div>}>
             <FeaturedTutors locale={locale} />
           </Suspense>
-          <EmailSignup locale={locale} />
-          <Testimonials locale={locale} />
+          <Suspense fallback={null}>
+            <EmailSignup locale={locale} />
+          </Suspense>
+          <Suspense fallback={null}>
+            <Testimonials locale={locale} />
+          </Suspense>
           <Footer locale={locale} session={session} />
         </div>
       </div>

@@ -65,6 +65,26 @@ const nextConfig: NextConfig = {
           },
         ],
       },
+      {
+        // Static assets caching - long-term cache for immutable assets
+        source: "/_next/static/:path*",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
+          },
+        ],
+      },
+      {
+        // Image optimization caching
+        source: "/_next/image",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, must-revalidate",
+          },
+        ],
+      },
     ];
   },
   
