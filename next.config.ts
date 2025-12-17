@@ -63,27 +63,27 @@ const nextConfig: NextConfig = {
             key: "Permissions-Policy",
             value: "geolocation=()",
           },
-          // CSP temporarily disabled to debug UI issues
-          // Will re-enable with proper configuration once UI is working
-          // {
-          //   key: "Content-Security-Policy",
-          //   value: process.env.NODE_ENV === "production"
-          //     ? [
-          //         "default-src 'self'",
-          //         "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://fonts.googleapis.com https://*.vercel-insights.com https://*.sentry.io https://*.stream-io-api.com",
-          //         "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
-          //         "img-src 'self' data: https: blob:",
-          //         "font-src 'self' https://fonts.gstatic.com data:",
-          //         "connect-src 'self' https: wss: ws:",
-          //         "frame-src 'self' https://js.stripe.com",
-          //         "media-src 'self' blob:",
-          //         "object-src 'none'",
-          //         "base-uri 'self'",
-          //         "form-action 'self'",
-          //         "frame-ancestors 'self'",
-          //       ].join("; ")
-          //     : "default-src * 'unsafe-inline' 'unsafe-eval' data: blob:; script-src * 'unsafe-inline' 'unsafe-eval'; style-src * 'unsafe-inline';",
-          // },
+          {
+            key: "Content-Security-Policy",
+            value: [
+              // Next.js requires 'unsafe-inline' and 'unsafe-eval' for its runtime and HMR
+              "default-src 'self'",
+              "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://fonts.googleapis.com https://*.vercel-insights.com https://*.sentry.io https://*.stream-io-api.com",
+              "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+              "img-src 'self' data: https: blob:",
+              "font-src 'self' https://fonts.gstatic.com data:",
+              "connect-src 'self' https://*.upstash.io https://*.stream-io-api.com https://api.stripe.com https://*.sentry.io https://*.vercel-insights.com wss://*.stream-io-api.com ws://localhost:*",
+              "frame-src 'self' https://js.stripe.com",
+              "media-src 'self' blob: data:",
+              "worker-src 'self' blob:",
+              "object-src 'none'",
+              "base-uri 'self'",
+              "form-action 'self'",
+              "frame-ancestors 'self'",
+              // Only upgrade insecure requests in production
+              ...(process.env.NODE_ENV === "production" ? ["upgrade-insecure-requests"] : []),
+            ].join("; "),
+          },
         ],
       },
       {
