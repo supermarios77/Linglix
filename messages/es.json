@@ -73,6 +73,31 @@
       "AccessDenied": "No tienes permiso para iniciar sesión",
       "Verification": "El token de verificación ha expirado o ya ha sido usado",
       "Default": "Ocurrió un error inesperado"
+    },
+    "verify2fa": {
+      "title": "Verificar Autenticación de Dos Factores",
+      "description": "Ingresa el código de 6 dígitos de tu aplicación autenticadora para completar el inicio de sesión",
+      "tokenLabel": "Código de Verificación",
+      "tokenHint": "Ingresa el código de 6 dígitos de tu aplicación autenticadora",
+      "backupCodeLabel": "Código de Respaldo",
+      "backupCodeHint": "Ingresa un código de respaldo de 8 dígitos",
+      "useToken": "Usar código de verificación en su lugar",
+      "useBackupCode": "Usar código de respaldo en su lugar",
+      "verify": "Verificar",
+      "verifying": "Verificando..."
+    },
+    "setup2fa": {
+      "title": "Configurar Autenticación de Dos Factores",
+      "description": "Protege tu cuenta de administrador con una capa adicional de seguridad",
+      "scanQR": "Escanear Código QR",
+      "manualEntry": "O ingresar manualmente",
+      "verifyCode": "Verificar Código",
+      "enabled": "2FA Habilitado",
+      "disabled": "2FA Deshabilitado",
+      "enable": "Habilitar 2FA",
+      "disable": "Deshabilitar 2FA",
+      "backupCodes": "Códigos de Respaldo",
+      "saveBackupCodes": "Guarda estos códigos de respaldo en un lugar seguro"
     }
   },
   "navigation": {

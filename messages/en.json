@@ -73,6 +73,31 @@
       "AccessDenied": "You do not have permission to sign in",
       "Verification": "The verification token has expired or has already been used",
       "Default": "An unexpected error occurred"
+    },
+    "verify2fa": {
+      "title": "Verify Two-Factor Authentication",
+      "description": "Enter the 6-digit code from your authenticator app to complete sign in",
+      "tokenLabel": "Verification Code",
+      "tokenHint": "Enter the 6-digit code from your authenticator app",
+      "backupCodeLabel": "Backup Code",
+      "backupCodeHint": "Enter an 8-digit backup code",
+      "useToken": "Use verification code instead",
+      "useBackupCode": "Use backup code instead",
+      "verify": "Verify",
+      "verifying": "Verifying..."
+    },
+    "setup2fa": {
+      "title": "Set Up Two-Factor Authentication",
+      "description": "Protect your admin account with an extra layer of security",
+      "scanQR": "Scan QR Code",
+      "manualEntry": "Or enter manually",
+      "verifyCode": "Verify Code",
+      "enabled": "2FA Enabled",
+      "disabled": "2FA Disabled",
+      "enable": "Enable 2FA",
+      "disable": "Disable 2FA",
+      "backupCodes": "Backup Codes",
+      "saveBackupCodes": "Save these backup codes in a safe place"
     }
   },
   "navigation": {

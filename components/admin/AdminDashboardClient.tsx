@@ -46,7 +46,9 @@ import {
   LogOut,
   AlertTriangle,
   FileText,
+  KeyRound,
 } from "lucide-react";
+import { Setup2FAForm } from "@/components/auth/Setup2FAForm";
 import type { TutorApprovalStatus, AppealStatus } from "@prisma/client";
 
 /**
@@ -108,6 +110,7 @@ export function AdminDashboardClient({ locale }: AdminDashboardClientProps) {
   const tCommon = useTranslations("common");
 
   const [showSignOutDialog, setShowSignOutDialog] = useState(false);
+  const [twoFactorEnabled, setTwoFactorEnabled] = useState<boolean | null>(null);
 
   const handleSignOut = async () => {
     try {
@@ -278,12 +281,28 @@ export function AdminDashboardClient({ locale }: AdminDashboardClientProps) {
     }
   }, [page, statusFilter, searchQuery]);
 
+  // Fetch 2FA status
+  const fetch2FAStatus = async () => {
+    try {
+      const response = await fetch("/api/auth/2fa/check");
+      if (response.ok) {
+        const data = await response.json();
+        setTwoFactorEnabled(data.enabled || false);
+      }
+    } catch (error) {
+      // Silently fail - 2FA status is optional
+    }
+  };
+
   // Initial load
   useEffect(() => {
     const abortController = new AbortController();
     fetchStats(abortController.signal);
     fetchTutors(abortController.signal);
     fetchAppeals(abortController.signal, appealStatusFilter);
+    if (process.env.NODE_ENV === "production") {
+      fetch2FAStatus();
+    }
     return () => {
       abortController.abort();
     };
@@ -704,6 +723,50 @@ export function AdminDashboardClient({ locale }: AdminDashboardClientProps) {
             )}
           </CardContent>
         </Card>
+
+        {/* Security - 2FA (Production Only) */}
+        {process.env.NODE_ENV === "production" && (
+          <Card className="bg-card backdrop-blur-md border border-border shadow-xl mb-8">
+            <CardHeader>
+              <div className="flex items-center gap-3">
+                <KeyRound className="w-5 h-5 text-accent" />
+                <CardTitle className="text-xl sm:text-2xl font-bold text-foreground">
+                  Two-Factor Authentication
+                </CardTitle>
+              </div>
+              <CardDescription className="text-muted-foreground">
+                Protect your admin account with an extra layer of security
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                <div className="flex items-center justify-between p-4 bg-muted/50 rounded-lg">
+                  <div>
+                    <p className="font-semibold text-foreground">2FA Status</p>
+                    <p className="text-sm text-muted-foreground">
+                      {twoFactorEnabled === null
+                        ? "Checking..."
+                        : twoFactorEnabled
+                        ? "Enabled - Your account is protected"
+                        : "Disabled - Enable 2FA to secure your account"}
+                    </p>
+                  </div>
+                  <Badge
+                    variant={twoFactorEnabled ? "default" : "outline"}
+                    className={
+                      twoFactorEnabled
+                        ? "bg-success text-success-foreground"
+                        : "bg-warning/10 text-warning border-warning/30"
+                    }
+                  >
+                    {twoFactorEnabled ? "Enabled" : "Disabled"}
+                  </Badge>
+                </div>
+                <Setup2FAForm locale={locale} twoFactorEnabled={twoFactorEnabled || false} />
+              </div>
+            </CardContent>
+          </Card>
+        )}
 
         {/* Tutors Management */}
         <Card className="bg-card backdrop-blur-md border border-border shadow-xl">

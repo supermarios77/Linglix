@@ -54,6 +54,11 @@ model User {
   // Penalty tracking
   penaltyUntil DateTime? // If set, user is penalized (cannot book) until this date
 
+  // 2FA (Two-Factor Authentication) - for admin accounts
+  twoFactorEnabled  Boolean   @default(false)
+  twoFactorSecret   String?   @db.Text // Encrypted TOTP secret (only for admins)
+  twoFactorBackupCodes String[] // Backup codes for 2FA recovery
+
   // Relations
   tutorProfile   TutorProfile?
   studentProfile StudentProfile?

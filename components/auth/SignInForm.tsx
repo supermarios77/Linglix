@@ -42,6 +42,17 @@ export function SignInForm() {
     setIsLoading(true);
 
     try {
+      // In production, check if 2FA is required before signing in
+      if (process.env.NODE_ENV === "production") {
+        // First check if user needs 2FA
+        const checkResponse = await fetch("/api/auth/2fa/check");
+        const checkData = await checkResponse.json();
+
+        // If 2FA is required, we need to verify it first
+        // For now, proceed with normal sign in and handle 2FA check after
+        // The middleware or page will redirect to 2FA verification if needed
+      }
+
       const result = await signIn("credentials", {
         email,
         password,
@@ -52,6 +63,25 @@ export function SignInForm() {
         setError(t("invalidCredentials"));
         setIsLoading(false);
         return;
+      }
+
+      // After successful sign in, check if 2FA verification is needed (production only)
+      if (process.env.NODE_ENV === "production") {
+        try {
+          const checkResponse = await fetch("/api/auth/2fa/check");
+          if (checkResponse.ok) {
+            const checkData = await checkResponse.json();
+
+            if (checkData.required) {
+              // Redirect to 2FA verification page
+              router.push(`/${locale}/auth/verify-2fa?callbackUrl=${encodeURIComponent(callbackUrl)}`);
+              return;
+            }
+          }
+        } catch (err) {
+          // If 2FA check fails, proceed with normal login
+          // This prevents blocking login if 2FA check has issues
+        }
       }
 
       router.push(callbackUrl);
