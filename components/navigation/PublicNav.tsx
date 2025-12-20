@@ -108,7 +108,7 @@ export function PublicNav({ locale, session }: PublicNavProps) {
         <ThemeSwitcher />
         {session ? (
           <Link href={`/${locale}/dashboard`}>
-            <button className="px-4 py-2 rounded-full text-sm font-medium bg-[#111] dark:bg-accent text-white dark:text-black transition-all hover:scale-105 hover:bg-[#222] dark:hover:bg-brand-primary-light">
+            <button className="px-4 py-2 rounded-full text-sm font-medium bg-[#111] dark:bg-white text-white dark:text-black transition-all hover:scale-105 hover:bg-[#222] dark:hover:bg-gray-100">
               {tCommon("dashboard")}
             </button>
           </Link>
@@ -120,7 +120,7 @@ export function PublicNav({ locale, session }: PublicNavProps) {
               </button>
             </Link>
             <Link href={`/${locale}/auth/signup`}>
-              <button className="px-4 py-2 rounded-full text-sm font-medium bg-[#111] dark:bg-accent text-white dark:text-black transition-all hover:scale-105 hover:bg-[#222] dark:hover:bg-brand-primary-light">
+              <button className="px-4 py-2 rounded-full text-sm font-medium bg-[#111] dark:bg-white text-white dark:text-black transition-all hover:scale-105 hover:bg-[#222] dark:hover:bg-gray-100">
                 {tAuth("signUpTitle")}
               </button>
             </Link>
@@ -174,7 +174,7 @@ export function PublicNav({ locale, session }: PublicNavProps) {
                   <li>
                     <Link
                       href={`/${locale}/auth/signup`}
-                      className="inline-block w-full text-center px-4 py-2 rounded-full text-base font-medium bg-[#111] dark:bg-accent text-white dark:text-black transition-all hover:scale-105"
+                      className="inline-block w-full text-center px-4 py-2 rounded-full text-base font-medium bg-[#111] dark:bg-white text-white dark:text-black transition-all hover:scale-105 dark:hover:bg-gray-100"
                       onClick={() => setMobileMenuOpen(false)}
                     >
                       {tAuth("signUpTitle")}

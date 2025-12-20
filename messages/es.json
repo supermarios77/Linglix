@@ -355,15 +355,13 @@
   },
   "landing": {
     "hero": {
-      "badge": "Nuevo Lanzamiento de Plataforma",
-      "title": "Aprende Idiomas",
-      "titleHighlight": "con Tutores Nativos",
-      "description": "Conéctate con tutores expertos para experiencias de aprendizaje personalizadas y uno a uno. Horarios flexibles, precios asequibles y resultados reales.",
-      "ctaPrimary": "Comenzar",
-      "ctaSecondary": "Buscar Tutores",
-      "featureNative": "Hablantes Nativos",
-      "featureFlexible": "Horario Flexible",
-      "featureAffordable": "Precios Asequibles"
+      "badge": "Únete a 50K+ Estudiantes",
+      "title": "Aprende cualquier",
+      "titleHighlight": "idioma naturalmente",
+      "subtitle": "con conversaciones reales",
+      "description": "Conéctate con tutores nativos para lecciones personalizadas 1 a 1. Practica conversaciones reales, desarrolla confianza y alcanza la fluidez más rápido.",
+      "ctaPrimary": "Encuentra Tu Tutor",
+      "ctaSecondary": "Prueba Lección Gratis"
     },
     "features": {
       "title": "Por Qué Elegir Linglix",
@@ -392,22 +390,32 @@
       }
     },
     "howItWorks": {
-      "title": "Cómo Funciona",
-      "subtitle": "Comienza a aprender en tres simples pasos",
+      "title": "Comienza a Aprender en",
+      "titleHighlight": "3 Pasos Simples",
+      "subtitle": "Tu viaje hacia la fluidez comienza aquí",
       "steps": {
         "1": {
-          "title": "Encuentra Tu Tutor",
-          "description": "Explora nuestra selección de tutores expertos y encuentra la combinación perfecta para tus objetivos de aprendizaje"
+          "title": "Elige Tu Tutor",
+          "description": "Explora perfiles de hablantes nativos certificados. Filtra por idioma, disponibilidad y estilo de enseñanza para encontrar tu pareja perfecta."
         },
         "2": {
-          "title": "Reserva una Sesión",
-          "description": "Programa una sesión en un momento que funcione para ti. Elige entre sesiones de 30, 60 o 90 minutos"
+          "title": "Reserva una Lección",
+          "description": "Programa sesiones que se adapten a tu estilo de vida. Mañana, tarde o noche: aprende a tu propio ritmo."
         },
         "3": {
           "title": "Comienza a Aprender",
-          "description": "Comienza tu viaje de aprendizaje de idiomas con lecciones personalizadas"
+          "description": "Únete a lecciones de video en vivo desde cualquier lugar. Practica hablando, obtén retroalimentación instantánea y rastrea tu progreso."
         }
       }
+    },
+    "newsletter": {
+      "badge": "Oferta Limitada",
+      "title": "Comienza Tu Lección",
+      "titleHighlight": "Gratis de Prueba Hoy",
+      "description": "Experimenta la diferencia de Lingua con una lección complementaria de 30 minutos. No se requiere tarjeta de crédito.",
+      "emailPlaceholder": "Ingresa tu correo electrónico",
+      "button": "Comenzar",
+      "disclaimer": "Únete a más de 50,000 estudiantes de idiomas en todo el mundo. Sin spam, solo aprendizaje."
     },
     "cta": {
       "title": "¿Listo para Comenzar a Aprender?",
@@ -416,11 +424,18 @@
     },
     "marquee": {
       "items": [
-        "✨ Solo Hablantes Nativos",
-        "🌍 Aprende Cualquier Idioma",
-        "📚 Horarios Flexibles",
-        "💬 Sesiones 1 a 1"
+        "🌍 50+ IDIOMAS DISPONIBLES",
+        "👩‍🏫 TUTORES NATIVOS CERTIFICADOS",
+        "💬 HORARIOS FLEXIBLES",
+        "✨ PRIMERA LECCIÓN GRATIS"
       ]
+    },
+    "popularLanguages": {
+      "title": "Idiomas Populares",
+      "seeAll": "Ver Todos los Idiomas",
+      "popular": "Popular",
+      "trending": "Tendencia",
+      "tutors": "Tutores"
     },
     "trending": {
       "title": "Tutores Populares",
@@ -491,8 +506,26 @@
     },
     "testimonials": {
       "title": "Amado por",
-      "titleHighlight": "Miles",
-      "subtitle": "Resultados reales de estudiantes reales",
+      "titleHighlight": "Estudiantes",
+      "subtitle": "Progreso real de estudiantes reales",
+      "quotes": {
+        "1": {
+          "text": "En solo 3 meses con Lingua, pasé de frases básicas a tener conversaciones completas en español. ¡Mi tutora María hizo que aprender fuera divertido y natural!",
+          "name": "Sarah Chen",
+          "language": "Aprendiendo Español"
+        },
+        "2": {
+          "text": "¡La flexibilidad es increíble! Puedo programar lecciones alrededor de mi apretada agenda de trabajo. Mi francés ha mejorado dramáticamente gracias a mi paciente tutor.",
+          "name": "Michael Johnson",
+          "language": "Aprendiendo Francés"
+        },
+        "3": {
+          "text": "Estaba nerviosa por hablar japonés, pero mi tutor creó un ambiente tan cómodo. ¡Ahora tengo suficiente confianza para planear mi viaje a Tokio!",
+          "name": "Emily Rodriguez",
+          "language": "Aprendiendo Japonés"
+        }
+      }
+    },
       "verifiedStudent": "Estudiante Verificado",
       "quotes": {
         "1": "¡Mi inglés ha mejorado muchísimo! Abby es paciente, atractiva y hace que aprender sea divertido. Finalmente puedo tener conversaciones con confianza.",

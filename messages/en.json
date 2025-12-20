@@ -353,15 +353,13 @@
   },
   "landing": {
     "hero": {
-      "badge": "New Platform Launch",
-      "title": "Learn Languages",
-      "titleHighlight": "with Native Tutors",
-      "description": "Connect with expert tutors for personalized, one-on-one language learning experiences. Flexible scheduling, affordable pricing, and real results.",
-      "ctaPrimary": "Get Started",
-      "ctaSecondary": "Browse Tutors",
-      "featureNative": "Native Speakers",
-      "featureFlexible": "Flexible Schedule",
-      "featureAffordable": "Affordable Pricing"
+      "badge": "Join 50K+ Learners",
+      "title": "Learn any",
+      "titleHighlight": "language naturally",
+      "subtitle": "with real conversations",
+      "description": "Connect with native-speaking tutors for personalized 1-on-1 lessons. Practice real conversations, build confidence, and achieve fluency faster.",
+      "ctaPrimary": "Find Your Tutor",
+      "ctaSecondary": "Try Free Lesson"
     },
     "pricing": {
       "badge": "Pricing",
@@ -436,22 +434,32 @@
       }
     },
     "howItWorks": {
-      "title": "How It Works",
-      "subtitle": "Start learning in three simple steps",
+      "title": "Start Learning in",
+      "titleHighlight": "3 Simple Steps",
+      "subtitle": "Your journey to fluency begins here",
       "steps": {
         "1": {
-          "title": "Find Your Tutor",
-          "description": "Browse our selection of expert tutors and find the perfect match for your learning goals"
+          "title": "Choose Your Tutor",
+          "description": "Browse profiles of certified native speakers. Filter by language, availability, and teaching style to find your perfect match."
         },
         "2": {
-          "title": "Book a Session",
-          "description": "Schedule a session at a time that works for you. Choose from 30, 60, or 90-minute sessions"
+          "title": "Book a Lesson",
+          "description": "Schedule sessions that fit your lifestyle. Morning, afternoon, or evening - learn at your own pace."
         },
         "3": {
           "title": "Start Learning",
-          "description": "Start your language learning journey with personalized lessons"
+          "description": "Join live video lessons from anywhere. Practice speaking, get instant feedback, and track your progress."
         }
       }
+    },
+    "newsletter": {
+      "badge": "Limited Offer",
+      "title": "Start Your Free",
+      "titleHighlight": "Trial Lesson Today",
+      "description": "Experience the Lingua difference with a complimentary 30-minute lesson. No credit card required.",
+      "emailPlaceholder": "Enter your email",
+      "button": "Get Started",
+      "disclaimer": "Join 50,000+ language learners worldwide. No spam, just learning."
     },
     "cta": {
       "title": "Ready to Start Learning?",
@@ -460,11 +468,18 @@
     },
     "marquee": {
       "items": [
-        "✨ Native Speakers Only",
-        "🌍 Learn Any Language",
-        "📚 Flexible Scheduling",
-        "💬 1-on-1 Sessions"
+        "🌍 50+ LANGUAGES AVAILABLE",
+        "👩‍🏫 CERTIFIED NATIVE TUTORS",
+        "💬 FLEXIBLE SCHEDULING",
+        "✨ FIRST LESSON FREE"
       ]
+    },
+    "popularLanguages": {
+      "title": "Popular Languages",
+      "seeAll": "See All Languages",
+      "popular": "Popular",
+      "trending": "Trending",
+      "tutors": "Tutors"
     },
     "trending": {
       "title": "Popular Tutors",
@@ -489,13 +504,24 @@
     },
     "testimonials": {
       "title": "Loved by",
-      "titleHighlight": "Thousands",
-      "subtitle": "Real results from real students",
-      "verifiedStudent": "Verified Student",
+      "titleHighlight": "Learners",
+      "subtitle": "Real progress from real students",
       "quotes": {
-        "1": "My English has improved so much! Abby is patient, engaging, and makes learning fun. I can finally have conversations with confidence.",
-        "2": "The flexible scheduling is perfect for my busy lifestyle. I can learn English at my own pace with an amazing tutor. Highly recommend!",
-        "3": "Best investment I've made for my career. Learning English with Abby has opened so many opportunities. The quality is outstanding."
+        "1": {
+          "text": "In just 3 months with Lingua, I went from basic phrases to having full conversations in Spanish. My tutor María made learning fun and natural!",
+          "name": "Sarah Chen",
+          "language": "Learning Spanish"
+        },
+        "2": {
+          "text": "The flexibility is amazing! I can schedule lessons around my busy work schedule. My French has improved dramatically thanks to my patient tutor.",
+          "name": "Michael Johnson",
+          "language": "Learning French"
+        },
+        "3": {
+          "text": "I was nervous about speaking Japanese, but my tutor created such a comfortable environment. Now I'm confident enough to plan my trip to Tokyo!",
+          "name": "Emily Rodriguez",
+          "language": "Learning Japanese"
+        }
       }
     },
     "navigation": {

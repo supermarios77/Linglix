@@ -126,6 +126,11 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "lh3.googleusercontent.com",
       },
+      // Unsplash images
+      {
+        protocol: "https",
+        hostname: "images.unsplash.com",
+      },
     ],
   },
   

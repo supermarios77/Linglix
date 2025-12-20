@@ -1,368 +1,157 @@
-/**
- * Global Styles
- *
- * Production-ready CSS configuration for shadcn/ui with Tailwind CSS v4
- * Organized by: imports, theme variables, base styles
- */
-
-/* ============================================================================
-   IMPORTS
-   ============================================================================ */
-
 @import "tailwindcss";
 @plugin "tailwindcss-animate";
+
 @custom-variant dark (&:is(.dark *));
 
-/* ============================================================================
-   THEME VARIABLES
-   ============================================================================ */
-
-/**
- * Color System
- * 
- * Using HSL color format for shadcn/ui compatibility
- * Light mode: Clean, minimal black/white palette
- * Dark mode: Inverted for proper contrast
- */
-
-@layer base {
-  :root {
-    /* ========================================================================
-       DESIGN TOKENS - COLOR SYSTEM
-       ======================================================================== */
-    
-    /* Brand Colors - Primary Accent */
-    --brand-primary: 142 70% 50%; /* Green accent */
-    --brand-primary-dark: 142 70% 40%; /* Darker green for hover states */
-    --brand-primary-light: 142 70% 60%; /* Lighter green for highlights */
-    
-    /* Semantic Colors */
-    --color-success: 142 70% 50%; /* Green accent */
-    --color-success-foreground: 0 0% 9%; /* Dark text on green */
-    --color-error: 0 84% 60%; /* #ef4444 */
-    --color-error-foreground: 0 0% 98%;
-    --color-warning: 38 92% 50%; /* #f59e0b */
-    --color-warning-foreground: 0 0% 98%;
-    --color-info: 217 91% 60%; /* #3b82f6 */
-    --color-info-foreground: 0 0% 98%;
-
-    /* Neutral Colors - Gray Scale */
-    --gray-50: 0 0% 98%;
-    --gray-100: 0 0% 96%;
-    --gray-200: 0 0% 90%;
-    --gray-300: 0 0% 83%;
-    --gray-400: 0 0% 64%;
-    --gray-500: 0 0% 45%;
-    --gray-600: 0 0% 32%;
-    --gray-700: 0 0% 25%;
-    --gray-800: 0 0% 15%;
-    --gray-900: 0 0% 9%;
-
-    /* Base Colors */
-    --background: 0 0% 98%; /* gray-50 */
-    --foreground: 0 0% 9%; /* gray-900 */
-
-    /* Card Colors */
-    --card: 0 0% 100%;
-    --card-foreground: 0 0% 3.9%;
-
-    /* Popover Colors */
-    --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 3.9%;
-
-    /* Primary Colors (Black in light mode) */
-    --primary: 0 0% 9%;
-    --primary-foreground: 0 0% 98%;
-
-    /* Secondary Colors */
-    --secondary: 0 0% 96.1%;
-    --secondary-foreground: 0 0% 9%;
-
-    /* Muted Colors */
-    --muted: 0 0% 96.1%;
-    --muted-foreground: 0 0% 45.1%;
-
-    /* Accent Colors */
-    --accent: 142 70% 50%; /* Green accent */
-    --accent-foreground: 0 0% 9%; /* Dark text on green */
-
-    /* Destructive Colors */
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
-
-    /* Border & Input Colors */
-    --border: 0 0% 90%; /* gray-200 */
-    --input: 0 0% 90%; /* gray-200 */
-    --ring: 0 0% 3.9%;
-
-    /* ========================================================================
-       DESIGN TOKENS - SPACING SYSTEM (8px grid)
-       ======================================================================== */
-    --space-1: 0.25rem; /* 4px */
-    --space-2: 0.5rem; /* 8px */
-    --space-3: 0.75rem; /* 12px */
-    --space-4: 1rem; /* 16px */
-    --space-5: 1.25rem; /* 20px */
-    --space-6: 1.5rem; /* 24px */
-    --space-8: 2rem; /* 32px */
-    --space-10: 2.5rem; /* 40px */
-    --space-12: 3rem; /* 48px */
-    --space-16: 4rem; /* 64px */
-    --space-20: 5rem; /* 80px */
-    --space-24: 6rem; /* 96px */
-
-    /* ========================================================================
-       DESIGN TOKENS - TYPOGRAPHY SCALE
-       ======================================================================== */
-    --text-xs: 0.75rem; /* 12px */
-    --text-sm: 0.875rem; /* 14px */
-    --text-base: 1rem; /* 16px */
-    --text-lg: 1.125rem; /* 18px */
-    --text-xl: 1.25rem; /* 20px */
-    --text-2xl: 1.5rem; /* 24px */
-    --text-3xl: 1.875rem; /* 30px */
-    --text-4xl: 2.25rem; /* 36px */
-    --text-5xl: 3rem; /* 48px */
-    --text-6xl: 3.75rem; /* 60px */
-    --text-7xl: 4.5rem; /* 72px */
-    --text-8xl: 6rem; /* 96px */
-
-    /* Line Heights */
-    --leading-tight: 1.25;
-    --leading-snug: 1.375;
-    --leading-normal: 1.5;
-    --leading-relaxed: 1.625;
-    --leading-loose: 2;
-
-    /* Letter Spacing */
-    --tracking-tighter: -0.05em;
-    --tracking-tight: -0.025em;
-    --tracking-normal: 0em;
-    --tracking-wide: 0.025em;
-    --tracking-wider: 0.05em;
-
-    /* ========================================================================
-       DESIGN TOKENS - BORDER RADIUS
-       ======================================================================== */
-    --radius-sm: 0.5rem; /* 8px */
-    --radius-md: 0.75rem; /* 12px */
-    --radius-lg: 1rem; /* 16px */
-    --radius-xl: 1.5rem; /* 24px */
-    --radius-2xl: 2rem; /* 32px */
-    --radius-full: 9999px;
-    --radius: var(--radius-md); /* Default */
-
-    /* ========================================================================
-       DESIGN TOKENS - SHADOWS
-       ======================================================================== */
-    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-    --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
-    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-    --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
-    --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
-
-    /* ========================================================================
-       DESIGN TOKENS - OPACITY
-       ======================================================================== */
-    --opacity-disabled: 0.5;
-    --opacity-hover: 0.8;
-    --opacity-active: 0.9;
-    --opacity-backdrop: 0.85;
-    --opacity-overlay: 0.5;
-  }
-
-  .dark {
-    /* Base Colors */
-    --background: 0 0% 3.9%;
-    --foreground: 0 0% 98%;
-
-    /* Card Colors */
-    --card: 0 0% 3.9%;
-    --card-foreground: 0 0% 98%;
-
-    /* Popover Colors */
-    --popover: 0 0% 3.9%;
-    --popover-foreground: 0 0% 98%;
-
-    /* Primary Colors (White in dark mode) */
-    --primary: 0 0% 98%;
-    --primary-foreground: 0 0% 9%;
-
-    /* Secondary Colors */
-    --secondary: 0 0% 14.9%;
-    --secondary-foreground: 0 0% 98%;
-
-    /* Muted Colors */
-    --muted: 0 0% 14.9%;
-    --muted-foreground: 0 0% 63.9%;
-
-    /* Accent Colors */
-    --accent: 142 70% 50%; /* Green accent */
-    --accent-foreground: 0 0% 9%; /* Dark text on green for contrast */
-
-    /* Destructive Colors */
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-
-    /* Border & Input Colors */
-    --border: 0 0% 14.9%;
-    --input: 0 0% 14.9%;
-    --ring: 0 0% 83.1%;
-  }
+/* Updated color theme for language tutoring platform with warmer tones */
+:root {
+  --background: oklch(0.99 0 0);
+  --foreground: oklch(0.12 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.12 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.12 0 0);
+  --primary: oklch(0.47 0.19 25);
+  --primary-foreground: oklch(1 0 0);
+  --secondary: oklch(0.96 0.01 90);
+  --secondary-foreground: oklch(0.12 0 0);
+  --muted: oklch(0.96 0.01 90);
+  --muted-foreground: oklch(0.5 0 0);
+  --accent: oklch(0.96 0.01 90);
+  --accent-foreground: oklch(0.12 0 0);
+  --destructive: oklch(0.55 0.22 25);
+  --destructive-foreground: oklch(1 0 0);
+  --border: oklch(0.93 0 0);
+  --input: oklch(0.93 0 0);
+  --ring: oklch(0.47 0.19 25);
+  --chart-1: oklch(0.65 0.25 340);
+  --chart-2: oklch(0.68 0.18 200);
+  --chart-3: oklch(0.72 0.22 60);
+  --chart-4: oklch(0.58 0.2 280);
+  --chart-5: oklch(0.75 0.16 120);
+  --radius: 1.25rem;
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: oklch(0.205 0 0);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-ring: oklch(0.708 0 0);
 }
 
-/* ============================================================================
-   TAILWIND THEME EXTENSIONS
-   ============================================================================ */
-
-/**
- * Make CSS variables available to Tailwind utilities
- * This allows using bg-background, text-foreground, etc.
- */
+.dark {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.145 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.145 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.985 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.396 0.141 25.723);
+  --destructive-foreground: oklch(0.637 0.237 25.331);
+  --border: oklch(0.269 0 0);
+  --input: oklch(0.269 0 0);
+  --ring: oklch(0.439 0 0);
+  --chart-1: oklch(0.488 0.243 264.376);
+  --chart-2: oklch(0.696 0.17 162.48);
+  --chart-3: oklch(0.769 0.188 70.08);
+  --chart-4: oklch(0.627 0.265 303.9);
+  --chart-5: oklch(0.645 0.246 16.439);
+  --sidebar: oklch(0.205 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(0.269 0 0);
+  --sidebar-ring: oklch(0.439 0 0);
+}
 
 @theme inline {
-  /* Color Mappings - Base */
-  --color-background: hsl(var(--background));
-  --color-foreground: hsl(var(--foreground));
-  --color-card: hsl(var(--card));
-  --color-card-foreground: hsl(var(--card-foreground));
-  --color-popover: hsl(var(--popover));
-  --color-popover-foreground: hsl(var(--popover-foreground));
-  --color-primary: hsl(var(--primary));
-  --color-primary-foreground: hsl(var(--primary-foreground));
-  --color-secondary: hsl(var(--secondary));
-  --color-secondary-foreground: hsl(var(--secondary-foreground));
-  --color-muted: hsl(var(--muted));
-  --color-muted-foreground: hsl(var(--muted-foreground));
-  --color-accent: hsl(var(--accent));
-  --color-accent-foreground: hsl(var(--accent-foreground));
-  --color-destructive: hsl(var(--destructive));
-  --color-destructive-foreground: hsl(var(--destructive-foreground));
-  --color-border: hsl(var(--border));
-  --color-input: hsl(var(--input));
-  --color-ring: hsl(var(--ring));
-
-  /* Color Mappings - Brand */
-  --color-brand-primary: hsl(var(--brand-primary));
-  --color-brand-primary-dark: hsl(var(--brand-primary-dark));
-  --color-brand-primary-light: hsl(var(--brand-primary-light));
-
-  /* Color Mappings - Semantic */
-  --color-success: hsl(var(--color-success));
-  --color-success-foreground: hsl(var(--color-success-foreground));
-  --color-error: hsl(var(--color-error));
-  --color-error-foreground: hsl(var(--color-error-foreground));
-  --color-warning: hsl(var(--color-warning));
-  --color-warning-foreground: hsl(var(--color-warning-foreground));
-  --color-info: hsl(var(--color-info));
-  --color-info-foreground: hsl(var(--color-info-foreground));
-
-  /* Color Mappings - Neutral Gray Scale */
-  --color-gray-50: hsl(var(--gray-50));
-  --color-gray-100: hsl(var(--gray-100));
-  --color-gray-200: hsl(var(--gray-200));
-  --color-gray-300: hsl(var(--gray-300));
-  --color-gray-400: hsl(var(--gray-400));
-  --color-gray-500: hsl(var(--gray-500));
-  --color-gray-600: hsl(var(--gray-600));
-  --color-gray-700: hsl(var(--gray-700));
-  --color-gray-800: hsl(var(--gray-800));
-  --color-gray-900: hsl(var(--gray-900));
-
-  /* Spacing Mappings */
-  --spacing-1: var(--space-1);
-  --spacing-2: var(--space-2);
-  --spacing-3: var(--space-3);
-  --spacing-4: var(--space-4);
-  --spacing-5: var(--space-5);
-  --spacing-6: var(--space-6);
-  --spacing-8: var(--space-8);
-  --spacing-10: var(--space-10);
-  --spacing-12: var(--space-12);
-  --spacing-16: var(--space-16);
-  --spacing-20: var(--space-20);
-  --spacing-24: var(--space-24);
-
-  /* Typography Mappings */
-  --font-size-xs: var(--text-xs);
-  --font-size-sm: var(--text-sm);
-  --font-size-base: var(--text-base);
-  --font-size-lg: var(--text-lg);
-  --font-size-xl: var(--text-xl);
-  --font-size-2xl: var(--text-2xl);
-  --font-size-3xl: var(--text-3xl);
-  --font-size-4xl: var(--text-4xl);
-  --font-size-5xl: var(--text-5xl);
-  --font-size-6xl: var(--text-6xl);
-  --font-size-7xl: var(--text-7xl);
-  --font-size-8xl: var(--text-8xl);
-
-  /* Radius Mappings */
-  --radius-sm: var(--radius-sm);
-  --radius-md: var(--radius-md);
-  --radius-lg: var(--radius-lg);
-  --radius-xl: var(--radius-xl);
-  --radius-2xl: var(--radius-2xl);
-  --radius-full: var(--radius-full);
+  /* Updated font-sans to use the CSS variable from Next.js font optimization */
+  --font-sans: var(--font-space-grotesk), system-ui, sans-serif;
+  --font-mono: "Geist Mono", "Geist Mono Fallback";
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
 }
-
-/* ============================================================================
-   BASE STYLES
-   ============================================================================ */
-
-/**
- * Global Base Styles
- * 
- * Applied to all elements and body
- * Production-ready with proper font rendering
- */
 
 @layer base {
   * {
-    border-color: hsl(var(--border));
-}
-
-body {
-    background-color: hsl(var(--background));
-    color: hsl(var(--foreground));
-    font-family: var(--font-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-rendering: optimizeLegibility;
-    background-image: radial-gradient(circle at 10% 20%, rgba(121, 40, 202, 0.08) 0%, transparent 40%), 
-                      radial-gradient(circle at 90% 80%, rgba(255, 230, 0, 0.05) 0%, transparent 40%);
+    @apply border-border outline-ring/50;
   }
-
-  .dark body {
-    background-image: radial-gradient(circle at 10% 20%, rgba(121, 40, 202, 0.15) 0%, transparent 40%), 
-                      radial-gradient(circle at 90% 80%, rgba(255, 230, 0, 0.1) 0%, transparent 40%);
+  body {
+    @apply bg-background text-foreground;
   }
 }
 
-/* ============================================================================
-   ANIMATIONS
-   ============================================================================ */
-
-/* Floating animation for cards */
+/* Added keyframe animations for floating elements and marquee */
 @keyframes float {
-  0%, 100% {
-    transform: translateY(0) rotate(0deg);
+  0%,
+  100% {
+    transform: translateY(0px);
   }
   50% {
-    transform: translateY(-20px) rotate(2deg);
+    transform: translateY(-20px);
   }
 }
 
-/* Marquee animation */
 @keyframes marquee {
-  from {
+  0% {
     transform: translateX(0);
   }
-  to {
+  100% {
     transform: translateX(-50%);
   }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-marquee {
+  animation: marquee 20s linear infinite;
 }
 
 /* Custom styles for ambient background blobs */

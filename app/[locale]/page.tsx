@@ -1,14 +1,6 @@
-import { Suspense } from "react";
 import { getTranslations } from "next-intl/server";
 import { auth } from "@/config/auth";
-import { LandingPageClient } from "@/components/landing/LandingPageClient";
-import { BackgroundBlobs } from "@/components/landing/BackgroundBlobs";
-import { HeroSection } from "@/components/landing/HeroSection";
-import { MarqueeTicker } from "@/components/landing/MarqueeTicker";
-import { FeaturedTutors } from "@/components/landing/FeaturedTutors";
-import { EmailSignup } from "@/components/landing/EmailSignup";
-import { Testimonials } from "@/components/landing/Testimonials";
-import { Footer } from "@/components/landing/Footer";
+import { NewLandingPage } from "@/components/landing/NewLandingPage";
 import { OrganizationSchema, FAQSchema } from "@/lib/seo/structured-data";
 
 // Revalidate landing page every 5 minutes
@@ -95,10 +87,7 @@ export default async function HomePage({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
-  const t = await getTranslations("landing");
   const session = await auth();
-
-  const marqueeItems = t.raw("marquee.items") as string[];
   const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://linglix.com";
 
   // FAQ data for structured data
@@ -133,24 +122,7 @@ export default async function HomePage({
         description="Online language learning platform connecting students with native tutors"
       />
       <FAQSchema faqs={faqs} />
-      <div className="relative min-h-screen bg-[#fafafa] dark:bg-[#050505] text-[#111] dark:text-white overflow-x-hidden">
-        <BackgroundBlobs />
-        <LandingPageClient session={session} locale={locale} />
-        <div className="pt-16 sm:pt-20">
-          <HeroSection locale={locale} session={session} />
-          <MarqueeTicker items={marqueeItems} />
-          <Suspense fallback={<div className="py-20 px-4 md:px-12 max-w-[1400px] mx-auto"><div className="animate-pulse bg-white dark:bg-[#1a1a1a] rounded-[20px] h-96" /></div>}>
-            <FeaturedTutors locale={locale} />
-          </Suspense>
-          <Suspense fallback={null}>
-            <EmailSignup locale={locale} />
-          </Suspense>
-          <Suspense fallback={null}>
-            <Testimonials locale={locale} />
-          </Suspense>
-          <Footer locale={locale} session={session} />
-        </div>
-      </div>
+      <NewLandingPage locale={locale} session={session} />
     </>
   );
 }
