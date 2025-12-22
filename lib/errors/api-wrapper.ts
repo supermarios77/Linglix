@@ -11,9 +11,15 @@ import { NextRequest, NextResponse } from "next/server";
 import { createErrorResponse, handleApiError } from "../errors";
 import { logger } from "../logger";
 
+/**
+ * Context type for API route handlers
+ * Can be extended with specific context types as needed
+ */
+type RouteContext = Record<string, unknown> | undefined;
+
 type ApiHandler = (
   request: NextRequest,
-  context?: any
+  context?: RouteContext
 ) => Promise<NextResponse>;
 
 /**
@@ -30,7 +36,7 @@ export function withErrorHandling(
 ) {
   return async (
     request: NextRequest,
-    context?: any
+    context?: RouteContext
   ): Promise<NextResponse> => {
     try {
       return await handler(request, context);
@@ -44,13 +50,13 @@ export function withErrorHandling(
  * Wraps an API route handler with error handling and validation
  */
 export function withErrorHandlingAndValidation<T>(
-  handler: (request: NextRequest, validatedData: T, context?: any) => Promise<NextResponse>,
+  handler: (request: NextRequest, validatedData: T, context?: RouteContext) => Promise<NextResponse>,
   validator: (data: unknown) => T,
   defaultErrorMessage: string = "An error occurred. Please try again."
 ) {
   return async (
     request: NextRequest,
-    context?: any
+    context?: RouteContext
   ): Promise<NextResponse> => {
     try {
       // Parse and validate request body

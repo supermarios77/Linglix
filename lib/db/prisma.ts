@@ -68,10 +68,13 @@ export const prisma =
 
 // Enhanced error handling for database errors
 if (process.env.NODE_ENV === "production") {
-  prisma.$on("error" as never, (e: any) => {
-    captureDatabaseError(e, {
-      operation: "query",
-    });
+  prisma.$on("error" as never, (e: unknown) => {
+    captureDatabaseError(
+      e instanceof Error ? e : new Error(String(e)),
+      {
+        operation: "query",
+      }
+    );
   });
 }
 

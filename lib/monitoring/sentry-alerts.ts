@@ -44,7 +44,7 @@ export function captureErrorWithAlert(
     route?: string;
     userId?: string;
     tags?: Record<string, string>;
-    context?: Record<string, any>;
+    context?: Record<string, unknown>;
     fingerprint?: string[];
   } = {}
 ) {
@@ -268,7 +268,7 @@ export function addAlertBreadcrumb(
   message: string,
   category: string,
   level: "info" | "warning" | "error" = "info",
-  data?: Record<string, any>
+  data?: Record<string, unknown>
 ) {
   Sentry.addBreadcrumb({
     message,
