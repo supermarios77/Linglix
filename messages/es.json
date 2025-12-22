@@ -437,7 +437,7 @@
       "trending": "Tendencia",
       "tutors": "Tutores",
       "onlyLanguage": "Actualmente Disponible",
-      "onlyLanguageDescription": "Actualmente ofrecemos lecciones de {language}. ¡Más idiomas próximamente!",
+      "onlyLanguageDescription": "Actualmente solo ofrecemos lecciones de {language}. ¡Más idiomas próximamente!",
       "browseTutors": "Explorar {count} Tutores de {language}",
       "viewAllTutors": "Ver Todos los Tutores"
     },

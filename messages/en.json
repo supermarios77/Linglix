@@ -481,7 +481,7 @@
       "trending": "Trending",
       "tutors": "Tutors",
       "onlyLanguage": "Currently Available",
-      "onlyLanguageDescription": "We're currently offering {language} lessons. More languages coming soon!",
+      "onlyLanguageDescription": "We're currently only offering {language} lessons. More languages coming soon!",
       "browseTutors": "Browse {count} {language} Tutors",
       "viewAllTutors": "View All Tutors"
     },
