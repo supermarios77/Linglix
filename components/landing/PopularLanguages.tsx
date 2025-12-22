@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 import { useTranslations } from "next-intl";
 import type { LanguageWithCount } from "@/lib/db/languages";
 
@@ -128,7 +129,7 @@ function getCardConfig(index: number, totalCards: number) {
 /**
  * Single Language Display Component
  * Shows when there's only one language available
- * Simple message display without card styling
+ * Matches the design system of the rest of the landing page
  */
 function SingleLanguageDisplay({
   locale,
@@ -140,18 +141,25 @@ function SingleLanguageDisplay({
   t: ReturnType<typeof useTranslations>;
 }) {
   return (
-    <section className="py-12 sm:py-16 md:py-20 px-4 sm:px-6 md:px-8 lg:px-12 max-w-[1400px] mx-auto">
-      <div className="text-center max-w-3xl mx-auto">
-        <div className="mb-6 sm:mb-8 md:mb-10">
+    <section className="py-16 sm:py-20 md:py-24 px-4 sm:px-6 md:px-8 lg:px-12 max-w-[1400px] mx-auto">
+      <div className="flex flex-col items-center text-center max-w-4xl mx-auto">
+        {/* Badge - matching HeroSection style */}
+        <div className="inline-flex items-center px-3 md:px-4 py-1.5 md:py-2 bg-white dark:bg-[#1a1a1a] border border-[#e5e5e5] dark:border-[#262626] rounded-full text-xs md:text-sm font-semibold uppercase tracking-wider mb-6 md:mb-8 shadow-[0_2px_10px_rgba(0,0,0,0.03)]">
+          <span className="w-2 h-2 bg-[#10b981] rounded-full mr-2 animate-pulse" />
+          {t("onlyLanguage")}
+        </div>
+
+        {/* Flag icon in gradient container */}
+        <div className="mb-6 md:mb-8">
           <div
-            className="w-24 h-24 sm:w-32 sm:h-32 md:w-40 md:h-40 mx-auto rounded-2xl sm:rounded-3xl overflow-hidden mb-4 sm:mb-6 flex items-center justify-center"
+            className="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 mx-auto rounded-2xl overflow-hidden flex items-center justify-center shadow-lg"
             style={{
               background: `linear-gradient(to bottom right, ${language.gradientColors.from}, ${language.gradientColors.to})`,
             }}
             aria-hidden="true"
           >
             <span
-              className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl"
+              className="text-4xl sm:text-5xl md:text-6xl"
               role="img"
               aria-label={language.name}
             >
@@ -159,30 +167,40 @@ function SingleLanguageDisplay({
             </span>
           </div>
         </div>
-        
-        <h3 className="font-space-grotesk text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-black dark:text-white mb-3 sm:mb-4 px-4">
-          {t("onlyLanguage")}
+
+        {/* Title with highlight - matching HeroSection style */}
+        <h3 className="font-space-grotesk text-3xl sm:text-4xl md:text-5xl lg:text-6xl leading-[1.1] md:leading-[1.05] font-semibold tracking-[-0.03em] mb-4 md:mb-6 text-black dark:text-white max-w-3xl px-4">
+          <span className="block">
+            {t("onlyLanguageDescription", { language: language.name })}
+          </span>
+          <span className="block mt-2">
+            <span className="inline-block font-bold bg-[#FFE600] text-black px-3 md:px-4 py-1 md:py-2">
+              {language.name}
+            </span>
+          </span>
         </h3>
-        
-        <p className="text-sm sm:text-base md:text-lg lg:text-xl text-[#666] dark:text-[#a1a1aa] mb-6 sm:mb-8 px-4 leading-relaxed">
-          {t("onlyLanguageDescription", { language: language.name })}
+
+        {/* Description */}
+        <p className="text-base md:text-lg lg:text-xl leading-relaxed text-[#555] dark:text-[#a1a1aa] max-w-2xl mb-8 md:mb-10 px-4">
+          {t("browseTutors", { count: language.tutors.toLocaleString(), language: language.name })}
         </p>
 
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
+        {/* CTA Buttons - matching HeroSection style */}
+        <div className="flex flex-col sm:flex-row gap-4 items-center w-full sm:w-auto px-4">
           <Link
             href={`/${locale}/tutors?language=${encodeURIComponent(language.language)}`}
-            className="inline-flex items-center gap-2 px-6 sm:px-8 py-3 sm:py-4 bg-black dark:bg-white text-white dark:text-black rounded-full font-semibold text-sm sm:text-base md:text-lg hover:opacity-90 transition-opacity"
-            aria-label={`${t("browseTutors", { count: language.tutors.toLocaleString(), language: language.name })}`}
-          >
-            {t("browseTutors", { count: language.tutors.toLocaleString(), language: language.name })}
-            <span className="text-lg sm:text-xl">→</span>
-          </Link>
-          
-          <Link
-            href={`/${locale}/tutors`}
-            className="text-sm sm:text-base text-[#666] dark:text-[#a1a1aa] hover:text-black dark:hover:text-white underline transition-colors"
+            className="w-full sm:w-auto bg-[#111] dark:bg-white text-white dark:text-black px-8 md:px-10 py-4 md:py-[18px] rounded-full font-semibold text-base md:text-lg transition-all duration-300 hover:translate-y-[-2px] hover:shadow-[0_10px_20px_rgba(0,0,0,0.15)] hover:bg-[#222] dark:hover:bg-gray-100 inline-flex items-center justify-center gap-2.5"
+            aria-label={t("browseTutors", { count: language.tutors.toLocaleString(), language: language.name })}
           >
             {t("viewAllTutors")}
+            <ArrowRight className="w-5 h-5" aria-hidden="true" />
+          </Link>
+          <Link
+            href={`/${locale}/tutors`}
+            className="w-full sm:w-auto px-8 md:px-10 py-4 md:py-[18px] rounded-full font-semibold text-base md:text-lg bg-[rgba(255,255,255,0.5)] dark:bg-[rgba(26,26,26,0.5)] border border-[#e5e5e5] dark:border-[#262626] transition-all hover:bg-white dark:hover:bg-[#1a1a1a] hover:border-black dark:hover:border-white inline-flex items-center justify-center"
+            aria-label={t("viewAllTutors")}
+          >
+            {t("seeAll")}
           </Link>
         </div>
       </div>
