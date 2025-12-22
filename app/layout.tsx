@@ -1,4 +1,4 @@
-import { locales } from "@/i18n/config";
+import { locales } from "@/config/i18n/config";
 import { notFound } from "next/navigation";
 
 /**

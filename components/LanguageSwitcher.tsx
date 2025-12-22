@@ -2,7 +2,7 @@
 
 import { usePathname, useRouter } from "next/navigation";
 import { useLocale } from "next-intl";
-import { locales, localeNames, type Locale } from "@/i18n/config";
+import { locales, localeNames, type Locale } from "@/config/i18n/config";
 import { useState, useRef, useEffect } from "react";
 import { Globe } from "lucide-react";
 import { useTranslations } from "next-intl";

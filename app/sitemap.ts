@@ -1,6 +1,6 @@
 import { MetadataRoute } from "next";
 import { prisma } from "@/lib/db/prisma";
-import { locales } from "@/i18n/config";
+import { locales } from "@/config/i18n/config";
 import { slugify } from "@/lib/utils/slug";
 
 /**

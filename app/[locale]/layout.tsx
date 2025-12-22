@@ -4,7 +4,7 @@ import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 import { notFound } from "next/navigation";
 import "../globals.css";
-import { locales, isValidLocale } from "@/i18n/config";
+import { locales, isValidLocale } from "@/config/i18n/config";
 
 import { Analytics } from "@vercel/analytics/next"
 

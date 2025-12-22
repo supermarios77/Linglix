@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import createMiddleware from "next-intl/middleware";
 import { auth } from "@/config/auth";
-import { locales, defaultLocale } from "@/i18n/config";
+import { locales, defaultLocale } from "@/config/i18n/config";
 
 /**
  * Next.js 16 Proxy

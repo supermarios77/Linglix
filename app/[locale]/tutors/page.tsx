@@ -43,7 +43,7 @@ export async function generateMetadata({
   const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://linglix.com";
 
   // Generate alternate language URLs
-  const { locales } = await import("@/i18n/config");
+  const { locales } = await import("@/config/i18n/config");
   const alternates: Record<string, string> = {};
   locales.forEach((loc) => {
     alternates[loc] = `${baseUrl}/${loc}/tutors`;
