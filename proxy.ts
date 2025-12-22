@@ -42,6 +42,11 @@ export default auth((req) => {
   const { pathname } = req.nextUrl;
   const isLoggedIn = !!req.auth;
 
+  // Skip i18n routing for sitemap and robots.txt (must be at root, no locale prefix)
+  if (pathname === "/sitemap.xml" || pathname === "/robots.txt") {
+    return NextResponse.next();
+  }
+
   // First, handle i18n routing
   const intlResponse = intlMiddleware(req);
 
@@ -101,6 +106,7 @@ export default auth((req) => {
  */
 export const config = {
   matcher: [
-    "/((?!api|_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
+    // Exclude API routes, static files, images, sitemap, and robots.txt
+    "/((?!api|_next/static|_next/image|favicon.ico|sitemap\\.xml|robots\\.txt|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
   ],
 };
