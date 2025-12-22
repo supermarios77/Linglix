@@ -5,6 +5,7 @@ import { TutorsListingClient } from "@/components/tutors/TutorsListingClient";
 import { PublicNav } from "@/components/navigation/PublicNav";
 import { slugify } from "@/lib/utils/slug";
 import { Prisma } from "@prisma/client";
+import { BreadcrumbSchema } from "@/lib/seo/structured-data";
 
 interface TutorsPageProps {
   params: Promise<{ locale: string }>;
@@ -90,6 +91,22 @@ export async function generateMetadata({
       title: `Find Language Tutors Online | ${t("title")}`,
       description: t("subtitle") || "Browse certified native language tutors",
       images: [`${baseUrl}/twitter-tutors.jpg`],
+      creator: "@linglix",
+      site: "@linglix",
+    },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        "max-video-preview": -1,
+        "max-image-preview": "large",
+        "max-snippet": -1,
+      },
+    },
+    verification: {
+      // Add verification codes when available
     },
   };
 }
@@ -242,9 +259,17 @@ export default async function TutorsPage({
 
   const totalPages = Math.ceil(totalCount / perPage);
   const session = await auth();
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://linglix.com";
+  const tutorsUrl = `${baseUrl}/${locale}/tutors`;
 
   return (
     <>
+      <BreadcrumbSchema
+        items={[
+          { name: "Home", url: `${baseUrl}/${locale}` },
+          { name: "Tutors", url: tutorsUrl },
+        ]}
+      />
       <PublicNav locale={locale} session={session} />
       <div className="pt-16 sm:pt-20">
         <TutorsListingClient

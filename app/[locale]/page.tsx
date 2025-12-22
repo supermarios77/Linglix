@@ -1,7 +1,7 @@
 import { getTranslations } from "next-intl/server";
 import { auth } from "@/config/auth";
 import { NewLandingPage } from "@/components/landing/NewLandingPage";
-import { OrganizationSchema, FAQSchema } from "@/lib/seo/structured-data";
+import { OrganizationSchema, FAQSchema, WebSiteSchema } from "@/lib/seo/structured-data";
 
 // Revalidate landing page every 5 minutes
 export const revalidate = 300;
@@ -44,11 +44,23 @@ export async function generateMetadata({
       "Spanish tutor",
       "English tutor",
       "French tutor",
+      "German tutor",
+      "Italian tutor",
+      "Portuguese tutor",
+      "Japanese tutor",
+      "Korean tutor",
+      "Chinese tutor",
       "language lessons",
       "online language classes",
       "1-on-1 tutoring",
       "learn languages online",
+      "language learning platform",
+      "online language school",
     ],
+    authors: [{ name: "Linglix" }],
+    creator: "Linglix",
+    publisher: "Linglix",
+    metadataBase: new URL(baseUrl),
     alternates: {
       canonical: `${baseUrl}/${locale}`,
       languages: {
@@ -69,6 +81,7 @@ export async function generateMetadata({
           width: 1200,
           height: 630,
           alt: "Linglix - Language Learning Platform",
+          type: "image/jpeg",
         },
       ],
     },
@@ -77,6 +90,25 @@ export async function generateMetadata({
       title: "Linglix - Learn Languages with Native Tutors",
       description: t("description") || "Connect with certified native language tutors for personalized lessons",
       images: [`${baseUrl}/twitter-image.jpg`],
+      creator: "@linglix",
+      site: "@linglix",
+    },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        "max-video-preview": -1,
+        "max-image-preview": "large",
+        "max-snippet": -1,
+      },
+    },
+    verification: {
+      // Add verification codes when available
+      // google: "your-google-verification-code",
+      // yandex: "your-yandex-verification-code",
+      // bing: "your-bing-verification-code",
     },
   };
 }
@@ -116,6 +148,19 @@ export default async function HomePage({
 
   return (
     <>
+      <WebSiteSchema
+        url={baseUrl}
+        name="Linglix"
+        description="Online language learning platform connecting students with native tutors"
+        potentialAction={{
+          "@type": "SearchAction",
+          target: {
+            "@type": "EntryPoint",
+            urlTemplate: `${baseUrl}/${locale}/tutors?search={search_term_string}`,
+          },
+          "query-input": "required name=search_term_string",
+        }}
+      />
       <OrganizationSchema
         url={baseUrl}
         logo="/logo.png"

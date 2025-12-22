@@ -110,6 +110,22 @@ export async function generateMetadata({
       title: `${tutorNameValue} - ${specialties} Tutor`,
       description: description,
       images: [imageUrl],
+      creator: "@linglix",
+      site: "@linglix",
+    },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        "max-video-preview": -1,
+        "max-image-preview": "large",
+        "max-snippet": -1,
+      },
+    },
+    verification: {
+      // Add verification codes when available
     },
   };
 }

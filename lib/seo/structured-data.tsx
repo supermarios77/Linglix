@@ -8,6 +8,45 @@
 import { type Metadata } from "next";
 
 /**
+ * WebSite Schema
+ * Provides site-wide information for search engines
+ */
+export function WebSiteSchema({
+  url,
+  name = "Linglix",
+  description,
+  potentialAction,
+}: {
+  url: string;
+  name?: string;
+  description?: string;
+  potentialAction?: {
+    "@type": "SearchAction";
+    target: {
+      "@type": "EntryPoint";
+      urlTemplate: string;
+    };
+    "query-input": string;
+  };
+}) {
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name,
+    url,
+    ...(description && { description }),
+    ...(potentialAction && { potentialAction }),
+  };
+
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+    />
+  );
+}
+
+/**
  * Organization Schema
  * Used on homepage to identify the business
  */

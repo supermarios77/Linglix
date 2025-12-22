@@ -4,19 +4,26 @@ import { locales } from "@/config/i18n/config";
 import { slugify } from "@/lib/utils/slug";
 
 /**
- * Dynamic Sitemap Generation
+ * Comprehensive Sitemap Generation
  * 
  * Generates sitemap.xml with all public pages:
- * - Homepage (all locales)
- * - Tutor listing pages (all locales)
- * - Individual tutor profiles (all locales)
+ * - Homepage (all locales) - Priority 1.0
+ * - Tutor listing pages (all locales) - Priority 0.9
+ * - Individual tutor profiles (all locales) - Priority 0.8
+ * - Public auth pages (signin, signup) - Priority 0.5
  * 
  * Revalidates every hour to include new tutors
+ * 
+ * SEO Best Practices:
+ * - Higher priority for main pages
+ * - Appropriate changeFrequency for each page type
+ * - lastModified dates for better indexing
  */
 export const revalidate = 3600; // Revalidate every hour
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://linglix.com";
+  const now = new Date();
 
   // Get all approved and active tutors
   // Wrap in try-catch to handle database errors during build
@@ -56,17 +63,32 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   // Generate static page URLs for all locales
   const staticPages: MetadataRoute.Sitemap = locales.flatMap((locale) => [
+    // Homepage - Highest priority
     {
       url: `${baseUrl}/${locale}`,
-      lastModified: new Date(),
+      lastModified: now,
       changeFrequency: "daily" as const,
       priority: 1.0,
     },
+    // Tutor listing page - High priority
     {
       url: `${baseUrl}/${locale}/tutors`,
-      lastModified: new Date(),
+      lastModified: now,
       changeFrequency: "hourly" as const,
       priority: 0.9,
+    },
+    // Public auth pages - Lower priority but still indexed
+    {
+      url: `${baseUrl}/${locale}/auth/signin`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.5,
+    },
+    {
+      url: `${baseUrl}/${locale}/auth/signup`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.5,
     },
   ]);
 
