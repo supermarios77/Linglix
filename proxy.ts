@@ -22,32 +22,39 @@ import { locales, defaultLocale } from "@/config/i18n/config";
  */
 
 // Create i18n middleware for locale routing
+// Note: We handle sitemap/robots exclusion in the main middleware function
 const intlMiddleware = createMiddleware({
   locales,
   defaultLocale,
   localePrefix: "always", // Always show locale in URL (e.g., /en, /es)
+  // Exclude sitemap and robots from locale routing
+  // These routes should never be processed by i18n middleware
 });
 
 /**
  * Proxy function - handles all incoming requests
  * 
  * Order of operations:
- * 1. i18n middleware handles locale detection and routing
- * 2. Auth middleware handles route protection
+ * 1. Check for excluded routes (sitemap, robots) FIRST
+ * 2. i18n middleware handles locale detection and routing
+ * 3. Auth middleware handles route protection
  * 
  * This uses NextAuth's auth() wrapper pattern which returns a middleware function.
  * The default export is the standard pattern for Next.js 16 proxy.
  */
 export default auth((req) => {
   const { pathname } = req.nextUrl;
-  const isLoggedIn = !!req.auth;
-
-  // Skip i18n routing for sitemap and robots.txt (must be at root, no locale prefix)
+  
+  // CRITICAL: Skip ALL middleware processing for sitemap and robots.txt FIRST
+  // These must be served directly at root without any locale or auth processing
+  // This check must happen before any other processing
   if (pathname === "/sitemap.xml" || pathname === "/robots.txt") {
     return NextResponse.next();
   }
 
-  // First, handle i18n routing
+  const isLoggedIn = !!req.auth;
+
+  // First, handle i18n routing (only for non-sitemap/robots routes)
   const intlResponse = intlMiddleware(req);
 
   // If i18n middleware returns a redirect, use it
@@ -106,7 +113,13 @@ export default auth((req) => {
  */
 export const config = {
   matcher: [
-    // Exclude API routes, static files, images, sitemap, and robots.txt
-    "/((?!api|_next/static|_next/image|favicon.ico|sitemap\\.xml|robots\\.txt|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
+    // Exclude API routes, static files, images, sitemap.xml, and robots.txt
+    // CRITICAL: sitemap.xml and robots.txt must be excluded to serve at root without locale
+    // The matcher uses negative lookahead to exclude these routes from middleware processing
+    // Pattern breakdown:
+    // - (?!...) = negative lookahead (exclude these patterns)
+    // - sitemap\\.xml and robots\\.txt = exact matches for these files
+    // - .*\\.(?:xml|txt|...) = any file with these extensions
+    "/((?!api|_next/static|_next/image|favicon\\.ico|sitemap\\.xml|robots\\.txt|.*\\.(?:xml|txt|svg|png|jpg|jpeg|gif|webp)$).*)",
   ],
 };
