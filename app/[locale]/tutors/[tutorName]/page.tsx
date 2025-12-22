@@ -124,9 +124,6 @@ export async function generateMetadata({
         "max-snippet": -1,
       },
     },
-    verification: {
-      // Add verification codes when available
-    },
   };
 }
 

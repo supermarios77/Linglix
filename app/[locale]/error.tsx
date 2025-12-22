@@ -49,7 +49,7 @@ export default function Error({
             Something went wrong
           </h1>
           <p className="text-base text-[#666] dark:text-[#a1a1aa] mb-6">
-            Were sorry, but something unexpected happened. Our team has been notified and is working on a fix.
+            We&apos;re sorry, but something unexpected happened. Our team has been notified and is working on a fix.
           </p>
 
           {/* Developer Info (only in development) */}
