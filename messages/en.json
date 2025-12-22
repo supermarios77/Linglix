@@ -479,7 +479,11 @@
       "seeAll": "See All Languages",
       "popular": "Popular",
       "trending": "Trending",
-      "tutors": "Tutors"
+      "tutors": "Tutors",
+      "onlyLanguage": "Currently Available",
+      "onlyLanguageDescription": "We're currently offering {language} lessons. More languages coming soon!",
+      "browseTutors": "Browse {count} {language} Tutors",
+      "viewAllTutors": "View All Tutors"
     },
     "trending": {
       "title": "Popular Tutors",

@@ -435,7 +435,11 @@
       "seeAll": "Ver Todos los Idiomas",
       "popular": "Popular",
       "trending": "Tendencia",
-      "tutors": "Tutores"
+      "tutors": "Tutores",
+      "onlyLanguage": "Actualmente Disponible",
+      "onlyLanguageDescription": "Actualmente ofrecemos lecciones de {language}. ¡Más idiomas próximamente!",
+      "browseTutors": "Explorar {count} Tutores de {language}",
+      "viewAllTutors": "Ver Todos los Tutores"
     },
     "trending": {
       "title": "Tutores Populares",
