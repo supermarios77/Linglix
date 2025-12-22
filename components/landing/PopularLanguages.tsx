@@ -168,16 +168,9 @@ function SingleLanguageDisplay({
           </div>
         </div>
 
-        {/* Title with highlight - matching HeroSection style */}
+        {/* Title - matching HeroSection style */}
         <h3 className="font-space-grotesk text-3xl sm:text-4xl md:text-5xl lg:text-6xl leading-[1.1] md:leading-[1.05] font-semibold tracking-[-0.03em] mb-4 md:mb-6 text-black dark:text-white max-w-3xl px-4">
-          <span className="block">
-            {t("onlyLanguageDescription", { language: language.name })}
-          </span>
-          <span className="block mt-2">
-            <span className="inline-block font-bold bg-[#FFE600] text-black px-3 md:px-4 py-1 md:py-2">
-              {language.name}
-            </span>
-          </span>
+          {t("onlyLanguageDescription", { language: language.name })}
         </h3>
 
         {/* Description */}
