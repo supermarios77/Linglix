@@ -94,7 +94,7 @@ export function NewsletterCTA({ locale }: NewsletterCTAProps) {
             />
             <button
               type="submit"
-              className="bg-[#111] dark:bg-white text-white dark:text-black px-9 py-4 rounded-full font-semibold text-base transition-all duration-300 hover:translate-y-[-2px] hover:shadow-[0_10px_20px_rgba(0,0,0,0.15)] hover:bg-[#222] dark:hover:bg-gray-100 inline-flex items-center justify-center gap-2.5 whitespace-nowrap"
+              className="bg-[#111] dark:bg-white text-white dark:text-black px-9 py-4 rounded-full font-semibold text-base transition-all duration-300 hover:translate-y-[-2px] hover:shadow-[0_10px_20px_rgba(0,0,0,0.15)] hover:bg-[#222] dark:hover:bg-white dark:border-2 dark:border-white inline-flex items-center justify-center gap-2.5 whitespace-nowrap"
             >
               {t("button")}
               <ArrowRight className="w-5 h-5" aria-hidden="true" />
