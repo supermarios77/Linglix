@@ -9,10 +9,12 @@ import { HowItWorks } from "./HowItWorks";
 import { NewsletterCTA } from "./NewsletterCTA";
 import { Testimonials } from "./Testimonials";
 import { ScrollToTop } from "./ScrollToTop";
+import type { LanguageWithCount } from "@/lib/db/languages";
 
 interface NewLandingPageProps {
   locale: string;
   session: { user?: { id: string; name?: string | null; email?: string | null; role?: string } } | null;
+  languages: LanguageWithCount[];
 }
 
 // Validate locale to prevent injection attacks
@@ -20,7 +22,7 @@ function isValidLocale(locale: string): boolean {
   return /^[a-z]{2}(-[A-Z]{2})?$/.test(locale);
 }
 
-export function NewLandingPage({ locale, session }: NewLandingPageProps) {
+export function NewLandingPage({ locale, session, languages }: NewLandingPageProps) {
   // Sanitize locale to prevent path traversal
   const safeLocale = isValidLocale(locale) ? locale : "en";
 
@@ -30,7 +32,7 @@ export function NewLandingPage({ locale, session }: NewLandingPageProps) {
       <PublicNav locale={safeLocale} session={session} />
       <HeroSection locale={safeLocale} session={session} />
       <MarqueeTicker />
-      <PopularLanguages locale={safeLocale} />
+      <PopularLanguages locale={safeLocale} languages={languages} />
       <HowItWorks />
       <NewsletterCTA locale={safeLocale} />
       <Testimonials />

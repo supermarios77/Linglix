@@ -2,6 +2,9 @@ import { getTranslations } from "next-intl/server";
 import { auth } from "@/config/auth";
 import { NewLandingPage } from "@/components/landing/NewLandingPage";
 import { OrganizationSchema, FAQSchema, WebSiteSchema } from "@/lib/seo/structured-data";
+import { getLanguagesWithTutorCounts } from "@/lib/db/languages";
+import { getOrSetCache, CacheConfig, generateCacheKey } from "@/lib/cache";
+import { logger } from "@/lib/logger";
 
 // Revalidate landing page every 5 minutes
 export const revalidate = 300;
@@ -116,6 +119,24 @@ export default async function HomePage({
   const session = await auth();
   const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://linglix.com";
 
+  // Fetch languages with tutor counts (cached)
+  const languages = await getOrSetCache(
+    generateCacheKey(CacheConfig.TUTOR_SPECIALTIES.keyPrefix, "popular-languages"),
+    async () => {
+      try {
+        return await getLanguagesWithTutorCounts();
+      } catch (error) {
+        // If database query fails, return empty array
+        logger.error(
+          "Failed to fetch languages with tutor counts",
+          error instanceof Error ? error : new Error(String(error))
+        );
+        return [];
+      }
+    },
+    CacheConfig.TUTOR_SPECIALTIES.ttl
+  );
+
   // FAQ data for structured data
   const faqs = [
     {
@@ -161,7 +182,7 @@ export default async function HomePage({
         description="Online language learning platform connecting students with native tutors"
       />
       <FAQSchema faqs={faqs} />
-      <NewLandingPage locale={locale} session={session} />
+      <NewLandingPage locale={locale} session={session} languages={languages} />
     </>
   );
 }
