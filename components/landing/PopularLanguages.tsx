@@ -128,6 +128,7 @@ function getCardConfig(index: number, totalCards: number) {
 /**
  * Single Language Display Component
  * Shows when there's only one language available
+ * Simple message display without card styling
  */
 function SingleLanguageDisplay({
   locale,
@@ -140,49 +141,50 @@ function SingleLanguageDisplay({
 }) {
   return (
     <section className="py-12 sm:py-16 md:py-20 px-4 sm:px-6 md:px-8 lg:px-12 max-w-[1400px] mx-auto">
-      <div className="text-center mb-8 sm:mb-10 md:mb-12">
-        <h3 className="font-space-grotesk text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-black dark:text-white mb-3 sm:mb-4 px-4">
-          {t("onlyLanguage")}
-        </h3>
-        <p className="text-sm sm:text-base md:text-lg lg:text-xl text-[#666] dark:text-[#a1a1aa] max-w-2xl mx-auto px-4 leading-relaxed">
-          {t("onlyLanguageDescription", { language: language.name })}
-        </p>
-      </div>
-
-      <div className="max-w-sm sm:max-w-md md:max-w-lg mx-auto px-4">
-        <Link
-          href={`/${locale}/tutors?language=${encodeURIComponent(language.language)}`}
-          className="group block bg-white dark:bg-[#1a1a1a] rounded-[20px] sm:rounded-[24px] p-6 sm:p-8 md:p-10 transition-all duration-300 cursor-pointer border border-[#eee] dark:border-[#333] hover:translate-y-[-8px] hover:shadow-[0_20px_40px_rgba(0,0,0,0.08)]"
-          aria-label={`${language.name} - ${language.tutors.toLocaleString()} ${t("tutors")}`}
-        >
+      <div className="text-center max-w-3xl mx-auto">
+        <div className="mb-6 sm:mb-8 md:mb-10">
           <div
-            className="w-full h-64 sm:h-80 md:h-96 rounded-xl sm:rounded-2xl overflow-hidden mb-5 sm:mb-6 flex items-center justify-center"
+            className="w-24 h-24 sm:w-32 sm:h-32 md:w-40 md:h-40 mx-auto rounded-2xl sm:rounded-3xl overflow-hidden mb-4 sm:mb-6 flex items-center justify-center"
             style={{
               background: `linear-gradient(to bottom right, ${language.gradientColors.from}, ${language.gradientColors.to})`,
             }}
             aria-hidden="true"
           >
             <span
-              className="text-[120px] sm:text-[140px] md:text-[160px] lg:text-[180px]"
+              className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl"
               role="img"
               aria-label={language.name}
             >
               {language.flag}
             </span>
           </div>
-          <div className="text-center">
-            <h4 className="font-bold text-xl sm:text-2xl md:text-3xl lg:text-4xl mb-2 sm:mb-3 text-black dark:text-white">
-              {language.name}
-            </h4>
-            <p className="text-sm sm:text-base md:text-lg lg:text-xl text-[#666] dark:text-[#a1a1aa] mb-4 sm:mb-6 leading-relaxed">
-              {t("browseTutors", { count: language.tutors.toLocaleString(), language: language.name })}
-            </p>
-            <div className="inline-flex items-center gap-2 px-5 sm:px-6 py-2.5 sm:py-3 bg-black dark:bg-white text-white dark:text-black rounded-full font-semibold text-xs sm:text-sm md:text-base hover:opacity-90 transition-opacity">
-              {t("viewAllTutors")}
-              <span className="text-base sm:text-lg">→</span>
-            </div>
-          </div>
-        </Link>
+        </div>
+        
+        <h3 className="font-space-grotesk text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-black dark:text-white mb-3 sm:mb-4 px-4">
+          {t("onlyLanguage")}
+        </h3>
+        
+        <p className="text-sm sm:text-base md:text-lg lg:text-xl text-[#666] dark:text-[#a1a1aa] mb-6 sm:mb-8 px-4 leading-relaxed">
+          {t("onlyLanguageDescription", { language: language.name })}
+        </p>
+
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
+          <Link
+            href={`/${locale}/tutors?language=${encodeURIComponent(language.language)}`}
+            className="inline-flex items-center gap-2 px-6 sm:px-8 py-3 sm:py-4 bg-black dark:bg-white text-white dark:text-black rounded-full font-semibold text-sm sm:text-base md:text-lg hover:opacity-90 transition-opacity"
+            aria-label={`${t("browseTutors", { count: language.tutors.toLocaleString(), language: language.name })}`}
+          >
+            {t("browseTutors", { count: language.tutors.toLocaleString(), language: language.name })}
+            <span className="text-lg sm:text-xl">→</span>
+          </Link>
+          
+          <Link
+            href={`/${locale}/tutors`}
+            className="text-sm sm:text-base text-[#666] dark:text-[#a1a1aa] hover:text-black dark:hover:text-white underline transition-colors"
+          >
+            {t("viewAllTutors")}
+          </Link>
+        </div>
       </div>
     </section>
   );
