@@ -51,7 +51,10 @@ export function PopularLanguages({ locale, languages }: PopularLanguagesProps) {
               aria-label={`${lang.name} - ${lang.tutors.toLocaleString()} ${t("tutors")}`}
             >
               <div
-                className={`w-full h-60 rounded-xl overflow-hidden mb-5 bg-gradient-to-br ${lang.gradient} flex items-center justify-center`}
+                className="w-full h-60 rounded-xl overflow-hidden mb-5 flex items-center justify-center"
+                style={{
+                  background: `linear-gradient(to bottom right, ${lang.gradientColors.from}, ${lang.gradientColors.to})`,
+                }}
                 aria-hidden="true"
               >
                 <span className="text-[80px]" role="img" aria-label={lang.name}>

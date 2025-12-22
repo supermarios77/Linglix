@@ -14,7 +14,11 @@ export interface LanguageMetadata {
   name: string;
   flag: string;
   language: string; // Lowercase identifier for filtering
-  gradient: string;
+  gradient: string; // Tailwind gradient classes (e.g., "from-[#ff6b4a] to-[#ffa94d]")
+  gradientColors: {
+    from: string; // Hex color for gradient start
+    to: string; // Hex color for gradient end
+  };
 }
 
 /**
@@ -30,61 +34,61 @@ export interface LanguageWithCount extends LanguageMetadata {
  */
 const LANGUAGE_MAP: Record<string, LanguageMetadata> = {
   // Spanish variations
-  spanish: { name: "Spanish", flag: "🇪🇸", language: "spanish", gradient: "from-[#ff6b4a] to-[#ffa94d]" },
-  español: { name: "Spanish", flag: "🇪🇸", language: "spanish", gradient: "from-[#ff6b4a] to-[#ffa94d]" },
-  "spanish language": { name: "Spanish", flag: "🇪🇸", language: "spanish", gradient: "from-[#ff6b4a] to-[#ffa94d]" },
+  spanish: { name: "Spanish", flag: "🇪🇸", language: "spanish", gradient: "from-[#ff6b4a] to-[#ffa94d]", gradientColors: { from: "#ff6b4a", to: "#ffa94d" } },
+  español: { name: "Spanish", flag: "🇪🇸", language: "spanish", gradient: "from-[#ff6b4a] to-[#ffa94d]", gradientColors: { from: "#ff6b4a", to: "#ffa94d" } },
+  "spanish language": { name: "Spanish", flag: "🇪🇸", language: "spanish", gradient: "from-[#ff6b4a] to-[#ffa94d]", gradientColors: { from: "#ff6b4a", to: "#ffa94d" } },
   
   // French variations
-  french: { name: "French", flag: "🇫🇷", language: "french", gradient: "from-[#4a90ff] to-[#4dc3ff]" },
-  français: { name: "French", flag: "🇫🇷", language: "french", gradient: "from-[#4a90ff] to-[#4dc3ff]" },
-  "french language": { name: "French", flag: "🇫🇷", language: "french", gradient: "from-[#4a90ff] to-[#4dc3ff]" },
+  french: { name: "French", flag: "🇫🇷", language: "french", gradient: "from-[#4a90ff] to-[#4dc3ff]", gradientColors: { from: "#4a90ff", to: "#4dc3ff" } },
+  français: { name: "French", flag: "🇫🇷", language: "french", gradient: "from-[#4a90ff] to-[#4dc3ff]", gradientColors: { from: "#4a90ff", to: "#4dc3ff" } },
+  "french language": { name: "French", flag: "🇫🇷", language: "french", gradient: "from-[#4a90ff] to-[#4dc3ff]", gradientColors: { from: "#4a90ff", to: "#4dc3ff" } },
   
   // Japanese variations
-  japanese: { name: "Japanese", flag: "🇯🇵", language: "japanese", gradient: "from-[#ff4d8c] to-[#ff8f70]" },
-  日本語: { name: "Japanese", flag: "🇯🇵", language: "japanese", gradient: "from-[#ff4d8c] to-[#ff8f70]" },
-  "japanese language": { name: "Japanese", flag: "🇯🇵", language: "japanese", gradient: "from-[#ff4d8c] to-[#ff8f70]" },
+  japanese: { name: "Japanese", flag: "🇯🇵", language: "japanese", gradient: "from-[#ff4d8c] to-[#ff8f70]", gradientColors: { from: "#ff4d8c", to: "#ff8f70" } },
+  日本語: { name: "Japanese", flag: "🇯🇵", language: "japanese", gradient: "from-[#ff4d8c] to-[#ff8f70]", gradientColors: { from: "#ff4d8c", to: "#ff8f70" } },
+  "japanese language": { name: "Japanese", flag: "🇯🇵", language: "japanese", gradient: "from-[#ff4d8c] to-[#ff8f70]", gradientColors: { from: "#ff4d8c", to: "#ff8f70" } },
   
   // German variations
-  german: { name: "German", flag: "🇩🇪", language: "german", gradient: "from-[#6b4aff] to-[#a94dff]" },
-  deutsch: { name: "German", flag: "🇩🇪", language: "german", gradient: "from-[#6b4aff] to-[#a94dff]" },
-  "german language": { name: "German", flag: "🇩🇪", language: "german", gradient: "from-[#6b4aff] to-[#a94dff]" },
+  german: { name: "German", flag: "🇩🇪", language: "german", gradient: "from-[#6b4aff] to-[#a94dff]", gradientColors: { from: "#6b4aff", to: "#a94dff" } },
+  deutsch: { name: "German", flag: "🇩🇪", language: "german", gradient: "from-[#6b4aff] to-[#a94dff]", gradientColors: { from: "#6b4aff", to: "#a94dff" } },
+  "german language": { name: "German", flag: "🇩🇪", language: "german", gradient: "from-[#6b4aff] to-[#a94dff]", gradientColors: { from: "#6b4aff", to: "#a94dff" } },
   
   // English variations
-  english: { name: "English", flag: "🇬🇧", language: "english", gradient: "from-[#3b82f6] to-[#8b5cf6]" },
-  "english language": { name: "English", flag: "🇬🇧", language: "english", gradient: "from-[#3b82f6] to-[#8b5cf6]" },
-  "business english": { name: "English", flag: "🇬🇧", language: "english", gradient: "from-[#3b82f6] to-[#8b5cf6]" },
-  "conversational english": { name: "English", flag: "🇬🇧", language: "english", gradient: "from-[#3b82f6] to-[#8b5cf6]" },
+  english: { name: "English", flag: "🇬🇧", language: "english", gradient: "from-[#3b82f6] to-[#8b5cf6]", gradientColors: { from: "#3b82f6", to: "#8b5cf6" } },
+  "english language": { name: "English", flag: "🇬🇧", language: "english", gradient: "from-[#3b82f6] to-[#8b5cf6]", gradientColors: { from: "#3b82f6", to: "#8b5cf6" } },
+  "business english": { name: "English", flag: "🇬🇧", language: "english", gradient: "from-[#3b82f6] to-[#8b5cf6]", gradientColors: { from: "#3b82f6", to: "#8b5cf6" } },
+  "conversational english": { name: "English", flag: "🇬🇧", language: "english", gradient: "from-[#3b82f6] to-[#8b5cf6]", gradientColors: { from: "#3b82f6", to: "#8b5cf6" } },
   
   // Italian variations
-  italian: { name: "Italian", flag: "🇮🇹", language: "italian", gradient: "from-[#10b981] to-[#34d399]" },
-  italiano: { name: "Italian", flag: "🇮🇹", language: "italian", gradient: "from-[#10b981] to-[#34d399]" },
-  "italian language": { name: "Italian", flag: "🇮🇹", language: "italian", gradient: "from-[#10b981] to-[#34d399]" },
+  italian: { name: "Italian", flag: "🇮🇹", language: "italian", gradient: "from-[#10b981] to-[#34d399]", gradientColors: { from: "#10b981", to: "#34d399" } },
+  italiano: { name: "Italian", flag: "🇮🇹", language: "italian", gradient: "from-[#10b981] to-[#34d399]", gradientColors: { from: "#10b981", to: "#34d399" } },
+  "italian language": { name: "Italian", flag: "🇮🇹", language: "italian", gradient: "from-[#10b981] to-[#34d399]", gradientColors: { from: "#10b981", to: "#34d399" } },
   
   // Portuguese variations
-  portuguese: { name: "Portuguese", flag: "🇵🇹", language: "portuguese", gradient: "from-[#f59e0b] to-[#fbbf24]" },
-  português: { name: "Portuguese", flag: "🇵🇹", language: "portuguese", gradient: "from-[#f59e0b] to-[#fbbf24]" },
-  "portuguese language": { name: "Portuguese", flag: "🇵🇹", language: "portuguese", gradient: "from-[#f59e0b] to-[#fbbf24]" },
+  portuguese: { name: "Portuguese", flag: "🇵🇹", language: "portuguese", gradient: "from-[#f59e0b] to-[#fbbf24]", gradientColors: { from: "#f59e0b", to: "#fbbf24" } },
+  português: { name: "Portuguese", flag: "🇵🇹", language: "portuguese", gradient: "from-[#f59e0b] to-[#fbbf24]", gradientColors: { from: "#f59e0b", to: "#fbbf24" } },
+  "portuguese language": { name: "Portuguese", flag: "🇵🇹", language: "portuguese", gradient: "from-[#f59e0b] to-[#fbbf24]", gradientColors: { from: "#f59e0b", to: "#fbbf24" } },
   
   // Chinese variations
-  chinese: { name: "Chinese", flag: "🇨🇳", language: "chinese", gradient: "from-[#ef4444] to-[#f87171]" },
-  中文: { name: "Chinese", flag: "🇨🇳", language: "chinese", gradient: "from-[#ef4444] to-[#f87171]" },
-  mandarin: { name: "Chinese", flag: "🇨🇳", language: "chinese", gradient: "from-[#ef4444] to-[#f87171]" },
-  "chinese language": { name: "Chinese", flag: "🇨🇳", language: "chinese", gradient: "from-[#ef4444] to-[#f87171]" },
+  chinese: { name: "Chinese", flag: "🇨🇳", language: "chinese", gradient: "from-[#ef4444] to-[#f87171]", gradientColors: { from: "#ef4444", to: "#f87171" } },
+  中文: { name: "Chinese", flag: "🇨🇳", language: "chinese", gradient: "from-[#ef4444] to-[#f87171]", gradientColors: { from: "#ef4444", to: "#f87171" } },
+  mandarin: { name: "Chinese", flag: "🇨🇳", language: "chinese", gradient: "from-[#ef4444] to-[#f87171]", gradientColors: { from: "#ef4444", to: "#f87171" } },
+  "chinese language": { name: "Chinese", flag: "🇨🇳", language: "chinese", gradient: "from-[#ef4444] to-[#f87171]", gradientColors: { from: "#ef4444", to: "#f87171" } },
   
   // Korean variations
-  korean: { name: "Korean", flag: "🇰🇷", language: "korean", gradient: "from-[#6366f1] to-[#818cf8]" },
-  한국어: { name: "Korean", flag: "🇰🇷", language: "korean", gradient: "from-[#6366f1] to-[#818cf8]" },
-  "korean language": { name: "Korean", flag: "🇰🇷", language: "korean", gradient: "from-[#6366f1] to-[#818cf8]" },
+  korean: { name: "Korean", flag: "🇰🇷", language: "korean", gradient: "from-[#6366f1] to-[#818cf8]", gradientColors: { from: "#6366f1", to: "#818cf8" } },
+  한국어: { name: "Korean", flag: "🇰🇷", language: "korean", gradient: "from-[#6366f1] to-[#818cf8]", gradientColors: { from: "#6366f1", to: "#818cf8" } },
+  "korean language": { name: "Korean", flag: "🇰🇷", language: "korean", gradient: "from-[#6366f1] to-[#818cf8]", gradientColors: { from: "#6366f1", to: "#818cf8" } },
   
   // Russian variations
-  russian: { name: "Russian", flag: "🇷🇺", language: "russian", gradient: "from-[#8b5cf6] to-[#a78bfa]" },
-  русский: { name: "Russian", flag: "🇷🇺", language: "russian", gradient: "from-[#8b5cf6] to-[#a78bfa]" },
-  "russian language": { name: "Russian", flag: "🇷🇺", language: "russian", gradient: "from-[#8b5cf6] to-[#a78bfa]" },
+  russian: { name: "Russian", flag: "🇷🇺", language: "russian", gradient: "from-[#8b5cf6] to-[#a78bfa]", gradientColors: { from: "#8b5cf6", to: "#a78bfa" } },
+  русский: { name: "Russian", flag: "🇷🇺", language: "russian", gradient: "from-[#8b5cf6] to-[#a78bfa]", gradientColors: { from: "#8b5cf6", to: "#a78bfa" } },
+  "russian language": { name: "Russian", flag: "🇷🇺", language: "russian", gradient: "from-[#8b5cf6] to-[#a78bfa]", gradientColors: { from: "#8b5cf6", to: "#a78bfa" } },
   
   // Arabic variations
-  arabic: { name: "Arabic", flag: "🇸🇦", language: "arabic", gradient: "from-[#14b8a6] to-[#5eead4]" },
-  العربية: { name: "Arabic", flag: "🇸🇦", language: "arabic", gradient: "from-[#14b8a6] to-[#5eead4]" },
-  "arabic language": { name: "Arabic", flag: "🇸🇦", language: "arabic", gradient: "from-[#14b8a6] to-[#5eead4]" },
+  arabic: { name: "Arabic", flag: "🇸🇦", language: "arabic", gradient: "from-[#14b8a6] to-[#5eead4]", gradientColors: { from: "#14b8a6", to: "#5eead4" } },
+  العربية: { name: "Arabic", flag: "🇸🇦", language: "arabic", gradient: "from-[#14b8a6] to-[#5eead4]", gradientColors: { from: "#14b8a6", to: "#5eead4" } },
+  "arabic language": { name: "Arabic", flag: "🇸🇦", language: "arabic", gradient: "from-[#14b8a6] to-[#5eead4]", gradientColors: { from: "#14b8a6", to: "#5eead4" } },
 };
 
 /**
