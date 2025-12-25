@@ -178,7 +178,7 @@ function SingleLanguageDisplay({
           {t("browseTutors", { count: language.tutors.toLocaleString(), language: language.name })}
         </p>
 
-        {/* CTA Buttons - matching HeroSection style */}
+        {/* CTA Button - matching HeroSection style */}
         <div className="flex flex-col sm:flex-row gap-4 items-center w-full sm:w-auto px-4">
           <Link
             href={`/${locale}/tutors?language=${encodeURIComponent(language.language)}`}
@@ -187,13 +187,6 @@ function SingleLanguageDisplay({
           >
             {t("viewAllTutors")}
             <ArrowRight className="w-5 h-5" aria-hidden="true" />
-          </Link>
-          <Link
-            href={`/${locale}/tutors`}
-            className="w-full sm:w-auto px-8 md:px-10 py-4 md:py-[18px] rounded-full font-semibold text-base md:text-lg bg-[rgba(255,255,255,0.5)] dark:bg-[rgba(26,26,26,0.5)] border border-[#e5e5e5] dark:border-[#262626] transition-all hover:bg-white dark:hover:bg-[#1a1a1a] hover:border-black dark:hover:border-white inline-flex items-center justify-center"
-            aria-label={t("viewAllTutors")}
-          >
-            {t("seeAll")}
           </Link>
         </div>
       </div>
