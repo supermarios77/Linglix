@@ -3,7 +3,7 @@ import Google from "next-auth/providers/google";
 import { Role } from "@prisma/client";
 
 /**
- * Authentication configuration for NextAuth v5 (Edge Runtime compatible)
+ * Authentication configuration for NextAuth v4 (Edge Runtime compatible)
  * 
  * This file defines:
  * - OAuth providers (Google) - Edge Runtime compatible

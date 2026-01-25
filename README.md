@@ -7,7 +7,7 @@ Language learning platform connecting students with expert tutors.
 - **Framework**: Next.js 16 (App Router)
 - **Database**: PostgreSQL (Neon)
 - **ORM**: Prisma
-- **Authentication**: NextAuth v5
+- **Authentication**: NextAuth v4
 - **Payments**: Stripe (Checkout Sessions)
 - **Video Chat**: Stream Video SDK
 - **Chat**: Stream Chat SDK
