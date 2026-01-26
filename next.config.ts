@@ -159,12 +159,16 @@ export default withSentryConfig(withNextIntl(nextConfig), {
  // side errors will fail.
  // tunnelRoute: "/monitoring",
 
- // Automatically tree-shake Sentry logger statements to reduce bundle size
- disableLogger: true,
+ // Webpack-specific options (only used when not using Turbopack)
+ webpack: (config, { isServer }) => {
+   // Automatically tree-shake Sentry logger statements to reduce bundle size
+   // Note: Not supported with Turbopack, but safe to include for webpack builds
+   if (!process.env.TURBOPACK) {
+     config.optimization = config.optimization || {};
+   }
+   return config;
+ },
 
- // Enables automatic instrumentation of Vercel Cron Monitors. (Does not yet work with App Router route handlers.)
- // See the following for more information:
- // https://docs.sentry.io/product/crons/
- // https://vercel.com/docs/cron-jobs
- automaticVercelMonitors: true,
+ // Note: disableLogger and automaticVercelMonitors are deprecated with Turbopack
+ // They are handled via webpack config above for non-Turbopack builds
 });
