@@ -150,13 +150,9 @@ const authOptions = {
 };
 
 // Create NextAuth instance and export handlers
-const nextAuthInstance = NextAuth(authOptions);
-const { handlers } = nextAuthInstance;
+const { handlers } = NextAuth(authOptions);
 
 // Export authOptions for use with getServerSession in server components
 export { authOptions };
-
-// Export signIn and signOut for use in server actions
-export const { signIn, signOut } = nextAuthInstance;
 
 export const { GET, POST } = handlers;

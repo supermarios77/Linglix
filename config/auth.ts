@@ -21,20 +21,5 @@ export async function auth() {
   return getServerSession(authOptions as NextAuthOptions);
 }
 
-/**
- * Sign in function for server actions
- * Re-exported from NextAuth route handler
- */
-export async function signIn(...args: any[]) {
-  const { signIn: nextAuthSignIn } = await import("@/app/api/auth/[...nextauth]/route");
-  return nextAuthSignIn(...args);
-}
-
-/**
- * Sign out function for server actions
- * Re-exported from NextAuth route handler
- */
-export async function signOut(...args: any[]) {
-  const { signOut: nextAuthSignOut } = await import("@/app/api/auth/[...nextauth]/route");
-  return nextAuthSignOut(...args);
-}
+// Note: signIn and signOut are client-side functions from next-auth/react
+// For server-side authentication, use the auth() function above

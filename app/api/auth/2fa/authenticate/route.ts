@@ -15,7 +15,6 @@ import { createValidationErrorResponse } from "@/lib/errors/validation";
 import { verifyToken, verifyBackupCode, is2FARequired } from "@/lib/auth/two-factor";
 import { Role } from "@prisma/client";
 import { z } from "zod";
-import { signIn } from "@/config/auth";
 import { checkRateLimit, createRateLimitResponse } from "@/lib/rate-limit";
 
 export const dynamic = "force-dynamic";
