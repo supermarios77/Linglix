@@ -84,7 +84,7 @@ export async function POST(request: NextRequest) {
       let updatedBackupCodes = user.twoFactorBackupCodes;
 
       if (token) {
-        isValid2FA = verifyToken(user.twoFactorSecret, token);
+        isValid2FA = await verifyToken(user.twoFactorSecret, token);
       } else if (backupCode) {
         const result = verifyBackupCode(backupCode, user.twoFactorBackupCodes);
         isValid2FA = result.valid;

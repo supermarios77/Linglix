@@ -5,7 +5,7 @@
  * Only enabled in production environment
  */
 
-import { authenticator } from "otplib";
+import { generateSecret as otplibGenerateSecret, generate, verify, generateURI } from "otplib";
 import QRCode from "qrcode";
 import crypto from "crypto";
 
@@ -19,7 +19,7 @@ export function generateSecret(): string {
   if (!is2FAEnabled) {
     throw new Error("2FA is only available in production");
   }
-  return authenticator.generateSecret();
+  return otplibGenerateSecret();
 }
 
 /**
@@ -34,21 +34,26 @@ export async function generateQRCode(
     throw new Error("2FA is only available in production");
   }
 
-  const otpauth = authenticator.keyuri(email, issuer, secret);
+  const otpauth = generateURI({
+    issuer,
+    label: email,
+    secret,
+  });
   return QRCode.toDataURL(otpauth);
 }
 
 /**
  * Verify a TOTP token
  */
-export function verifyToken(secret: string, token: string): boolean {
+export async function verifyToken(secret: string, token: string): Promise<boolean> {
   if (!is2FAEnabled) {
     // In development, always return true to bypass 2FA
     return true;
   }
 
   try {
-    return authenticator.verify({ token, secret });
+    const result = await verify({ secret, token });
+    return result.valid;
   } catch (error) {
     return false;
   }

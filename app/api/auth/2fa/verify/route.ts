@@ -63,7 +63,7 @@ export async function POST(request: NextRequest) {
     const { secret, token, backupCodes } = validationResult.data;
 
     // Verify the token
-    const isValid = verifyToken(secret, token);
+    const isValid = await verifyToken(secret, token);
 
     if (!isValid) {
       return createErrorResponse(

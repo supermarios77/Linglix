@@ -33,7 +33,8 @@ const credentialsSchema = z.object({
   password: z.string().min(8, "Password must be at least 8 characters"),
 });
 
-const { handlers } = NextAuth({
+// Create authOptions for reuse in both NextAuth instance and getServerSession
+const authOptions = {
   ...authConfig,
   providers: [
     /**
@@ -146,6 +147,16 @@ const { handlers } = NextAuth({
   ],
   adapter: PrismaAdapter(prisma) as any, // Type assertion to handle adapter version mismatch
   trustHost: true,
-});
+};
+
+// Create NextAuth instance and export handlers
+const nextAuthInstance = NextAuth(authOptions);
+const { handlers } = nextAuthInstance;
+
+// Export authOptions for use with getServerSession in server components
+export { authOptions };
+
+// Export signIn and signOut for use in server actions
+export const { signIn, signOut } = nextAuthInstance;
 
 export const { GET, POST } = handlers;

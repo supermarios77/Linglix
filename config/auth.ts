@@ -1,14 +1,40 @@
-import NextAuth from "next-auth";
-import { authConfig } from "@/config/auth.config";
+import { getServerSession } from "next-auth/next";
+import type { NextAuthOptions } from "next-auth";
 
 /**
- * NextAuth configuration for middleware (Edge Runtime compatible)
+ * NextAuth configuration for server components
  * 
- * This export is used by middleware and doesn't include the Prisma adapter
- * since Prisma cannot run in Edge Runtime. The adapter is only used in
- * API routes (see app/api/auth/[...nextauth]/route.ts)
+ * This file provides the auth function for use in Server Components and API routes.
+ * It uses getServerSession which is the recommended approach for Next.js 16 App Router.
+ * 
+ * Note: authOptions is exported from app/api/auth/[...nextauth]/route.ts
+ * to avoid circular dependencies and ensure consistency.
  */
-export const { handlers, signIn, signOut, auth } = NextAuth({
-  ...authConfig,
-  trustHost: true, // Required for Vercel deployments
-});
+
+/**
+ * Get the current session in server components and API routes
+ * This is the recommended way to access authentication in Next.js 16 App Router
+ */
+export async function auth() {
+  // Dynamically import authOptions to avoid circular dependencies
+  const { authOptions } = await import("@/app/api/auth/[...nextauth]/route");
+  return getServerSession(authOptions as NextAuthOptions);
+}
+
+/**
+ * Sign in function for server actions
+ * Re-exported from NextAuth route handler
+ */
+export async function signIn(...args: any[]) {
+  const { signIn: nextAuthSignIn } = await import("@/app/api/auth/[...nextauth]/route");
+  return nextAuthSignIn(...args);
+}
+
+/**
+ * Sign out function for server actions
+ * Re-exported from NextAuth route handler
+ */
+export async function signOut(...args: any[]) {
+  const { signOut: nextAuthSignOut } = await import("@/app/api/auth/[...nextauth]/route");
+  return nextAuthSignOut(...args);
+}
