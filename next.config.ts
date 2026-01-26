@@ -27,8 +27,6 @@ const nextConfig: NextConfig = {
       "@radix-ui/react-slot",
       "recharts",
     ],
-    // Enable instrumentation hook for Sentry
-    instrumentationHook: true,
   },
   
   // Security headers
